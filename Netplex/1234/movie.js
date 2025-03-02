@@ -534,8 +534,5 @@ document.onkeydown = function(e) {
 
 // SCRIPT TO DISABLE ADS(POPUPS, REDIRECTS ETC.) START //
 
-Object.defineProperty(window, 'open', {
-    value: function () { console.log("Blocked!"); },
-    writable: false
-});
+
 
