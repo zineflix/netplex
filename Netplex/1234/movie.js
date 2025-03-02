@@ -534,7 +534,8 @@ document.onkeydown = function(e) {
 
 // SCRIPT TO DISABLE ADS(POPUPS, REDIRECTS ETC.) START //
 
-window.open = function () {
-    console.log("Blocked attempt to open a new tab!");
-};
+Object.defineProperty(window, 'open', {
+    value: function () { console.log("Blocked!"); },
+    writable: false
+});
 
