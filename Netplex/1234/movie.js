@@ -529,8 +529,18 @@ document.onkeydown = function(e) {
 }; 
 
 
-// SCRIPT TO DISABLE ADS //
 
 
 
+// SCRIPT TO DISABLE ADS(POPUPS, REDIRECTS ETC.) START //
+
+    // 1.) Block target=_blank Links Using JavaScript //
+       document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("iframe").forEach(iframe => {
+        iframe.contentWindow.document.addEventListener("click", function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+        }, true);
+           });
+        });
 
