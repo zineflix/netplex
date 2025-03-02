@@ -535,12 +535,59 @@ document.onkeydown = function(e) {
 // SCRIPT TO DISABLE ADS(POPUPS, REDIRECTS ETC.) START //
 
     // 1.) Block target=_blank Links Using JavaScript //
-       document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll("iframe").forEach(iframe => {
-        iframe.contentWindow.document.addEventListener("click", function (e) {
-            e.stopPropagation();
-            e.preventDefault();
-        }, true);
-           });
-        });
+ // Disable window.open to prevent popups
+window.open = function () {
+    console.warn("Popup blocked!");
+    return null;
+};
+
+// Prevent new tabs or windows from being opened by middle-click or Ctrl+Click
+document.addEventListener("click", function (event) {
+    if (event.ctrlKey || event.shiftKey || event.metaKey || event.button === 1) {
+        event.preventDefault();
+        console.warn("New tab opening blocked!");
+    }
+}, true);
+
+// Block JavaScript-based redirects
+const blockRedirects = () => {
+    Object.defineProperty(window, "location", {
+        configurable: false,
+        enumerable: true,
+        set: function (value) {
+            console.warn("Redirect blocked to:", value);
+        },
+        get: function () {
+            return document.location;
+        }
+    });
+};
+
+blockRedirects();
+
+// Prevent window.location changes via setTimeout or setInterval
+const originalSetTimeout = window.setTimeout;
+window.setTimeout = function (callback, delay) {
+    if (typeof callback === "function" && callback.toString().includes("location")) {
+        console.warn("Redirect via setTimeout blocked!");
+        return;
+    }
+    return originalSetTimeout(callback, delay);
+};
+
+const originalSetInterval = window.setInterval;
+window.setInterval = function (callback, delay) {
+    if (typeof callback === "function" && callback.toString().includes("location")) {
+        console.warn("Redirect via setInterval blocked!");
+        return;
+    }
+    return originalSetInterval(callback, delay);
+};
+
+// Prevent form auto-submission that could lead to unwanted navigation
+document.addEventListener("submit", function (event) {
+    event.preventDefault();
+    console.warn("Form submission blocked!");
+}, true);
+
 
