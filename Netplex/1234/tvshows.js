@@ -205,11 +205,14 @@ function openSearchPage() {
 }
 
 const SERIES_ENDPOINTS = [
-    { url: 'https://player.videasy.net/tv/', name: 'Server 1' },
-    { url: 'https://vidsrc.cc/v2/embed/tv/', name: 'Server 2' },
-    { url: 'https://111movies.com/tv/', name: 'Server 3' },
-    { url: 'https://embed.rgshows.me/api/1/tv/?id=', name: 'Server 4' },
-    { url: 'https://rivestream.live/embed?type=tv&id=', name: 'Server 5' },
+    { url: 'https://vidsrc.cc/v2/embed/movie/', name: 'Server 1' },
+    { url: 'https://player.videasy.net/movie/', name: 'Server 2' },
+    { url: 'https://111movies.com/movie/', name: 'Server 3' },
+    { url: 'https://embed.rgshows.me/api/1/movie/?id=', name: 'Server 4' },
+    { url: 'https://embed.rgshows.me/api/3/movie/?id=', name: 'Server 5' },
+    { url: 'https://rivestream.live/embed?type=movie&id=', name: 'Server 6' },
+    { url: 'https://vidsrc.rip/embed/movie/', name: 'Server 7' },
+    { url: 'https://vidsrc.cc/v3/embed/movie/', name: 'Server 8' },
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
