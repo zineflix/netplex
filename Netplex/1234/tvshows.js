@@ -210,7 +210,7 @@ const SERIES_ENDPOINTS = [
     { url: 'https://111movies.com/tv/', name: 'Server 3' },
     { url: 'https://embed.rgshows.me/api/1/tv/?id=', name: 'Server 4' },
     { url: 'https://embed.rgshows.me/api/3/tv/?id=', name: 'Server 5' },
-    { url: 'https://rivestream.live/embed?type=tv&id=', name: 'Server 6' },
+    { url: 'https://rivestream.org/embed?type=tv&id=', name: 'Server 6' },
     { url: 'https://vidsrc.rip/embed/tv/', name: 'Server 7' },
     { url: 'https://vidsrc.cc/v3/embed/tv/', name: 'Server 8' },
 ];
