@@ -266,7 +266,7 @@ h1 {
     }
 
     nav ul li {
-      margin-left: 20px;
+      margin-left: 5px;
     }
 
     nav ul li a {
@@ -341,7 +341,7 @@ h1 {
       nav ul li {
         width: 100%;
         text-align: center;
-        margin: 10px 0;
+        margin: 5px;
       }
 
       nav ul li a {
