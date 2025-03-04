@@ -128,7 +128,6 @@ body {
   }
   
 
-
 /* FOR RESPONSIVE NAVIGATION BAR START */
 /* Navigation Bar */
     nav {
@@ -241,7 +240,7 @@ body {
       nav ul li {
         width: 100%;
         text-align: center;
-        margin: 5px 0;
+        margin: 5px;
       }
 
       nav ul li a {
