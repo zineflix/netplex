@@ -290,7 +290,7 @@ body {
       nav ul li {
         width: 100%;
         text-align: center;
-        margin: 5px;
+        margin: 5px 0;
       }
 
       nav ul li a {
