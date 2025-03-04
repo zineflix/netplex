@@ -147,7 +147,7 @@ function closeMessage() {
 // Script to Disable Right-Click function and redirect to another page if checking Developers Tools //
  
 // Disable Right-Click
-document.addEventListener('contextmenu', function (event) {
+document.addEventListener("contextmenu", function(event) {
     event.preventDefault();
 });
 
