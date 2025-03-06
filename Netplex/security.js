@@ -17,7 +17,7 @@ document.addEventListener('keydown', function (event) {
 // Redirect to Google if DevTools is Opened
 setInterval(function(){
     if (window.outerHeight - window.innerHeight > 200 || window.outerWidth - window.innerWidth > 200){
-        window.location.href = "https://www.effectiveratecpm.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5"; // Redirect to Adsterra Ads
+        window.location.href = "https://www.google.com"; // Redirect to Adsterra Ads
     }
 }, 1000);
 
