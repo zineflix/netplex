@@ -1,0 +1,322 @@
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WQKKBS33');</script>
+    <!-- End Google Tag Manager -->
+	
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Netplex - Watch Movies, TV Series, K-Dramas & Anime for Free! | Stream Anytime, Anywhere.</title>
+    <meta name="description" content="Stream Movies, TV-Series, K-dramas, and Anime for free on Netplex.site! Enjoy high-quality entertainment anytime, anywhere! — no registration & subscriptions, just non-stop streaming. Start watching now!">
+    <meta name="keywords" content="Netplex, movies, TV shows, live tv streaming, K-Drama, anime, animation, online entertainment">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="img/Netplex.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta property="og:title" content="Netplex - Watch Movies, TV Series, K-Dramas & Anime for Free!">
+    <meta property="og:description" content="Explore a vast collection of movies, TV series, K-Dramas, and anime on Netplex. Stream your favorite videos anytime, anywhere.">
+    <meta property="og:image" content="img/Netplex.png">
+    <meta property="og:url" content="https://netplex.site">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="1234/style.css">
+    <link rel="preload" href="1234/style.css" as="style">
+    <link rel="preload" href="1234/tvshows.js" as="script">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="canonical" href="https://netplex.site">
+    <script defer src="1234/tvshows.js"></script>
+    <script src="security.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="adsterraTvshowPopunder.js"></script>
+    
+    <!-- Google Adsense Start -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8187798540230740"
+     crossorigin="anonymous"></script>
+    <!-- Google Adsense End -->
+
+    <!-- PopAds Start -->
+    
+    <!-- PopAds End -->
+    
+</head> 
+	
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQKKBS33"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+
+     <!-- Loading Screen -->
+     <div id="loading-screen" class="loading-screen">
+        <div class="spinner"></div>
+        <p class="loading-text">Loading...</p> <!-- Add this text -->
+    </div>
+
+    <div class="blurred-background"></div> <!-- Background Container -->
+    
+    <div class="tv-show-details">
+        <!-- Close Button (X) for the main UI -->
+        <button class="close-button" id="close-button"><span class="close-text">CLOSE</span>
+    &times; 
+</button>
+
+        <!-- Poster Container -->
+        <div class="tv-show-poster-container">
+            <img id="tv-show-poster" alt="TV Show Poster" class="tv-show-poster" src="images/https://zinemax.netlify.app">
+            <!-- Button Container -->
+            <div id="season-btn-container">
+                <div id="season-btn">Select Season</div>
+            <ul id="seasons-list" class="dropdown-list"></ul>
+            <button id="episode-btn" style="display: none;">Select Episode</button>
+            <ul id="episodes-list" class="dropdown-list"></ul>
+            </div>            
+        </div>
+
+        <h1 id="tv-show-title"></h1>
+        <p id="tv-show-description"></p>
+
+        <!-- Genre Section -->
+        <div class="tv-show-genres" id="tv-show-genres"></div>
+
+        <div class="tv-show-info">
+            <div class="tv-show-rating" id="tv-show-rating"></div>
+            <div class="tv-show-first-air-date" id="tv-show-first-air-date">
+                <i class="fas fa-calendar-alt"></i> <!-- Calendar Icon -->
+                <span id="air-date-text"></span> <!-- Air Date Text -->
+              </div>  
+             </div> 	    
+
+        <!-- Season Dropdown (Initially Hidden) -->
+        <div id="seasons-dropdown" class="seasons-dropdown" style="display: none;">
+            <ul id="seasons-list"></ul>
+        </div>
+        
+        <!-- Episode Dropdown (Initially Hidden) -->
+        <div id="episodes-dropdown" class="episodes-dropdown" style="display: none;">
+            <ul id="episodes-list"></ul>
+        </div>
+    </div>
+
+  <!-- Iframe Container for watching the show -->
+<div id="iframe-container" style="display: none;">
+    <div class="iframe-controls">     
+    </div>
+
+    <iframe id="movie-iframe" width="100%" height="400" frameborder="0"  allowfullscreen= "" referrerpolicy="no-referrer" scrolling="no" sandbox="allow-scripts allow-same-origin"></iframe>
+
+    <!-- Close Button for iframe container -->
+    <button id="close-iframe-btn">Close</button>
+
+    <!-- Change Server Button -->
+    <button id="change-server-btn">Change Server</button>
+
+    <!-- Server dropdown list (Initially Hidden) -->
+    <div id="server-dropdown" class="server-dropdown" style="display:none;">
+        <ul id="server-list">
+            <!-- List of servers will be dynamically populated -->
+        </ul>
+    </div>
+</div>
+
+
+<!-- Floating Message -->
+  <div id="floating-message">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <h2>Notice!</h2><br>
+    <h>
+        If Video does'nt work,<br> 
+      Switch to another SERVER
+    </h>
+    <button onclick="closeMessage()">OK</button>
+</div>	 
+
+
+	
+<!-- Welcome Message Section -->
+  <div id="welcomeMessage">
+    Welcome to <b>NETPLEX</b>
+  </div> 
+	
+<!-- Leave a Comment Section -->
+  <div id="leaveCommentMessage">
+    Please leave a comment below about the Movie/Tv Show.
+  </div>
+
+  <div id="commentForm">
+    <input type="text" id="username" placeholder="Enter Username">
+    <textarea id="commentText" placeholder="Write a comment..."></textarea>
+    
+    <div id="avatarSelection">
+      <p>Select your avatar:</p>
+      <div id="avatarContainer"></div>
+      <img id="avatarPreview" src="https://example.com/profile1.jpg" alt="Selected Avatar">
+    </div>
+
+    <button onclick="submitComment()">Post Comment</button>
+  </div>
+
+  <div id="commentsContainer"></div> 
+
+  
+<!-- LEAVE A COMMENT START -->
+<script type="module">
+    import { firebaseConfig } from "./firebase-config.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Array of profile picture URLs
+    const profilePictures = [
+      "https://avatar.iran.liara.run/public/1",
+      "https://avatar.iran.liara.run/public/2",
+      "https://avatar.iran.liara.run/public/3",
+      "https://avatar.iran.liara.run/public/37",
+      "https://avatar.iran.liara.run/public/45",
+      "https://avatar.iran.liara.run/public/38",
+      "https://avatar.iran.liara.run/public/24",
+      "https://avatar.iran.liara.run/public/73",
+      "https://avatar.iran.liara.run/public/56",
+      "https://avatar.iran.liara.run/public/58",
+      "https://avatar.iran.liara.run/public/77",
+      "https://avatar.iran.liara.run/public/95",
+      "https://avatar.iran.liara.run/public/68",
+      "https://avatar.iran.liara.run/public/90"
+    ];
+
+    let selectedAvatar = profilePictures[0]; // Default avatar
+
+    // Function to display available avatars
+    function displayAvatars() {
+      const avatarContainer = document.getElementById('avatarContainer');
+      avatarContainer.innerHTML = ""; // Clear existing avatars
+
+      profilePictures.forEach((url) => {
+        const avatarImg = document.createElement('img');
+        avatarImg.src = url;
+        avatarImg.alt = "Avatar";
+        avatarImg.classList.add('avatar');
+        
+        // Highlight the default selected avatar
+        if (url === selectedAvatar) {
+          avatarImg.classList.add('selected-avatar');
+        }
+
+        avatarImg.onclick = () => selectAvatar(url, avatarImg);
+        avatarContainer.appendChild(avatarImg);
+      });
+    }
+
+    // Function to select an avatar
+    function selectAvatar(avatar, selectedElement) {
+      selectedAvatar = avatar;
+      const avatarPreview = document.getElementById('avatarPreview');
+      avatarPreview.src = avatar; // Update the preview image
+
+      // Remove highlight from previous selection
+      document.querySelectorAll('.avatar').forEach(img => img.classList.remove('selected-avatar'));
+      selectedElement.classList.add('selected-avatar'); // Highlight new selection
+
+      // Hide "SELECTED AVATAR" text if it exists
+      const selectedText = document.getElementById("selectedAvatarText");
+      if (selectedText) {
+        selectedText.style.display = "none";
+      }
+    }
+
+    // Submit a new comment
+    async function submitComment() {
+  if (!tvShowId) {
+    console.error("TV Shows ID not found!");
+    return;
+  }
+
+  const username = document.getElementById('username').value.trim();
+  const commentText = document.getElementById('commentText').value.trim();
+
+  if (!username || !commentText) {
+    alert("Please enter your name and a comment.");
+    return;
+  }
+
+  const profilePicture = selectedAvatar; // Assuming you have selectedAvatar defined
+
+  try {
+    await addDoc(collection(db, "comments", tvShowId, "userComments"), {
+      text: commentText,
+      user: username,
+      timestamp: serverTimestamp(),
+      likeCount: 0,
+      profilePicture: profilePicture
+    });
+
+    console.log("Comment added successfully.");
+    document.getElementById('commentText').value = ''; // Clear input
+    getComments(); // Refresh comments
+  } catch (error) {
+    console.error("Error adding comment:", error);
+  }
+}
+
+
+    // Fetch and display comments
+    async function getComments() {
+  if (!tvShowId) {
+    console.error("TV Shows ID not found!");
+    return;
+  }
+
+  const commentsContainer = document.getElementById('commentsContainer');
+  commentsContainer.innerHTML = "<p>Loading comments...</p>";
+
+  try {
+    const q = query(collection(db, "comments", tvShowId, "userComments"), orderBy("timestamp", "desc"));
+    const querySnapshot = await getDocs(q);
+
+    commentsContainer.innerHTML = ""; // Clear previous comments
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const commentElement = document.createElement("div");
+      commentElement.classList.add("comment");
+      commentElement.innerHTML = `
+        <div class="commentHeader">
+          <img src="${data.profilePicture || 'https://example.com/default-profile.jpg'}" class="profilePicture">
+          <strong>${data.user}</strong>
+          <div class="timestamp">${data.timestamp ? new Date(data.timestamp.toDate()).toLocaleString() : "Just now"}</div>
+        </div>
+        <p>${data.text}</p>
+      `;
+
+      commentsContainer.appendChild(commentElement);
+    });
+
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+    commentsContainer.innerHTML = "<p>Error loading comments.</p>";
+  }
+}
+
+
+    // Fetch comments and display avatars when the page loads
+    window.onload = () => {
+      getComments();
+      displayAvatars(); // Display available avatars on page load
+    };
+
+    // Expose functions to global scope
+    window.submitComment = submitComment;
+  </script>
+<!-- LEAVE A COMMENT END -->
+	
+</body>
+</html>

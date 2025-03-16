@@ -1,0 +1,149 @@
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WQKKBS33');</script>
+    <!-- End Google Tag Manager -->
+    
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Netplex - Watch Movies, TV Series, K-Dramas & Anime for Free! | Stream Anytime, Anywhere.</title>
+    <meta name="description" content="Stream Movies, TV-Series, K-dramas, and Anime for free on Netplex.site! Enjoy high-quality entertainment anytime, anywhere! — no registration & subscriptions, just non-stop streaming. Start watching now!">
+    <meta name="keywords" content="Netplex, movies, TV shows, live tv streaming, K-Drama, anime, animation, online entertainment">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="img/Netplex.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta property="og:title" content="Netplex - Watch Movies, TV Series, K-Dramas & Anime for Free!">
+    <meta property="og:description" content="Explore a vast collection of movies, TV series, K-Dramas, and anime on Netplex. Stream your favorite videos anytime, anywhere.">
+    <meta property="og:image" content="img/Netplex.png">
+    <meta property="og:url" content="https://netplex.site">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="1234/category.css">
+    <link rel="preload" href="1234/category.css" as="style">
+    <link rel="preload" href="1234/category.js" as="script">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="canonical" href="https://netplex.site">
+    <script defer src="1234/category.js"></script>
+    <script src="security.js"></script>
+    
+    <!-- Google Adsense Start -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8187798540230740"
+     crossorigin="anonymous"></script>
+    <!-- Google Adsense End -->
+
+    <!-- PopAds Start -->
+    
+    <!-- PopAds End -->
+    
+</head> 
+    
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQKKBS33"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+  
+<!-- FOR RESPONSIVE NAVIGATION BAR START -->  
+<nav>
+    <!-- Logo -->
+    <img id="logo" src="https://netplex.pages.dev/img/netplex.png" alt="NETPLEX">
+
+    <!-- Menu Button (visible only on mobile) -->
+    <span class="menu-btn" id="menu-btn">Menu</span>
+  
+    <!-- Navigation Menu -->
+    <ul id="menu">
+      <li><a href="index.html">HOME <i class="fa-solid fa-house" style="color: #0296cc;"></i></a></li>
+      <li><a href="movies.html">MOVIES <i class="fa-solid fa-film" style="color: #0296cc;"></i></a></li>
+      <li><a href="tvshows_page.html">TV-SHOWS <i class="fa-solid fa-tv" style="color: #0296cc;"></i></a></li>
+      <li><a href="category.html">CATEGORY <i class="fa-solid fa-layer-group" style="color: #0296cc;"></i></a></li>
+      <li><a href="search.html">SEARCH <i class="fa-solid fa-magnifying-glass" style="color: #0296cc;"></i></a></li>
+      <li><a href="/download/Netplex.apk">DOWNLOAD APP <i class="fa-solid fa-download" style="color: #0296cc;"></i></a></li>
+      <li class="dropdowns">
+        <button class="dropbtn">MORE <i class="fa-solid fa-square-caret-down" style="color: #0296cc;"></i></button>
+        <ul class="dropdown-content">
+            <li><a href="tagalog-dub-movies.html">Tagalog Dub Movies</a></li>
+            <li><a href="tv-live-streaming.html">Live TV Streaming</a></li> 
+            <li><a href="about-us.html">About Us</a></li>
+            <li><a href="contact-us.html">Contact Us</a></li>     
+        </ul>
+    </li>
+    </ul>
+    
+</nav>  
+<!-- FOR RESPONSIVE NAVIGATION BAR END -->
+    
+
+    <div class="container">
+        <h1>CATEGORY</h1>
+        
+        <!-- Try Random Button -->
+        <button onclick="getRandomizedContent()" class="get-random-btn">Try Random Movies / TV Shows</button>
+
+        <!-- Flex container for the dropdowns -->
+        <div class="dropdown-container">
+            <!-- Dropdown for selecting content type (Movies or TV Shows) -->
+            <div class="dropdown">
+                <label for="contentType"></label>
+                <select id="contentType" onchange="onContentTypeChange()">
+                    <option value="both">Both Movies & TV Shows</option>
+                    <option value="movies">Movies</option>
+                    <option value="tvShows">TV Shows</option>
+                </select>
+            </div>
+
+            <!-- Dropdown for selecting genre -->
+            <div class="dropdown">
+                <label for="genreSelect"></label>
+                <select id="genreSelect" onchange="onGenreChange()">
+                    <option value="all">All Genres</option>
+                    <!-- Genres will be populated dynamically here -->
+                </select>
+            </div>
+
+            <!-- Dropdown for selecting release year -->
+            <div class="dropdown">
+                <label for="yearSelect"></label>
+                <select id="yearSelect" onchange="onYearChange()">
+                    <option value="all">All Years</option>
+                    <!-- Years will be populated dynamically here -->
+                </select>
+            </div>
+
+            <!-- Dropdown for Category -->
+            <div class="dropdown">
+                <label for="sortSelect"></label>
+                <select id="sortSelect" onchange="onSortChange()">
+                    <option value="popularity.desc">Popularity (Descending-Ascending)</option>
+                    <option value="release_date.desc">Release Date (Newest to Oldest)</option>
+                    <option value="vote_average.desc">Rating (Descending-Ascending)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grid" id="movie-grid">
+            <!-- Movies and TV Shows will be injected here -->
+        </div>
+    </div>
+
+
+<!-- JavaScript for Go Back functionality -->
+<script>
+
+        // JavaScript function for the "Get Randomized Movies / TV Shows" button
+        function getRandomizedContent() {
+            // Redirect to collection.html (randomized movies or TV shows will be handled in that page)
+            window.location.href = 'collection.html';
+        }
+ </script>
+
+
+</body>
+</html>

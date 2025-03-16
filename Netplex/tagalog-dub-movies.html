@@ -1,0 +1,360 @@
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WQKKBS33');</script>
+    <!-- End Google Tag Manager -->
+    
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Netplex - Watch Movies, TV Series, K-Dramas & Anime for Free! | Stream Anytime, Anywhere.</title>
+    <meta name="description" content="Stream Movies, TV-Series, K-dramas, and Anime for free on Netplex.site! Enjoy high-quality entertainment anytime, anywhere! — no registration & subscriptions, just non-stop streaming. Start watching now!">
+    <meta name="keywords" content="Netplex, movies, TV shows, live tv streaming, K-Drama, anime, animation, online entertainment">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="img/Netplex.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta property="og:title" content="Netplex - Watch Movies, TV Series, K-Dramas & Anime for Free!">
+    <meta property="og:description" content="Explore a vast collection of movies, TV series, K-Dramas, and anime on Netplex. Stream your favorite videos anytime, anywhere.">
+    <meta property="og:image" content="img/Netplex.png">
+    <meta property="og:url" content="https://netplex.site">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="1234/tagalog-dub-movies.css">
+    <link rel="preload" href="1234/tagalog-dub-movies.css" as="style">
+    <link rel="preload" href="1234/tagalog-dub-movies.js" as="script">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="canonical" href="https://netplex.site">
+    <script defer src="1234/tagalog-dub-movies.js"></script>
+    <script src="security.js"></script>
+    <script src="tagalogdubmoviesPopunder.js"></script>
+    
+    <!-- Google Adsense Start -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8187798540230740"
+     crossorigin="anonymous"></script>
+    <!-- Google Adsense End -->
+
+    <!-- PopAds Start -->
+    
+    <!-- PopAds End -->
+    
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQKKBS33"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+    
+<!-- FOR RESPONSIVE NAVIGATION BAR START -->  
+<nav>
+    <!-- Logo -->
+    <img id="logo" src="https://netplex.pages.dev/img/netplex.png" alt="NETPLEX">
+
+    <!-- Menu Button (visible only on mobile) -->
+    <span class="menu-btn" id="menu-btn">Menu</span>
+  
+    <!-- Navigation Menu -->
+    <ul id="menu">
+      <li><a href="index.html">HOME <i class="fa-solid fa-house" style="color: #0296cc;"></i></a></li>
+      <li><a href="movies.html">MOVIES <i class="fa-solid fa-film" style="color: #0296cc;"></i></a></li>
+      <li><a href="tvshows_page.html">TV-SHOWS <i class="fa-solid fa-tv" style="color: #0296cc;"></i></a></li>
+      <li><a href="category.html">CATEGORY <i class="fa-solid fa-layer-group" style="color: #0296cc;"></i></a></li>
+      <li><a href="search.html">SEARCH <i class="fa-solid fa-magnifying-glass" style="color: #0296cc;"></i></a></li>
+      <li><a href="/download/Netplex.apk">DOWNLOAD APP <i class="fa-solid fa-download" style="color: #0296cc;"></i></a></li>
+      <li class="dropdown">
+        <button class="dropbtn">MORE <i class="fa-solid fa-square-caret-down" style="color: #0296cc;"></i></button>
+        <ul class="dropdown-content">
+            <li><a href="tagalog-dub-movies.html">TAGALOG DUB MOVIES</a></li>
+            <li><a href="tv-live-streaming.html">LIVE TV STREAMING</a></li> 
+            <li><a href="about-us.html">ABOUT US</a></li>
+            <li><a href="contact-us.html">CONTACT US</a></li>     
+        </ul>
+    </li>
+    </ul>
+    
+</nav>  
+<!-- FOR RESPONSIVE NAVIGATION BAR END -->
+    
+
+<!-- FOR TAGALOG DUB MOVIE SECTION START -->
+<h1>TAGALOG DUB MOVIES</h1>
+    <h3><b style="color:red">NOTE:</b> Video source has Ads, please bear with us.</h3>
+    <div class="gallery" id="movieGallery"></div>
+
+    <!-- Movie Modal -->
+    <div class="modal" id="movieModal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <div class="poster-container">
+            <img id="moviePoster" src="" alt="Movie Poster">
+        </div>
+        <h2 id="movieTitle"></h2>
+        <p><strong>Genres:</strong> <span id="movieGenres"></span></p>
+        <p id="movieDescription"></p>
+        <!-- Full-screen button -->
+        <button id="fullscreenButton">🔲 Fullscreen Video</button>
+        <iframe id="movieTrailer" src="" allowfullscreen></iframe>
+    </div>
+</div>  
+<!-- FOR TAGALOG DUB MOVIE SECTION END -->  
+  
+<!--For Chat With Us Function Start-->
+    <div id="chat-container">
+    <button id="chat-button">💬 Chat with Us</button>
+    <div id="chat-box">
+        <span id="close-chat">✖</span>
+        <input type="email" id="user-email" placeholder="Enter your email..." required />
+        <textarea id="chat-message" placeholder="Type your message..." required></textarea>
+        <button id="send-message">Send</button>
+    </div>
+</div>
+
+    <!--Script for Chat With Us-->
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const chatButton = document.getElementById("chat-button");
+    const chatBox = document.getElementById("chat-box");
+    const closeChat = document.getElementById("close-chat");
+    const sendButton = document.getElementById("send-message");
+
+    // Show chat box when clicking the chat button
+    chatButton.addEventListener("click", function () {
+        chatBox.style.display = "block";
+    });
+
+    // Close chat box when clicking the close button
+    closeChat.addEventListener("click", function () {
+        chatBox.style.display = "none";
+    });
+
+    // Send message
+    sendButton.addEventListener("click", function () {
+        const userEmail = document.getElementById("user-email").value;
+        const message = document.getElementById("chat-message").value;
+        const ownerEmail = "zinemaxchat@gmail.com"; // Replace with your email
+
+        if (!userEmail || !message) {
+            alert("Please enter your email and message.");
+            return;
+        }
+
+        fetch("https://formsubmit.co/ajax/" + ownerEmail, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                email: userEmail,
+                message: message,
+                _replyto: userEmail,
+                _subject: "New Chat Message from " + userEmail
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert("Message sent! You will receive a reply soon.");
+            document.getElementById("chat-message").value = "";
+            document.getElementById("user-email").value = "";
+            chatBox.style.display = "none";
+        })
+        .catch(error => console.error("Error:", error));
+    });
+});
+</script>
+<!--For Chat With Us Function End-->
+
+
+
+<!-- Welcome Message Section -->
+  <div id="welcomeMessage">
+    Welcome to <b>NETPLEX</b>
+  </div>
+
+  <!-- Leave a Comment Section -->
+  <div id="leaveCommentMessage">
+    Please leave a comment / Request a Movie
+  </div>
+
+  <div id="commentForm">
+    <input type="text" id="username" placeholder="Enter Username">
+    <textarea id="commentText" placeholder="Write a comment..."></textarea>
+    
+    <div id="avatarSelection">
+      <p>Select your avatar:</p>
+      <div id="avatarContainer"></div>
+      <img id="avatarPreview" src="https://example.com/profile1.jpg" alt="Selected Avatar">
+    </div>
+
+    <button onclick="submitComment()">Post Comment</button>
+  </div>
+
+  <div id="commentsContainer"></div> 
+
+  
+<!-- LEAVE A COMMENT START -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+
+    // Firebase configuration (Replace with your Firebase project details)
+    const firebaseConfig = {
+      apiKey: "AIzaSyB3hd4278XIZ86TAgR9UetC1Qa5M8KswlQ",
+      authDomain: "mynetplex-9fbbf.firebaseapp.com",
+      projectId: "mynetplex-9fbbf",
+      storageBucket: "mynetplex-9fbbf.firebasestorage.app",
+      messagingSenderId: "1028305253119",
+      appId: "1:1028305253119:web:ee07ea2678b046271152ca"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Array of profile picture URLs
+    const profilePictures = [
+      "https://avatar.iran.liara.run/public/1",
+      "https://avatar.iran.liara.run/public/2",
+      "https://avatar.iran.liara.run/public/3",
+      "https://avatar.iran.liara.run/public/37",
+      "https://avatar.iran.liara.run/public/45",
+      "https://avatar.iran.liara.run/public/38",
+      "https://avatar.iran.liara.run/public/24",
+      "https://avatar.iran.liara.run/public/73",
+      "https://avatar.iran.liara.run/public/56",
+      "https://avatar.iran.liara.run/public/58",
+      "https://avatar.iran.liara.run/public/77",
+      "https://avatar.iran.liara.run/public/95",
+      "https://avatar.iran.liara.run/public/68",
+      "https://avatar.iran.liara.run/public/90"
+    ];
+
+    let selectedAvatar = profilePictures[0]; // Default avatar
+
+    // Function to display available avatars
+    function displayAvatars() {
+      const avatarContainer = document.getElementById('avatarContainer');
+      avatarContainer.innerHTML = ""; // Clear existing avatars
+
+      profilePictures.forEach((url) => {
+        const avatarImg = document.createElement('img');
+        avatarImg.src = url;
+        avatarImg.alt = "Avatar";
+        avatarImg.classList.add('avatar');
+        
+        // Highlight the default selected avatar
+        if (url === selectedAvatar) {
+          avatarImg.classList.add('selected-avatar');
+        }
+
+        avatarImg.onclick = () => selectAvatar(url, avatarImg);
+        avatarContainer.appendChild(avatarImg);
+      });
+    }
+
+    // Function to select an avatar
+    function selectAvatar(avatar, selectedElement) {
+      selectedAvatar = avatar;
+      const avatarPreview = document.getElementById('avatarPreview');
+      avatarPreview.src = avatar; // Update the preview image
+
+      // Remove highlight from previous selection
+      document.querySelectorAll('.avatar').forEach(img => img.classList.remove('selected-avatar'));
+      selectedElement.classList.add('selected-avatar'); // Highlight new selection
+
+      // Hide "SELECTED AVATAR" text if it exists
+      const selectedText = document.getElementById("selectedAvatarText");
+      if (selectedText) {
+        selectedText.style.display = "none";
+      }
+    }
+
+    // Submit a new comment
+    async function submitComment() {
+      const username = document.getElementById('username').value.trim();
+      const commentText = document.getElementById('commentText').value.trim();
+
+      if (!username) {
+        alert("Please enter your name.");
+        return;
+      }
+
+      if (!commentText) {
+        alert("Please enter a comment.");
+        return;
+      }
+
+      const profilePicture = selectedAvatar; // Use selected avatar
+
+      try {
+        await addDoc(collection(db, "comments"), {
+          text: commentText,
+          user: username,
+          timestamp: serverTimestamp(),
+          likeCount: 0,
+          profilePicture: profilePicture
+        });
+
+        console.log("Comment added successfully.");
+        document.getElementById('commentText').value = ''; // Clear input field
+        getComments(); // Fetch updated comments
+      } catch (error) {
+        console.error("Error adding comment:", error);
+      }
+    }
+
+    // Fetch and display comments
+    async function getComments() {
+      const commentsContainer = document.getElementById('commentsContainer');
+      commentsContainer.innerHTML = "<p>Loading comments...</p>";
+
+      try {
+        const q = query(collection(db, "comments"), orderBy("timestamp", "desc"));
+        const querySnapshot = await getDocs(q);
+
+        commentsContainer.innerHTML = ""; // Clear previous comments
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const commentElement = document.createElement("div");
+          commentElement.classList.add("comment");
+
+          commentElement.innerHTML = `
+            <div class="commentHeader">
+              <img src="${data.profilePicture || 'https://example.com/default-profile.jpg'}" class="profilePicture">
+              <strong>${data.user}</strong>
+              <div class="timestamp">${data.timestamp ? new Date(data.timestamp.toDate()).toLocaleString() : "Just now"}</div>
+            </div>
+            <p>${data.text}</p>
+            <div class="likeSection">
+              <span>Likes: ${data.likeCount || 0}</span>
+            </div>
+          `;
+
+          commentsContainer.appendChild(commentElement);
+        });
+
+      } catch (error) {
+        console.error("Error fetching comments:", error);
+        commentsContainer.innerHTML = "<p>Error loading comments.</p>";
+      }
+    }
+
+    // Fetch comments and display avatars when the page loads
+    window.onload = () => {
+      getComments();
+      displayAvatars(); // Display available avatars on page load
+    };
+
+    // Expose functions to global scope
+    window.submitComment = submitComment;
+  </script>
+<!-- LEAVE A COMMENT END -->
+    
+</body>
+  
+</html>
+
+
+      
