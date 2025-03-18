@@ -6,49 +6,55 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
 
+
 <url>
-  <loc>https://netplex-v2.pages.dev/</loc>
-  <lastmod>2025-03-15T03:04:45+00:00</lastmod>
+  <loc>https://netplex.site/</loc>
+  <lastmod>2025-03-18T14:26:37+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://netplex-v2.pages.dev/movies</loc>
-  <lastmod>2025-03-15</lastmod>
+  <loc>https://netplex.site/movies</loc>
+  <lastmod>2025-03-18T14:26:37+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://netplex-v2.pages.dev/tvshows_page</loc>
-  <lastmod>2025-03-15</lastmod>
+  <loc>https://netplex.site/tvshows_page</loc>
+  <lastmod>2025-03-18T14:26:37+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://netplex-v2.pages.dev/category</loc>
-  <lastmod>2025-03-15</lastmod>
+  <loc>https://netplex.site/category</loc>
+  <lastmod>2025-03-18T14:26:37+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://netplex-v2.pages.dev/search</loc>
-  <lastmod>2025-03-15</lastmod>
+  <loc>https://netplex.site/search</loc>
+  <lastmod>2025-03-18T14:26:37+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://netplex-v2.pages.dev/tagalog-dub-movies</loc>
-  <lastmod>2025-03-15</lastmod>
-  <priority>0.80</priority>
-</url>T03:04:45+00:00
-<url>
-  <loc>https://netplex-v2.pages.dev/tv-live-streaming</loc>
-  <lastmod>2025-03-15</lastmod>
+  <loc>https://netplex.site/download-app</loc>
+  <lastmod>2025-03-18T14:26:37+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://netplex-v2.pages.dev/about-us</loc>
-  <lastmod>2025-03-15</lastmod>
+  <loc>https://netplex.site/tagalog-dub-movies</loc>
+  <lastmod>2025-03-18T14:26:37+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://netplex-v2.pages.dev/contact-us</loc>
-  <lastmod>2025-03-15T03:04:45+00:00</lastmod>
+  <loc>https://netplex.site/tv-live-streaming</loc>
+  <lastmod>2025-03-18T14:26:37+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://netplex.site/about-us</loc>
+  <lastmod>2025-03-18T14:26:37+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://netplex.site/contact-us</loc>
+  <lastmod>2025-03-18T14:26:37+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 
