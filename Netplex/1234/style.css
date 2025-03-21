@@ -2328,3 +2328,23 @@ meta[http-equiv="refresh"] {
 }    
     
 /* LEAVE A COMMENT END */
+
+
+/* Change Server and Close Button Mobile Display Start */
+@media (max-width: 768px) {
+  #iframe-container {
+    top: 35;
+    height: calc(100% - 35px);
+  }
+  #close-iframe-btn {
+    top: -35;
+  }
+
+  #change-server-btn {
+    top: -35;
+  }
+  .server-dropdown {
+    top: 0;
+  }
+}
+/* Change Server and Close Button Mobile Display End*/
