@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        openPopupContainer("https://acceptguide.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
+        openPopupContainer("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
 
         localStorage.setItem(`popunder_${movieId}`, today);
     });
