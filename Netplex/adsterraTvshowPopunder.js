@@ -61,10 +61,10 @@ function openPopupContainer(url) {
     document.body.appendChild(popup);
 
     let timer = 10; // 10-second countdown
-    countdown.innerText = `Loading ad... Please wait ${timer} seconds...`;
+    countdown.innerText = `Loading ad... Please wait ${timer} seconds to Skip...`;
     const interval = setInterval(() => {
         timer--;
-        countdown.innerText = `Loading ad... Please wait ${timer} seconds...`;
+        countdown.innerText = `Loading ad... Please wait ${timer} seconds to Skip...`;
         if (timer <= 0) {
             clearInterval(interval);
             countdown.innerText = "You can skip now.";
