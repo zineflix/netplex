@@ -104,7 +104,7 @@ function openPopupContainer() {
 
 function preloadAdIframe() {
     preloadedAdIframe = document.createElement("iframe");
-    preloadedAdIframe.src = "https://acceptguide.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5";
+    preloadedAdIframe.src = "https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5";
     preloadedAdIframe.style.display = "none";
     preloadedAdIframe.style.width = "0";
     preloadedAdIframe.style.height = "0";
