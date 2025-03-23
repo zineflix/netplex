@@ -76,10 +76,10 @@ function openPopupContainer(url) {
     document.body.appendChild(popup);
 
     let timer = 20;
-    countdown.innerText = `Loading ad... Please wait ${timer} seconds...`;
+    countdown.innerText = `Loading ad... Please wait ${timer} seconds to Skip...`;
     const loadingInterval = setInterval(() => {
         timer--;
-        countdown.innerText = `Loading ad... Please wait ${timer} seconds...`;
+        countdown.innerText = `Loading ad... Please wait ${timer} seconds to Skip...`;
         if (timer <= 0) {
             clearInterval(loadingInterval);
             countdown.innerText = "Still loading... please wait.";
