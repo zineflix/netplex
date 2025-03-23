@@ -55,10 +55,11 @@ function openPopupContainer(url) {
     iframe.style.height = "80%";
     iframe.style.border = "none";
 
-    let adLoadedAndVisible = false;
-
     iframe.onload = () => {
-        adLoadedAndVisible = true;
+        // Ad finished loading, show skip button immediately
+        skipBtn.style.display = "block";
+        clearInterval(interval);
+        countdown.innerText = "Ad loaded. You can skip now.";
     };
 
     popup.appendChild(skipBtn);
@@ -66,15 +67,14 @@ function openPopupContainer(url) {
     popup.appendChild(iframe);
     document.body.appendChild(popup);
 
-    let timer = 20; // 20-second countdown
+    let timer = 20; // changed to 20 seconds
     countdown.innerText = `Loading ad... Please wait ${timer} seconds to Skip...`;
-
     const interval = setInterval(() => {
         timer--;
         if (skipBtn.style.display !== "block") {
             countdown.innerText = `Loading ad... Please wait ${timer} seconds to Skip...`;
         }
-        if ((timer <= 0 || adLoadedAndVisible) && skipBtn.style.display !== "block") {
+        if (timer <= 0 && skipBtn.style.display !== "block") {
             clearInterval(interval);
             countdown.innerText = "You can skip now.";
             skipBtn.style.display = "block";
