@@ -56,10 +56,18 @@ function openPopupContainer(url) {
     iframe.style.border = "none";
 
     iframe.onload = () => {
-        // Ad finished loading, show skip button immediately
-        skipBtn.style.display = "block";
-        clearInterval(interval);
-        countdown.innerText = "Ad loaded. You can skip now.";
+        clearInterval(loadingInterval);
+        let postLoadTimer = 3;
+        countdown.innerText = `Ad loaded. Please wait ${postLoadTimer} seconds to skip...`;
+        const postLoadInterval = setInterval(() => {
+            postLoadTimer--;
+            countdown.innerText = `Ad loaded. Please wait ${postLoadTimer} seconds to skip...`;
+            if (postLoadTimer <= 0) {
+                clearInterval(postLoadInterval);
+                countdown.innerText = "You can now skip the ad.";
+                skipBtn.style.display = "block";
+            }
+        }, 1000);
     };
 
     popup.appendChild(skipBtn);
@@ -67,17 +75,14 @@ function openPopupContainer(url) {
     popup.appendChild(iframe);
     document.body.appendChild(popup);
 
-    let timer = 20; // changed to 20 seconds
-    countdown.innerText = `Loading ad... Please wait ${timer} seconds to Skip...`;
-    const interval = setInterval(() => {
+    let timer = 20;
+    countdown.innerText = `Loading ad... Please wait ${timer} seconds...`;
+    const loadingInterval = setInterval(() => {
         timer--;
-        if (skipBtn.style.display !== "block") {
-            countdown.innerText = `Loading ad... Please wait ${timer} seconds to Skip...`;
-        }
-        if (timer <= 0 && skipBtn.style.display !== "block") {
-            clearInterval(interval);
-            countdown.innerText = "You can skip now.";
-            skipBtn.style.display = "block";
+        countdown.innerText = `Loading ad... Please wait ${timer} seconds...`;
+        if (timer <= 0) {
+            clearInterval(loadingInterval);
+            countdown.innerText = "Still loading... please wait.";
         }
     }, 1000);
 }
