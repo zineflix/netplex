@@ -13,7 +13,7 @@ function triggerPopunder() {
 
     if (savedData[tvShowId] === today) return;
 
-    localStorage.setItem("popunderData", JSON.stringify({ ...savedData, [movieId]: today }));
+    localStorage.setItem("popunderData", JSON.stringify({ ...savedData, [tvShowId]: today }));
 
     openPopupContainer("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
 }
