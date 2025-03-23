@@ -1,17 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("click", function () {
         triggerPopunder();
-    }, { once: true }); // Ensures it runs only once per page load
+    }, { once: true });
 });
 
 function triggerPopunder() {
     const movieId = getMovieIdFromURL();
     if (!movieId) return;
 
-    const today = new Date().toISOString().split("T")[0]; // Get YYYY-MM-DD
+    const today = new Date().toISOString().split("T")[0];
     const savedData = JSON.parse(localStorage.getItem("popunderData")) || {};
 
-    if (savedData[movieId] === today) return; // Already triggered today
+    if (savedData[movieId] === today) return;
 
     localStorage.setItem("popunderData", JSON.stringify({ ...savedData, [movieId]: today }));
 
@@ -55,17 +55,26 @@ function openPopupContainer(url) {
     iframe.style.height = "80%";
     iframe.style.border = "none";
 
+    iframe.onload = () => {
+        // Ad finished loading, show skip button immediately
+        skipBtn.style.display = "block";
+        clearInterval(interval);
+        countdown.innerText = "Ad loaded. You can skip now.";
+    };
+
     popup.appendChild(skipBtn);
     popup.appendChild(countdown);
     popup.appendChild(iframe);
     document.body.appendChild(popup);
 
-    let timer = 15; // 15-second countdown
+    let timer = 20; // changed to 20 seconds
     countdown.innerText = `Loading ad... Please wait ${timer} seconds to Skip...`;
     const interval = setInterval(() => {
         timer--;
-        countdown.innerText = `Loading ad... Please wait ${timer} seconds to Skip...`;
-        if (timer <= 0) {
+        if (skipBtn.style.display !== "block") {
+            countdown.innerText = `Loading ad... Please wait ${timer} seconds to Skip...`;
+        }
+        if (timer <= 0 && skipBtn.style.display !== "block") {
             clearInterval(interval);
             countdown.innerText = "You can skip now.";
             skipBtn.style.display = "block";
