@@ -40,7 +40,11 @@
     <!-- Google Adsense End -->
 
     <!-- PopAds Start -->
-    
+    <script type="text/javascript" data-cfasync="false">
+/*<![CDATA[/* */
+(function(){var u=window,e="f5c59d4630999a54c1e8443b661c3330",s=[["siteId",316*378-5*164+70+5061965],["minBid",0],["popundersPerIP","8"],["delayBetween",10800],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],b=["d3d3LnByZW1pdW12ZXJ0aXNpbmcuY29tL3dwUS9janNmYWNlLm1pbi5qcw==","ZDJqMDQyY2oxNDIxd2kuY2xvdWRmcm9udC5uZXQvcS9qbmF1WkkvZ2R5bmFtaWNzLm1pbi5jc3M=","d3d3LmVxZ21ubXFsei5jb20vdS96anNmYWNlLm1pbi5qcw==","d3d3LmF2ZWd1aWpkd3AuY29tL0JOaWIvWEpiL2xkeW5hbWljcy5taW4uY3Nz"],g=-1,l,n,h=function(){clearTimeout(n);g++;if(b[g]&&!(1767662252000<(new Date).getTime()&&1<g)){l=u.document.createElement("script");l.type="text/javascript";l.async=!0;var a=u.document.getElementsByTagName("script")[0];l.src="https://"+atob(b[g]);l.crossOrigin="anonymous";l.onerror=h;l.onload=function(){clearTimeout(n);u[e.slice(0,16)+e.slice(0,16)]||h()};n=setTimeout(h,5E3);a.parentNode.insertBefore(l,a)}};if(!u[e]){try{Object.freeze(u[e]=s)}catch(e){}h()}})();
+/*]]>/* */
+</script>
     <!-- PopAds End -->
     
 </head>
@@ -65,7 +69,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <li><a href="tvshows_page.html">TV-SHOWS <i class="fa-solid fa-tv" style="color: #0296cc;"></i></a></li>
       <li><a href="category.html">CATEGORY <i class="fa-solid fa-layer-group" style="color: #0296cc;"></i></a></li>
       <li><a href="search.html">SEARCH <i class="fa-solid fa-magnifying-glass" style="color: #0296cc;"></i></a></li>
-      <li><a href="download-app.html">DOWNLOAD APP <i class="fa-solid fa-download" style="color: #0296cc;"></i></a></li>
+      <li><a href="/download/Netplex.apk">DOWNLOAD APP <i class="fa-solid fa-download" style="color: #0296cc;"></i></a></li>
       <li class="dropdown">
         <button class="dropbtn">MORE <i class="fa-solid fa-square-caret-down" style="color: #0296cc;"></i></button>
         <ul class="dropdown-content">
@@ -82,8 +86,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     
 
 <!-- FOR TAGALOG DUB MOVIE SECTION START -->
-<h1>TAGALOG DUB MOVIES</h1>
-    <h3><b style="color:red">NOTE:</b> Video source has Ads, please bear with us.</h3>
+<h1>PINOY MOVIES, TAGALOG DUB MOVIES & K-DRAMA</h1>
+    <h3><b style="color:red">NOTE:</b> Video source has Ads, please bear with us.</h3><br>
+    <h2>Pinoy Movies & Tagalog Dub Movies</h2>
     <div class="gallery" id="movieGallery"></div>
 
     <!-- Movie Modal -->
@@ -102,6 +107,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 </div>  
 <!-- FOR TAGALOG DUB MOVIE SECTION END -->  
+
+<!-- FOR TAGALOG DUB TV SHOWS/SERIES SECTION START -->
+<section id="tvSection">
+  <h2>Tagalog Dub TV Series, K-Drama</h2>
+  <div id="tvGallery" class="gallery"></div>
+</section>
+
+<!-- TV Modal -->
+<div id="tvModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeTvModal()">&times;</span>
+    <img id="tvPoster" alt="TV Poster">
+    <h2 id="tvTitle"></h2>
+    <p id="tvDescription"></p>
+    <select id="episodeDropdown"></select>
+    <iframe id="tvTrailer" width="100%" height="400" frameborder="0" allowfullscreen></iframe>
+  </div>
+</div>
+<!-- FOR TAGALOG DUB TV SHOWS/SERIES SECTION END -->    
+    
   
 <!--For Chat With Us Function Start-->
     <div id="chat-container">
