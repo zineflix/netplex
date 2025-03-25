@@ -73,11 +73,10 @@ playButton.innerHTML = '<i class="fas fa-play"></i>';
     movieCard.appendChild(rating);
     movieCard.appendChild(playButton);          
 
-    // When redirecting to movie details page
+    // Click event to navigate to details page
     movieCard.addEventListener('click', () => {
-    window.location.href = `/movie/${movie.id}`;  // Clean URL style
-});
-
+        window.location.href = `movie-details.html?movie_id=${movie.id}`;
+    });
 
     movieCards.appendChild(movieCard);
 });
@@ -127,8 +126,7 @@ moviePoster.alt = movie.title;
 
         // Add click event to each movie poster to redirect to the movie details page
         movieCard.addEventListener('click', () => {
-            window.location.href = `/movie/${movie.id}
-`;
+            window.location.href = `movie-details.html?movie_id=${movie.id}`;
         });
     });
 });
@@ -168,8 +166,7 @@ const fetchBanner = async () => {
 
         // Add event listener to the Play button to navigate to movie details
         playButton.addEventListener('click', () => {
-            window.location.href = `/movie/${movie.id}
-`;
+            window.location.href = `movie-details.html?movie_id=${movie.id}`;
         });
 
     } catch (error) {
@@ -259,21 +256,9 @@ const MOVIE_ENDPOINTS = [
     
 ];
 
-// Get movie_id from either query string or clean URL
+// Get the movie ID from the URL query string
 const urlParams = new URLSearchParams(window.location.search);
-let movieId = urlParams.get('movie_id');
-
-if (!movieId) {
-  // Check for clean URL like /movie/12345 or /movie-details/12345
-  const pathParts = window.location.pathname.split('/');
-  const lastSegment = pathParts[pathParts.length - 1];
-  movieId = lastSegment.match(/^\d+$/) ? lastSegment : null;
-}
-
-if (!movieId) {
-  console.error("Movie ID not found in URL.");
-}
-
+const movieId = urlParams.get('movie_id');
 
 // Fetch comments when the page loads
 window.onload = function () {
