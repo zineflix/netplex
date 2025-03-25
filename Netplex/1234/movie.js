@@ -73,10 +73,11 @@ playButton.innerHTML = '<i class="fas fa-play"></i>';
     movieCard.appendChild(rating);
     movieCard.appendChild(playButton);          
 
-    // Click event to navigate to details page
+    // When redirecting to movie details page
     movieCard.addEventListener('click', () => {
-        window.location.href = `movie-details.html?movie_id=${movie.id}`;
-    });
+    window.location.href = `/movie/${movie.id}`;  // Clean URL style
+});
+
 
     movieCards.appendChild(movieCard);
 });
@@ -256,9 +257,21 @@ const MOVIE_ENDPOINTS = [
     
 ];
 
-// Get the movie ID from the URL query string
+// Get movie_id from either query string or clean URL
 const urlParams = new URLSearchParams(window.location.search);
-const movieId = urlParams.get('movie_id');
+let movieId = urlParams.get('movie_id');
+
+if (!movieId) {
+  // Check for clean URL like /movie/12345 or /movie-details/12345
+  const pathParts = window.location.pathname.split('/');
+  const lastSegment = pathParts[pathParts.length - 1];
+  movieId = lastSegment.match(/^\d+$/) ? lastSegment : null;
+}
+
+if (!movieId) {
+  console.error("Movie ID not found in URL.");
+}
+
 
 // Fetch comments when the page loads
 window.onload = function () {
