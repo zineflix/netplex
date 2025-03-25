@@ -249,10 +249,11 @@ const MOVIE_ENDPOINTS = [
     { url: 'https://vidsrc.su/embed/movie/', name: 'Server 4' },
     { url: 'https://111movies.com/movie/', name: 'Server 5' },
     { url: 'https://embed.rgshows.me/api/1/movie/?id=', name: 'Server 6' },
-    { url: 'https://embed.rgshows.me/api/3/movie/?id=', name: 'Server 7' },
-    { url: 'https://rivestream.org/embed?type=movie&id=', name: 'Server 8' },
-    { url: 'https://vidsrc.rip/embed/movie/', name: 'Server 9' },
-    { url: 'https://vidsrc.cc/v3/embed/movie/', name: 'Server 10' },
+    { url: 'https://vidsrc.cc/v3/embed/movie/', name: 'Server 7' },
+    { url: 'https://embed.rgshows.me/api/3/movie/?id=', name: 'Server 8' },
+    { url: 'https://rivestream.org/embed?type=movie&id=', name: 'Server 9' },
+    { url: 'https://vidsrc.rip/embed/movie/', name: 'Server 10' },
+    
 ];
 
 // Get the movie ID from the URL query string
