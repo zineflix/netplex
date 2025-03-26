@@ -148,7 +148,7 @@ const API_KEY = "a1e72fd93ed59f56e6332813b9f8dcae";
 // === FOR TV SHOW SECTION START === //
 const TV_SHOW_IDS = [
     219246, // When Life Gives You Tangerines
-    75123,  // A Korean Odyssey
+    135238,  // Gyeongseong Creature
     
 ];
 const tvGallery = document.getElementById("tvGallery");
@@ -162,28 +162,67 @@ const episodeDropdown = document.getElementById("episodeDropdown");
 // Example structure for TV episodes streaming links:
 const TV_EPISODES = {
     219246: {
-        totalEpisodes: 5,
         links: [
-            "https://drive.google.com/file/d/1A3uH9QQ2aTaBA_EsDSSAEw1athH2ueY-/preview",
-            "https://drive.google.com/file/d/19w2MZa_I6vbklXbI7Mxbz11geGppCjuU/preview",
-            "https://drive.google.com/file/d/19u2iudJuxbBhysj2TMOIq1m2R6OLse5b/preview",
-            "https://drive.google.com/file/d/19qmqs96tvEUNzVfbOZowG09C0pqeWqnL/preview",
-            "https://drive.google.com/file/d/19nO1c0uiDQ_jmrXUrABmCScNr4SBcC0H/preview",
-            "https://drive.google.com/file/d/19iOxU-eYZDyCTy6iik0-lA_Qggnugetf/preview",
-            "https://drive.google.com/file/d/19ZXztXQMWRKYbNa1FOp-ROTdzuYmsU72/preview",
-            "https://drive.google.com/file/d/19VF_JbX09856cmYA0_bQ6iVkqWeVyNwA/preview",
+            "https://drive.google.com/file/d/1NYnmWLsps_4j3bxJflerFgbuooFkrLMI/preview",
+            "https://drive.google.com/file/d/1DMLS5t3Vq2MwRF3zeNRvpNIFpDKYNZAS/preview",
+            "https://drive.google.com/file/d/1MDbrNZz8N_Q1PBKxRbnZ4pGSWgERHP8k/preview",
+            "https://drive.google.com/file/d/1sFFrEIApC25AzfjnXSDDV05K-W1-7Uoz/preview",
+            "https://drive.google.com/file/d/12YOGBdgVYboi17jISnF4sHO4UvH97Svh/preview",
+            "https://drive.google.com/file/d/149mnHaRLqBp3Xi28FcxrPV9BL5k2qqQo/preview",
+            "https://drive.google.com/file/d/1aC6lA84DiI3uoqPLZK8GRuQfLDhORPF9/preview",
+            "https://drive.google.com/file/d/1dAA0BrlHeS4aHqY0Yq1tkSJblMVyMgo5/preview",
             "https://drive.google.com/file/d/1B4jqZOOqQ-fIr1P91arsIa_dNRWXdT9L/preview",
         ],
         titles: [
-            "Episode 1",
-            "Episode 2",
-            "Episode 3",
-            "Episode 4",
-            "Episode 5",
-            "Episode 6",
-            "Episode 7",
-            "Episode 8",
-            "Episode 9 to 12",
+            "Season 1 Episode 1",
+            "Season 1 Episode 2",
+            "Season 1 Episode 3",
+            "Season 1 Episode 4",
+            "Season 1 Episode 5",
+            "Season 1 Episode 6",
+            "Season 1 Episode 7",
+            "Season 1 Episode 8",
+            "Season 1 Episode 9 to 12",
+        ]
+    },
+    135238: {
+        links: [
+            "https://drive.google.com/file/d/1v8ZkyzNj4QAgpGREQVzRVVIzs5KMvuyJ/preview",
+            "https://drive.google.com/file/d/1LNua7Pu36G-T9sBbIqdBxIJr5h2obLIj/preview",
+            "https://drive.google.com/file/d/1eXlm8bWVXD_LcWBvHTattIgyW_XznAbm/preview",
+            "https://drive.google.com/file/d/1Iwp08zXFEvft-dnrYTzsW87VKRbKGLVN/preview",
+            "https://drive.google.com/file/d/1hAw3aZZ-77eI99PbEUmMGnff1EyD47oW/preview",
+            "https://drive.google.com/file/d/1H0EOjB_S6A24-MPlwKJmPRRfulD9MILN/preview",
+            "https://drive.google.com/file/d/15676A_B9lmohU6QaFkr7pGhWzGAWl64V/preview",
+            "https://drive.google.com/file/d/1i9-ROhq6Zzl_dTsGDfVc5l00A38cuB16/preview",
+            "https://drive.google.com/file/d/1zIyQKj7xtn3zum01J9Rnb0fVlpuPrHU5/preview",
+            "https://drive.google.com/file/d/1fyEXiysUHcHZz2hsSLWWpRc2oxVgiEVS/preview",
+            "https://drive.google.com/file/d/11dU7wkT6pRY0YR3Nd_Hv2PKyI4B_XGYi/preview",
+            "https://drive.google.com/file/d/1kmaj_RV5tmZEQpvs_UkULdcJXbqZNAcd/preview",
+            "https://drive.google.com/file/d/1rLDuViEVQfNF9NGOe6v_E5HOPVZ7wvwY/preview",
+            "https://drive.google.com/file/d/1Dm1dL_VPeI_184iVhK-vE1KbbJsHra_b/preview",
+            "https://drive.google.com/file/d/1aazMO8elC7248KYwOIbV-SR4YEUn3mMF/preview",
+            "https://drive.google.com/file/d/1blNQ7TXK-bSgE54jDB0aSNi_fMTXFjc_/preview",
+            "https://drive.google.com/file/d/1QSdgkFxeDjPmTtSoYwq4T_O5TT4R1stp/preview",
+        ],
+        titles: [
+            "Season 1 Episode 1",
+            "Season 1 Episode 2",
+            "Season 1 Episode 3",
+            "Season 1 Episode 4",
+            "Season 1 Episode 5",
+            "Season 1 Episode 6",
+            "Season 1 Episode 7",
+            "Season 1 Episode 8",
+            "Season 1 Episode 9",
+            "Season 1 Episode 10",
+            "Season 2 Episode 1",
+            "Season 2 Episode 2",
+            "Season 2 Episode 3",
+            "Season 2 Episode 4",
+            "Season 2 Episode 5",
+            "Season 2 Episode 6",
+            "Season 2 Episode 7",
         ]
     },
     
