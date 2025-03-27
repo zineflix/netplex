@@ -24,8 +24,8 @@
     <meta property="og:image" content="img/Netplex.png">
     <meta property="og:url" content="https://netplex.site">
     <meta property="og:type" content="website">
-    <link rel="stylesheet" href="1234/style.css">
-    <link rel="preload" href="1234/style.css" as="style">
+    <link rel="stylesheet" href="1234/movie.css">
+    <link rel="preload" href="1234/movie.css" as="style">
     <link rel="preload" href="1234/movie.js" as="script">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -39,18 +39,17 @@
     <!-- Google Adsense End -->
 
     <!-- PopAds Start -->
-
+    
     <!-- PopAds End -->
     
-</head> 
+</head>
     
 <body>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQKKBS33"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-  
-
+    
 <!-- FOR RESPONSIVE NAVIGATION BAR START -->  
 <nav>
     <!-- Logo -->
@@ -63,10 +62,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <ul id="menu">
       <li><a href="index.html">HOME <i class="fa-solid fa-house" style="color: #0296cc;"></i></a></li>
       <li><a href="movies.html">MOVIES <i class="fa-solid fa-film" style="color: #0296cc;"></i></a></li>
-      <li><a href="tvshows_page.html">TV-SHOWS <i class="fa-solid fa-tv" style="color: #0296cc;"></i></a></li>
+      <li><a href="tv-show.html">TV-SHOWS <i class="fa-solid fa-tv" style="color: #0296cc;"></i></a></li>
       <li><a href="category.html">CATEGORY <i class="fa-solid fa-layer-group" style="color: #0296cc;"></i></a></li>
       <li><a href="search.html">SEARCH <i class="fa-solid fa-magnifying-glass" style="color: #0296cc;"></i></a></li>
-      <li><a href="download-app.html">DOWNLOAD APP <i class="fa-solid fa-download" style="color: #0296cc;"></i></a></li>
+      <li><a href="/download/Netplex.apk">DOWNLOAD APP <i class="fa-solid fa-download" style="color: #0296cc;"></i></a></li>
       <li class="dropdown">
         <button class="dropbtn">MORE <i class="fa-solid fa-square-caret-down" style="color: #0296cc;"></i></button>
         <ul class="dropdown-content">
@@ -80,186 +79,91 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     
 </nav>  
 <!-- FOR RESPONSIVE NAVIGATION BAR END -->
+
+    <!-- Banner -->
+    <header class="banner">
+        <div class="banner-content">
+            <h1 id="banner-title"></h1>
+            <p id="banner-genre"></p>
+            <p1 id="banner-description"></p1>
+        </div>    
+    </header>
     
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const menuBtn = document.getElementById("menu-btn");
-    const menu = document.getElementById("menu");
-
-    menuBtn.addEventListener("click", function () {
-        menu.classList.toggle("active");
-    });
-});
-    // For Dropdown More Button Function Start
-document.addEventListener("DOMContentLoaded", function () {
-    const dropdown = document.querySelector(".dropdown");
-
-    if (dropdown) {
-        dropdown.addEventListener("click", function (event) {
-            event.stopPropagation(); // Prevents the document click from firing immediately
-            this.classList.toggle("active");
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener("click", function (event) {
-            if (!dropdown.contains(event.target) && dropdown.classList.contains("active")) {
-                dropdown.classList.remove("active");
-            }
-        });
-    }
-});
-
-        // For Dropdown More Button Function End
-</script>
-
-
-    
-<!-- For Banner -->    
-  <header class="banner">
-        <div class="banner__contents">
-            <h1 class="banner__title">Loading...</h1> <!-- This will be replaced dynamically -->
-            <h1 class="banner__description">
-                Loading description...
-            </h1> <!-- This will be replaced dynamically -->
+    <!-- Popular Movies -->
+    <section class="section">
+        <h2>Popular Movies</h2>
+        <div class="scroll-container">
+            <button class="scroll-left" onclick="scrollLeft('popular-movies')"><i class="fas fa-chevron-left"></i></button>
+            <div class="media-row" id="popular-movies"></div>
+            <button class="scroll-right" onclick="scrollRight('popular-movies')"><i class="fas fa-chevron-right"></i></button>
         </div>
+    </section>
+  
+    <!-- Trending Now -->
+    <section class="section">
+        <h2>Trending Now</h2>
+        <div class="scroll-container">
+            <button class="scroll-left" onclick="scrollLeft('trending-now')"><i class="fas fa-chevron-left"></i></button>
+            <div class="media-row" id="trending-now"></div>
+            <button class="scroll-right" onclick="scrollRight('trending-now')"><i class="fas fa-chevron-right"></i></button>
         
+    </section>
+  
+    <!-- Top Rated -->
+    <section class="section">
+        <h2>Top Rated</h2>
+        <div class="scroll-container">
+            <button class="scroll-left" onclick="scrollLeft('top-rated')"><i class="fas fa-chevron-left"></i></button>
+            <div class="media-row" id="top-rated"></div>
+            <button class="scroll-right" onclick="scrollRight('top-rated')"><i class="fas fa-chevron-right"></i></button>
+    </section>
 
-        <div class="banner--fadeBottom"></div>
-</header> 
+    <!-- Action Movies -->
+    <section class="section">
+        <h2>Action Movies</h2>
+            <div class="scroll-container">
+            <button class="scroll-left" onclick="scrollLeft('action-movies')"><i class="fas fa-chevron-left"></i></button>
+            <div class="media-row" id="action-movies"></div>
+            <button class="scroll-right" onclick="scrollRight('action-movies')"><i class="fas fa-chevron-right"></i></button>
+    </section>
 
+    <!-- Comedy Movies -->
+    <section class="section">
+        <h2>Comedy Movies</h2>
+            <div class="scroll-container">
+            <button class="scroll-left" onclick="scrollLeft('comedy-movies')"><i class="fas fa-chevron-left"></i></button>
+            <div class="media-row" id="comedy-movies"></div>
+            <button class="scroll-right" onclick="scrollRight('comedy-movies')"><i class="fas fa-chevron-right"></i></button>
+    </section>
+     
+    <!-- Horror Movies -->
+    <section class="section">
+        <h2>Horror Movies</h2>
+            <div class="scroll-container">
+            <button class="scroll-left" onclick="scrollLeft('horror-movies')"><i class="fas fa-chevron-left"></i></button>
+            <div class="media-row" id="horror-movies"></div>
+            <button class="scroll-right" onclick="scrollRight('horror-movies')"><i class="fas fa-chevron-right"></i></button>
+    </section>
+     
+    <!-- Romance Movies -->
+    <section class="section">
+        <h2>Romance Movies</h2>
+            <div class="scroll-container">
+            <button class="scroll-left" onclick="scrollLeft('romance-movies')"><i class="fas fa-chevron-left"></i></button>
+            <div class="media-row" id="romance-movies"></div>
+            <button class="scroll-right" onclick="scrollRight('romance-movies')"><i class="fas fa-chevron-right"></i></button>
+    </section>
+     
+    <!-- Animation Movies -->
+    <section class="section">
+        <h2>Animation Movies</h2>
+            <div class="scroll-container">
+            <button class="scroll-left" onclick="scrollLeft('animation-movies')"><i class="fas fa-chevron-left"></i></button>
+            <div class="media-row" id="animation-movies"></div>
+            <button class="scroll-right" onclick="scrollRight('animation-movies')"><i class="fas fa-chevron-right"></i></button>
+    </section>
 
-<!-- For Movie Poster -->    
-      <div class="row">
-        <h4>POPULAR<span class="movies">M O V I E S</span></h4> 
-            <div class="row__posters" id="popularMovies">
-            <!-- Movie posters will be added here dynamically -->
-          </div>
-          <div class="arrow-buttons">
-            <button class="arrow-button prev"><i class="fas fa-chevron-left"></i></button>
-            <button class="arrow-button next"><i class="fas fa-chevron-right"></i></button>
-          </div>
-        </div>       
-
-      <!-- Trending Now -->
-      <div class="row">
-          <h2>Trending Now</h2>
-          <div class="row__posters" id="trendingNow">
-              <!-- Movie posters will be populated here -->
-          </div>
-          <div class="arrow-buttons">
-            <button class="arrow-button prev"><i class="fas fa-chevron-left"></i></button>
-            <button class="arrow-button next"><i class="fas fa-chevron-right"></i></button>
-          </div>
-        </div>    
-
-      <!-- Top Rated -->
-      <div class="row">
-          <h2>Top Rated</h2>
-          <div class="row__posters" id="topRated">
-              <!-- Movie posters will be populated here -->
-          </div>
-          <div class="arrow-buttons">
-            <button class="arrow-button prev"><i class="fas fa-chevron-left"></i></button>
-            <button class="arrow-button next"><i class="fas fa-chevron-right"></i></button>
-          </div>
-        </div>    
-
-      <!-- Action Movies -->
-      <div class="row">
-          <h2>Action Movies</h2>
-          <div class="row__posters" id="actionMovies">
-              <!-- Movie posters will be populated here -->
-        </div>
-        <div class="arrow-buttons">
-          <button class="arrow-button prev"><i class="fas fa-chevron-left"></i></button>
-          <button class="arrow-button next"><i class="fas fa-chevron-right"></i></button>
-        </div>
-      </div>   
-
-      <!-- Comedy Movies -->
-      <div class="row">
-          <h2>Comedy Movies</h2>
-          <div class="row__posters" id="comedyMovies">
-              <!-- Movie posters will be populated here -->
-          </div>
-          <div class="arrow-buttons">
-            <button class="arrow-button prev"><i class="fas fa-chevron-left"></i></button>
-            <button class="arrow-button next"><i class="fas fa-chevron-right"></i></button>
-          </div>
-        </div>    
-
-      <!-- Horror Movies -->
-      <div class="row">
-          <h2>Horror Movies</h2>
-          <div class="row__posters" id="horrorMovies">
-              <!-- Movie posters will be populated here -->
-          </div>
-          <div class="arrow-buttons">
-            <button class="arrow-button prev"><i class="fas fa-chevron-left"></i></button>
-            <button class="arrow-button next"><i class="fas fa-chevron-right"></i></button>
-          </div>
-        </div>    
-
-      <!-- Romance Movies -->
-      <div class="row">
-          <h2>Romance Movies</h2>
-          <div class="row__posters" id="romanceMovies">
-              <!-- Movie posters will be populated here -->
-          </div>
-          <div class="arrow-buttons">
-            <button class="arrow-button prev"><i class="fas fa-chevron-left"></i></button>
-            <button class="arrow-button next"><i class="fas fa-chevron-right"></i></button>
-          </div>
-        </div>    
-
-      <!-- Documentaries -->
-      <div class="row">
-          <h2>Animation</h2>
-          <div class="row__posters" id="animation">
-              <!-- Movie posters will be populated here -->
-          </div>
-          <div class="arrow-buttons">
-            <button class="arrow-button prev"><i class="fas fa-chevron-left"></i></button>
-            <button class="arrow-button next"><i class="fas fa-chevron-right"></i></button>
-          </div>
-        </div>    
-
-
-<!--For Navigation Header Mobile-->    
-
-    
-    
-<!-- For Other Content-->    
-<script>
-      // Function to close the message and save the state to localStorage
-      function closeMessage() {
-          document.getElementById("floating-message").style.display = "none"; // Hide the message
-          const currentTime = new Date().getTime(); // Get the current timestamp in milliseconds
-          localStorage.setItem("messageClosed", "true"); // Save "true" to localStorage
-          localStorage.setItem("messageClosedTime", currentTime); // Save the timestamp of when the message was closed
-      }
-
-      // Check if the message has already been closed and if 30 minutes have passed
-      window.onload = function() {
-          const messageClosed = localStorage.getItem("messageClosed");
-          const closedTime = localStorage.getItem("messageClosedTime");
-
-          if (messageClosed === "true") {
-              const currentTime = new Date().getTime();
-              const timeDifference = currentTime - closedTime; // Get the difference in milliseconds
-
-              // If more than 30 minutes (1800000 ms) have passed, show the message again
-              if (timeDifference >= 1800000) {
-                  document.getElementById("floating-message").style.display = "block";
-                  localStorage.removeItem("messageClosed"); // Reset the messageClosed flag
-                  localStorage.removeItem("messageClosedTime"); // Reset the timestamp
-              } else {
-                  document.getElementById("floating-message").style.display = "none"; // Hide the message if less than 30 minutes have passed
-              }
-          }
-      }
-</script>
-
+     
 
 <!--For Chat With Us Function Start-->
     <div id="chat-container">
@@ -323,14 +227,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
+
+
 <!--For Chat With Us Function End-->
     
-  
-  
+<!-- Footer Start -->  
+<footer class="site-footer">
+  <p>© 2025 Netplex.site — All Rights Reserved.</p>
+  <p>Made with ❤️ for movie lovers worldwide.</p>
+  <div class="footer-links">
+    <a href="contact-us.html">Contact Us</a> |
+    <a href="about-us.html">About Us</a> |
+    <a href="disclaimer.html">Disclaimer</a>
+  </div>
+</footer>
+<!-- Footer End -->    
 </body>
-
+  
 </html>
-
-
-
-
+     
