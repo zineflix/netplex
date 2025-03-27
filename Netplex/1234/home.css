@@ -663,3 +663,70 @@ background-color: #0296cc; /* Darker green on hover */
     }
 }
 /* Dropdown MORE Button End*/
+
+
+/* Footer Section Start*/
+.site-footer {
+  background-color: #1e1e1e;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 0px;
+  border-top: 1px solid #333;
+}
+
+.site-footer p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.footer-links {
+  margin-top: 10px;
+}
+
+.footer-links a {
+  color: #0296cc;
+  text-decoration: none;
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .site-footer {
+    margin-bottom: 54px;
+    padding: 10px;
+  }
+  
+  .site-footer p {
+    font-size: 14px;
+  }
+
+  .footer-links {
+    flex-direction: row;
+    gap: 8px;
+    text-align: center;
+  }
+
+  .footer-links a {
+    margin: 0;
+  }
+}
+/* Footer Section End*/
+
+/* Poster Title Section Start*/
+.poster-title {
+    max-width: 205px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 15px;
+    font-weight: bold;
+    color: #00d4ff;
+    text-align: center;
+    margin-bottom: 15px;
+}
+/* Poster Title Section End*/
