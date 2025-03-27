@@ -243,22 +243,16 @@ function openSearchPage() {
 
 // Array of movie endpoints with custom server names
 const MOVIE_ENDPOINTS = [
-    { url: 'https://vidsrc.net/embed/movie/', name: 'Ads Server 1' },
-    { url: 'https://vidlink.pro/movie/', name: 'Ads Server 2' },
-    { url: 'https://vidsrc.dev/embed/movie/', name: 'Ads Server 3' }, 
-    { url: 'https://moviesapi.club/movie/', name: 'Ads Server 4' },
-    { url: 'https://vidsrc.xyz/embed/movie/', name: 'Ads Server 5' },
-    { url: 'https://vidsrc.vip/embed/movie/', name: 'Ads Server 6' },
-    { url: 'https://embed.su/embed/movie/', name: 'Ads Server 7' },
-    { url: 'https://player.smashy.stream/movie/', name: 'Ads Server 8' },
-    { url: 'https://vidsrc.cc/v2/embed/movie/', name: 'Ads Server 9' },
-    { url: 'https://player.videasy.net/movie/', name: 'Ads Server 10' },
-    { url: 'https://111movies.com/movie/', name: 'Ads Server 11' },
-    { url: 'https://embed.rgshows.me/api/1/movie/?id=', name: 'Ads Server 12' },
-    { url: 'https://embed.rgshows.me/api/3/movie/?id=', name: 'Ads Server 13' },
-    { url: 'https://rivestream.org/embed?type=movie&id=', name: 'Ads Server 14' },
-    { url: 'https://vidsrc.rip/embed/movie/', name: 'Ads Server 15' },
-    { url: 'https://vidsrc.cc/v3/embed/movie/', name: 'Ads Server 16' },
+    { url: 'https://vidsrc.cc/v2/embed/movie/', name: 'Server 1' },
+    { url: 'https://player.videasy.net/movie/', name: 'Server 2' },
+    { url: 'https://vidfast.pro/movie/', name: 'Server 3' },
+    { url: 'https://vidsrc.su/embed/movie/', name: 'Server 4' },
+    { url: 'https://111movies.com/movie/', name: 'Server 5' },
+    { url: 'https://embed.rgshows.me/api/1/movie/?id=', name: 'Server 6' },
+    { url: 'https://vidsrc.cc/v3/embed/movie/', name: 'Server 7' },
+    { url: 'https://embed.rgshows.me/api/3/movie/?id=', name: 'Server 8' },
+    { url: 'https://rivestream.org/embed?type=movie&id=', name: 'Server 9' },
+    { url: 'https://vidsrc.rip/embed/movie/', name: 'Server 10' },
     
 ];
 
