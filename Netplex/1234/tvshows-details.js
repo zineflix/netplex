@@ -215,7 +215,6 @@ const SERIES_ENDPOINTS = [
     { url: 'https://embed.rgshows.me/api/3/tv/?id=', name: 'Server 8' },
     { url: 'https://rivestream.org/embed?type=tv&id=', name: 'Server 9' },
     { url: 'https://vidsrc.rip/embed/tv/', name: 'Server 10' },
-    
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
