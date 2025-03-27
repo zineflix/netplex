@@ -44,6 +44,7 @@ async function fetchMedia(url, containerId, type) {
         const rating = item.vote_average.toFixed(1);
 
         mediaItem.innerHTML = `
+    <div class="poster-title" title="${item.title || item.name}">${item.title || item.name}</div>
     <div class="poster-card">
         <div class="rating">
             <span class="star"><i class="fas fa-star"></i></span> <span class="rating-number">${rating}</span>
