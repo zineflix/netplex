@@ -535,4 +535,7 @@ document.getElementById("menu-btn").addEventListener("click", function() {
 function closeMessage() {
         document.getElementById("floating-message").style.display = "none";
     }
+function redirectToV2() {
+    window.location.href = "https://netplex-v2.pages.dev";
+}
 // For Floating Message Close Function End
