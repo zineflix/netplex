@@ -122,12 +122,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <img id="tvPoster" alt="TV Poster">
     <h2 id="tvTitle"></h2>
     <p id="tvDescription"></p>
-    <!-- Full-screen button Start -->
+
+    <!-- Full-screen button -->
     <button id="tvFullscreenButton">🔲 Fullscreen Video</button>
     <select id="episodeDropdown"></select>  
-    <iframe id="tvTrailer" src="" allowfullscreen></iframe>       
+
+    <!-- Added a container around the iframe -->
+    <div id="tvIframeContainer" style="position: relative;">
+      <iframe id="tvTrailer" src="" allowfullscreen></iframe>
+    </div>      
   </div>
 </div>
+
 <!-- FOR TAGALOG DUB TV SHOWS/SERIES SECTION END -->    
     
   
