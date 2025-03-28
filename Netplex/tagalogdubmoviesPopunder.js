@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const movieModal = document.getElementById("movieModal");
-    const tvShowModal = document.getElementById("tvModal"); 
-    const movieIframe = document.getElementById("movieTrailer");
-    const tvIframe = document.getElementById("tvTrailer");
+    const tvShowModal = document.getElementById("tvModal");
 
     if (movieModal) {
         movieModal.addEventListener("click", function (event) {
@@ -16,17 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    if (movieIframe) {
-        movieIframe.addEventListener("click", function () {
-            handleAdTrigger("movie");
-        });
-    }
-
-    if (tvIframe) {
-        tvIframe.addEventListener("click", function () {
-            handleAdTrigger("tv");
-        });
-    }
+    addClickOverlay("movieTrailer", "movie");
+    addClickOverlay("tvTrailer", "tv");
 });
 
 function handleModalClick(event, type) {
@@ -66,4 +55,30 @@ function openPopunder(url) {
         popunder.blur();
         window.focus();
     }
+}
+
+function addClickOverlay(iframeId, type) {
+    const iframe = document.getElementById(iframeId);
+    if (!iframe) return;
+
+    // Create overlay div
+    const overlay = document.createElement("div");
+    overlay.style.position = "absolute";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100%";
+    overlay.style.height = "100%";
+    overlay.style.background = "transparent"; // Invisible
+    overlay.style.zIndex = "10";
+    overlay.style.cursor = "pointer"; 
+
+    // Append overlay to the parent container
+    const parent = iframe.parentElement;
+    parent.style.position = "relative"; // Ensure correct placement
+    parent.appendChild(overlay);
+
+    overlay.addEventListener("click", function () {
+        handleAdTrigger(type);
+        setTimeout(() => overlay.remove(), 500); // Remove after click to allow video interaction
+    });
 }
