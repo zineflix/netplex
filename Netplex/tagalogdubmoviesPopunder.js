@@ -57,7 +57,6 @@ function handleAdTrigger(type) {
     }
 }
 
-
 function getCurrentContentId(type) {
     let titleElement = document.getElementById(type === "movie" ? "movieTitle" : "tvTitle");
     return titleElement ? titleElement.textContent.trim() : null;
