@@ -1,25 +1,40 @@
 document.addEventListener("DOMContentLoaded", function () {
     const movieModal = document.getElementById("movieModal");
-    const tvShowModal = document.getElementById("tvModal"); // TV Show Modal
+    const tvShowModal = document.getElementById("tvModal"); 
+    const movieIframe = document.getElementById("movieTrailer");
+    const tvIframe = document.getElementById("tvTrailer");
 
     if (movieModal) {
         movieModal.addEventListener("click", function (event) {
-            // Ensure ad triggers only when clicking inside the modal
-            if (event.target === movieModal || movieModal.contains(event.target)) {
-                handleAdTrigger("movie");
-            }
+            handleModalClick(event, "movie");
         });
     }
 
     if (tvShowModal) {
         tvShowModal.addEventListener("click", function (event) {
-            // Ensure ad triggers only when clicking inside the modal
-            if (event.target === tvShowModal || tvShowModal.contains(event.target)) {
-                handleAdTrigger("tv");
-            }
+            handleModalClick(event, "tv");
+        });
+    }
+
+    if (movieIframe) {
+        movieIframe.addEventListener("click", function () {
+            handleAdTrigger("movie");
+        });
+    }
+
+    if (tvIframe) {
+        tvIframe.addEventListener("click", function () {
+            handleAdTrigger("tv");
         });
     }
 });
+
+function handleModalClick(event, type) {
+    const modal = type === "movie" ? document.getElementById("movieModal") : document.getElementById("tvModal");
+    if (event.target === modal || modal.contains(event.target)) {
+        handleAdTrigger(type);
+    }
+}
 
 function handleAdTrigger(type) {
     let contentId = getCurrentContentId(type);
