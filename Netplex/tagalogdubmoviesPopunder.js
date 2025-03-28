@@ -1,16 +1,22 @@
 document.addEventListener("DOMContentLoaded", function () {
     const movieModal = document.getElementById("movieModal");
-    const tvShowModal = document.getElementById("tvModal"); // Added for TV shows
+    const tvShowModal = document.getElementById("tvModal"); // TV Show Modal
 
     if (movieModal) {
-        movieModal.addEventListener("click", function () {
-            handleAdTrigger("movie");
+        movieModal.addEventListener("click", function (event) {
+            // Ensure ad triggers only when clicking inside the modal
+            if (event.target === movieModal || movieModal.contains(event.target)) {
+                handleAdTrigger("movie");
+            }
         });
     }
 
     if (tvShowModal) {
-        tvShowModal.addEventListener("click", function () {
-            handleAdTrigger("tv");
+        tvShowModal.addEventListener("click", function (event) {
+            // Ensure ad triggers only when clicking inside the modal
+            if (event.target === tvShowModal || tvShowModal.contains(event.target)) {
+                handleAdTrigger("tv");
+            }
         });
     }
 });
