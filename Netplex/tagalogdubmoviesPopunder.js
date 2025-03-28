@@ -19,11 +19,8 @@ function setupPopunder(modalId, titleId) {
             return;
         }
 
-        // Show popunder overlay
-        showPopunderOverlay(modal);
-
-        // Open popunder in background
-        openPopunderBackground("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
+        // Open popunder in the background
+        openPopunderInBackground("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
 
         // Store the trigger date
         localStorage.setItem(`popunder_${contentId}`, today);
@@ -35,29 +32,14 @@ function getContentId(titleId) {
     return titleElement ? titleElement.textContent.trim() : null;
 }
 
-function openPopunderBackground(url) {
+function openPopunderInBackground(url) {
     let a = document.createElement("a");
     a.href = url;
     a.target = "_blank";
     a.style.display = "none";
     document.body.appendChild(a);
-    a.click();
+
+    let event = new MouseEvent("click", { bubbles: true, cancelable: true, view: window });
+    a.dispatchEvent(event);
     document.body.removeChild(a);
-}
-
-function showPopunderOverlay(modal) {
-    let overlay = document.createElement("div");
-    overlay.style.position = "fixed";
-    overlay.style.top = "0";
-    overlay.style.left = "0";
-    overlay.style.width = "100%";
-    overlay.style.height = "100%";
-    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-    overlay.style.zIndex = "9999";
-
-    document.body.appendChild(overlay);
-
-    setTimeout(() => {
-        document.body.removeChild(overlay);
-    }, 2000); // Overlay disappears after 2 seconds
 }
