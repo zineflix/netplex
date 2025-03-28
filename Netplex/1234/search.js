@@ -18,7 +18,7 @@ async function fetchRecommendations() {
 }
 
 async function fetchMovies(query, page = 1) {
-  const url = `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${query}&language=en-US&page=${page}&include_adult=false`;
+  const url = `https://api.themoviedb.org/3/search/person?api_key=${apiKey}&query=${query}&language=en-US&page=1&include_adult=false`;
   try {
     const response = await fetch(url);
     const data = await response.json();
