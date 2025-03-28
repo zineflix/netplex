@@ -4,35 +4,38 @@ document.addEventListener("DOMContentLoaded", function () {
     const movieOverlay = document.getElementById("movieOverlay");
     const tvOverlay = document.getElementById("tvOverlay");
 
+    // Check and hide overlays if ad was already triggered today
+    checkOverlayVisibility("movie", movieOverlay);
+    checkOverlayVisibility("tv", tvOverlay);
+
     if (movieModal) {
         movieModal.addEventListener("click", function () {
-            handleAdTrigger("movie");
+            handleAdTrigger("movie", movieOverlay);
         });
     }
 
     if (tvShowModal) {
         tvShowModal.addEventListener("click", function () {
-            handleAdTrigger("tv");
+            handleAdTrigger("tv", tvOverlay);
         });
     }
 
-    // Overlay click triggers the ad
     if (movieOverlay) {
         movieOverlay.addEventListener("click", function (event) {
             event.stopPropagation();
-            handleAdTrigger("movie");
+            handleAdTrigger("movie", movieOverlay);
         });
     }
 
     if (tvOverlay) {
         tvOverlay.addEventListener("click", function (event) {
             event.stopPropagation();
-            handleAdTrigger("tv");
+            handleAdTrigger("tv", tvOverlay);
         });
     }
 });
 
-function handleAdTrigger(type) {
+function handleAdTrigger(type, overlay) {
     let contentId = getCurrentContentId(type);
     if (!contentId) return;
 
@@ -44,11 +47,29 @@ function handleAdTrigger(type) {
         return;
     }
 
-    // Open popunder ad
     openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
 
     // Store the trigger date
     localStorage.setItem(`popunder_${type}_${contentId}`, today);
+
+    // Hide overlay after triggering ad
+    if (overlay) {
+        overlay.style.display = "none";
+    }
+}
+
+function checkOverlayVisibility(type, overlay) {
+    let contentId = getCurrentContentId(type);
+    if (!contentId) return;
+
+    let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
+    let today = new Date().toISOString().split('T')[0];
+
+    if (lastPopunder === today && overlay) {
+        overlay.style.display = "none"; // Hide overlay if ad was triggered today
+    } else if (overlay) {
+        overlay.style.display = "block"; // Show overlay if it's a new day
+    }
 }
 
 function getCurrentContentId(type) {
