@@ -1,4 +1,3 @@
-<script>
 document.addEventListener("DOMContentLoaded", function () {
     const movieModal = document.getElementById("movieModal");
     const tvShowModal = document.getElementById("tvModal"); // Corrected ID
@@ -72,4 +71,3 @@ document.addEventListener("DOMContentLoaded", function () {
         tvTrailer.addEventListener("click", openAd);
     }
 });
-</script>
