@@ -3,26 +3,44 @@ document.addEventListener("DOMContentLoaded", function () {
     const tvShowModal = document.getElementById("tvModal");
 
     if (movieModal) {
-        movieModal.addEventListener("click", function (event) {
-            handleModalClick(event, "movie");
+        movieModal.addEventListener("click", function () {
+            createAdOverlay("movie");
         });
     }
 
     if (tvShowModal) {
-        tvShowModal.addEventListener("click", function (event) {
-            handleModalClick(event, "tv");
+        tvShowModal.addEventListener("click", function () {
+            createAdOverlay("tv");
         });
     }
-
-    addClickOverlay("movieTrailer", "movie");
-    addClickOverlay("tvTrailer", "tv");
 });
 
-function handleModalClick(event, type) {
-    const modal = type === "movie" ? document.getElementById("movieModal") : document.getElementById("tvModal");
-    if (event.target === modal || modal.contains(event.target)) {
+function createAdOverlay(type) {
+    const iframeContainer = document.getElementById(type === "movie" ? "movieIframeContainer" : "tvIframeContainer");
+    if (!iframeContainer) return;
+
+    let adOverlay = document.createElement("div");
+    adOverlay.id = "adOverlay";
+    adOverlay.style.position = "absolute";
+    adOverlay.style.top = "0";
+    adOverlay.style.left = "0";
+    adOverlay.style.width = "100%";
+    adOverlay.style.height = "100%";
+    adOverlay.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+    adOverlay.style.color = "#fff";
+    adOverlay.style.display = "flex";
+    adOverlay.style.justifyContent = "center";
+    adOverlay.style.alignItems = "center";
+    adOverlay.style.zIndex = "1000";
+    adOverlay.style.cursor = "pointer";
+    adOverlay.innerHTML = "Click to Continue to Video";
+    
+    adOverlay.addEventListener("click", function () {
         handleAdTrigger(type);
-    }
+        adOverlay.remove(); // Remove overlay after click
+    });
+
+    iframeContainer.appendChild(adOverlay);
 }
 
 function handleAdTrigger(type) {
@@ -37,10 +55,7 @@ function handleAdTrigger(type) {
         return;
     }
 
-    // Open popunder ad
     openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
-
-    // Store the trigger date
     localStorage.setItem(`popunder_${type}_${contentId}`, today);
 }
 
@@ -55,30 +70,4 @@ function openPopunder(url) {
         popunder.blur();
         window.focus();
     }
-}
-
-function addClickOverlay(iframeId, type) {
-    const iframe = document.getElementById(iframeId);
-    if (!iframe) return;
-
-    // Create overlay div
-    const overlay = document.createElement("div");
-    overlay.style.position = "absolute";
-    overlay.style.top = "0";
-    overlay.style.left = "0";
-    overlay.style.width = "100%";
-    overlay.style.height = "100%";
-    overlay.style.background = "transparent"; // Invisible
-    overlay.style.zIndex = "10";
-    overlay.style.cursor = "pointer"; 
-
-    // Append overlay to the parent container
-    const parent = iframe.parentElement;
-    parent.style.position = "relative"; // Ensure correct placement
-    parent.appendChild(overlay);
-
-    overlay.addEventListener("click", function () {
-        handleAdTrigger(type);
-        setTimeout(() => overlay.remove(), 500); // Remove after click to allow video interaction
-    });
 }
