@@ -22,8 +22,8 @@ function setupPopunder(modalId, titleId) {
         // Show popunder overlay
         showPopunderOverlay(modal);
 
-        // Open popunder
-        openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
+        // Open popunder in background
+        openPopunderBackground("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
 
         // Store the trigger date
         localStorage.setItem(`popunder_${contentId}`, today);
@@ -35,12 +35,14 @@ function getContentId(titleId) {
     return titleElement ? titleElement.textContent.trim() : null;
 }
 
-function openPopunder(url) {
-    let popunder = window.open(url, "_blank", "width=100,height=100,left=9999,top=9999");
-    if (popunder) {
-        popunder.blur();
-        window.focus();
-    }
+function openPopunderBackground(url) {
+    let a = document.createElement("a");
+    a.href = url;
+    a.target = "_blank";
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 }
 
 function showPopunderOverlay(modal) {
