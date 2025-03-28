@@ -31,11 +31,21 @@ function handleAdTrigger(type) {
         return;
     }
 
-    // Open popunder ad
-    openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
-
-    // Store the trigger date
-    localStorage.setItem(`popunder_${type}_${contentId}`, today);
+    try {
+        // Open popunder ad
+        let popunder = window.open("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5", "_blank", "width=100,height=100,left=9999,top=9999");
+        
+        if (popunder) {
+            popunder.blur();
+            window.focus();
+            // Store the trigger date
+            localStorage.setItem(`popunder_${type}_${contentId}`, today);
+        } else {
+            console.warn("Popunder blocked by browser.");
+        }
+    } catch (error) {
+        console.error("Error opening popunder:", error);
+    }
 }
 
 function getCurrentContentId(type) {
@@ -43,38 +53,32 @@ function getCurrentContentId(type) {
     return titleElement ? titleElement.textContent.trim() : null;
 }
 
-function openPopunder(url) {
-    let popunder = window.open(url, "_blank", "width=100,height=100,left=9999,top=9999");
-    if (popunder) {
-        popunder.blur();
-        window.focus();
-    }
-}
-
 function attachIframePopunder(modal, type) {
-    // Ensure that the modal is either 'movieModal' or 'tvModal'
-    if (modal && (modal.id === "movieModal" || modal.id === "tvModal")) {
-        let iframe = modal.querySelector("iframe");
-        
-        if (iframe) {
-            let overlay = document.createElement("div");
-            overlay.style.position = "absolute";
-            overlay.style.top = "0";
-            overlay.style.left = "0";
-            overlay.style.width = "100%";
-            overlay.style.height = "100%";
-            overlay.style.background = "transparent";
-            overlay.style.zIndex = "9999";
-            overlay.style.cursor = "pointer";
+    if (!modal || (modal.id !== "movieModal" && modal.id !== "tvModal")) return;
 
-            iframe.parentElement.style.position = "relative"; // Ensure the iframe's parent is positioned
-            iframe.parentElement.appendChild(overlay);
+    let iframe = modal.querySelector("iframe");
 
-            overlay.addEventListener("click", function () {
-                handleAdTrigger(type);  // Trigger ad based on type (movie or TV show)
-                overlay.remove(); // Remove the overlay after triggering ad
-            });
-        }
+    if (iframe && iframe.parentElement) {
+        let overlay = document.createElement("div");
+        Object.assign(overlay.style, {
+            position: "absolute",
+            top: "0",
+            left: "0",
+            width: "100%",
+            height: "100%",
+            background: "transparent",
+            zIndex: "9999",
+            cursor: "pointer",
+        });
+
+        iframe.parentElement.style.position = "relative"; // Ensure iframe's parent is positioned
+        iframe.parentElement.appendChild(overlay);
+
+        overlay.addEventListener("click", function () {
+            handleAdTrigger(type);
+            overlay.remove();
+        });
+    } else {
+        console.warn(`No iframe found in ${modal.id}`);
     }
 }
-
