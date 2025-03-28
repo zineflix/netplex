@@ -88,7 +88,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="gallery" id="movieGallery"></div>
 
     <!-- Movie Modal -->
-<div class="modal" id="movieModal">
+    <div class="modal" id="movieModal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeModal()">&times;</span>
         <div class="poster-container">
@@ -99,14 +99,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <p id="movieDescription"></p>
         <!-- Full-screen button -->
         <button id="fullscreenButton">🔲 Fullscreen Video</button>
-
-        <!-- Added a container around the iframe -->
-        <div id="movieIframeContainer" style="position: relative;">
-            <iframe id="movieTrailer" src="" allowfullscreen></iframe>
-        </div>
+        <iframe id="movieTrailer" src="" allowfullscreen></iframe>
     </div>
-</div>
-  
+</div>  
 <!-- FOR TAGALOG DUB MOVIE SECTION END -->  
 
 <!-- FOR TAGALOG DUB TV SHOWS/SERIES SECTION START -->
@@ -122,18 +117,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <img id="tvPoster" alt="TV Poster">
     <h2 id="tvTitle"></h2>
     <p id="tvDescription"></p>
-
-    <!-- Full-screen button -->
+    <!-- Full-screen button Start -->
     <button id="tvFullscreenButton">🔲 Fullscreen Video</button>
     <select id="episodeDropdown"></select>  
-
-    <!-- Added a container around the iframe -->
-    <div id="tvIframeContainer" style="position: relative;">
-      <iframe id="tvTrailer" src="" allowfullscreen></iframe>
-    </div>      
+    <iframe id="tvTrailer" src="" allowfullscreen></iframe>       
   </div>
 </div>
-
 <!-- FOR TAGALOG DUB TV SHOWS/SERIES SECTION END -->    
     
   
