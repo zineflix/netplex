@@ -53,9 +53,12 @@ function handleAdTrigger(type) {
     // Hide the overlay after triggering the ad
     let overlay = document.getElementById(type === "movie" ? "movieOverlay" : "tvOverlay");
     if (overlay) {
-        overlay.style.display = "none";
+        overlay.style.opacity = "0";
+        overlay.style.visibility = "hidden";
+        overlay.style.pointerEvents = "none"; // Prevents clicks on it
     }
 }
+
 
 function getCurrentContentId(type) {
     let titleElement = document.getElementById(type === "movie" ? "movieTitle" : "tvTitle");
