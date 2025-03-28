@@ -51,26 +51,30 @@ function openPopunder(url) {
     }
 }
 
-// Attach popunder to iframe inside modals
 function attachIframePopunder(modal, type) {
-    let iframe = modal.querySelector("iframe");
-    if (iframe) {
-        let overlay = document.createElement("div");
-        overlay.style.position = "absolute";
-        overlay.style.top = "0";
-        overlay.style.left = "0";
-        overlay.style.width = "100%";
-        overlay.style.height = "100%";
-        overlay.style.background = "transparent";
-        overlay.style.zIndex = "9999";
-        overlay.style.cursor = "pointer";
+    // Ensure that the modal is either 'movieModal' or 'tvModal'
+    if (modal && (modal.id === "movieModal" || modal.id === "tvModal")) {
+        let iframe = modal.querySelector("iframe");
+        
+        if (iframe) {
+            let overlay = document.createElement("div");
+            overlay.style.position = "absolute";
+            overlay.style.top = "0";
+            overlay.style.left = "0";
+            overlay.style.width = "100%";
+            overlay.style.height = "100%";
+            overlay.style.background = "transparent";
+            overlay.style.zIndex = "9999";
+            overlay.style.cursor = "pointer";
 
-        iframe.parentElement.style.position = "relative"; // Ensure the iframe's parent is positioned
-        iframe.parentElement.appendChild(overlay);
+            iframe.parentElement.style.position = "relative"; // Ensure the iframe's parent is positioned
+            iframe.parentElement.appendChild(overlay);
 
-        overlay.addEventListener("click", function () {
-            handleAdTrigger(type);
-            overlay.remove(); // Remove the overlay after triggering ad
-        });
+            overlay.addEventListener("click", function () {
+                handleAdTrigger(type);  // Trigger ad based on type (movie or TV show)
+                overlay.remove(); // Remove the overlay after triggering ad
+            });
+        }
     }
 }
+
