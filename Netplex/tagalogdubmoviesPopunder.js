@@ -1,28 +1,33 @@
 document.addEventListener("DOMContentLoaded", function () {
-    document.body.addEventListener("click", function (event) {
-        if (event.target.closest("#movieModal") || event.target.closest("#tvModal")) {
-            let modalId = event.target.closest("#movieModal") ? "movieModal" : "tvModal";
-            let titleId = modalId === "movieModal" ? "movieTitle" : "tvTitle";
-            triggerPopunder(modalId, titleId);
-        }
-    });
+    setupPopunder("movieModal", "movieTitle");
+    setupPopunder("tvModal", "tvTitle");
 });
 
-function triggerPopunder(modalId, titleId) {
-    let contentId = getContentId(titleId);
-    if (!contentId) return;
+function setupPopunder(modalId, titleId) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
 
-    let lastPopunder = localStorage.getItem(`popunder_${contentId}`);
-    let today = new Date().toISOString().split('T')[0];
+    // Listen for clicks anywhere inside the modal, including the video
+    modal.addEventListener("click", function (event) {
+        event.stopPropagation(); // Prevent event from bubbling
 
-    if (lastPopunder === today) {
-        console.log(`Popunder already triggered today for ${titleId}.`);
-        return;
-    }
+        let contentId = getContentId(titleId);
+        if (!contentId) return;
 
-    showPopunderOverlay();
-    openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
-    localStorage.setItem(`popunder_${contentId}`, today);
+        let lastPopunder = localStorage.getItem(`popunder_${contentId}`);
+        let today = new Date().toISOString().split('T')[0];
+
+        if (lastPopunder === today) {
+            console.log(`Popunder already triggered today for ${titleId}.`);
+            return;
+        }
+
+        // Show popunder overlay to ensure user interaction
+        showPopunderOverlay(() => {
+            openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
+            localStorage.setItem(`popunder_${contentId}`, today);
+        });
+    });
 }
 
 function getContentId(titleId) {
@@ -35,10 +40,12 @@ function openPopunder(url) {
     if (popunder) {
         popunder.blur();
         window.focus();
+    } else {
+        console.warn("Popunder blocked by browser.");
     }
 }
 
-function showPopunderOverlay() {
+function showPopunderOverlay(callback) {
     let overlay = document.createElement("div");
     Object.assign(overlay.style, {
         position: "fixed",
@@ -48,8 +55,13 @@ function showPopunderOverlay() {
         height: "100%",
         backgroundColor: "rgba(0, 0, 0, 0.5)",
         zIndex: "9999",
+        cursor: "pointer",
     });
 
     document.body.appendChild(overlay);
-    setTimeout(() => document.body.removeChild(overlay), 2000);
+
+    overlay.addEventListener("click", function () {
+        document.body.removeChild(overlay);
+        if (callback) callback(); // Open the popunder on click
+    });
 }
