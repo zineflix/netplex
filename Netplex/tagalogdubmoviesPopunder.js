@@ -55,8 +55,22 @@ function openPopunder(url) {
 function attachIframePopunder(modal, type) {
     let iframe = modal.querySelector("iframe");
     if (iframe) {
-        iframe.addEventListener("click", function () {
+        let overlay = document.createElement("div");
+        overlay.style.position = "absolute";
+        overlay.style.top = "0";
+        overlay.style.left = "0";
+        overlay.style.width = "100%";
+        overlay.style.height = "100%";
+        overlay.style.background = "transparent";
+        overlay.style.zIndex = "9999";
+        overlay.style.cursor = "pointer";
+
+        iframe.parentElement.style.position = "relative"; // Ensure the iframe's parent is positioned
+        iframe.parentElement.appendChild(overlay);
+
+        overlay.addEventListener("click", function () {
             handleAdTrigger(type);
+            overlay.remove(); // Remove the overlay after triggering ad
         });
     }
 }
