@@ -34,21 +34,71 @@ async function fetchMovies(query, page = 1) {
 }
 
 async function searchByActor(actorName) {
-  const url = `https://api.themoviedb.org/3/search/person?api_key=${apiKey}&query=${actorName}&language=en-US`;
+  const url = `https://api.themoviedb.org/3/search/person?api_key=${apiKey}&query=${encodeURIComponent(actorName)}&language=en-US`;
+
   try {
     const response = await fetch(url);
+    if (!response.ok) throw new Error("Failed to fetch actor data");
+
     const data = await response.json();
-    if (data.results.length > 0) {
-      const actor = data.results[0];
-      const moviesAndShows = actor.known_for;
-      displayResults(moviesAndShows, `Movies & Shows with ${actor.name}`);
-    } else {
-      movieGrid.innerHTML = '<p>No results found</p>';
+
+    if (data.results.length === 0) {
+      movieGrid.innerHTML = '<p>No actors found</p>';
+      return;
     }
+
+    if (data.results.length === 1) {
+      // Only one actor found, display their movies/shows
+      displayActorMovies(data.results[0]);
+    } else {
+      // Multiple actors found, let the user select
+      displayActorChoices(data.results);
+    }
+
   } catch (error) {
-    movieGrid.innerHTML = '<p>Error fetching actor details</p>';
+    console.error("Error fetching actor details:", error);
+    movieGrid.innerHTML = '<p>Error fetching actor details. Please try again.</p>';
   }
 }
+
+function displayActorChoices(actors) {
+  const actorList = actors
+    .map((actor, index) => {
+      const profilePic = actor.profile_path 
+        ? `https://image.tmdb.org/t/p/w200${actor.profile_path}` 
+        : "https://via.placeholder.com/100x150?text=No+Image";
+      
+      return `
+        <div class="actor-option" onclick="displayActorMovies(${index})">
+          <img src="${profilePic}" alt="${actor.name}" />
+          <p>${actor.name}</p>
+        </div>
+      `;
+    })
+    .join("");
+
+  movieGrid.innerHTML = `
+    <div class="actor-selection">
+      <h3>Select an Actor:</h3>
+      <div class="actor-list">${actorList}</div>
+    </div>
+  `;
+
+  // Store actors in a global variable for selection later
+  window.selectedActors = actors;
+}
+
+function displayActorMovies(actorIndex) {
+  const actor = window.selectedActors[actorIndex];
+
+  if (!actor.known_for || actor.known_for.length === 0) {
+    movieGrid.innerHTML = `<p>No movies or shows found for ${actor.name}</p>`;
+    return;
+  }
+
+  displayResults(actor.known_for, `Movies & Shows with ${actor.name}`);
+}
+
 
 function displayResults(items, title, page = 1) {
   if (page === 1) {
