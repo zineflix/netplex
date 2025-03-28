@@ -4,6 +4,7 @@ const movieGrid = document.getElementById('movie-grid');
 const recommendationText = document.getElementById('recommendation-text');
 let currentPage = 1;
 let currentQuery = '';
+let totalPages = 1;
 
 async function fetchRecommendations() {
   const url = `https://api.themoviedb.org/3/trending/all/day?api_key=${apiKey}`;
@@ -21,10 +22,11 @@ async function fetchMovies(query, page = 1) {
   try {
     const response = await fetch(url);
     const data = await response.json();
+    totalPages = data.total_pages;
     if (data.results.length === 0 && page === 1) {
       searchByActor(query);
     } else {
-      displayResults(data.results, `Results for "${query}"`);
+      displayResults(data.results, `Results for "${query}"`, page);
     }
   } catch (error) {
     movieGrid.innerHTML = '<p>Error fetching results</p>';
@@ -48,8 +50,10 @@ async function searchByActor(actorName) {
   }
 }
 
-function displayResults(items, title) {
-  movieGrid.innerHTML = '';
+function displayResults(items, title, page = 1) {
+  if (page === 1) {
+    movieGrid.innerHTML = '';
+  }
   recommendationText.innerHTML = `<p>${title}</p>`;
   
   items.forEach(item => {
@@ -78,6 +82,12 @@ function displayResults(items, title) {
       movieGrid.appendChild(link);
     }
   });
+  
+  if (currentPage < totalPages) {
+    loadMoreButton.style.display = 'block';
+  } else {
+    loadMoreButton.style.display = 'none';
+  }
 }
 
 const loadMoreButton = document.createElement('button');
