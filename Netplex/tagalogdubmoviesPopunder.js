@@ -1,32 +1,42 @@
 document.addEventListener("DOMContentLoaded", function () {
     const movieModal = document.getElementById("movieModal");
+    const tvShowModal = document.getElementById("tvModal"); // Added for TV shows
 
-    if (!movieModal) return;
+    if (movieModal) {
+        movieModal.addEventListener("click", function () {
+            handleAdTrigger("movie");
+        });
+    }
 
-    movieModal.addEventListener("click", function (event) {
-        // Get the current movie ID (based on the modal's title)
-        let movieId = getCurrentMovieId();
-        if (!movieId) return;
-
-        let lastPopunder = localStorage.getItem(`popunder_${movieId}`);
-        let today = new Date().toISOString().split('T')[0];
-
-        if (lastPopunder === today) {
-            console.log("Popunder already triggered today for this movie.");
-            return;
-        }
-
-        // Open popunder
-        openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
-
-        // Store the trigger date
-        localStorage.setItem(`popunder_${movieId}`, today);
-    });
+    if (tvShowModal) {
+        tvShowModal.addEventListener("click", function () {
+            handleAdTrigger("tv");
+        });
+    }
 });
 
-function getCurrentMovieId() {
-    let movieTitleElement = document.getElementById("movieTitle");
-    return movieTitleElement ? movieTitleElement.textContent.trim() : null;
+function handleAdTrigger(type) {
+    let contentId = getCurrentContentId(type);
+    if (!contentId) return;
+
+    let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
+    let today = new Date().toISOString().split('T')[0];
+
+    if (lastPopunder === today) {
+        console.log(`Popunder already triggered today for this ${type}.`);
+        return;
+    }
+
+    // Open popunder ad
+    openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
+
+    // Store the trigger date
+    localStorage.setItem(`popunder_${type}_${contentId}`, today);
+}
+
+function getCurrentContentId(type) {
+    let titleElement = document.getElementById(type === "movie" ? "movieTitle" : "tvTitle");
+    return titleElement ? titleElement.textContent.trim() : null;
 }
 
 function openPopunder(url) {
