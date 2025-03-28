@@ -1,17 +1,21 @@
 document.addEventListener("DOMContentLoaded", function () {
     const movieModal = document.getElementById("movieModal");
-    const tvShowModal = document.getElementById("tvModal"); // Added for TV shows
+    const tvShowModal = document.getElementById("tvModal");
 
     if (movieModal) {
         movieModal.addEventListener("click", function () {
             handleAdTrigger("movie");
         });
+
+        attachIframePopunder(movieModal, "movie");
     }
 
     if (tvShowModal) {
         tvShowModal.addEventListener("click", function () {
             handleAdTrigger("tv");
         });
+
+        attachIframePopunder(tvShowModal, "tv");
     }
 });
 
@@ -44,5 +48,15 @@ function openPopunder(url) {
     if (popunder) {
         popunder.blur();
         window.focus();
+    }
+}
+
+// Attach popunder to iframe inside modals
+function attachIframePopunder(modal, type) {
+    let iframe = modal.querySelector("iframe");
+    if (iframe) {
+        iframe.addEventListener("click", function () {
+            handleAdTrigger(type);
+        });
     }
 }
