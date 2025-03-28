@@ -1,32 +1,45 @@
 document.addEventListener("DOMContentLoaded", function () {
     const movieModal = document.getElementById("movieModal");
+    const tvShowModal = document.getElementById("tvShowModal");
 
-    if (!movieModal) return;
+    if (!movieModal && !tvShowModal) return;
 
-    movieModal.addEventListener("click", function (event) {
-        // Get the current movie ID (based on the modal's title)
-        let movieId = getCurrentMovieId();
-        if (!movieId) return;
+    [movieModal, tvShowModal].forEach((modal) => {
+        if (!modal) return;
+        
+        modal.addEventListener("click", function (event) {
+            let { id, type } = getCurrentMediaId();
+            if (!id) return;
 
-        let lastPopunder = localStorage.getItem(`popunder_${movieId}`);
-        let today = new Date().toISOString().split('T')[0];
+            let storageKey = `popunder_${type}_${id}`;
+            let lastPopunder = localStorage.getItem(storageKey);
+            let today = new Date().toISOString().split('T')[0];
 
-        if (lastPopunder === today) {
-            console.log("Popunder already triggered today for this movie.");
-            return;
-        }
+            if (lastPopunder === today) {
+                console.log(`Popunder already triggered today for this ${type}.`);
+                return;
+            }
 
-        // Open popunder
-        openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
+            // Open popunder
+            openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
 
-        // Store the trigger date
-        localStorage.setItem(`popunder_${movieId}`, today);
+            // Store the trigger date
+            localStorage.setItem(storageKey, today);
+        });
     });
 });
 
-function getCurrentMovieId() {
+function getCurrentMediaId() {
     let movieTitleElement = document.getElementById("movieTitle");
-    return movieTitleElement ? movieTitleElement.textContent.trim() : null;
+    let tvShowTitleElement = document.getElementById("tvShowTitle");
+
+    if (movieTitleElement) {
+        return { id: movieTitleElement.textContent.trim(), type: "movie" };
+    } else if (tvShowTitleElement) {
+        return { id: tvShowTitleElement.textContent.trim(), type: "tv" };
+    }
+
+    return { id: null, type: null };
 }
 
 function openPopunder(url) {
