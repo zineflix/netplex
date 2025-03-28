@@ -110,24 +110,21 @@ function displayResults(results) {
   loadMoreButton.style.display = 'none'; // Hide load more button for person search
 }
 
-// Load More Button for pagination
 const loadMoreButton = document.createElement('button');
 loadMoreButton.textContent = 'Load More';
 loadMoreButton.style.display = 'none';
-loadMoreButton.classList.add('load-more-button');
 loadMoreButton.addEventListener('click', () => {
   currentPage++;
-  fetchMoviesOrShows(currentQuery, currentPage);
+  fetchMovies(currentQuery, currentPage);
 });
 movieGrid.after(loadMoreButton);
 
-// Search event listener
 searchInput.addEventListener('input', (e) => {
   currentQuery = e.target.value.trim();
   currentPage = 1;
   if (currentQuery) {
     recommendationText.innerHTML = `<p>Searching for "${currentQuery}"...</p>`;
-    fetchMoviesOrShows(currentQuery, currentPage);
+    fetchMovies(currentQuery, currentPage);
   } else {
     recommendationText.innerHTML = '<p>Recommend Movies and TV Shows</p>';
     fetchRecommendations();
@@ -135,9 +132,10 @@ searchInput.addEventListener('input', (e) => {
   }
 });
 
-// Load trending movies/TV shows on page load
-fetchRecommendations();
+// Load More Button
+loadMoreButton.classList.add('load-more-button');
 
+fetchRecommendations();
 
 
 
