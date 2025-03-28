@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     [movieModal, tvShowModal].forEach((modal) => {
         if (!modal) return;
-        
+
         modal.addEventListener("click", function (event) {
             let { id, type } = getCurrentMediaId();
             if (!id) return;
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let today = new Date().toISOString().split('T')[0];
 
             if (lastPopunder === today) {
-                console.log(`Popunder already triggered today for this ${type}.`);
+                console.log(`Popunder already triggered today for this ${type} (ID: ${id}).`);
                 return;
             }
 
@@ -30,13 +30,13 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function getCurrentMediaId() {
-    let movieTitleElement = document.getElementById("movieTitle");
-    let tvShowTitleElement = document.getElementById("tvShowTitle");
+    let movieIdElement = document.getElementById("movieId");
+    let tvShowIdElement = document.getElementById("tvShowId");
 
-    if (movieTitleElement) {
-        return { id: movieTitleElement.textContent.trim(), type: "movie" };
-    } else if (tvShowTitleElement) {
-        return { id: tvShowTitleElement.textContent.trim(), type: "tv" };
+    if (movieIdElement) {
+        return { id: movieIdElement.textContent.trim(), type: "movie" };
+    } else if (tvShowIdElement) {
+        return { id: tvShowIdElement.textContent.trim(), type: "tv" };
     }
 
     return { id: null, type: null };
