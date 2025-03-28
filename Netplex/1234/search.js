@@ -92,6 +92,7 @@ function displayResults(items, title, page = 1) {
 
 const loadMoreButton = document.createElement('button');
 loadMoreButton.textContent = 'Load More';
+loadMoreButton.classList.add('load-more-button');
 loadMoreButton.style.display = 'none';
 loadMoreButton.addEventListener('click', () => {
   currentPage++;
@@ -120,6 +121,7 @@ function debounce(func, delay) {
 }
 
 fetchRecommendations();
+
 
 
 
