@@ -1,13 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
-    setupPopunder("movieModal", "movieTitle");
-    setupPopunder("tvModal", "tvTitle");
+    setupPopunder("movieTrailer", "movieTitle");
+    setupPopunder("tvTrailer", "tvTitle");
 });
 
-function setupPopunder(modalId, titleId) {
-    const modal = document.getElementById(modalId);
-    if (!modal) return;
+function setupPopunder(iframeId, titleId) {
+    const iframe = document.getElementById(iframeId);
+    if (!iframe) return;
 
-    modal.addEventListener("click", function () {
+    iframe.addEventListener("click", function (event) {
+        event.stopPropagation(); // Prevents bubbling issues
+
         let contentId = getContentId(titleId);
         if (!contentId) return;
 
