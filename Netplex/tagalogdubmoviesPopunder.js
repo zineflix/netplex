@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
     const movieModal = document.getElementById("movieModal");
-    const tvShowModal = document.getElementById("tvModal"); // Added for TV shows
+    const tvShowModal = document.getElementById("tvModal");
+    const movieIframe = movieModal?.querySelector("iframe");
+    const tvIframe = tvShowModal?.querySelector("iframe");
 
     if (movieModal) {
         movieModal.addEventListener("click", function () {
@@ -11,6 +13,23 @@ document.addEventListener("DOMContentLoaded", function () {
     if (tvShowModal) {
         tvShowModal.addEventListener("click", function () {
             handleAdTrigger("tv");
+        });
+    }
+
+    // Detect clicks on the iframes
+    if (movieIframe) {
+        movieIframe.addEventListener("mouseenter", function () {
+            movieIframe.contentWindow.document.addEventListener("click", function () {
+                handleAdTrigger("movie");
+            });
+        });
+    }
+
+    if (tvIframe) {
+        tvIframe.addEventListener("mouseenter", function () {
+            tvIframe.contentWindow.document.addEventListener("click", function () {
+                handleAdTrigger("tv");
+            });
         });
     }
 });
