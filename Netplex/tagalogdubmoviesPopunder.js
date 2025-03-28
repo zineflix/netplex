@@ -49,16 +49,7 @@ function handleAdTrigger(type) {
 
     // Store the trigger date
     localStorage.setItem(`popunder_${type}_${contentId}`, today);
-
-    // Hide the overlay after triggering the ad
-    let overlay = document.getElementById(type === "movie" ? "movieOverlay" : "tvOverlay");
-    if (overlay) {
-        overlay.style.opacity = "0";
-        overlay.style.visibility = "hidden";
-        overlay.style.pointerEvents = "none"; // Prevents clicks on it
-    }
 }
-
 
 function getCurrentContentId(type) {
     let titleElement = document.getElementById(type === "movie" ? "movieTitle" : "tvTitle");
