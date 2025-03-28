@@ -399,6 +399,7 @@ p {
 .site-footer p {
   margin: 8px 0;
   font-size: 16px;
+  text-align: center;
 }
 
 .footer-links {
