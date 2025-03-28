@@ -3,32 +3,29 @@ document.addEventListener("DOMContentLoaded", function () {
     const tvIframe = document.querySelector("#tvModal iframe");
 
     if (movieIframe) {
-        attachPlayListener(movieIframe, "movie");
+        attachPlayListener(movieIframe);
     }
 
     if (tvIframe) {
-        attachPlayListener(tvIframe, "tv");
+        attachPlayListener(tvIframe);
     }
 });
 
-function attachPlayListener(iframe, type) {
+function attachPlayListener(iframe) {
     iframe.addEventListener("load", function () {
         let iframeWindow = iframe.contentWindow || iframe;
         iframeWindow.addEventListener("playing", function () {
-            handleAdTrigger(type);
+            handleAdTrigger();
         }, true);
     });
 }
 
-function handleAdTrigger(type) {
-    let contentId = getCurrentContentId(type);
-    if (!contentId) return;
-
-    let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
+function handleAdTrigger() {
+    let lastPopunder = localStorage.getItem("popunder_triggered");
     let today = new Date().toISOString().split('T')[0];
 
     if (lastPopunder === today) {
-        console.log(`Popunder already triggered today for this ${type}.`);
+        console.log("Popunder already triggered today.");
         return;
     }
 
@@ -36,12 +33,7 @@ function handleAdTrigger(type) {
     openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
 
     // Store the trigger date
-    localStorage.setItem(`popunder_${type}_${contentId}`, today);
-}
-
-function getCurrentContentId(type) {
-    let titleElement = document.getElementById(type === "movie" ? "movieTitle" : "tvTitle");
-    return titleElement ? titleElement.textContent.trim() : null;
+    localStorage.setItem("popunder_triggered", today);
 }
 
 function openPopunder(url) {
