@@ -2,174 +2,175 @@ const apiKey = 'a1e72fd93ed59f56e6332813b9f8dcae';
 const searchInput = document.getElementById('search');
 const movieGrid = document.getElementById('movie-grid');
 const recommendationText = document.getElementById('recommendation-text');
+
 let currentPage = 1;
 let currentQuery = '';
-let totalPages = 1;
+let isFetching = false;
 
-async function fetchRecommendations() {
-  const url = `https://api.themoviedb.org/3/trending/all/day?api_key=${apiKey}`;
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    displayResults(data.results, 'Recommendations');
-  } catch (error) {
-    movieGrid.innerHTML = '<p>Failed to load recommendations</p>';
-  }
-}
+// Create loading indicator
+const loadingIndicator = document.createElement('p');
+loadingIndicator.textContent = 'Loading...';
+loadingIndicator.style.display = 'none';
+movieGrid.after(loadingIndicator);
 
-async function fetchMovies(query, page = 1) {
-  const url = `https://api.themoviedb.org/3/search/person?api_key=${apiKey}&query=${query}&language=en-US&page=1&include_adult=false`;
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    totalPages = data.total_pages;
-    if (data.results.length === 0 && page === 1) {
-      searchByActor(query);
-    } else {
-      displayResults(data.results, `Results for "${query}"`, page);
-    }
-  } catch (error) {
-    movieGrid.innerHTML = '<p>Error fetching results</p>';
-  }
-}
-
-async function searchByActor(actorName) {
-  const url = `https://api.themoviedb.org/3/search/person?api_key=${apiKey}&query=${encodeURIComponent(actorName)}&language=en-US`;
-
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error("Failed to fetch actor data");
-
-    const data = await response.json();
-
-    if (data.results.length === 0) {
-      movieGrid.innerHTML = '<p>No actors found</p>';
-      return;
-    }
-
-    if (data.results.length === 1) {
-      // Only one actor found, display their movies/shows
-      displayActorMovies(data.results[0]);
-    } else {
-      // Multiple actors found, let the user select
-      displayActorChoices(data.results);
-    }
-
-  } catch (error) {
-    console.error("Error fetching actor details:", error);
-    movieGrid.innerHTML = '<p>Error fetching actor details. Please try again.</p>';
-  }
-}
-
-function displayActorChoices(actors) {
-  const actorList = actors
-    .map((actor, index) => {
-      const profilePic = actor.profile_path 
-        ? `https://image.tmdb.org/t/p/w200${actor.profile_path}` 
-        : "https://via.placeholder.com/100x150?text=No+Image";
-      
-      return `
-        <div class="actor-option" onclick="displayActorMovies(${index})">
-          <img src="${profilePic}" alt="${actor.name}" />
-          <p>${actor.name}</p>
-        </div>
-      `;
-    })
-    .join("");
-
-  movieGrid.innerHTML = `
-    <div class="actor-selection">
-      <h3>Select an Actor:</h3>
-      <div class="actor-list">${actorList}</div>
-    </div>
-  `;
-
-  // Store actors in a global variable for selection later
-  window.selectedActors = actors;
-}
-
-function displayActorMovies(actorIndex) {
-  const actor = window.selectedActors[actorIndex];
-
-  if (!actor.known_for || actor.known_for.length === 0) {
-    movieGrid.innerHTML = `<p>No movies or shows found for ${actor.name}</p>`;
-    return;
-  }
-
-  displayResults(actor.known_for, `Movies & Shows with ${actor.name}`);
-}
-
-
-function displayResults(items, title, page = 1) {
-  if (page === 1) {
-    movieGrid.innerHTML = '';
-  }
-  recommendationText.innerHTML = `<p>${title}</p>`;
-  
-  items.forEach(item => {
-    if (item.poster_path) {
-      const posterUrl = `https://image.tmdb.org/t/p/w200${item.poster_path}`;
-      const title = item.title || item.name;
-      const rating = item.vote_average || 0;
-      const id = item.id;
-      const mediaType = item.media_type || 'movie';
-      
-      const link = document.createElement('a');
-      link.href = mediaType === 'movie' ? `movie-details.html?movie_id=${id}` : `tvshows-details.html?id=${id}`;
-      
-      const movieItem = document.createElement('div');
-      movieItem.classList.add('movie-item');
-      movieItem.innerHTML = `
-        <div class="rating-container">
-          <div class="rating">
-            <span class="star">&#9733;</span><span class="rating-number">${rating.toFixed(1)}</span>
-          </div>
-        </div>
-        <img src="${posterUrl}" alt="${title}" />
-      `;
-      
-      link.appendChild(movieItem);
-      movieGrid.appendChild(link);
-    }
-  });
-  
-  if (currentPage < totalPages) {
-    loadMoreButton.style.display = 'block';
-  } else {
-    loadMoreButton.style.display = 'none';
-  }
-}
-
+// Create Load More button
 const loadMoreButton = document.createElement('button');
 loadMoreButton.textContent = 'Load More';
 loadMoreButton.classList.add('load-more-button');
 loadMoreButton.style.display = 'none';
 loadMoreButton.addEventListener('click', () => {
-  currentPage++;
-  fetchMovies(currentQuery, currentPage);
+  if (!isFetching) {
+    currentPage++;
+    fetchMoviesOrPerson(currentQuery, currentPage);
+  }
 });
 movieGrid.after(loadMoreButton);
 
+// Function to fetch trending movies/TV shows
+async function fetchRecommendations() {
+  movieGrid.innerHTML = ''; 
+  loadingIndicator.style.display = 'block';
+
+  try {
+    const url = `https://api.themoviedb.org/3/trending/all/day?api_key=${apiKey}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    
+    loadingIndicator.style.display = 'none';
+
+    if (!data.results.length) {
+      movieGrid.innerHTML = '<p>No recommendations available</p>';
+      return;
+    }
+
+    displayMovies(data.results);
+  } catch (error) {
+    console.error('Error fetching recommendations:', error);
+    movieGrid.innerHTML = '<p>Failed to load recommendations</p>';
+  }
+}
+
+// Function to fetch movies, TV shows, or person
+async function fetchMoviesOrPerson(query, page = 1) {
+  if (isFetching) return;
+  isFetching = true;
+
+  if (page === 1) {
+    movieGrid.innerHTML = '';
+  }
+
+  loadingIndicator.style.display = 'block';
+  
+  try {
+    const searchUrl = `https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${query}&language=en-US&page=${page}&include_adult=false`;
+    const response = await fetch(searchUrl);
+    const data = await response.json();
+    
+    loadingIndicator.style.display = 'none';
+
+    if (page === 1 && !data.results.length) {
+      movieGrid.innerHTML = '<p>No results found</p>';
+      return;
+    }
+
+    // Check if the top result is a person
+    const person = data.results.find(item => item.media_type === 'person');
+    if (person) {
+      return fetchPersonCredits(person.id, person.name);
+    }
+
+    displayMovies(data.results);
+
+    loadMoreButton.style.display = data.page < data.total_pages ? 'block' : 'none';
+  } catch (error) {
+    console.error('Error fetching movies:', error);
+    movieGrid.innerHTML = '<p>Failed to load results</p>';
+  } finally {
+    isFetching = false;
+  }
+}
+
+// Function to fetch movie/TV credits of a person
+async function fetchPersonCredits(personId, personName) {
+  try {
+    const url = `https://api.themoviedb.org/3/person/${personId}/combined_credits?api_key=${apiKey}`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (!data.cast.length) {
+      movieGrid.innerHTML = `<p>No movies or TV shows found for ${personName}</p>`;
+      return;
+    }
+
+    recommendationText.innerHTML = `<p>Movies and TV Shows featuring ${personName}:</p>`;
+    displayMovies(data.cast);
+  } catch (error) {
+    console.error(`Error fetching credits for ${personName}:`, error);
+    movieGrid.innerHTML = `<p>Failed to load movies for ${personName}</p>`;
+  }
+}
+
+// Function to display movie items
+function displayMovies(items) {
+  movieGrid.innerHTML = ''; // Clear previous results
+
+  items.forEach(item => {
+    if (item.poster_path) {
+      const posterUrl = `https://image.tmdb.org/t/p/w200${item.poster_path}`;
+      const title = item.title || item.name;
+      const rating = item.vote_average?.toFixed(1) || 'N/A';
+      const id = item.id;
+      const mediaType = item.media_type;
+      
+      const link = document.createElement('a');
+      link.href = mediaType === 'movie'
+        ? `movie-details.html?movie_id=${id}`
+        : `tvshows-details.html?id=${id}`;
+      link.setAttribute('aria-label', `View details for ${title}`);
+
+      const movieItem = document.createElement('div');
+      movieItem.classList.add('movie-item');
+
+      movieItem.innerHTML = `
+        <div class="rating-container">
+          <div class="rating">
+            <span class="star">&#9733;</span><span class="rating-number">${rating}</span>
+          </div>
+        </div>
+        <img src="${posterUrl}" alt="Poster of ${title}" />
+      `;
+
+      link.appendChild(movieItem);
+      movieGrid.appendChild(link);
+    }
+  });
+}
+
+// Debounce function to delay search execution
+function debounce(func, delay) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), delay);
+  };
+}
+
+// Handle search input
 searchInput.addEventListener('input', debounce((e) => {
   currentQuery = e.target.value.trim();
   currentPage = 1;
+
   if (currentQuery) {
-    fetchMovies(currentQuery, currentPage);
+    recommendationText.innerHTML = `<p>Searching for "${currentQuery}"...</p>`;
+    fetchMoviesOrPerson(currentQuery, currentPage);
   } else {
     recommendationText.innerHTML = '<p>Recommend Movies and TV Shows</p>';
     fetchRecommendations();
     loadMoreButton.style.display = 'none';
   }
-}, 500));
+}, 500)); // 500ms delay for debounce
 
-function debounce(func, delay) {
-  let timer;
-  return function (...args) {
-    clearTimeout(timer);
-    timer = setTimeout(() => func.apply(this, args), delay);
-  };
-}
-
+// Fetch trending movies on load
 fetchRecommendations();
 
 
