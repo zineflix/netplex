@@ -350,31 +350,4 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
 });
 // Fullscreen Button for TV Trailer End //
 
-document.addEventListener("DOMContentLoaded", function () {
-    const iframe = document.getElementById("video-iframe");
-    const overlayAd = document.getElementById("overlay-ad");
-    const closeAd = document.getElementById("close-ad");
-
-    if (!iframe || !overlayAd || !closeAd) {
-        console.error("Required elements not found");
-        return;
-    }
-
-    iframe.addEventListener("click", function (event) {
-        console.log("Iframe clicked");
-        overlayAd.style.display = "block"; // Show the overlay ad
-        event.stopPropagation(); // Prevent event bubbling
-    });
-
-    closeAd.addEventListener("click", function () {
-        overlayAd.style.display = "none"; // Hide the overlay ad when closed
-    });
-
-    // Optional: Hide the ad when clicking outside the ad content
-    overlayAd.addEventListener("click", function (event) {
-        if (event.target === overlayAd) {
-            overlayAd.style.display = "none";
-        }
-    });
-});
 
