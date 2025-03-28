@@ -1,33 +1,28 @@
 document.addEventListener("DOMContentLoaded", function () {
-    setupPopunder("movieModal", "movieTitle");
-    setupPopunder("tvModal", "tvTitle");
+    document.body.addEventListener("click", function (event) {
+        if (event.target.closest("#movieModal") || event.target.closest("#tvModal")) {
+            let modalId = event.target.closest("#movieModal") ? "movieModal" : "tvModal";
+            let titleId = modalId === "movieModal" ? "movieTitle" : "tvTitle";
+            triggerPopunder(modalId, titleId);
+        }
+    });
 });
 
-function setupPopunder(modalId, titleId) {
-    const modal = document.getElementById(modalId);
-    if (!modal) return;
+function triggerPopunder(modalId, titleId) {
+    let contentId = getContentId(titleId);
+    if (!contentId) return;
 
-    modal.addEventListener("click", function () {
-        let contentId = getContentId(titleId);
-        if (!contentId) return;
+    let lastPopunder = localStorage.getItem(`popunder_${contentId}`);
+    let today = new Date().toISOString().split('T')[0];
 
-        let lastPopunder = localStorage.getItem(`popunder_${contentId}`);
-        let today = new Date().toISOString().split('T')[0];
+    if (lastPopunder === today) {
+        console.log(`Popunder already triggered today for ${titleId}.`);
+        return;
+    }
 
-        if (lastPopunder === today) {
-            console.log(`Popunder already triggered today for ${titleId}.`);
-            return;
-        }
-
-        // Show popunder overlay
-        showPopunderOverlay(modal);
-
-        // Open popunder
-        openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
-
-        // Store the trigger date
-        localStorage.setItem(`popunder_${contentId}`, today);
-    });
+    showPopunderOverlay();
+    openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
+    localStorage.setItem(`popunder_${contentId}`, today);
 }
 
 function getContentId(titleId) {
@@ -43,19 +38,18 @@ function openPopunder(url) {
     }
 }
 
-function showPopunderOverlay(modal) {
+function showPopunderOverlay() {
     let overlay = document.createElement("div");
-    overlay.style.position = "fixed";
-    overlay.style.top = "0";
-    overlay.style.left = "0";
-    overlay.style.width = "100%";
-    overlay.style.height = "100%";
-    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-    overlay.style.zIndex = "9999";
+    Object.assign(overlay.style, {
+        position: "fixed",
+        top: "0",
+        left: "0",
+        width: "100%",
+        height: "100%",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        zIndex: "9999",
+    });
 
     document.body.appendChild(overlay);
-
-    setTimeout(() => {
-        document.body.removeChild(overlay);
-    }, 2000); // Overlay disappears after 2 seconds
+    setTimeout(() => document.body.removeChild(overlay), 2000);
 }
