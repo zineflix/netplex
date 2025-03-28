@@ -1,31 +1,29 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const movieIframe = document.querySelector("#movieModal iframe");
-    const tvIframe = document.querySelector("#tvModal iframe");
+    const movieModal = document.getElementById("movieModal");
+    const tvShowModal = document.getElementById("tvModal"); // Added for TV shows
 
-    if (movieIframe) {
-        attachPlayListener(movieIframe);
+    if (movieModal) {
+        movieModal.addEventListener("click", function () {
+            handleAdTrigger("movie");
+        });
     }
 
-    if (tvIframe) {
-        attachPlayListener(tvIframe);
+    if (tvShowModal) {
+        tvShowModal.addEventListener("click", function () {
+            handleAdTrigger("tv");
+        });
     }
 });
 
-function attachPlayListener(iframe) {
-    iframe.addEventListener("load", function () {
-        let iframeWindow = iframe.contentWindow || iframe;
-        iframeWindow.addEventListener("playing", function () {
-            handleAdTrigger();
-        }, true);
-    });
-}
+function handleAdTrigger(type) {
+    let contentId = getCurrentContentId(type);
+    if (!contentId) return;
 
-function handleAdTrigger() {
-    let lastPopunder = localStorage.getItem("popunder_triggered");
+    let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
     let today = new Date().toISOString().split('T')[0];
 
     if (lastPopunder === today) {
-        console.log("Popunder already triggered today.");
+        console.log(`Popunder already triggered today for this ${type}.`);
         return;
     }
 
@@ -33,7 +31,12 @@ function handleAdTrigger() {
     openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
 
     // Store the trigger date
-    localStorage.setItem("popunder_triggered", today);
+    localStorage.setItem(`popunder_${type}_${contentId}`, today);
+}
+
+function getCurrentContentId(type) {
+    let titleElement = document.getElementById(type === "movie" ? "movieTitle" : "tvTitle");
+    return titleElement ? titleElement.textContent.trim() : null;
 }
 
 function openPopunder(url) {
