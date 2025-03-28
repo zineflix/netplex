@@ -11,11 +11,11 @@ function setupPopunder(modalId, titleId) {
         let contentId = getContentId(titleId);
         if (!contentId) return;
 
-        let lastPopunder = localStorage.getItem(popunder_${contentId});
+        let lastPopunder = localStorage.getItem(`popunder_${contentId}`);
         let today = new Date().toISOString().split('T')[0];
 
         if (lastPopunder === today) {
-            console.log(Popunder already triggered today for ${titleId}.);
+            console.log(`Popunder already triggered today for ${titleId}.`);
             return;
         }
 
@@ -26,7 +26,7 @@ function setupPopunder(modalId, titleId) {
         openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
 
         // Store the trigger date
-        localStorage.setItem(popunder_${contentId}, today);
+        localStorage.setItem(`popunder_${contentId}`, today);
     });
 }
 
