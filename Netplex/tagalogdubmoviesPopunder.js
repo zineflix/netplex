@@ -19,6 +19,9 @@ function setupPopunder(modalId, titleId) {
             return;
         }
 
+        // Show popunder overlay
+        showPopunderOverlay(modal);
+
         // Open popunder
         openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
 
@@ -38,4 +41,21 @@ function openPopunder(url) {
         popunder.blur();
         window.focus();
     }
+}
+
+function showPopunderOverlay(modal) {
+    let overlay = document.createElement("div");
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100%";
+    overlay.style.height = "100%";
+    overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+    overlay.style.zIndex = "9999";
+
+    document.body.appendChild(overlay);
+
+    setTimeout(() => {
+        document.body.removeChild(overlay);
+    }, 2000); // Overlay disappears after 2 seconds
 }
