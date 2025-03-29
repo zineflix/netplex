@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const movieOverlay = document.getElementById("movieOverlay");
     const tvOverlay = document.getElementById("tvOverlay");
 
+    // Reset overlays daily
+    resetDailyOverlays();
+
     // Hide overlays if ad was already triggered today for this content
     hideOverlayIfAdTriggered("movie", movieOverlay);
     hideOverlayIfAdTriggered("tv", tvOverlay);
@@ -42,7 +45,7 @@ function handleAdTrigger(type, overlay) {
 
     openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
     localStorage.setItem(`popunder_${type}_${contentId}`, today);
-    localStorage.setItem(`overlay_hidden_${type}_${contentId}`, "true"); // Save overlay hidden state
+    localStorage.setItem(`overlay_hidden_${type}_${contentId}`, today); // Track hidden overlay per content per day
 
     if (overlay) {
         overlay.style.display = "none";
@@ -57,10 +60,25 @@ function hideOverlayIfAdTriggered(type, overlay) {
     let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
     let overlayHidden = localStorage.getItem(`overlay_hidden_${type}_${contentId}`);
 
-    if (lastPopunder === today || overlayHidden === "true") {
+    if (lastPopunder === today || overlayHidden === today) {
         overlay.style.display = "none";
     } else {
-        overlay.style.display = "block"; // Ensure overlay appears for new content
+        overlay.style.display = "block"; // Show overlay if it's a new day
+    }
+}
+
+// Resets overlay states daily
+function resetDailyOverlays() {
+    let today = new Date().toISOString().split('T')[0];
+    let lastReset = localStorage.getItem("overlay_last_reset");
+
+    if (lastReset !== today) {
+        Object.keys(localStorage).forEach((key) => {
+            if (key.startsWith("overlay_hidden_") || key.startsWith("popunder_")) {
+                localStorage.removeItem(key);
+            }
+        });
+        localStorage.setItem("overlay_last_reset", today);
     }
 }
 
