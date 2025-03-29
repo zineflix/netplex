@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const movieModal = document.getElementById("movieModal");
-    const tvShowModal = document.getElementById("tvModal"); // Added for TV shows
+    const tvShowModal = document.getElementById("tvModal");
 
     if (movieModal) {
         movieModal.addEventListener("click", function () {
@@ -16,27 +16,27 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function handleAdTrigger(type) {
-    let contentId = getCurrentContentId(type);
+    let contentId = getContentIdFromUrl(); // Get content ID from the URL
     if (!contentId) return;
 
     let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
     let today = new Date().toISOString().split('T')[0];
 
     if (lastPopunder === today) {
-        console.log(`Popunder already triggered today for this ${type}.`);
+        console.log(`Popunder already triggered today for ${type} ID: ${contentId}`);
         return;
     }
 
     // Open popunder ad
     openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
 
-    // Store the trigger date
+    // Store the trigger date per content ID
     localStorage.setItem(`popunder_${type}_${contentId}`, today);
 }
 
-function getCurrentContentId(type) {
-    let titleElement = document.getElementById(type === "movie" ? "movieTitle" : "tvTitle");
-    return titleElement ? titleElement.textContent.trim() : null;
+function getContentIdFromUrl() {
+    let params = new URLSearchParams(window.location.search);
+    return params.get("movie") || params.get("tv") || null;
 }
 
 function openPopunder(url) {
@@ -45,23 +45,14 @@ function openPopunder(url) {
         setTimeout(() => {
             popunder.blur();
             window.focus();
-        }, 500); // Small delay before refocusing
+        }, 500);
     }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".iframe-overlay").forEach(overlay => {
         overlay.addEventListener("click", function () {
-            let contentId = getCurrentContentId(); // Get the content ID dynamically
-            if (contentId) {
-                this.style.display = "none"; // Hide only the clicked overlay
-            }
+            this.style.display = "none"; // Hide only the clicked overlay
         });
     });
 });
-
-function getCurrentContentId() {
-    let urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get("movie") || urlParams.get("tv") || null;
-}
-
