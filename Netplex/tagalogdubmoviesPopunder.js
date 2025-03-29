@@ -1,39 +1,38 @@
 document.addEventListener("DOMContentLoaded", function () {
-    applyOverlayListeners();
-    observeUrlAndModalChanges();
+    applyOverlayListeners(); // Apply initially
+    observeUrlAndModalChanges(); // Detect dynamic content updates
 });
 
 function applyOverlayListeners() {
     document.querySelectorAll(".iframe-overlay").forEach(overlay => {
-        overlay.removeEventListener("click", overlayClickHandler); // Prevent duplicates
+        overlay.removeEventListener("click", overlayClickHandler); // Prevent duplicate events
         overlay.addEventListener("click", overlayClickHandler);
     });
 }
 
-function overlayClickHandler(event) {
-    event.preventDefault(); // Prevent unwanted propagation
-
-    let overlay = event.currentTarget;
-    overlay.style.display = "none"; // Hide the overlay so iframe gets direct clicks
-
-    triggerAdOnClick(); // Call function to handle ad popunder
-}
-
-function triggerAdOnClick() {
+function overlayClickHandler() {
     let contentId = getContentIdFromUrl();
     if (!contentId) return;
 
-    let lastPopunder = localStorage.getItem(`popunder_movie_${contentId}`);
-    let today = new Date().toISOString().split("T")[0];
+    this.style.display = "none"; // Hide only the clicked overlay
+    handleAdTrigger("movie"); // Trigger popunder per content dynamically
+}
+
+function handleAdTrigger(type) {
+    let contentId = getContentIdFromUrl();
+    if (!contentId) return;
+
+    let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
+    let today = new Date().toISOString().split('T')[0];
 
     if (lastPopunder === today) {
-        console.log(`Popunder already triggered today for movie ID: ${contentId}`);
+        console.log(`Popunder already triggered today for ${type} ID: ${contentId}`);
         return;
     }
 
     openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
 
-    localStorage.setItem(`popunder_movie_${contentId}`, today);
+    localStorage.setItem(`popunder_${type}_${contentId}`, today);
 }
 
 function getContentIdFromUrl() {
@@ -51,25 +50,28 @@ function openPopunder(url) {
     }
 }
 
-// 🟢 Detects when URL changes or modal opens
+// 🟢 Detects when URL changes (e.g., new movie/TV show opened)
 function observeUrlAndModalChanges() {
     let lastUrl = location.href;
 
     setInterval(() => {
         let currentUrl = location.href;
         if (currentUrl !== lastUrl) {
-            console.log("URL changed! Reapplying overlay...");
-            applyOverlayListeners(); // Reset overlay for new content
-            lastUrl = currentUrl;
+            console.log("URL changed! Reapplying overlay popunder...");
+            applyOverlayListeners();
+            handleAdTrigger("movie"); // Ensure new content gets its own popunder
+            lastUrl = currentUrl; // Update last URL to prevent duplicate triggers
         }
-    }, 500);
+    }, 500); // Check URL every 500ms (adjust if needed)
 
+    // 🔴 Also detect modal opens and reapply overlay
     document.body.addEventListener("click", function (event) {
         if (event.target.matches(".modal-open")) {
-            console.log("Modal opened! Reapplying overlay...");
+            console.log("Modal opened! Reapplying overlay popunder...");
             setTimeout(() => {
                 applyOverlayListeners();
-            }, 500);
+                handleAdTrigger("movie"); // Ensure popunder works for new content
+            }, 500); // Small delay to allow modal content to load
         }
     });
 }
