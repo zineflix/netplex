@@ -7,6 +7,7 @@ function applyOverlayListeners() {
     document.querySelectorAll(".iframe-overlay").forEach(overlay => {
         overlay.removeEventListener("click", overlayClickHandler); // Prevent duplicate events
         overlay.addEventListener("click", overlayClickHandler);
+        overlay.style.display = "block"; // Ensure overlay is visible for new content
     });
 
     document.querySelectorAll("video, .video-player").forEach(video => {
@@ -24,6 +25,9 @@ function videoClickHandler() {
     if (!contentId) return;
 
     handleAdTrigger("movie"); // Trigger popunder when user clicks video
+    document.querySelectorAll(".iframe-overlay").forEach(overlay => {
+        overlay.style.display = "none"; // Hide overlay when clicking video
+    });
 }
 
 function handleAdTrigger(type) {
@@ -65,8 +69,8 @@ function observeUrlAndModalChanges() {
     setInterval(() => {
         let currentUrl = location.href;
         if (currentUrl !== lastUrl) {
-            console.log("URL changed! Reapplying overlay listeners...");
-            applyOverlayListeners();
+            console.log("URL changed! Reapplying overlay and popunder...");
+            applyOverlayListeners(); // Ensure overlay appears for new content
             lastUrl = currentUrl; // Update last URL to prevent duplicate triggers
         }
     }, 500);
