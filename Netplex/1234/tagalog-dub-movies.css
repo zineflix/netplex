@@ -917,3 +917,20 @@ iframe {
 /* Footer Section End*/
 
 
+.iframe-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 300px;
+}
+
+.iframe-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    cursor: pointer;
+    z-index: 1002; /* Ensures it's above the iframe */
+}
