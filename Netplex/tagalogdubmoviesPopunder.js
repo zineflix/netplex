@@ -4,11 +4,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const movieOverlay = document.getElementById("movieOverlay");
     const tvOverlay = document.getElementById("tvOverlay");
 
-    // Hide overlays if ad was already triggered today
+    // Hide overlays if ad was already triggered today for this content
     hideOverlayIfAdTriggered("movie", movieOverlay);
     hideOverlayIfAdTriggered("tv", tvOverlay);
 
-    // Add event listeners only if elements exist
     if (movieModal) {
         movieModal.addEventListener("click", () => handleAdTrigger("movie", movieOverlay));
     }
@@ -37,7 +36,7 @@ function handleAdTrigger(type, overlay) {
     let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
 
     if (lastPopunder === today) {
-        console.log(`Popunder already triggered today for this ${type}.`);
+        console.log(`Popunder already triggered today for ${type}: ${contentId}`);
         return;
     }
 
@@ -46,7 +45,7 @@ function handleAdTrigger(type, overlay) {
 
     if (overlay) {
         overlay.style.display = "none";
-        sessionStorage.setItem(`overlay_hidden_${type}`, "true");
+        sessionStorage.setItem(`overlay_hidden_${type}_${contentId}`, "true");
     }
 }
 
@@ -56,10 +55,12 @@ function hideOverlayIfAdTriggered(type, overlay) {
 
     let today = new Date().toISOString().split('T')[0];
     let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
-    let overlayHidden = sessionStorage.getItem(`overlay_hidden_${type}`);
+    let overlayHidden = sessionStorage.getItem(`overlay_hidden_${type}_${contentId}`);
 
     if (lastPopunder === today || overlayHidden === "true") {
         overlay.style.display = "none";
+    } else {
+        overlay.style.display = "block"; // Ensure overlay appears for new content
     }
 }
 
