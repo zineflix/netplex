@@ -83,55 +83,67 @@ const API_KEY = "a1e72fd93ed59f56e6332813b9f8dcae";
             58233: "//ok.ru/videoembed/9643975313998?nochat=1",
         };
 
-        async function fetchMovies() {
-            try {
-                const movieRequests = MOVIE_IDS.map(id =>
-                    fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`)
-                        .then(response => response.json())
-                );
+async function fetchMovies() {
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const movieId = urlParams.get("movie");
 
-                const movies = await Promise.all(movieRequests);
+        const movieRequests = MOVIE_IDS.map(id =>
+            fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`)
+                .then(response => response.json())
+        );
 
-                movies.forEach(movie => {
-                    if (movie.poster_path) {
-                        const movieCard = document.createElement("div");
-                        movieCard.classList.add("movie-card");
+        const movies = await Promise.all(movieRequests);
 
-                        movieCard.innerHTML = `
-                            <img src="${IMAGE_BASE_URL}${movie.poster_path}" alt="${movie.title}">
-                            <div class="play-button">▶</div>
-                        `;
-                        movieCard.addEventListener("click", () => openModal(movie));
-                        movieGallery.appendChild(movieCard);
-                    }
-                });
-            } catch (error) {
-                console.error("Error fetching movies:", error);
-                movieGallery.innerHTML = "<p>Failed to load movies. Please try again later.</p>";
+        movies.forEach(movie => {
+            if (movie.poster_path) {
+                const movieCard = document.createElement("div");
+                movieCard.classList.add("movie-card");
+
+                movieCard.innerHTML = `
+                    <img src="${IMAGE_BASE_URL}${movie.poster_path}" alt="${movie.title}">
+                    <div class="play-button">▶</div>
+                `;
+                movieCard.addEventListener("click", () => openModal(movie));
+                movieGallery.appendChild(movieCard);
+
+                // If URL contains a movie ID, open the modal automatically
+                if (movieId && movie.id == movieId) {
+                    openModal(movie);
+                }
             }
-        }
+        });
+    } catch (error) {
+        console.error("Error fetching movies:", error);
+        movieGallery.innerHTML = "<p>Failed to load movies. Please try again later.</p>";
+    }
+}
 
-        function openModal(movie) {
-            moviePoster.src = `${IMAGE_BASE_URL}${movie.poster_path}`;
-            moviePoster.alt = movie.title;
-            movieTitle.textContent = movie.title;
-            movieGenres.textContent = movie.genres ? movie.genres.map(genre => genre.name).join(", ") : "Unknown";
-            movieDescription.textContent = movie.overview || "No description available.";
 
-            // Get unique video link for the movie
-            const videoUrl = MOVIE_VIDEOS[movie.id] || "https://www.youtube.com/embed/defaultVideo";
+function openModal(movie) {
+    moviePoster.src = `${IMAGE_BASE_URL}${movie.poster_path}`;
+    moviePoster.alt = movie.title;
+    movieTitle.textContent = movie.title;
+    movieGenres.textContent = movie.genres ? movie.genres.map(genre => genre.name).join(", ") : "Unknown";
+    movieDescription.textContent = movie.overview || "No description available.";
+    
+    const videoUrl = MOVIE_VIDEOS[movie.id] || "https://www.youtube.com/embed/defaultVideo";
+    movieTrailer.src = videoUrl;
+    
+    movieModal.classList.add("show");
 
-            // Set the iframe source
-            movieTrailer.src = videoUrl;
+    // Update the URL
+    window.history.pushState({ type: "movie", id: movie.id }, "", `?movie=${movie.id}`);
+}
 
-            // Show the modal
-            movieModal.classList.add("show");
-        }
 
-        function closeModal() {
-            movieModal.classList.remove("show");
-            movieTrailer.src = ""; // Stop video playback
-        }
+function closeModal() {
+    movieModal.classList.remove("show");
+    movieTrailer.src = "";
+    
+    // Reset URL without refreshing
+    window.history.pushState({}, "", window.location.pathname);
+}
 
         // Close modal on outside click or Escape key
         window.addEventListener("click", event => {
@@ -231,6 +243,9 @@ const TV_EPISODES = {
 
 async function fetchTvShows() {
     try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const tvId = urlParams.get("tv");
+
         const tvRequests = TV_SHOW_IDS.map(id =>
             fetch(`https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}`)
                 .then(response => response.json())
@@ -249,6 +264,11 @@ async function fetchTvShows() {
                 `;
                 showCard.addEventListener("click", () => openTvModal(show));
                 tvGallery.appendChild(showCard);
+
+                // If URL contains a TV ID, open the modal automatically
+                if (tvId && show.id == tvId) {
+                    openTvModal(show);
+                }
             }
         });
     } catch (error) {
@@ -257,16 +277,15 @@ async function fetchTvShows() {
     }
 }
 
+
 function openTvModal(show) {
     tvPoster.src = `${IMAGE_BASE_URL}${show.poster_path}`;
     tvPoster.alt = show.name;
     tvTitle.textContent = show.name;
     tvDescription.textContent = show.overview || "No description available.";
-
-    // Clear dropdown options
+    
     episodeDropdown.innerHTML = "";
 
-    // Populate episode dropdown
     const episodesInfo = TV_EPISODES[show.id];
     if (episodesInfo) {
         episodesInfo.links.forEach((link, index) => {
@@ -275,26 +294,30 @@ function openTvModal(show) {
             option.value = link;
             option.textContent = epTitle;
             episodeDropdown.appendChild(option);
-    });
+        });
 
-        // Load first episode by default
         tvTrailer.src = episodesInfo.links[0];
 
-        // Change iframe source when episode selected
         episodeDropdown.addEventListener("change", (e) => {
             tvTrailer.src = e.target.value;
         });
     } else {
-        tvTrailer.src = "https://www.youtube.com/embed/defaultVideo"; // fallback
+        tvTrailer.src = "https://www.youtube.com/embed/defaultVideo";
     }
 
-    // Show TV modal
     tvModal.classList.add("show");
+
+    // Update the URL
+    window.history.pushState({ type: "tv", id: show.id }, "", `?tv=${show.id}`);
 }
+
 
 function closeTvModal() {
     tvModal.classList.remove("show");
     tvTrailer.src = "";
+
+    // Reset URL without refreshing
+    window.history.pushState({}, "", window.location.pathname);
 }
 
 window.addEventListener("click", event => {
