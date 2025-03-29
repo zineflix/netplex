@@ -42,10 +42,10 @@ function handleAdTrigger(type, overlay) {
 
     openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
     localStorage.setItem(`popunder_${type}_${contentId}`, today);
+    localStorage.setItem(`overlay_hidden_${type}_${contentId}`, "true"); // Save overlay hidden state
 
     if (overlay) {
         overlay.style.display = "none";
-        sessionStorage.setItem(`overlay_hidden_${type}_${contentId}`, "true");
     }
 }
 
@@ -55,7 +55,7 @@ function hideOverlayIfAdTriggered(type, overlay) {
 
     let today = new Date().toISOString().split('T')[0];
     let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
-    let overlayHidden = sessionStorage.getItem(`overlay_hidden_${type}_${contentId}`);
+    let overlayHidden = localStorage.getItem(`overlay_hidden_${type}_${contentId}`);
 
     if (lastPopunder === today || overlayHidden === "true") {
         overlay.style.display = "none";
