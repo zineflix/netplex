@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     applyOverlayListeners(); // Apply initially
-    observeUrlChanges(); // Watch for URL changes dynamically
+    observeUrlAndModalChanges(); // Detect dynamic content updates
 });
 
 function applyOverlayListeners() {
@@ -50,16 +50,28 @@ function openPopunder(url) {
     }
 }
 
-// 🟢 Watch for URL changes to detect new content without refreshing
-function observeUrlChanges() {
+// 🟢 Detects when URL changes (e.g., new movie/TV show opened)
+function observeUrlAndModalChanges() {
     let lastUrl = location.href;
 
     setInterval(() => {
         let currentUrl = location.href;
         if (currentUrl !== lastUrl) {
-            console.log("URL changed! Reapplying overlay listeners...");
+            console.log("URL changed! Reapplying overlay popunder...");
             applyOverlayListeners();
+            handleAdTrigger("movie"); // Ensure new content gets its own popunder
             lastUrl = currentUrl; // Update last URL to prevent duplicate triggers
         }
     }, 500); // Check URL every 500ms (adjust if needed)
+
+    // 🔴 Also detect modal opens and reapply overlay
+    document.body.addEventListener("click", function (event) {
+        if (event.target.matches(".modal-open")) {
+            console.log("Modal opened! Reapplying overlay popunder...");
+            setTimeout(() => {
+                applyOverlayListeners();
+                handleAdTrigger("movie"); // Ensure popunder works for new content
+            }, 500); // Small delay to allow modal content to load
+        }
+    });
 }
