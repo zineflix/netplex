@@ -46,6 +46,7 @@ function handleAdTrigger(type, overlay) {
 
     if (overlay) {
         overlay.style.display = "none";
+        sessionStorage.setItem(`overlay_hidden_${type}`, "true");
     }
 }
 
@@ -55,8 +56,9 @@ function hideOverlayIfAdTriggered(type, overlay) {
 
     let today = new Date().toISOString().split('T')[0];
     let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
+    let overlayHidden = sessionStorage.getItem(`overlay_hidden_${type}`);
 
-    if (lastPopunder === today) {
+    if (lastPopunder === today || overlayHidden === "true") {
         overlay.style.display = "none";
     }
 }
