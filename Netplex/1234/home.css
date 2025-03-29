@@ -730,3 +730,13 @@ background-color: #0296cc; /* Darker green on hover */
     margin-bottom: 15px;
 }
 /* Poster Title Section End*/
+
+/* Chatroom Section Start */
+#netplex-chatroom {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  overflow: hidden;
+  z-index: 9999;
+}
+/* Chatroom Section End */
