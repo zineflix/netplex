@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     applyOverlayListeners(); // Apply initially
-    observeUrlAndModalChanges(); // Detect dynamic content updates
+    observeUrlAndModalChanges(); // Detect new content dynamically
 });
 
 function applyOverlayListeners() {
@@ -8,14 +8,22 @@ function applyOverlayListeners() {
         overlay.removeEventListener("click", overlayClickHandler); // Prevent duplicate events
         overlay.addEventListener("click", overlayClickHandler);
     });
+
+    document.querySelectorAll("video, .video-player").forEach(video => {
+        video.removeEventListener("click", videoClickHandler);
+        video.addEventListener("click", videoClickHandler);
+    });
 }
 
 function overlayClickHandler() {
+    this.style.display = "none"; // Hide only the clicked overlay
+}
+
+function videoClickHandler() {
     let contentId = getContentIdFromUrl();
     if (!contentId) return;
 
-    this.style.display = "none"; // Hide only the clicked overlay
-    handleAdTrigger("movie"); // Trigger popunder per content dynamically
+    handleAdTrigger("movie"); // Trigger popunder when user clicks video
 }
 
 function handleAdTrigger(type) {
@@ -57,21 +65,9 @@ function observeUrlAndModalChanges() {
     setInterval(() => {
         let currentUrl = location.href;
         if (currentUrl !== lastUrl) {
-            console.log("URL changed! Reapplying overlay popunder...");
+            console.log("URL changed! Reapplying overlay listeners...");
             applyOverlayListeners();
-            handleAdTrigger("movie"); // Ensure new content gets its own popunder
             lastUrl = currentUrl; // Update last URL to prevent duplicate triggers
         }
-    }, 500); // Check URL every 500ms (adjust if needed)
-
-    // 🔴 Also detect modal opens and reapply overlay
-    document.body.addEventListener("click", function (event) {
-        if (event.target.matches(".modal-open")) {
-            console.log("Modal opened! Reapplying overlay popunder...");
-            setTimeout(() => {
-                applyOverlayListeners();
-                handleAdTrigger("movie"); // Ensure popunder works for new content
-            }, 500); // Small delay to allow modal content to load
-        }
-    });
+    }, 500);
 }
