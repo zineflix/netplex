@@ -59,13 +59,20 @@ function hideOverlayIfAdTriggered(type, overlay) {
     let today = new Date().toISOString().split('T')[0];
     let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
     let overlayHidden = localStorage.getItem(`overlay_hidden_${type}_${contentId}`);
-
-    if (lastPopunder === today || overlayHidden === "true") {
-        overlay.style.display = "none";
-    } else {
-        overlay.style.display = "block"; // Ensure overlay appears if needed
-    }
+    
+    // Ensure the overlay only hides when modal is opened
+    let modal = document.getElementById(type === "movie" ? "movieModal" : "tvModal");
+    
+    if ((lastPopunder === today || overlayHidden === "true") && modal.classList.contains("active")) {
+    overlay.style.display = "none";
+    overlay.style.pointerEvents = "none";  // Ensure clicks go through
+} else {
+    overlay.style.display = "block";
+    overlay.style.pointerEvents = "auto";
 }
+
+}
+
 
 // Reset overlay states daily
 function resetDailyOverlays() {
@@ -82,6 +89,7 @@ function resetDailyOverlays() {
     }
 }
 
+
 function getCurrentContentId(type) {
     let titleElement = document.getElementById(type === "movie" ? "movieTitle" : "tvTitle");
     return titleElement && titleElement.textContent.trim() ? titleElement.textContent.trim() : "default_id";
@@ -94,5 +102,36 @@ function openPopunder(url) {
         window.focus();
     } else {
         console.warn("Popunder blocked by browser.");
+    }
+}
+
+let isAdTriggered = false;
+
+function handleAdTrigger(type, overlay) {
+    if (isAdTriggered) return; // Prevent multiple triggers
+    isAdTriggered = true;
+
+    setTimeout(() => {
+        isAdTriggered = false; // Reset after short delay
+    }, 500);
+
+    let contentId = getCurrentContentId(type);
+    if (!contentId) return;
+
+    let today = new Date().toISOString().split('T')[0];
+    let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
+
+    if (lastPopunder === today) {
+        console.log(`Popunder already triggered today for ${type}: ${contentId}`);
+        return;
+    }
+
+    openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
+    localStorage.setItem(`popunder_${type}_${contentId}`, today);
+    localStorage.setItem(`overlay_hidden_${type}_${contentId}`, "true");
+
+    if (overlay) {
+        overlay.style.display = "none";
+        overlay.style.pointerEvents = "none"; // Ensure it doesn't block interactions
     }
 }
