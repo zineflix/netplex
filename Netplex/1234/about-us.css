@@ -339,3 +339,13 @@ p {
   }
 }
 /* Footer Section End*/
+
+/* Chatroom Section Start */
+#netplex-chatroom {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  overflow: hidden;
+  z-index: 9999;
+}
+/* Chatroom Section End */
