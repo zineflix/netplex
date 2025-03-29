@@ -42,7 +42,10 @@ function getCurrentContentId(type) {
 function openPopunder(url) {
     let popunder = window.open(url, "_blank", "width=100,height=100,left=9999,top=9999");
     if (popunder) {
-        popunder.blur();
-        window.focus();
+        setTimeout(() => {
+            popunder.blur();
+            window.focus();
+        }, 500); // Small delay before refocusing
     }
 }
+
