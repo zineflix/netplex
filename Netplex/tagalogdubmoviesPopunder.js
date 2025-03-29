@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
-    applyOverlayListeners(); // Initial call when page loads
-    observeContentChanges(); // Observe changes dynamically
+    applyOverlayListeners(); // Apply initially
+    observeContentChanges(); // Watch for changes (e.g., when modal opens)
+    observeModalClose(); // Detect when modal is closed
 });
 
 function applyOverlayListeners() {
@@ -30,10 +31,8 @@ function handleAdTrigger(type) {
         return;
     }
 
-    // Open popunder ad
     openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
 
-    // Store the trigger date per content ID
     localStorage.setItem(`popunder_${type}_${contentId}`, today);
 }
 
@@ -52,6 +51,7 @@ function openPopunder(url) {
     }
 }
 
+// 🟢 Watches for new content (e.g., when a new modal opens)
 function observeContentChanges() {
     const targetNode = document.body;
     const config = { childList: true, subtree: true };
@@ -63,4 +63,16 @@ function observeContentChanges() {
 
     const observer = new MutationObserver(callback);
     observer.observe(targetNode, config);
+}
+
+// 🔴 Detects when modal is closed and re-applies overlay handling
+function observeModalClose() {
+    document.querySelectorAll(".modal-close").forEach(closeBtn => {
+        closeBtn.addEventListener("click", function () {
+            setTimeout(() => {
+                console.log("Modal closed! Reapplying overlay listeners...");
+                applyOverlayListeners();
+            }, 500); // Small delay to allow modal to fully close
+        });
+    });
 }
