@@ -50,11 +50,18 @@ function openPopunder(url) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    const overlay = document.querySelector(".iframe-overlay");
-
-    if (overlay) {
+    document.querySelectorAll(".iframe-overlay").forEach(overlay => {
         overlay.addEventListener("click", function () {
-            overlay.style.display = "none"; // Hide the overlay
+            let contentId = getCurrentContentId(); // Get the content ID dynamically
+            if (contentId) {
+                this.style.display = "none"; // Hide only the clicked overlay
+            }
         });
-    }
+    });
 });
+
+function getCurrentContentId() {
+    let urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("movie") || urlParams.get("tv") || null;
+}
+
