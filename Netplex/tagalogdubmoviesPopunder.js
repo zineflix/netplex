@@ -1,46 +1,22 @@
 document.addEventListener("DOMContentLoaded", function () {
-    observeUrlAndModalChanges(); // Detect dynamic content updates
-    setupIframeClickListener(); // Setup listener for iframe clicks
+    applyOverlayListeners();
+    observeUrlAndModalChanges();
 });
 
-function setupIframeClickListener() {
-    let iframe = document.querySelector("iframe");
-    if (!iframe) return;
-
-    iframe.onload = function () {
-        try {
-            iframe.contentWindow.document.addEventListener("click", function () {
-                triggerAdOnClick();
-            });
-        } catch (error) {
-            console.warn("Cross-origin iframe detected. Using postMessage instead.");
-            enablePostMessageListener(iframe);
-        }
-    };
+function applyOverlayListeners() {
+    document.querySelectorAll(".iframe-overlay").forEach(overlay => {
+        overlay.removeEventListener("click", overlayClickHandler); // Prevent duplicates
+        overlay.addEventListener("click", overlayClickHandler);
+    });
 }
 
-function enablePostMessageListener(iframe) {
-    window.addEventListener("message", function (event) {
-        if (event.origin !== iframe.src) return;
-        if (event.data === "iframe-clicked") {
-            triggerAdOnClick();
-        }
-    });
+function overlayClickHandler(event) {
+    event.preventDefault(); // Prevent unwanted propagation
 
-    let script = document.createElement("script");
-    script.innerHTML = `
-        document.addEventListener("click", function () {
-            window.parent.postMessage("iframe-clicked", "*");
-        });
-    `;
+    let overlay = event.currentTarget;
+    overlay.style.display = "none"; // Hide the overlay so iframe gets direct clicks
 
-    iframe.onload = function () {
-        try {
-            iframe.contentWindow.document.body.appendChild(script);
-        } catch (error) {
-            console.warn("Cannot inject script due to cross-origin policy.");
-        }
-    };
+    triggerAdOnClick(); // Call function to handle ad popunder
 }
 
 function triggerAdOnClick() {
@@ -75,25 +51,24 @@ function openPopunder(url) {
     }
 }
 
-// 🟢 Detects when URL changes (e.g., new movie/TV show opened)
+// 🟢 Detects when URL changes or modal opens
 function observeUrlAndModalChanges() {
     let lastUrl = location.href;
 
     setInterval(() => {
         let currentUrl = location.href;
         if (currentUrl !== lastUrl) {
-            console.log("URL changed! Reapplying iframe click listener...");
-            setupIframeClickListener();
+            console.log("URL changed! Reapplying overlay...");
+            applyOverlayListeners(); // Reset overlay for new content
             lastUrl = currentUrl;
         }
     }, 500);
 
-    // 🔴 Also detect modal opens and reapply listener
     document.body.addEventListener("click", function (event) {
         if (event.target.matches(".modal-open")) {
-            console.log("Modal opened! Reapplying iframe click listener...");
+            console.log("Modal opened! Reapplying overlay...");
             setTimeout(() => {
-                setupIframeClickListener();
+                applyOverlayListeners();
             }, 500);
         }
     });
