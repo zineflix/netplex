@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     applyOverlayListeners(); // Apply initially
-    observeContentChanges(); // Watch for changes (e.g., when modal opens)
-    observeModalClose(); // Detect when modal is closed
+    observeUrlChanges(); // Watch for URL changes dynamically
 });
 
 function applyOverlayListeners() {
@@ -51,28 +50,16 @@ function openPopunder(url) {
     }
 }
 
-// 🟢 Watches for new content (e.g., when a new modal opens)
-function observeContentChanges() {
-    const targetNode = document.body;
-    const config = { childList: true, subtree: true };
+// 🟢 Watch for URL changes to detect new content without refreshing
+function observeUrlChanges() {
+    let lastUrl = location.href;
 
-    const callback = function () {
-        console.log("Content changed! Reapplying overlay listeners...");
-        applyOverlayListeners();
-    };
-
-    const observer = new MutationObserver(callback);
-    observer.observe(targetNode, config);
-}
-
-// 🔴 Detects when modal is closed and re-applies overlay handling
-function observeModalClose() {
-    document.querySelectorAll(".modal-close").forEach(closeBtn => {
-        closeBtn.addEventListener("click", function () {
-            setTimeout(() => {
-                console.log("Modal closed! Reapplying overlay listeners...");
-                applyOverlayListeners();
-            }, 500); // Small delay to allow modal to fully close
-        });
-    });
+    setInterval(() => {
+        let currentUrl = location.href;
+        if (currentUrl !== lastUrl) {
+            console.log("URL changed! Reapplying overlay listeners...");
+            applyOverlayListeners();
+            lastUrl = currentUrl; // Update last URL to prevent duplicate triggers
+        }
+    }, 500); // Check URL every 500ms (adjust if needed)
 }
