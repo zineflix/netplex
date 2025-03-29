@@ -1,50 +1,63 @@
 document.addEventListener("DOMContentLoaded", function () {
-    applyOverlayListeners(); // Apply initially
-    observeUrlAndModalChanges(); // Detect new content dynamically
+    observeUrlAndModalChanges(); // Detect dynamic content updates
+    setupIframeClickListener(); // Setup listener for iframe clicks
 });
 
-function applyOverlayListeners() {
-    document.querySelectorAll(".iframe-overlay").forEach(overlay => {
-        overlay.removeEventListener("click", overlayClickHandler); // Prevent duplicate events
-        overlay.addEventListener("click", overlayClickHandler);
-        overlay.style.display = "block"; // Ensure overlay is visible for new content
-    });
+function setupIframeClickListener() {
+    let iframe = document.querySelector("iframe");
+    if (!iframe) return;
 
-    document.querySelectorAll("video, .video-player").forEach(video => {
-        video.removeEventListener("click", videoClickHandler);
-        video.addEventListener("click", videoClickHandler);
-    });
+    iframe.onload = function () {
+        try {
+            iframe.contentWindow.document.addEventListener("click", function () {
+                triggerAdOnClick();
+            });
+        } catch (error) {
+            console.warn("Cross-origin iframe detected. Using postMessage instead.");
+            enablePostMessageListener(iframe);
+        }
+    };
 }
 
-function overlayClickHandler() {
-    this.style.display = "none"; // Hide only the clicked overlay
+function enablePostMessageListener(iframe) {
+    window.addEventListener("message", function (event) {
+        if (event.origin !== iframe.src) return;
+        if (event.data === "iframe-clicked") {
+            triggerAdOnClick();
+        }
+    });
+
+    let script = document.createElement("script");
+    script.innerHTML = `
+        document.addEventListener("click", function () {
+            window.parent.postMessage("iframe-clicked", "*");
+        });
+    `;
+
+    iframe.onload = function () {
+        try {
+            iframe.contentWindow.document.body.appendChild(script);
+        } catch (error) {
+            console.warn("Cannot inject script due to cross-origin policy.");
+        }
+    };
 }
 
-function videoClickHandler() {
+function triggerAdOnClick() {
     let contentId = getContentIdFromUrl();
     if (!contentId) return;
 
-    handleAdTrigger("movie"); // Trigger popunder when user clicks video
-    document.querySelectorAll(".iframe-overlay").forEach(overlay => {
-        overlay.style.display = "none"; // Hide overlay when clicking video
-    });
-}
-
-function handleAdTrigger(type) {
-    let contentId = getContentIdFromUrl();
-    if (!contentId) return;
-
-    let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
-    let today = new Date().toISOString().split('T')[0];
+    let lastPopunder = localStorage.getItem(`popunder_movie_${contentId}`);
+    let today = new Date().toISOString().split("T")[0];
 
     if (lastPopunder === today) {
-        console.log(`Popunder already triggered today for ${type} ID: ${contentId}`);
+        console.log(`Popunder already triggered today for movie ID: ${contentId}`);
         return;
     }
 
     openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
 
-    localStorage.setItem(`popunder_${type}_${contentId}`, today);
+    localStorage.setItem(`popunder_movie_${contentId}`, today);
 }
 
 function getContentIdFromUrl() {
@@ -69,9 +82,19 @@ function observeUrlAndModalChanges() {
     setInterval(() => {
         let currentUrl = location.href;
         if (currentUrl !== lastUrl) {
-            console.log("URL changed! Reapplying overlay and popunder...");
-            applyOverlayListeners(); // Ensure overlay appears for new content
-            lastUrl = currentUrl; // Update last URL to prevent duplicate triggers
+            console.log("URL changed! Reapplying iframe click listener...");
+            setupIframeClickListener();
+            lastUrl = currentUrl;
         }
     }, 500);
+
+    // 🔴 Also detect modal opens and reapply listener
+    document.body.addEventListener("click", function (event) {
+        if (event.target.matches(".modal-open")) {
+            console.log("Modal opened! Reapplying iframe click listener...");
+            setTimeout(() => {
+                setupIframeClickListener();
+            }, 500);
+        }
+    });
 }
