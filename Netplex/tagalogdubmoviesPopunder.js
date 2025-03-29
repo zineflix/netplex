@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const movieOverlay = document.getElementById("movieOverlay");
     const tvOverlay = document.getElementById("tvOverlay");
 
-    // Check and hide overlays if ad was already triggered today
-    checkOverlayVisibility("movie", movieOverlay);
-    checkOverlayVisibility("tv", tvOverlay);
+    // Hide overlays if ad was already triggered today
+    hideOverlayIfAdTriggered("movie", movieOverlay);
+    hideOverlayIfAdTriggered("tv", tvOverlay);
 
     // Add event listeners only if elements exist
     if (movieModal) {
@@ -49,14 +49,16 @@ function handleAdTrigger(type, overlay) {
     }
 }
 
-function checkOverlayVisibility(type, overlay) {
+function hideOverlayIfAdTriggered(type, overlay) {
     let contentId = getCurrentContentId(type);
     if (!contentId || !overlay) return;
 
     let today = new Date().toISOString().split('T')[0];
     let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
 
-    overlay.style.display = lastPopunder === today ? "none" : "block";
+    if (lastPopunder === today) {
+        overlay.style.display = "none";
+    }
 }
 
 function getCurrentContentId(type) {
