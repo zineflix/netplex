@@ -47,6 +47,15 @@
     
     <!-- HLS.js (For HLS) -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+    <!-- Chatroom Start -->
+    <script id="chatBroEmbedCode">
+/* Chatbro Widget Embed Code Start */
+function ChatbroLoader(chats,async){async=!1!==async;var params={embedChatsParameters:chats instanceof Array?chats:[chats],lang:navigator.language||navigator.userLanguage,needLoadCode:'undefined'==typeof Chatbro,embedParamsVersion:localStorage.embedParamsVersion,chatbroScriptVersion:localStorage.chatbroScriptVersion},xhr=new XMLHttpRequest;xhr.withCredentials=!0,xhr.onload=function(){eval(xhr.responseText)},xhr.onerror=function(){console.error('Chatbro loading error')},xhr.open('GET','https://www.chatbro.com/embed.js?'+btoa(unescape(encodeURIComponent(JSON.stringify(params)))),async),xhr.send()}
+/* Chatbro Widget Embed Code End */
+ChatbroLoader({encodedChatId: '792pY'});
+</script>
+    <!-- Chatroom End -->
     
 </head>
 
@@ -109,71 +118,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </nav>  
 <!-- FOR RESPONSIVE NAVIGATION BAR END --> 
 
-
-<!--For Chat With Us Function Start-->
-    <div id="chat-container">
-    <button id="chat-button">💬 Chat with Us</button>
-    <div id="chat-box">
-        <span id="close-chat">✖</span>
-        <input type="email" id="user-email" placeholder="Enter your email..." required />
-        <textarea id="chat-message" placeholder="Type your message..." required></textarea>
-        <button id="send-message">Send</button>
-    </div>
-</div>
-
-
-    <!--Script for Chat With Us-->
-    <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const chatButton = document.getElementById("chat-button");
-    const chatBox = document.getElementById("chat-box");
-    const closeChat = document.getElementById("close-chat");
-    const sendButton = document.getElementById("send-message");
-
-    // Show chat box when clicking the chat button
-    chatButton.addEventListener("click", function () {
-        chatBox.style.display = "block";
-    });
-
-    // Close chat box when clicking the close button
-    closeChat.addEventListener("click", function () {
-        chatBox.style.display = "none";
-    });
-
-    // Send message
-    sendButton.addEventListener("click", function () {
-        const userEmail = document.getElementById("user-email").value;
-        const message = document.getElementById("chat-message").value;
-        const ownerEmail = "zinemaxchat@gmail.com"; // Replace with your email
-
-        if (!userEmail || !message) {
-            alert("Please enter your email and message.");
-            return;
-        }
-
-        fetch("https://formsubmit.co/ajax/" + ownerEmail, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                email: userEmail,
-                message: message,
-                _replyto: userEmail,
-                _subject: "New Chat Message from " + userEmail
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert("Message sent! You will receive a reply soon.");
-            document.getElementById("chat-message").value = "";
-            document.getElementById("user-email").value = "";
-            chatBox.style.display = "none";
-        })
-        .catch(error => console.error("Error:", error));
-    });
-});
-</script>
-<!--For Chat With Us Function End-->
-
     
 <!-- Footer Start -->  
 <footer class="site-footer">
@@ -185,7 +129,12 @@ document.addEventListener("DOMContentLoaded", function () {
     <a href="disclaimer.html">Disclaimer</a>
   </div>
 </footer>
-<!-- Footer End -->     
+<!-- Footer End -->   
+
+<!-- Chatroom Start -->
+<div id="netplex-chatroom"></div> 
+<!-- Chatroom End -->
+    
 </body>
   
 </html>
