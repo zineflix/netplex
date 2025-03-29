@@ -49,3 +49,12 @@ function openPopunder(url) {
     }
 }
 
+document.addEventListener("DOMContentLoaded", function () {
+    const overlay = document.querySelector(".iframe-overlay");
+
+    if (overlay) {
+        overlay.addEventListener("click", function () {
+            overlay.style.display = "none"; // Hide the overlay
+        });
+    }
+});
