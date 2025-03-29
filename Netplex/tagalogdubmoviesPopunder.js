@@ -8,27 +8,21 @@ document.addEventListener("DOMContentLoaded", function () {
     checkOverlayVisibility("movie", movieOverlay);
     checkOverlayVisibility("tv", tvOverlay);
 
+    // Add event listeners only if elements exist
     if (movieModal) {
-        movieModal.addEventListener("click", function () {
-            handleAdTrigger("movie", movieOverlay);
-        });
+        movieModal.addEventListener("click", () => handleAdTrigger("movie", movieOverlay));
     }
-
     if (tvShowModal) {
-        tvShowModal.addEventListener("click", function () {
-            handleAdTrigger("tv", tvOverlay);
-        });
+        tvShowModal.addEventListener("click", () => handleAdTrigger("tv", tvOverlay));
     }
-
     if (movieOverlay) {
-        movieOverlay.addEventListener("click", function (event) {
+        movieOverlay.addEventListener("click", (event) => {
             event.stopPropagation();
             handleAdTrigger("movie", movieOverlay);
         });
     }
-
     if (tvOverlay) {
-        tvOverlay.addEventListener("click", function (event) {
+        tvOverlay.addEventListener("click", (event) => {
             event.stopPropagation();
             handleAdTrigger("tv", tvOverlay);
         });
@@ -39,8 +33,8 @@ function handleAdTrigger(type, overlay) {
     let contentId = getCurrentContentId(type);
     if (!contentId) return;
 
-    let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
     let today = new Date().toISOString().split('T')[0];
+    let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
 
     if (lastPopunder === today) {
         console.log(`Popunder already triggered today for this ${type}.`);
@@ -48,11 +42,8 @@ function handleAdTrigger(type, overlay) {
     }
 
     openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
-
-    // Store the trigger date
     localStorage.setItem(`popunder_${type}_${contentId}`, today);
 
-    // Hide overlay after triggering ad
     if (overlay) {
         overlay.style.display = "none";
     }
@@ -60,21 +51,17 @@ function handleAdTrigger(type, overlay) {
 
 function checkOverlayVisibility(type, overlay) {
     let contentId = getCurrentContentId(type);
-    if (!contentId) return;
+    if (!contentId || !overlay) return;
 
-    let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
     let today = new Date().toISOString().split('T')[0];
+    let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
 
-    if (lastPopunder === today && overlay) {
-        overlay.style.display = "none"; // Hide overlay if ad was triggered today
-    } else if (overlay) {
-        overlay.style.display = "block"; // Show overlay if it's a new day
-    }
+    overlay.style.display = lastPopunder === today ? "none" : "block";
 }
 
 function getCurrentContentId(type) {
     let titleElement = document.getElementById(type === "movie" ? "movieTitle" : "tvTitle");
-    return titleElement ? titleElement.textContent.trim() : null;
+    return titleElement && titleElement.textContent.trim() ? titleElement.textContent.trim() : "default_id";
 }
 
 function openPopunder(url) {
@@ -82,5 +69,7 @@ function openPopunder(url) {
     if (popunder) {
         popunder.blur();
         window.focus();
+    } else {
+        console.warn("Popunder blocked by browser.");
     }
 }
