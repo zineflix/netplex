@@ -1,22 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const movieModal = document.getElementById("movieModal");
-    const tvShowModal = document.getElementById("tvModal");
-
-    if (movieModal) {
-        movieModal.addEventListener("click", function () {
-            handleAdTrigger("movie");
-        });
-    }
-
-    if (tvShowModal) {
-        tvShowModal.addEventListener("click", function () {
-            handleAdTrigger("tv");
-        });
-    }
+    applyOverlayListeners(); // Initial call when page loads
+    observeContentChanges(); // Observe changes dynamically
 });
 
+function applyOverlayListeners() {
+    document.querySelectorAll(".iframe-overlay").forEach(overlay => {
+        overlay.removeEventListener("click", overlayClickHandler); // Prevent duplicate events
+        overlay.addEventListener("click", overlayClickHandler);
+    });
+}
+
+function overlayClickHandler() {
+    let contentId = getContentIdFromUrl();
+    if (!contentId) return;
+
+    this.style.display = "none"; // Hide only the clicked overlay
+    handleAdTrigger("movie"); // Trigger popunder per content dynamically
+}
+
 function handleAdTrigger(type) {
-    let contentId = getContentIdFromUrl(); // Get content ID from the URL
+    let contentId = getContentIdFromUrl();
     if (!contentId) return;
 
     let lastPopunder = localStorage.getItem(`popunder_${type}_${contentId}`);
@@ -49,10 +52,15 @@ function openPopunder(url) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".iframe-overlay").forEach(overlay => {
-        overlay.addEventListener("click", function () {
-            this.style.display = "none"; // Hide only the clicked overlay
-        });
-    });
-});
+function observeContentChanges() {
+    const targetNode = document.body;
+    const config = { childList: true, subtree: true };
+
+    const callback = function () {
+        console.log("Content changed! Reapplying overlay listeners...");
+        applyOverlayListeners();
+    };
+
+    const observer = new MutationObserver(callback);
+    observer.observe(targetNode, config);
+}
