@@ -244,7 +244,7 @@ const fetchTVShowDetails = async () => {
         document.getElementById('tv-show-poster').src = posterUrl;
 
         const backdropUrl = tvShow.backdrop_path ? `https://image.tmdb.org/t/p/original${tvShow.backdrop_path}` : 'https://via.placeholder.com/1500x800?text=No+Backdrop+Available';
-        document.querySelector('.blurred-background').style.backgroundImage = `url(${backdropUrl})`;
+        document.querySelector('.blurred-background').style.backgroundImage = `none`;
 
         document.getElementById('tv-show-description').textContent = tvShow.overview;
 
