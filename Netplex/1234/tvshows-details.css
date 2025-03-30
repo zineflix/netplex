@@ -343,9 +343,6 @@ body {
   right: 0;
   bottom: 0;
   background-color: #000;
-  background-size: cover;
-  background-position: center;
-  filter: blur(8px); /* Apply blur effect */
   z-index: -1;  /* Make sure it's behind all content */
 }
 
