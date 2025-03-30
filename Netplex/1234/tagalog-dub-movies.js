@@ -53,7 +53,7 @@ const API_KEY = "a1e72fd93ed59f56e6332813b9f8dcae";
 
         // Custom video links for each movie
         const MOVIE_VIDEOS = {
-            18377: "https://short.icu/mMFEhpYrX",
+            18377: "//ok.ru/videoembed/9633107347995?nochat=1",
             597: "//ok.ru/videoembed/9644046748238?nochat=1",
             57627: "//ok.ru/videoembed/9644096817742?nochat=1",
             455714: "//ok.ru/videoembed/9644110776910?nochat=1",
