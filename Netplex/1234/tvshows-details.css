@@ -473,8 +473,8 @@ body {
 /* Close button (X) */
 .close-button {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 0px;
+  right: 0px;
   font-size: 6rem;
   background: transparent;
   border: none;
@@ -738,8 +738,8 @@ body {
 /* Close button (X) */
 .close-button {
   position: absolute;
-  top: 30px;
-  right: 20px;
+  top: 0px;
+  right: 0px;
   font-size: 2.2rem;
   background: transparent;
   border: none;
