@@ -282,7 +282,7 @@ const fetchMovieDetails = async () => {
 
         // Movie Background
         const backdropUrl = movie.backdrop_path ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}` : 'https://via.placeholder.com/1500x800?text=No+Backdrop+Available';
-        document.querySelector('.blurred-background').style.backgroundImage = `url(${backdropUrl})`;
+        document.querySelector('.blurred-background').style.backgroundImage = `none`;
 
         // Movie Description
         document.getElementById('movie-description').textContent = movie.overview;
