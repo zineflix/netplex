@@ -261,7 +261,6 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1fwDAs9o3oxisXi17AfjgGDi84Ch9ELGi/preview",
             "https://drive.google.com/file/d/1g1iPf1-sOLY7KLZ4XnGQxhxL2jxXbPjs/preview",
             "https://drive.google.com/file/d/1g5QpVihX8vOFzvwjrJLxQJdkLUSwyEOF/preview",
-            "link",
         ],
         titles: [
             "Season 1 Episode 1",
