@@ -1,15 +1,3 @@
-// movie-details.js (or another main JavaScript file)
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service-worker.js').then((registration) => {
-    console.log('Service Worker registered with scope:', registration.scope);
-  }).catch((error) => {
-    console.log('Service Worker registration failed:', error);
-  });
-}
-
-
-
 const apiKey = 'a1e72fd93ed59f56e6332813b9f8dcae'; // Your TMDB API Key
 const baseUrl = 'https://api.themoviedb.org/3';
 
