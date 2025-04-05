@@ -823,7 +823,7 @@ body {
   position: absolute;
   top: 0px;
   right: 30px;
-  background-color: rgba(221, 27, 27, 0.39);
+  background-color: red;
   color: white;
   font-size: 14px;
   padding: 10px;
