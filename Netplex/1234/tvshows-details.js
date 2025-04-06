@@ -539,3 +539,23 @@ function redirectToV2() {
     window.location.href = "https://netplex-v2.pages.dev";
 }
 // For Floating Message Close Function End
+
+
+// Fullscreen Button Movie Start //
+function toggleFullscreen() {
+  const iframe = document.querySelector('iframe');
+  if (iframe.requestFullscreen) {
+    iframe.requestFullscreen();
+  } else if (iframe.mozRequestFullScreen) {
+    iframe.mozRequestFullScreen();
+  } else if (iframe.webkitRequestFullscreen) {
+    iframe.webkitRequestFullscreen();
+  } else if (iframe.msRequestFullscreen) {
+    iframe.msRequestFullscreen();
+  }
+  // Rotate the screen to landscape mode (Only works on mobile browsers)
+    if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock("landscape").catch(error => console.log("Orientation lock failed:", error));
+    }  
+}
+// Fullscreen Button Movie End //
