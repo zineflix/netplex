@@ -502,39 +502,22 @@ function closeMessage() {
     }
 // For Floating Message Close Function End
 
-  
 
-
-document.addEventListener("DOMContentLoaded", async function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const movieId = urlParams.get("movie_id");
-    const tvId = urlParams.get("tv_id");
-    
-    if (!movieId && !tvId) return;
-
-    const API_KEY = "a1e72fd93ed59f56e6332813b9f8dcae"; // Replace with your TMDb API key
-    const type = movieId ? "movie" : "tv";
-    const id = movieId || tvId;
-
-    try {
-        const response = await fetch(`https://api.themoviedb.org/3/${type}/${id}?api_key=${API_KEY}`);
-        const data = await response.json();
-        
-        if (data.poster_path) {
-            const imageUrl = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
-
-            // Update the Open Graph meta tag dynamically
-            let metaTag = document.querySelector('meta[property="og:image"]');
-            if (!metaTag) {
-                metaTag = document.createElement('meta');
-                metaTag.setAttribute("property", "og:image");
-                document.head.appendChild(metaTag);
-            }
-            metaTag.setAttribute("content", imageUrl);
-        }
-    } catch (error) {
-        console.error("Error fetching image from TMDb:", error);
-    }
-});
-
-
+// Fullscreen Button Movie Start //
+function toggleFullscreen() {
+  const iframe = document.querySelector('iframe');
+  if (iframe.requestFullscreen) {
+    iframe.requestFullscreen();
+  } else if (iframe.mozRequestFullScreen) {
+    iframe.mozRequestFullScreen();
+  } else if (iframe.webkitRequestFullscreen) {
+    iframe.webkitRequestFullscreen();
+  } else if (iframe.msRequestFullscreen) {
+    iframe.msRequestFullscreen();
+  }
+  // Rotate the screen to landscape mode (Only works on mobile browsers)
+    if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock("landscape").catch(error => console.log("Orientation lock failed:", error));
+    }  
+}
+// Fullscreen Button Movie End //
