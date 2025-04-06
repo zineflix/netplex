@@ -584,6 +584,24 @@ body {
   background-color: black;
 }
 
+.fullscreen-btn {
+  position: absolute;
+  top: 0px;
+  right: 230px;
+  background-color: #0296cc;
+  color: white;
+  font-size: 14px;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  z-index: 1100; /* Make sure it's on top of the iframe */
+}
+
+.fullscreen-btn:hover {
+  background-color: black;
+}
+
 .server-dropdown {
   position: absolute;
   top: 50px;  /* Space below the Change Server button */
@@ -854,6 +872,24 @@ body {
 }
 
 #change-server-btn:hover {
+  background-color: black;
+}
+
+.fullscreen-btn {
+  position: absolute;
+  top: 0px;
+  right: 230px;
+  background-color: #0296cc;
+  color: white;
+  font-size: 14px;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  z-index: 1100; /* Make sure it's on top of the iframe */
+}
+
+.fullscreen-btn:hover {
   background-color: black;
 }
 
@@ -2326,11 +2362,14 @@ meta[http-equiv="refresh"] {
     
 /* LEAVE A COMMENT END */
 
-
+/* Fullscreen, Change server, Close Button Start */
 @media (max-width: 768px) {
   #iframe-container {
     top: 35;
     height: calc(100% - 35px);
+  }
+  .fullscreen-btn {
+    top: -35;
   }
   #close-iframe-btn {
     top: -35;
@@ -2343,3 +2382,4 @@ meta[http-equiv="refresh"] {
     top: 0;
   }
 }
+/* Fullscreen, Change server, Close Button Start */
