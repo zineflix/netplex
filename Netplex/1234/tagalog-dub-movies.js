@@ -40,7 +40,7 @@ const API_KEY = "a1e72fd93ed59f56e6332813b9f8dcae";
         const MOVIE_IDS = [
             18377, 597, 57627, 455714, 9470, 396535, 20453, 1001311, 11770, 41387, 16269, 57663, 
             53658, 570511, 200085, 433945, 184219, 11178, 15859, 158445, 851644, 9056, 10753, 
-            11134, 9404, 11636, 52324, 58233, 219246,
+            11134, 9404, 11636, 52324, 58233, 219246, 
         ];
         const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
         const movieGallery = document.getElementById("movieGallery");
@@ -285,7 +285,32 @@ const TV_EPISODES = {
             "Season 1 Episode 20",
         ]
     },
-    
+    43899: {
+        links: [
+            "https://drive.google.com/file/d/1zWJejfshlnuloPZzKhsU0vwkkfM1l5T6/preview",
+            "https://drive.google.com/file/d/1H6-dlE_tNy-Wr_n1E_ZadivdUlig1oz-/preview",
+            "https://drive.google.com/file/d/1ToXlThfEWBDbkgsodMPbnSFT1_ELpk4K/preview",
+            "https://drive.google.com/file/d/1TJfGI7EoRESoINM9jhpVLlXjgA5zWCqj/preview",
+            "https://drive.google.com/file/d/1sa3ySJUYOjQ3MORCx_7QJi9JVLjH4Ynd/preview",
+            "https://drive.google.com/file/d/19cAE_yt-3gnt61PJfBYjY00oG4McY7Fs/preview",
+            "https://drive.google.com/file/d/1G8l7mjV6FY_rhhQLbzsMnbONWzMXANyi/preview",
+            "https://drive.google.com/file/d/1PC5q2TIEpO0gKSNVaVLHwK4A-1NFaXyu/preview",
+            "https://drive.google.com/file/d/1dkhZBi6rt5CL35PKwCJaWlBz6oonJkhw/preview",
+            "https://drive.google.com/file/d/1ciXIzP7xihTqMZdYwEBGnDArZXxDNRE3/preview",
+        ],
+        titles: [
+            "Episode 1",
+            "Episode 2",
+            "SEpisode 3",
+            "Episode 4",
+            "Episode 5",
+            "Episode 6",
+            "Episode 7",
+            "Episode 8",
+            "Episode 9",
+            "Episode 10",
+        ]
+    },
     // Add more shows with episode links similarly
 };
 
