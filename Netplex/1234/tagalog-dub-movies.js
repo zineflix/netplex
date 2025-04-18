@@ -162,6 +162,7 @@ const TV_SHOW_IDS = [
     219246, // When Life Gives You Tangerines
     135238,  // Gyeongseong Creature
     117378, // Mouse
+    43899, // The Bible
     
     
 ];
