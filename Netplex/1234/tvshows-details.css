@@ -893,6 +893,25 @@ body {
   background-color: black;
 }
 
+#next-episode-btn {
+  position: absolute;
+  bottom: 150px;
+  right: 90px;
+  background-color: #0296cc;
+  color: white;
+  font-size: 16px;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  z-index: 1100; /* Make sure it's on top of the iframe */
+}
+
+#next-episode-btn:hover {
+  background-color: black;
+}
+
+
 .server-dropdown {
   position: absolute;
   top: 50px;  /* Space below the Change Server button */
