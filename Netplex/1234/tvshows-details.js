@@ -354,21 +354,33 @@ const fetchTVShowDetails = async () => {
         };
 
         // Play selected episode
-        const playEpisode = (episodeNumber, seasonNumber) => {
-            const selectedServerUrl = SERIES_ENDPOINTS[currentServerIndex].url; // Get URL from the selected server
-            console.log(`Trying to load from: ${selectedServerUrl}?autonext=1`);
+    const playEpisode = (episodeNumber, seasonNumber) => {
+    const selectedServerUrl = SERIES_ENDPOINTS[currentServerIndex].url;
+    console.log(`Trying to load from: ${selectedServerUrl}?autonext=1`);
 
-            const iframeContainer = document.getElementById('iframe-container');
-            iframeContainer.style.display = 'flex';
+    const iframeContainer = document.getElementById('iframe-container');
+    iframeContainer.style.display = 'flex';
 
-            const iframe = document.getElementById('movie-iframe');
-            iframe.src = `${selectedServerUrl}${tvShowId}/${seasonNumber}/${episodeNumber}?autonext=1&autoplay=1`;
+    const iframe = document.getElementById('movie-iframe');
+    iframe.src = `${selectedServerUrl}${tvShowId}/${seasonNumber}/${episodeNumber}?autonext=1&autoplay=1`;
 
-            iframe.onerror = function () {
-                console.error('Error loading the episode content in the iframe.');
-                alert('Failed to load the episode. Try a different server.');
-            };
-        };
+    iframe.onerror = function () {
+        console.error('Error loading the episode content in the iframe.');
+        alert('Failed to load the episode. Try a different server.');
+    };
+
+    // 👉 Add this block here:
+    localStorage.setItem('lastPlayedSeason', seasonNumber);
+    localStorage.setItem('lastPlayedEpisode', episodeNumber);
+
+    const nextBtn = document.getElementById('next-episode-btn');
+    nextBtn.style.display = 'block';
+
+    nextBtn.onclick = () => {
+        let nextEpisode = episodeNumber + 1;
+        playEpisode(nextEpisode, seasonNumber);
+    };
+};
 
         // Event listeners for the buttons
         const seasonBtn = document.getElementById('season-btn');
