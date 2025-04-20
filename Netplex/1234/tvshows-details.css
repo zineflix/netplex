@@ -899,7 +899,7 @@ body {
   right: 30px;
   background-color: #0296cc;
   color: white;
-  font-size: 16px;
+  font-size: 14px;
   padding: 10px;
   border: none;
   cursor: pointer;
@@ -2398,7 +2398,7 @@ meta[http-equiv="refresh"] {
     top: -35;
   }
   #next-episode-btn {
-    bottom: 50;
+    bottom: 150;
   }
   .server-dropdown {
     top: 0;
