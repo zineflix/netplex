@@ -559,3 +559,35 @@ function toggleFullscreen() {
     }  
 }
 // Fullscreen Button Movie End //
+
+// For Auto Next Episode Script Start //
+// Wait until iframe finishes loading and check for end event
+document.getElementById("movie-iframe").addEventListener("load", () => {
+    const iframe = document.getElementById("movie-iframe");
+    try {
+        // Try to access the iframe content
+        const player = iframe.contentWindow.document.querySelector('video');
+        if (player) {
+            player.onended = () => {
+                playNextEpisode();
+            };
+        }
+    } catch (error) {
+        console.warn("Cannot access iframe video due to cross-origin restrictions.");
+    }
+});
+
+// Your episode data structure must be accessible here
+let currentEpisodeIndex = 0; // Make sure this is set correctly
+let episodeList = []; // Should contain all episodes for current season
+
+function playNextEpisode() {
+    if (currentEpisodeIndex < episodeList.length - 1) {
+        currentEpisodeIndex++;
+        const nextEpisodeUrl = episodeList[currentEpisodeIndex].url;
+        document.getElementById("movie-iframe").src = nextEpisodeUrl;
+    } else {
+        alert("You’ve finished all episodes in this season!");
+    }
+}
+// For Auto Next Episode Script End //
