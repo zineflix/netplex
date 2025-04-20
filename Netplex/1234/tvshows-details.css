@@ -2397,6 +2397,9 @@ meta[http-equiv="refresh"] {
   #change-server-btn {
     top: -35;
   }
+  #next-episode-btn {
+    bottom: 50;
+  }
   .server-dropdown {
     top: 0;
   }
