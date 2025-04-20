@@ -222,9 +222,6 @@ const tvShowId = urlParams.get('id');
 let currentServerIndex = 0;
 let selectedSeason = null;
 let selectedEpisode = null;
-let episodesList = []; // List of current season episodes
-let currentEpisodeIndex = 0; // Index tracker
-
 
 // Fetch comments when the page loads
 window.onload = function () {
@@ -332,9 +329,7 @@ const fetchTVShowDetails = async () => {
             const episodesContainer = document.getElementById('episodes-list');
             episodesContainer.innerHTML = ''; // Clear previous episodes
 
-            episodesList = episodesData.episodes; // Save episodes list
-            episodesData.episodes.forEach((episode, index) => {
-
+            episodesData.episodes.forEach(episode => {
                 const episodeItem = document.createElement('li');
                 const episodeImage = document.createElement('img');
                 const episodeImageUrl = episode.still_path
@@ -351,7 +346,6 @@ const fetchTVShowDetails = async () => {
 
                 episodeItem.addEventListener('click', () => {
                     selectedEpisode = episode.episode_number;
-                    currentEpisodeIndex = index;
                     playEpisode(selectedEpisode, selectedSeason);
                 });
 
@@ -361,39 +355,20 @@ const fetchTVShowDetails = async () => {
 
         // Play selected episode
         const playEpisode = (episodeNumber, seasonNumber) => {
-        const selectedServerUrl = SERIES_ENDPOINTS[currentServerIndex].url;
-        const iframe = document.getElementById('movie-iframe');
-        const iframeContainer = document.getElementById('iframe-container');
+            const selectedServerUrl = SERIES_ENDPOINTS[currentServerIndex].url; // Get URL from the selected server
+            console.log(`Trying to load from: ${selectedServerUrl}?autonext=1`);
 
-        iframeContainer.style.display = 'flex';
-        iframe.src = `${selectedServerUrl}${tvShowId}/${seasonNumber}/${episodeNumber}?autonext=1&autoplay=1`;
+            const iframeContainer = document.getElementById('iframe-container');
+            iframeContainer.style.display = 'flex';
 
-        iframe.onload = () => {
-            try {
-                const video = iframe.contentWindow.document.querySelector('video');
-                if (video) {
-                    video.onended = () => {
-                        // Go to next episode when video ends
-                        if (currentEpisodeIndex + 1 < episodesList.length) {
-                            currentEpisodeIndex++;
-                            selectedEpisode = episodesList[currentEpisodeIndex].episode_number;
-                            playEpisode(selectedEpisode, selectedSeason);
-                        } else {
-                            alert("You've reached the final episode of this season.");
-                        }
-                    };
-                }
-            } catch (error) {
-                console.warn("Auto-next may not work due to cross-origin iframe restrictions.");
-            }
+            const iframe = document.getElementById('movie-iframe');
+            iframe.src = `${selectedServerUrl}${tvShowId}/${seasonNumber}/${episodeNumber}?autonext=1&autoplay=1`;
+
+            iframe.onerror = function () {
+                console.error('Error loading the episode content in the iframe.');
+                alert('Failed to load the episode. Try a different server.');
+            };
         };
-
-        iframe.onerror = function () {
-            console.error('Error loading the episode content in the iframe.');
-            alert('Failed to load the episode. Try a different server.');
-        };
-    };
-
 
         // Event listeners for the buttons
         const seasonBtn = document.getElementById('season-btn');
