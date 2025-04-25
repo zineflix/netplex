@@ -15,24 +15,26 @@ function triggerPopunder() {
 
     localStorage.setItem("popunderData", JSON.stringify({ ...savedData, [movieId]: today }));
 
-    openMultiplePopunders([
-        "https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5",
-        "https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5",
-        "https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5"
-    ]);
+    openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
 }
 
-function openMultiplePopunders(urls) {
-    urls.forEach((url, i) => {
-        setTimeout(() => {
-            const popunder = window.open(url, "_blank", "width=1,height=1,left=0,top=0");
-            if (popunder) {
-                popunder.blur();
-            }
-            window.focus();
-        }, i * 200); // stagger by 200ms
+function openPopunder(url) {
+    const urls = [
+        url,
+        "https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5",  // replace with your actual second URL
+        "https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5"    // replace with your actual third URL
+    ];
+
+    urls.forEach(adUrl => {
+        let popunder = window.open(adUrl, "_blank", "width=1,height=1,left=0,top=0");
+        if (popunder) {
+            popunder.blur();
+        }
     });
+
+    window.focus(); // refocus the original window
 }
+
 
 function getMovieIdFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
