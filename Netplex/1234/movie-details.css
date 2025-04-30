@@ -2396,14 +2396,14 @@ meta[http-equiv="refresh"] {
     margin: 0 auto;
   }
 
-  @media (min-width: 769px) {
+  @media (max-width: 768px) {
     .responsive-iframe-container {
       width: 75%;
       height: 200px;
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 480px) {
     .responsive-iframe-container {
       width: 75%;
       height: 200px;
