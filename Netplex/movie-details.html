@@ -336,7 +336,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </iframe>
 </div>
 <!-- Adsterra DL 2 Ad Container End -->
+<style>
+  .responsive-iframe-container {
+    width: 75%;
+    height: 200px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+  }
 
+  @media (max-width: 768px) {
+    .responsive-iframe-container {
+      width: 90%;
+      height: 180px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .responsive-iframe-container {
+      width: 95%;
+      height: 160px;
+    }
+  }
+</style>
 <!-- Adsterra DL 1 Ad Container Start -->    
 <div class="responsive-iframe-container">
   <iframe 
