@@ -2383,3 +2383,30 @@ meta[http-equiv="refresh"] {
   }
 }
 /* Fullscreen, Change server, Close Button Start */
+
+
+/* Adsterra DL Style Ad Container Start */
+  .responsive-iframe-container {
+    width: 75%;
+    height: 200px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .responsive-iframe-container {
+      width: 90%;
+      height: 180px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .responsive-iframe-container {
+      width: 95%;
+      height: 160px;
+    }
+  }
+/* Adsterra DL Style Ad Container End */
