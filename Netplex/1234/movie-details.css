@@ -2396,17 +2396,17 @@ meta[http-equiv="refresh"] {
     margin: 0 auto;
   }
 
-  @media (max-width: 768px) {
+  @media (min-width: 769px) {
     .responsive-iframe-container {
-      width: 90%;
-      height: 180px;
+      width: 75%;
+      height: 200px;
     }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     .responsive-iframe-container {
-      width: 95%;
-      height: 160px;
+      width: 75%;
+      height: 200px;
     }
   }
 /* Adsterra DL Style Ad Container End */
