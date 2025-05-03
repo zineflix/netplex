@@ -251,9 +251,8 @@ const MOVIE_ENDPOINTS = [
     { url: 'https://embed.rgshows.me/api/1/movie/?id=', name: 'Server 6' },
     { url: 'https://vidsrc.cc/v3/embed/movie/', name: 'Server 7' },
     { url: 'https://embed.rgshows.me/api/3/movie/?id=', name: 'Server 8' },
-    { url: 'https://vidsrc.icu/embed/movie/{id}', name: 'Server 9' },
-    { url: 'https://rivestream.org/embed?type=movie&id=', name: 'Server 10' },
-    { url: 'https://vidsrc.rip/embed/movie/', name: 'Server 11' },
+    { url: 'https://rivestream.org/embed?type=movie&id=', name: 'Server 9' },
+    { url: 'https://vidsrc.rip/embed/movie/', name: 'Server 10' },
     
 ];
 
