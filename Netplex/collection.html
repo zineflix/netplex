@@ -52,7 +52,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <!-- Go Back Button Start -->
-        <button onclick="goBack()" class="go-back-btn">Go Back</button>
+        <button onclick="goHome()" class="go-back-btn">Go Home</button>
 
   <h1>AI Recommendations Movies & TVShows</h1>
   <button onclick="getRandomRecommendations()">Get AI Random Recommendations</button>
@@ -60,12 +60,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div id="results"></div>
 
 
-<!-- JavaScript for Go Back functionality -->
-      <script>
-        function goBack() {
-            window.history.back(); // Go back to the previous page in the browser history
-        }
-        </script>
+<!-- JavaScript for Go Home functionality -->
+<script>
+  function goHome() {
+    window.location.href = "index.html"; // Redirect to index.html
+  }
+</script>
 <!-- Go Back Button End -->
 
 <!-- Adsterra DL 37 Ad Container Start -->
