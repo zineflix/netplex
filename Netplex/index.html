@@ -174,44 +174,60 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- Chatroom End -->
 
 
-<!-- Adsterra DL 3 Ad Container Start -->
-<br>
-<div class="responsive-iframe-container">
-  <iframe 
-    src="https://beddingfetched.com/kazz96c2?key=332f7c8f78ab4221fd3842da24293c05" 
-    width="100%" 
-    height="100%" 
-    style="border: none;" 
-    loading="lazy">
-  </iframe>
+<!-- Adsterra DL 14,15,8 & 9 Ad Container Start -->
+<div class="ads-row">
+  <div class="responsive-iframe-container">
+    <iframe src="https://beddingfetched.com/qg3ze1yre8?key=11f527a12301b56ed85b07d04c16d0cb" 
+            width="100%" height="100%" style="border: none;" loading="lazy"></iframe>
+  </div>
+  <div class="responsive-iframe-container">
+    <iframe src="https://beddingfetched.com/h6bcf8wt?key=0ee564b870e5b8ee74ff868ca15d5380" 
+            width="100%" height="100%" style="border: none;" loading="lazy"></iframe>
+  </div>
+  <div class="responsive-iframe-container">
+    <iframe src="https://beddingfetched.com/nbpbjsc21?key=f05108b3491ea8ff78c7a85ae85a507b" 
+            width="100%" height="100%" style="border: none;" loading="lazy"></iframe>
+  </div>
+  <div class="responsive-iframe-container">
+    <iframe src="https://beddingfetched.com/x5p0q9c1?key=02118d332e7b7382622ec6387f47d307" 
+            width="100%" height="100%" style="border: none;" loading="lazy"></iframe>
+  </div>
 </div>
 
 <style>
+  .ads-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin: 20px auto;
+    max-width: 1200px;
+  }
+
   .responsive-iframe-container {
-    width: 75%;
-    height: 200px;
+    flex: 1 1 calc(25% - 20px); /* 4 items per row minus gap */
+    height: 150px;
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    margin: 0 auto;
+    min-width: 200px; /* prevents cramping */
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 991px) {
     .responsive-iframe-container {
-      width: 75%;
-      height: 180px;
+      flex: 1 1 calc(50% - 20px); /* 2 per row */
     }
   }
 
   @media (max-width: 480px) {
     .responsive-iframe-container {
-      width: 75%;
-      height: 160px;
+      flex: 1 1 100%; /* full width */
     }
   }
-</style>  
-<!-- Adsterra DL 3 Ad Container End -->
+</style>
+<!-- Adsterra DL 14,15,8 & 9 Ad Container End -->
+
     
 </body>
   
