@@ -234,64 +234,6 @@ document.getElementById('pageViews').innerText = "Total Page Views: " + totalPag
 </style>
 <!-- Adsterra DL 14,15,8 & 9 Ad Container End -->
 
-<!-- HTML widget container -->
-<div id="ga-widget">
-    <h2>Website Analytics</h2>
-    <p id="total-users">Total Users: Loading...</p>
-    <p id="active-users">Active Users: Loading...</p>
-    <p id="pageviews">Page Views: Loading...</p>
-</div>
-
-<!-- Add the Google API Client Script -->
-<script src="https://apis.google.com/js/api.js"></script>
-
-<script>
-  // API Client setup
-  function loadClient() {
-    gapi.client.setApiKey("AIzaSyDttTweZSPdxJ6qPj9T0lI1UIgphuB5U7s"); // Use your API key
-    return gapi.client.load("https://analyticsdata.googleapis.com/$discovery/rest?version=v1beta")
-      .then(function() {
-        console.log("GAPI client loaded for API");
-      }, function(error) {
-        console.error("Error loading GAPI client", error);
-      });
-  }
-
-  // Make an API request to get Analytics data
-  function getAnalyticsData() {
-    const request = {
-      "entity": "properties/436449873", // Use your GA4 Property ID
-      "dimensions": [{ "name": "date" }],
-      "metrics": [
-        { "name": "activeUsers" },
-        { "name": "totalUsers" },
-        { "name": "screenPageViews" }
-      ],
-    };
-
-    return gapi.client.analyticsdata.properties.runReport(request).then(function(response) {
-      const data = response.result.rows;
-      if (data.length > 0) {
-        document.getElementById("total-users").textContent = "Total Users: " + data[0].metricValues[0].value;
-        document.getElementById("active-users").textContent = "Active Users: " + data[0].metricValues[1].value;
-        document.getElementById("pageviews").textContent = "Page Views: " + data[0].metricValues[2].value;
-      } else {
-        console.error("No data returned from API");
-      }
-    });
-  }
-
-  // Initialize and authenticate the API client
-  function authenticateAndLoad() {
-    gapi.auth2.getAuthInstance().signIn().then(() => {
-      loadClient().then(getAnalyticsData);
-    });
-  }
-
-  // Start the authentication process
-  gapi.load("client:auth2", authenticateAndLoad);
-</script>
-
     
 </body>
   
