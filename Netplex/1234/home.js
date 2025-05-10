@@ -156,10 +156,3 @@ document.addEventListener("DOMContentLoaded", function () {
 // For Dropdown More Button Function End
 
 
-// Example to fetch Google Analytics real-time data Start
-fetch('https://www.googleapis.com/analytics/v3/data/realtime?ids=ga:YOUR_VIEW_ID&metrics=rt:activeUsers')
-  .then(response => response.json())
-  .then(data => {
-    document.getElementById('liveVisitors').innerText = `Active Visitors: ${data.totalsForAllResults['rt:activeUsers']}`;
-  });
-// Example to fetch Google Analytics real-time data End
