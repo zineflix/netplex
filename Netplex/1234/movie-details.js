@@ -253,7 +253,7 @@ const MOVIE_ENDPOINTS = [
     { url: 'https://embed.rgshows.me/api/3/movie/?id=', name: 'Server 8' },
     { url: 'https://rivestream.org/embed?type=movie&id=', name: 'Server 9' },
     { url: 'https://vidsrc.rip/embed/movie/', name: 'Server 10' },
-    { url: 'https://godriveplayer.com/player.php?imdb={id}', name: 'Server 11' },
+    { url: 'https://apimocine.vercel.app/movie/', name: 'Server 11' },
     
 ];
 
