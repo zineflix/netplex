@@ -155,4 +155,45 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 // For Dropdown More Button Function End
 
+// Example: Track page views and unique visitors
+
+// Function to increment page view count
+function incrementPageView() {
+  const pageViewRef = database.ref('pageViews');
+  pageViewRef.transaction((currentValue) => (currentValue || 0) + 1);
+}
+
+// Function to store unique visitors (using sessionStorage for simplicity)
+function trackUniqueVisitor() {
+  const visitorId = sessionStorage.getItem('visitorId');
+  if (!visitorId) {
+    // Generate a unique ID (or use a library like UUID)
+    const newVisitorId = 'visitor_' + Date.now();
+    sessionStorage.setItem('visitorId', newVisitorId);
+
+    // Store unique visitor in the database
+    const visitorsRef = database.ref('uniqueVisitors');
+    visitorsRef.child(newVisitorId).set(true);
+  }
+}
+
+// Call the tracking functions
+incrementPageView();
+trackUniqueVisitor();
+
+// Function to update the widget with current stats
+function updateStatsWidget() {
+  const pageViewRef = database.ref('pageViews');
+  pageViewRef.once('value', (snapshot) => {
+    document.getElementById('page-view-count').innerText = snapshot.val() || 0;
+  });
+
+  const uniqueVisitorsRef = database.ref('uniqueVisitors');
+  uniqueVisitorsRef.once('value', (snapshot) => {
+    document.getElementById('unique-visitors-count').innerText = snapshot.numChildren() || 0;
+  });
+}
+
+// Update stats when the page loads
+window.onload = updateStatsWidget;
 
