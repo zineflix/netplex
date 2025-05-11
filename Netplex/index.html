@@ -1,15 +1,5 @@
 <html lang="en">
 <head>
-    
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZKM1PWD532"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-ZKM1PWD532');
-</script>
 
     <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -69,6 +59,30 @@ ChatbroLoader({encodedChatId: '792pY'});
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PJ8ZMSNP"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyB_-y5W2-82aGvc_hv1XfNIPTTTXi0SHm8",
+    authDomain: "netplex-online-statistics.firebaseapp.com",
+    projectId: "netplex-online-statistics",
+    storageBucket: "netplex-online-statistics.firebasestorage.app",
+    messagingSenderId: "858720967728",
+    appId: "1:858720967728:web:d8ef1f11ee2c45783fa1f5",
+    measurementId: "G-09SSMG6XEB"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>    
     
 <!-- FOR RESPONSIVE NAVIGATION BAR START -->  
 <nav>
@@ -184,30 +198,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div id="netplex-chatroom"></div> 
 <!-- Chatroom End -->
 
-
-<div id="ga-widget">
-  <p><strong>Real-time Visitors:</strong> <span id="real-time-visitors">Loading...</span></p>
-  <p><strong>Pageviews Today:</strong> <span id="pageviews-today">Loading...</span></p>
+<div id="stats-widget">
+  <h3>Website Stats</h3>
+  <p>Page Views: <span id="page-view-count">Loading...</span></p>
+  <p>Unique Visitors: <span id="unique-visitors-count">Loading...</span></p>
 </div>
-
-<script>
-  (function() {
-    const measurementId = 'G-ZKM1PWD532'; // Replace with your GA4 Measurement ID
-    const apiUrl = `https://analytics.google.com/analytics/web/api/reporting/v1/reports:run?measurementId=${measurementId}`;
-    
-    fetch(apiUrl)
-      .then(response => response.json())
-      .then(data => {
-        // Populate widget with real-time data
-        document.getElementById('real-time-visitors').innerText = data.realtime.visitors;
-        document.getElementById('pageviews-today').innerText = data.pageviews_today;
-      })
-      .catch(err => {
-        console.error('Error fetching data:', err);
-      });
-  })();
-</script>
-
 
     
 <!-- Adsterra DL 14,15,8 & 9 Ad Container Start -->
