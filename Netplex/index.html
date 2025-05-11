@@ -174,11 +174,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div id="netplex-chatroom"></div> 
 <!-- Chatroom End -->
 
+<div id="ga-widget">
+  <p><strong>Real-time Visitors:</strong> <span id="real-time-visitors">Loading...</span></p>
+  <p><strong>Pageviews Today:</strong> <span id="pageviews-today">Loading...</span></p>
+</div>
+
 <script>
-// Example of updating statistics (replace with real data)
-document.getElementById('liveVisitors').innerText = "Active Visitors: " + liveVisitorsCount;
-document.getElementById('pageViews').innerText = "Total Page Views: " + totalPageViews;
+  (function() {
+    const measurementId = 'G-ZKM1PWD532'; // Replace with your GA4 Measurement ID
+    const apiUrl = `https://analytics.google.com/analytics/web/api/reporting/v1/reports:run?measurementId=${measurementId}`;
+    
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        // Populate widget with real-time data
+        document.getElementById('real-time-visitors').innerText = data.realtime.visitors;
+        document.getElementById('pageviews-today').innerText = data.pageviews_today;
+      })
+      .catch(err => {
+        console.error('Error fetching data:', err);
+      });
+  })();
 </script>
+
 
     
 <!-- Adsterra DL 14,15,8 & 9 Ad Container Start -->
