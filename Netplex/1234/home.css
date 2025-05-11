@@ -640,3 +640,23 @@ background-color: #0296cc; /* Darker green on hover */
   z-index: 9999;
 }
 /* Chatroom Section End */
+
+
+#ga-widget {
+  padding: 10px;
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  font-family: Arial, sans-serif;
+}
+
+#ga-widget p {
+  margin: 5px 0;
+}
+
+#ga-widget strong {
+  color: #333;
+}
+
