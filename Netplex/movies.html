@@ -261,14 +261,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
     font-family: 'Segoe UI', Tahoma, sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     z-index: 9999;
     user-select: none;
     cursor: pointer;
     overflow: hidden;
     width: 200px;
     max-height: 400px;
+    transition: all 0.3s ease-in-out;
   }
+
   #online-widget-header {
     padding: 12px 18px;
     border-bottom: 1px solid #0ff2;
@@ -276,29 +278,62 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     justify-content: space-between;
     align-items: center;
   }
+
   #online-widget-content {
     padding: 10px 18px;
     display: none;
     overflow-y: auto;
     max-height: 300px;
   }
+
   #online-widget.expanded #online-widget-content {
     display: block;
   }
+
   #online-widget-toggle {
     font-weight: bold;
     color: #fff;
     margin-left: 10px;
     transition: transform 0.3s ease;
   }
+
   #online-widget.expanded #online-widget-toggle {
     transform: rotate(180deg);
   }
+
   .region-stat {
     font-size: 13px;
     margin-top: 4px;
   }
+
+  /* Mobile Responsiveness */
+  @media (max-width: 600px) {
+    #online-widget {
+      left: 20px;
+      bottom: 20px;
+      width: 90%;
+      max-width: 180px;
+      font-size: 14px;
+    }
+
+    #online-widget-content {
+      max-height: 250px;
+    }
+
+    .region-stat {
+      font-size: 12px;
+    }
+
+    #online-widget-header {
+      padding: 10px 14px;
+    }
+
+    #online-widget-content {
+      padding: 8px 14px;
+    }
+  }
 </style>
+
 
 <!-- Widget HTML -->
 <div id="online-widget">
@@ -414,7 +449,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     document.getElementById("online-widget").classList.toggle("expanded");
   });
 </script>
-<!-- ONLINE STAT WIDGET CODE END --> 
+<!-- ONLINE STAT WIDGET CODE END -->  
     
 </body>
   
