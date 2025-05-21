@@ -292,6 +292,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     margin-top: 4px;
   }
 
+  /* Mobile Responsiveness */
   @media (max-width: 600px) {
     #online-widget {
       left: 20px;
@@ -319,6 +320,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }
 </style>
 
+
 <!-- Widget HTML -->
 <div id="online-widget">
   <div id="online-widget-header">
@@ -326,7 +328,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span id="online-widget-toggle">▲</span>
   </div>
   <div id="online-widget-content">
-    📅 Today's Visits: <span id="visit-count">...</span><br>
+    🔁 Visits: <span id="visit-count">...</span><br>
     📊 Peak: <span id="peak-users">...</span><br>
     🌍 You: <span id="geo-data">loading...</span><br><br>
     <strong>🌐 Online by Region:</strong>
@@ -349,16 +351,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
   const presenceRef = db.ref("presence");
+  const visitsRef = db.ref("siteStats/visits");
   const peakRef = db.ref("siteStats/peakUsers");
   const sessionsRef = db.ref("siteStats/sessions");
-
-  const getTodayKey = () => {
-    const today = new Date();
-    return today.toISOString().slice(0, 10); // Format: YYYY-MM-DD
-  };
-
-  const todayKey = getTodayKey();
-  const todayVisitRef = db.ref(`siteStats/dailyVisits/${todayKey}`);
 
   const localID = localStorage.getItem("netplex_uid") || (() => {
     const uid = 'user_' + Math.random().toString(36).substr(2, 9);
@@ -367,6 +362,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   })();
 
   const myRef = presenceRef.child(localID);
+
   const sessionStart = Date.now();
 
   // Fetch geolocation
@@ -378,7 +374,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       const region = data.region || "Unknown";
       document.getElementById("geo-data").textContent = location;
 
-      myRef.set({ online: true, country: country, region: region });
+      // Mark presence with location
+      myRef.set({
+        online: true,
+        country: country,
+        region: region
+      });
       myRef.onDisconnect().remove();
     })
     .catch(() => {
@@ -387,30 +388,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       myRef.onDisconnect().remove();
     });
 
-  // Save session time
+  // Save session time on unload (in background, optional)
   window.addEventListener("beforeunload", () => {
     const timeSpent = Math.floor((Date.now() - sessionStart) / 1000);
     sessionsRef.child(localID).push({ time: timeSpent, timestamp: Date.now() });
   });
 
-  // Update today's visit count
-  todayVisitRef.transaction(val => (val || 0) + 1);
-  todayVisitRef.on("value", snap => {
-    document.getElementById("visit-count").textContent = snap.val() || 0;
+  visitsRef.transaction(val => (val || 0) + 1);
+  visitsRef.on("value", snap => {
+    document.getElementById("visit-count").textContent = snap.val();
   });
 
-  // Peak users
   peakRef.on("value", snap => {
     document.getElementById("peak-users").textContent = snap.val() || 0;
   });
 
-  // Presence tracking
   presenceRef.on("value", snap => {
     const count = snap.numChildren();
     document.getElementById("online-count").textContent = count;
 
     peakRef.transaction(peak => (!peak || count > peak) ? count : peak);
 
+    // Group users by country/region
     const regionStats = {};
     snap.forEach(child => {
       const data = child.val();
@@ -420,21 +419,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
     });
 
-    const regionHTML = Object.entries(regionStats).map(([region, count]) => {
-      const countryCode = region.split(', ').pop().toLowerCase();
-      const flagImg = `<img src="https://flagcdn.com/16x12/${countryCode}.png" style="width:16px;height:12px;vertical-align:middle;margin-right:4px">`;
-      return `${flagImg} ${region}: ${count}`;
-    }).join("<br>");
+    const regionHTML = Object.entries(regionStats)
+      .map(([region, count]) => {
+  const countryCode = region.split(', ').pop().toLowerCase(); // "us"
+  const flagImg = `<img src="https://flagcdn.com/16x12/${countryCode}.png" style="width:16px;height:12px;vertical-align:middle;margin-right:4px">`;
+  return `${flagImg} ${region}: ${count}`;
+})
 
+      .join("<br>");
     document.getElementById("region-breakdown").innerHTML = regionHTML || "No region data.";
   });
 
-  // Toggle expand/collapse
+  // Toggle expand
   document.getElementById("online-widget-header").addEventListener("click", () => {
     document.getElementById("online-widget").classList.toggle("expanded");
   });
 </script>
-<!-- ONLINE STAT WIDGET CODE END -->
+<!-- ONLINE STAT WIDGET CODE END --> 
  
     
 </body>
