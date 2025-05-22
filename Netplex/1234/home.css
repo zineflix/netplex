@@ -595,6 +595,11 @@ background-color: #0296cc; /* Darker green on hover */
   text-decoration: underline;
 }
 
+.disclaimer-note {
+  color: #bfbfbf;
+  font-family: Arial;
+}
+
 @media (max-width: 600px) {
   .site-footer {
     margin-bottom: 54px;
@@ -616,7 +621,6 @@ background-color: #0296cc; /* Darker green on hover */
   }
 }
 /* Footer Section End*/
-
 /* Poster Title Section Start*/
 .poster-title {
     max-width: 205px;
