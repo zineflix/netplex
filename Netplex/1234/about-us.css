@@ -300,7 +300,6 @@ p {
 .site-footer p {
   margin: 8px 0;
   font-size: 16px;
-  text-align: center;
 }
 
 .footer-links {
@@ -316,6 +315,11 @@ p {
 
 .footer-links a:hover {
   text-decoration: underline;
+}
+
+.disclaimer-note {
+  color: #bfbfbf;
+  font-family: Arial;
 }
 
 @media (max-width: 600px) {
