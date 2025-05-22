@@ -449,6 +449,11 @@ section {
   text-decoration: underline;
 }
 
+.disclaimer-note {
+  color: #bfbfbf;
+  font-family: Arial;
+}
+
 @media (max-width: 600px) {
   .site-footer {
     margin-bottom: 54px;
@@ -470,7 +475,6 @@ section {
   }
 }
 /* Footer Section End*/
-
 
 /* Chatroom Section Start */
 #netplex-chatroom {
