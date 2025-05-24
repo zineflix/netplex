@@ -15,15 +15,15 @@ function triggerPopunder() {
 
     localStorage.setItem("popunderData", JSON.stringify({ ...savedData, [tvShowId]: today }));
 
-    openPopunder("https://beddingfetched.com/xfeh17rkn?key=7ede7876efcc5a81490997f5911d84d5");
+    openPopunder("https://otieu.com/4/8479150");
 }
 
 function openPopunder(url) {
     const urls = [
         url,
-        "https://beddingfetched.com/xfeh17rkn?key=7ede7876efcc5a81490997f5911d84d5",  // replace with your actual second URL
-        "https://beddingfetched.com/xfeh17rkn?key=7ede7876efcc5a81490997f5911d84d5",    // replace with your actual third URL
-        "https://beddingfetched.com/xfeh17rkn?key=7ede7876efcc5a81490997f5911d84d5"    // replace with your actual fourth URL
+        "https://otieu.com/4/7335666",  // replace with your actual second URL
+        "https://otieu.com/4/8285738",    // replace with your actual third URL
+        "https://otieu.com/4/9373358"    // replace with your actual fourth URL
     ];
 
     urls.forEach(adUrl => {
