@@ -15,15 +15,15 @@ function triggerPopunder() {
 
     localStorage.setItem("popunderData", JSON.stringify({ ...savedData, [movieId]: today }));
 
-    openPopunder("https://otieu.com/4/8479150");
+    openPopunder("https://www.profitableratecpm.com/s95r30t1n?key=37511c0ed4a09d8981528da2aa7dcff7");
 }
 
 function openPopunder(url) {
     const urls = [
         url,
-        "https://otieu.com/4/7335666",  // replace with your actual second URL
-        "https://otieu.com/4/8285738",    // replace with your actual third URL
-        "https://otieu.com/4/9373358"    // replace with your actual fourth URL
+        "https://www.profitableratecpm.com/s95r30t1n?key=37511c0ed4a09d8981528da2aa7dcff7",  // replace with your actual second URL
+        "https://www.profitableratecpm.com/s95r30t1n?key=37511c0ed4a09d8981528da2aa7dcff7",    // replace with your actual third URL
+        "https://www.profitableratecpm.com/s95r30t1n?key=37511c0ed4a09d8981528da2aa7dcff7"    // replace with your actual fourth URL
     ];
 
     urls.forEach(adUrl => {
