@@ -8,22 +8,15 @@ function triggerPopunder() {
     const movieId = getMovieIdFromURL();
     if (!movieId) return;
 
-    const today = new Date().toISOString().split("T")[0]; // Get YYYY-MM-DD
-    const savedData = JSON.parse(localStorage.getItem("popunderData")) || {};
-
-    if (savedData[movieId] === today) return; // Already triggered today
-
-    localStorage.setItem("popunderData", JSON.stringify({ ...savedData, [movieId]: today }));
-
     openPopunder("https://www.profitableratecpm.com/s95r30t1n?key=37511c0ed4a09d8981528da2aa7dcff7");
 }
 
 function openPopunder(url) {
     const urls = [
         url,
-        "https://www.profitableratecpm.com/s95r30t1n?key=37511c0ed4a09d8981528da2aa7dcff7",  // replace with your actual second URL
-        "https://www.profitableratecpm.com/s95r30t1n?key=37511c0ed4a09d8981528da2aa7dcff7",    // replace with your actual third URL
-        "https://www.profitableratecpm.com/s95r30t1n?key=37511c0ed4a09d8981528da2aa7dcff7"    // replace with your actual fourth URL
+        "https://www.profitableratecpm.com/s95r30t1n?key=37511c0ed4a09d8981528da2aa7dcff7",
+        "https://www.profitableratecpm.com/s95r30t1n?key=37511c0ed4a09d8981528da2aa7dcff7",
+        "https://www.profitableratecpm.com/s95r30t1n?key=37511c0ed4a09d8981528da2aa7dcff7"
     ];
 
     urls.forEach(adUrl => {
@@ -35,7 +28,6 @@ function openPopunder(url) {
 
     window.focus(); // refocus the original window
 }
-
 
 function getMovieIdFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
