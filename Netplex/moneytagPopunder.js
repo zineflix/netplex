@@ -5,9 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function triggerPopunder() {
-    const movieId = getMovieIdFromURL();
-    if (!movieId) return;
-
     openPopunder("https://www.profitableratecpm.com/s95r30t1n?key=37511c0ed4a09d8981528da2aa7dcff7");
 }
 
@@ -26,10 +23,5 @@ function openPopunder(url) {
         }
     });
 
-    window.focus(); // refocus the original window
-}
-
-function getMovieIdFromURL() {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get("movie_id");
+    window.focus(); // Refocus the original window
 }
