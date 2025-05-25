@@ -5,15 +5,15 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function triggerPopunder() {
-    openPopunder("https://establishscarcely.com/s95r30t1n?key=37511c0ed4a09d8981528da2aa7dcff7");
+    openPopunder("https://mi.jogglypion.com/iTpASeAPKrUqDc/122520");
 }
 
 function openPopunder(url) {
     const urls = [
         url,
-        "https://establishscarcely.com/s95r30t1n?key=37511c0ed4a09d8981528da2aa7dcff7",
-        "https://establishscarcely.com/s95r30t1n?key=37511c0ed4a09d8981528da2aa7dcff7",
-        "https://establishscarcely.com/s95r30t1n?key=37511c0ed4a09d8981528da2aa7dcff7"
+        "https://mi.jogglypion.com/iTpASeAPKrUqDc/122520",
+        "https://mi.jogglypion.com/iTpASeAPKrUqDc/122520",
+        "https://mi.jogglypion.com/iTpASeAPKrUqDc/122520"
     ];
 
     urls.forEach(adUrl => {
