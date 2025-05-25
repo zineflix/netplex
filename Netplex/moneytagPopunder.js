@@ -5,15 +5,15 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function triggerPopunder() {
-    openPopunder("https://mi.jogglypion.com/iTpASeAPKrUqDc/122520");
+    openPopunder("https://www.profitableratecpm.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2");
 }
 
 function openPopunder(url) {
     const urls = [
         url,
-        "https://mi.jogglypion.com/iTpASeAPKrUqDc/122520",
-        "https://mi.jogglypion.com/iTpASeAPKrUqDc/122520",
-        "https://mi.jogglypion.com/iTpASeAPKrUqDc/122520"
+        "https://www.profitableratecpm.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
+        "https://www.profitableratecpm.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
+        "https://www.profitableratecpm.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2"
     ];
 
     urls.forEach(adUrl => {
