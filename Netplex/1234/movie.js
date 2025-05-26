@@ -68,6 +68,7 @@ async function fetchMedia(url, containerId, type) {
 
 // Load Data
 fetchBanner();
+fetchMedia(`${baseURL}/movie/upcoming?api_key=${apiKey}&language=en-US&page=1`, "upcoming-movies", "movie");
 fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&vote_count.gte=500&vote_average.gte=8`, "popular-movies", "movie");
 fetchMedia(`${baseURL}/trending/movie/week?api_key=${apiKey}`, "trending-now", "movie");
 fetchMedia(`${baseURL}/movie/top_rated?api_key=${apiKey}&language=en-US&page=1`, "top-rated", "movie");
@@ -151,4 +152,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 // For Dropdown More Button Function End
-
