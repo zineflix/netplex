@@ -31,52 +31,54 @@ async function fetchBanner() {
 fetchBanner();
 
 // Fetch Media Rows
-async function fetchMedia(url, containerId, type) {
-    const response = await fetch(url);
-    const data = await response.json();
+async function fetchMedia(url, containerId, type, pages = 1) {
     const container = document.getElementById(containerId);
-    
-    data.results.forEach(item => {
-        const mediaItem = document.createElement("div");
-        mediaItem.classList.add("media-item");
-
-        // Round the rating to one decimal place
-        const rating = item.vote_average.toFixed(1);
-
-        mediaItem.innerHTML = `
-    <div class="poster-title" title="${item.title || item.name}">${item.title || item.name}</div>
-    <div class="poster-card">
-        <div class="rating">
-            <span class="star"><i class="fas fa-star"></i></span> <span class="rating-number">${rating}</span>
-        </div>
-        <img src="${imgURL + item.poster_path}" alt="${item.title || item.name}">
-        <div class="play-button">
-            <i class="fas fa-play"></i>
-        </div>
-    </div>
-`;
+    for (let page = 1; page <= pages; page++) {
+        const response = await fetch(`${url}&page=${page}`);
+        const data = await response.json();
         
-        mediaItem.addEventListener("click", () => {
-            window.location.href = type === "movie" 
-                ? `movie-details.html?movie_id=${item.id}`
-                : `tvshows-details.html?id=${item.id}`;
-        });
+        data.results.forEach(item => {
+            const mediaItem = document.createElement("div");
+            mediaItem.classList.add("media-item");
 
-        container.appendChild(mediaItem);
-    });
+            const rating = item.vote_average.toFixed(1);
+
+            mediaItem.innerHTML = `
+                <div class="poster-title" title="${item.title || item.name}">${item.title || item.name}</div>
+                <div class="poster-card">
+                    <div class="rating">
+                        <span class="star"><i class="fas fa-star"></i></span> <span class="rating-number">${rating}</span>
+                    </div>
+                    <img src="${imgURL + item.poster_path}" alt="${item.title || item.name}">
+                    <div class="play-button">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+            `;
+
+            mediaItem.addEventListener("click", () => {
+                window.location.href = type === "movie" 
+                    ? `movie-details.html?movie_id=${item.id}`
+                    : `tvshows-details.html?id=${item.id}`;
+            });
+
+            container.appendChild(mediaItem);
+        });
+    }
 }
+
 
 // Load Data
 fetchBanner();
-fetchMedia(`${baseURL}/movie/upcoming?api_key=${apiKey}&language=en-US&page=1`, "upcoming-movies", "movie");
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&vote_count.gte=500&vote_average.gte=8`, "popular-movies", "movie");
-fetchMedia(`${baseURL}/trending/movie/week?api_key=${apiKey}`, "trending-now", "movie");
-fetchMedia(`${baseURL}/movie/top_rated?api_key=${apiKey}&language=en-US&page=1`, "top-rated", "movie");
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=28&page=1`, "action-movies", "movie");
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=35&page=1`, "comedy-movies", "movie");
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=27&page=1`, "horror-movies", "movie");
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=10749&page=1`, "romance-movies", "movie");
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=16&page=1`, "animation-movies", "movie");
+fetchMedia(`${baseURL}/movie/upcoming?api_key=${apiKey}&language=en-US&page=1`, "upcoming-movies", "movie", 10);
+fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&vote_count.gte=500&vote_average.gte=8`, "popular-movies", "movie", 10);
+fetchMedia(`${baseURL}/trending/movie/week?api_key=${apiKey}`, "trending-now", "movie", 10);
+fetchMedia(`${baseURL}/movie/top_rated?api_key=${apiKey}&language=en-US&page=1`, "top-rated", "movie", 10);
+fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=28&page=1`, "action-movies", "movie", 10);
+fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=35&page=1`, "comedy-movies", "movie", 10);
+fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=27&page=1`, "horror-movies", "movie", 10);
+fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=10749&page=1`, "romance-movies", "movie", 10);
+fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=16&page=1`, "animation-movies", "movie", 10);
 
 
 // Ensure the function is globally accessible
