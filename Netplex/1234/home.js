@@ -31,48 +31,49 @@ async function fetchBanner() {
 fetchBanner();
 
 // Fetch Media Rows
-async function fetchMedia(url, containerId, type) {
-    const response = await fetch(url);
-    const data = await response.json();
+async function fetchMedia(url, containerId, type, pages = 3) {
     const container = document.getElementById(containerId);
-    
-    data.results.forEach(item => {
-        const mediaItem = document.createElement("div");
-        mediaItem.classList.add("media-item");
+    for (let page = 1; page <= pages; page++) {
+        const response = await fetch(`${url}&page=${page}`);
+        const data = await response.json();
 
-        // Round the rating to one decimal place
-        const rating = item.vote_average.toFixed(1);
+        data.results.forEach(item => {
+            const mediaItem = document.createElement("div");
+            mediaItem.classList.add("media-item");
 
-        mediaItem.innerHTML = `
-    <div class="poster-title" title="${item.title || item.name}">${item.title || item.name}</div>
-    <div class="poster-card">
-        <div class="rating">
-            <span class="star"><i class="fas fa-star"></i></span> <span class="rating-number">${rating}</span>
-        </div>
-        <img src="${imgURL + item.poster_path}" alt="${item.title || item.name}">
-        <div class="play-button">
-            <i class="fas fa-play"></i>
-        </div>
-    </div>
-`;
-        
-        mediaItem.addEventListener("click", () => {
-            window.location.href = type === "movie" 
-                ? `movie-details.html?movie_id=${item.id}`
-                : `tvshows-details.html?id=${item.id}`;
+            const rating = item.vote_average.toFixed(1);
+            mediaItem.innerHTML = `
+                <div class="poster-title" title="${item.title || item.name}">${item.title || item.name}</div>
+                <div class="poster-card">
+                    <div class="rating">
+                        <span class="star"><i class="fas fa-star"></i></span> <span class="rating-number">${rating}</span>
+                    </div>
+                    <img src="${imgURL + item.poster_path}" alt="${item.title || item.name}">
+                    <div class="play-button">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+            `;
+
+            mediaItem.addEventListener("click", () => {
+                window.location.href = type === "movie" 
+                    ? `movie-details.html?movie_id=${item.id}`
+                    : `tvshows-details.html?id=${item.id}`;
+            });
+
+            container.appendChild(mediaItem);
         });
-
-        container.appendChild(mediaItem);
-    });
+    }
 }
+
 
 // Load Data
 fetchBanner();
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&vote_count.gte=500&vote_average=10`, "popular-movies", "movie");
-fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&vote_count.gte=10000&vote_average=10`, "popular-tv-shows", "tv");
-fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&with_origin_country=KR&vote_count.gte=500`, "korean-tv-shows", "tv");
-fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&with_origin_country=JP&with_genres=16&vote_count.gte=500`, "japanese-animations", "tv");
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_companies=149142`, "philippine-movies", "movie");
+fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&vote_count.gte=500&vote_average=10`, "popular-movies", "movie", 5);
+fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&vote_count.gte=5000&vote_average=10`, "popular-tv-shows", "tv", 5);
+fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&with_origin_country=KR&vote_count.gte=300`, "korean-tv-shows", "tv", 5);
+fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&with_origin_country=JP&with_genres=16&vote_count.gte=500`, "japanese-animations", "tv", 5);
+fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_companies=149142`, "philippine-movies", "movie", 5);
 
 
 // Ensure the function is globally accessible
@@ -196,4 +197,3 @@ function updateStatsWidget() {
 
 // Update stats when the page loads
 window.onload = updateStatsWidget;
-
