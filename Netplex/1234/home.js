@@ -31,49 +31,58 @@ async function fetchBanner() {
 fetchBanner();
 
 // Fetch Media Rows
-async function fetchMedia(url, containerId, type, pages = 3) {
+const mediaState = {};
+
+async function fetchMedia(url, containerId, type, page = 1) {
     const container = document.getElementById(containerId);
-    for (let page = 1; page <= pages; page++) {
-        const response = await fetch(`${url}&page=${page}`);
-        const data = await response.json();
 
-        data.results.forEach(item => {
-            const mediaItem = document.createElement("div");
-            mediaItem.classList.add("media-item");
+    const response = await fetch(`${url}&page=${page}`);
+    const data = await response.json();
 
-            const rating = item.vote_average.toFixed(1);
-            mediaItem.innerHTML = `
-                <div class="poster-title" title="${item.title || item.name}">${item.title || item.name}</div>
-                <div class="poster-card">
-                    <div class="rating">
-                        <span class="star"><i class="fas fa-star"></i></span> <span class="rating-number">${rating}</span>
-                    </div>
-                    <img src="${imgURL + item.poster_path}" alt="${item.title || item.name}">
-                    <div class="play-button">
-                        <i class="fas fa-play"></i>
-                    </div>
-                </div>
-            `;
-
-            mediaItem.addEventListener("click", () => {
-                window.location.href = type === "movie" 
-                    ? `movie-details.html?movie_id=${item.id}`
-                    : `tvshows-details.html?id=${item.id}`;
-            });
-
-            container.appendChild(mediaItem);
-        });
+    if (!mediaState[containerId]) {
+        mediaState[containerId] = { page: 1, loading: false };
     }
+
+    data.results.forEach(item => {
+        const mediaItem = document.createElement("div");
+        mediaItem.classList.add("media-item");
+
+        const rating = item.vote_average.toFixed(1);
+        mediaItem.innerHTML = `
+            <div class="poster-title" title="${item.title || item.name}">${item.title || item.name}</div>
+            <div class="poster-card">
+                <div class="rating">
+                    <span class="star"><i class="fas fa-star"></i></span> <span class="rating-number">${rating}</span>
+                </div>
+                <img src="${imgURL + item.poster_path}" alt="${item.title || item.name}">
+                <div class="play-button">
+                    <i class="fas fa-play"></i>
+                </div>
+            </div>
+        `;
+
+        mediaItem.addEventListener("click", () => {
+            window.location.href = type === "movie" 
+                ? `movie-details.html?movie_id=${item.id}`
+                : `tvshows-details.html?id=${item.id}`;
+        });
+
+        container.appendChild(mediaItem);
+    });
+
+    mediaState[containerId].loading = false;
 }
+
+
 
 
 // Load Data
 fetchBanner();
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&vote_count.gte=500&vote_average=10`, "popular-movies", "movie", 5);
-fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&vote_count.gte=5000&vote_average=10`, "popular-tv-shows", "tv", 5);
-fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&with_origin_country=KR&vote_count.gte=300`, "korean-tv-shows", "tv", 5);
-fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&with_origin_country=JP&with_genres=16&vote_count.gte=500`, "japanese-animations", "tv", 5);
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_companies=149142`, "philippine-movies", "movie", 5);
+fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&vote_count.gte=500&vote_average=10`, "popular-movies", "movie", 1);
+fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&vote_count.gte=5000&vote_average=10`, "popular-tv-shows", "tv", 1);
+fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&with_origin_country=KR&vote_count.gte=300`, "korean-tv-shows", "tv", 1);
+fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&with_origin_country=JP&with_genres=16&vote_count.gte=500`, "japanese-animations", "tv", 1);
+fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_companies=149142`, "philippine-movies", "movie", 1);
 
 
 // Ensure the function is globally accessible
@@ -88,13 +97,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function scrollRight(containerId) {
-        let container = document.getElementById(containerId);
-        if (container) {
-            container.scrollBy({ left: 300, behavior: "smooth" });
-        } else {
-            console.error("Container not found:", containerId);
-        }
+    let container = document.getElementById(containerId);
+    container.scrollBy({ left: 300, behavior: "smooth" });
+
+    // Lazy load more when near end
+    if (
+        container.scrollLeft + container.clientWidth >= container.scrollWidth - 300 &&
+        !mediaState[containerId].loading
+    ) {
+        mediaState[containerId].loading = true;
+        mediaState[containerId].page++;
+        const nextPage = mediaState[containerId].page;
+
+        const url = getURLForContainer(containerId);
+        const type = getTypeForContainer(containerId);
+        fetchMedia(url, containerId, type, nextPage);
     }
+}
+
 
     // Attach event listeners to buttons (instead of inline HTML)
     document.querySelectorAll(".scroll-left").forEach(button => {
@@ -197,3 +217,21 @@ function updateStatsWidget() {
 
 // Update stats when the page loads
 window.onload = updateStatsWidget;
+
+
+// Load More List Start //
+function getURLForContainer(containerId) {
+    const urls = {
+        "popular-movies": `${baseURL}/discover/movie?api_key=${apiKey}&vote_count.gte=500&vote_average=10`,
+        "popular-tv-shows": `${baseURL}/discover/tv?api_key=${apiKey}&vote_count.gte=5000&vote_average=10`,
+        "korean-tv-shows": `${baseURL}/discover/tv?api_key=${apiKey}&with_origin_country=KR&vote_count.gte=300`,
+        "japanese-animations": `${baseURL}/discover/tv?api_key=${apiKey}&with_origin_country=JP&with_genres=16&vote_count.gte=500`,
+        "philippine-movies": `${baseURL}/discover/movie?api_key=${apiKey}&with_companies=149142`,
+    };
+    return urls[containerId];
+}
+
+function getTypeForContainer(containerId) {
+    return containerId.includes("tv") ? "tv" : "movie";
+}
+// Load More List End //
