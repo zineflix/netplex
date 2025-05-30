@@ -36,14 +36,23 @@ async function fetchRecommendations() {
       const movieItem = document.createElement('div');
       movieItem.classList.add('movie-item');
       
-      movieItem.innerHTML = `
-        <div class="rating-container">
-          <div class="rating">
-            <span class="star">&#9733;</span><span class="rating-number">${rating.toFixed(1)}</span>
-          </div>
-        </div>
-        <img src="${posterUrl}" alt="${title}" />
-      `;
+      // grab release year (fallback to first_air_date for TV)
+const year = (item.release_date || item.first_air_date || '').slice(0,4) || '—';
+
+movieItem.innerHTML = `
+  <div class="rating-container">
+    <div class="rating">
+      <span class="star">&#9733;</span><span class="rating-number">${rating.toFixed(1)}</span>
+    </div>
+  </div>
+
+  <div class="year-container">
+    <span class="year">${year}</span>
+  </div>
+
+  <img src="${posterUrl}" alt="${title}" />
+`;
+
 
       // Append the movie item to the link and the link to the movie grid
       link.appendChild(movieItem);
@@ -71,34 +80,42 @@ async function fetchMovies(query, page = 1) {
   }
 
   data.results.forEach(item => {
-    if (item.poster_path) {
-      const posterUrl = `https://image.tmdb.org/t/p/w200${item.poster_path}`;
-      const title = item.title || item.name;
-      const rating = item.vote_average || 0;
-      const id = item.id;
-      const mediaType = item.media_type;
+  if (item.poster_path) {
+    const posterUrl = `https://image.tmdb.org/t/p/w200${item.poster_path}`;
+    const title = item.title || item.name;
+    const rating = item.vote_average || 0;
+    const id = item.id;
+    const mediaType = item.media_type;
 
-      const link = document.createElement('a');
-      link.href = mediaType === 'movie'
-        ? `movie-details.html?movie_id=${id}`
-        : `tvshows-details.html?id=${id}`;
+    const year = (item.release_date || item.first_air_date || '').slice(0, 4) || '—';
 
-      const movieItem = document.createElement('div');
-      movieItem.classList.add('movie-item');
+    const link = document.createElement('a');
+    link.href = mediaType === 'movie'
+      ? `movie-details.html?movie_id=${id}`
+      : `tvshows-details.html?id=${id}`;
 
-      movieItem.innerHTML = `
-        <div class="rating-container">
-          <div class="rating">
-            <span class="star">&#9733;</span><span class="rating-number">${rating.toFixed(1)}</span>
-          </div>
+    const movieItem = document.createElement('div');
+    movieItem.classList.add('movie-item');
+
+    movieItem.innerHTML = `
+      <div class="rating-container">
+        <div class="rating">
+          <span class="star">&#9733;</span><span class="rating-number">${rating.toFixed(1)}</span>
         </div>
-        <img src="${posterUrl}" alt="${title}" />
-      `;
+      </div>
 
-      link.appendChild(movieItem);
-      movieGrid.appendChild(link);
-    }
-  });
+      <div class="year-container">
+        <span class="year">${year}</span>
+      </div>
+
+      <img src="${posterUrl}" alt="${title}" />
+    `;
+
+    link.appendChild(movieItem);
+    movieGrid.appendChild(link);
+  }
+});
+
 
   // Show load more button if more pages exist
   if (data.page < data.total_pages) {
