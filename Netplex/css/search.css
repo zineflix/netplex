@@ -73,6 +73,33 @@ body {
     z-index: 2;
   }
   
+/* ===== Year badge (top-right) ===== */
+.year-container {
+  position: absolute;
+  bottom: 8px;
+  left: 6px;
+  z-index: 2;
+  background-color: #0275a6; /* Netflix-style red */
+  color: #fff;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 2px 2px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  pointer-events: none;
+}
+
+
+.year{
+  background:rgba(238,238,238,.123);
+  backdrop-filter:blur(8px);
+  color:#fff;
+  font-size:13px;
+  padding:0 5px;
+  border-radius:5px;
+}
+
+
   /* Rating styles */
   .rating {
     background-color: rgba(238, 238, 238, 0.123); /* Dark background */
@@ -449,3 +476,5 @@ button {
   z-index: 9999;
 }
 /* Chatroom Section End */
+
+
