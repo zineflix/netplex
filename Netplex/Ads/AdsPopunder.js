@@ -11,7 +11,7 @@ function triggerPopunder() {
 function openPopunder(url) {
     const urls = [
         url,
-        "https://beddingfetched.com/xfeh17rkn?key=7ede7876efcc5a81490997f5911d84d5",
+        "https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5",
         "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
         "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
         "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
