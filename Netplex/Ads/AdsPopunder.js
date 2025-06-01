@@ -5,19 +5,19 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function triggerPopunder() {
-    openPopunder("https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2");
+    openPopunder("https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5");
 }
 
 function openPopunder(url) {
     const urls = [
         url,
         "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
-        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
-        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
-        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
-        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
-        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
-        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2"
+        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
+        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
+        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
+        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
+        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
+        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5"
     ];
 
     urls.forEach(adUrl => {
