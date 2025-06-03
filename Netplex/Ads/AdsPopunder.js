@@ -5,19 +5,19 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function triggerPopunder() {
-    openPopunder("https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2");
+    openPopunder("https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3");
 }
 
 function openPopunder(url) {
     const urls = [
         url,
-        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
-        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
-        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
-        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
-        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
-        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
-        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2"
+        "https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3",
+        "https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3",
+        "https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3",
+        "https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3",
+        "https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3",
+        "https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3",
+        "https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3"
     ];
 
     urls.forEach(adUrl => {
