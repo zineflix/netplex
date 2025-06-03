@@ -5,19 +5,19 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function triggerPopunder() {
-    openPopunder("https://beddingfetched.com/k3wckvpy?key=4589714dd928ba1256ff32d873af9a9a");
+    openPopunder("https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2");
 }
 
 function openPopunder(url) {
     const urls = [
         url,
-        "https://beddingfetched.com/k3wckvpy?key=4589714dd928ba1256ff32d873af9a9a",
-        "https://beddingfetched.com/k3wckvpy?key=4589714dd928ba1256ff32d873af9a9a",
-        "https://beddingfetched.com/k3wckvpy?key=4589714dd928ba1256ff32d873af9a9a",
-        "https://beddingfetched.com/k3wckvpy?key=4589714dd928ba1256ff32d873af9a9a",
-        "https://beddingfetched.com/k3wckvpy?key=4589714dd928ba1256ff32d873af9a9a",
-        "https://beddingfetched.com/k3wckvpy?key=4589714dd928ba1256ff32d873af9a9a",
-        "https://beddingfetched.com/k3wckvpy?key=4589714dd928ba1256ff32d873af9a9a"
+        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
+        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
+        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
+        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
+        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
+        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
+        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2"
     ];
 
     urls.forEach(adUrl => {
