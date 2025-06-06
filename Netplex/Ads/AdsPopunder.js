@@ -11,7 +11,7 @@ function triggerPopunder() {
 function openPopunder(url) {
     const urls = [
         url,
-        "https://jb.xylenolshivahs.com/iaFRU9G74Fa9qmwLK/122520",
+        "https://otieu.com/4/7335666",
         "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
         "https://preoccupyray.com/djmi4vcmx?key=e9e5a858ea141d418fa297b2a3e32eaf",
         "https://preoccupyray.com/b833j74w?key=17bad4f9f46748fe4f13b92fed12a99d",
