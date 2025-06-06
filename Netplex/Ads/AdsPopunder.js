@@ -5,13 +5,13 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function triggerPopunder() {
-    openPopunder("https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3");
+    openPopunder("https://www.profitableratecpm.com/a7mm18sw6?key=79442492f5fe436b0bc2484d9d0a8660");
 }
 
 function openPopunder(url) {
     const urls = [
         url,
-        "https://www.profitableratecpm.com/a7mm18sw6?key=79442492f5fe436b0bc2484d9d0a8660",
+        "https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3",
         "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
         "https://preoccupyray.com/djmi4vcmx?key=e9e5a858ea141d418fa297b2a3e32eaf",
         "https://preoccupyray.com/b833j74w?key=17bad4f9f46748fe4f13b92fed12a99d",
