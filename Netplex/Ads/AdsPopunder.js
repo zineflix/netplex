@@ -17,7 +17,7 @@ function openPopunder(url) {
         "https://preoccupyray.com/b833j74w?key=17bad4f9f46748fe4f13b92fed12a99d",
         "https://preoccupyray.com/y42xrxdr?key=478b92749e54c9f3609811242c2f4121",
         "https://preoccupyray.com/kgsz4b6ybr?key=8078fe7c08e013e9278d64a634df9a56",
-        "https://preoccupyray.com/exrty7but3?key=74bbf32e1ec546619508f1265829a9ad"
+        "https://pulseadnetwork.com/jump/next.php?r=10029718"
     ];
 
     urls.forEach(adUrl => {
