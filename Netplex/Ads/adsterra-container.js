@@ -1,4 +1,4 @@
-// ads.js 
+// adsterra-container.js
 const adContainer = document.querySelector('.ads-row');
 
 const adSources = [
