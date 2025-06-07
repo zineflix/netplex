@@ -144,9 +144,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div id="netplex-chatroom"></div> 
 <!-- Chatroom End -->
 
-<!-- Adsterra DL 33 Ad Container Start -->
+<!-- Adsterra Ad Container Start -->
+  <div id="ad-container"></div>
 
-<!-- Adsterra DL 33 Ad Container End -->
+  <script type="module">
+    import { renderAdsterraContainer } from './adsterra-container.js';
+    renderAdsterraContainer('ad-container');
+  </script>
+<!-- Adsterra Ad Container End -->
 
 <!-- ONLINE STAT WIDGET CODE START -->    
 <!-- Firebase SDK -->
