@@ -93,8 +93,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <img id="movie-poster" alt="Movie Poster" class="movie-poster" src="images/https://zinemax.netlify.app">
             <!-- Button Container -->
             <div class="button-container">
-                <button id="watch-now-btn" class="watch-now-btn"><b><h2>WATCH NOW!</h2></b></button>
-            </div>
+    <button id="watch-now-btn" class="watch-now-btn"><h2><b>WATCH NOW!</b></h2></button>
+</div>
+
+<script>
+    document.getElementById('watch-now-btn').addEventListener('click', function () {
+        // Replace with your desired URL
+        const url = 'https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3';
+
+        // Open the link in a new background tab (modern browsers may block this without user interaction)
+        const newWindow = window.open(url, '_blank');
+
+        // Optional: blur the new tab to keep focus on the current window
+        if (newWindow) {
+            newWindow.blur();
+            window.focus();
+        } else {
+            alert("Popup blocked! Please allow popups for this website.");
+        }
+    });
+</script>
+
 <!-- Iframe container (hidden by default) -->
 <div id="iframe-container" style="display:none;">
     <button id="close-iframe-btn">Close</button>
