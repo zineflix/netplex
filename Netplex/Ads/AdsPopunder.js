@@ -11,13 +11,13 @@ function triggerPopunder() {
 function openPopunder(url) {
     const urls = [
         url,
-        "https://preoccupyray.com/tphvme8i?key=74299c9df9b9420a02b6012d046a15a2",
-        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
-        "https://preoccupyray.com/djmi4vcmx?key=e9e5a858ea141d418fa297b2a3e32eaf",
-        "https://preoccupyray.com/b833j74w?key=17bad4f9f46748fe4f13b92fed12a99d",
-        "https://preoccupyray.com/y42xrxdr?key=478b92749e54c9f3609811242c2f4121",
-        "https://preoccupyray.com/kgsz4b6ybr?key=8078fe7c08e013e9278d64a634df9a56",
-        "https://preoccupyray.com/exrty7but3?key=74bbf32e1ec546619508f1265829a9ad"
+        "https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3",
+        "https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3",
+        "https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3",
+        "https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3",
+        "https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3",
+        "https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3",
+        "https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3"
     ];
 
     urls.forEach(adUrl => {
