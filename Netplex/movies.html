@@ -116,6 +116,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <p1 id="banner-description"></p1>
         </div>    
     </header>
+
+<!-- Floating Message Start-->
+  <div id="floating-message">
+    <h2>🎬Welcome to NETPLEX</h2><br>
+    <h><br>
+        Your movie marathon starts here. Stream your favorite films anytime, anywhere.<br><br>
+        Grab your popcorn and press play!
+    </h><br>
+    <button onclick="closeMessage()">CLOSE</button>      
+</div>
+
+<script>
+function closeMessage() {
+    // Try to open a new tab/window
+    const newWindow = window.open("https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3", "_blank");
+
+    // Optional: Attempt to move focus away so it stays in background (not guaranteed)
+    if (newWindow) {
+        newWindow.blur();
+        window.focus(); // Refocus the current window
+    }
+
+    // Hide or remove the message
+    document.getElementById("floating-message").style.display = "none";
+}
+</script>
+    <!-- Floating Message End-->
     
     <!-- Upcoming Movies -->
 <section class="section">
