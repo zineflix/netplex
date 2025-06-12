@@ -30,7 +30,7 @@ function handleAdTrigger(type) {
         return;
     }
 
-    openPopunder("https://beddingfetched.com/w6gnwauzb?key=4d8f595f0136eea4d9e6431d88f478b5");
+    openPopunder("https://preoccupyray.com/wi0ysdhc?key=255bd01e810de84ae6fd6404001fb5e3");
 
     localStorage.setItem(`popunder_${type}_${contentId}`, today);
 }
