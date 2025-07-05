@@ -5,27 +5,19 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function triggerPopunder() {
-    openPopunder("https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5");
+    openHalfSizeWindow("https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5");
 }
 
-function openPopunder(url) {
-    const urls = [
-        url,
-        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
-        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
-        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
-        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
-        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
-        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
-        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5"
-    ];
+function openHalfSizeWindow(url) {
+    const width = screen.width / 2;
+    const height = screen.height / 2;
+    const left = (screen.width - width) / 2;
+    const top = (screen.height - height) / 2;
 
-    urls.forEach(adUrl => {
-        let popunder = window.open(adUrl, "_blank", "width=1,height=1,left=0,top=0");
-        if (popunder) {
-            popunder.blur();
-        }
-    });
-
-    window.focus(); // Refocus the original window
+    const features = `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`;
+    const newWin = window.open(url, "_blank", features);
+    
+    if (newWin) {
+        newWin.focus();
+    }
 }
