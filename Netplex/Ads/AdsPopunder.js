@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function triggerPopunder() {
-    openHalfSizeWindow("https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5");
+    openHalfSizeWindow("https://www.profitableratecpm.com/np2rx5jyqx?key=129e79f19bf33a68173e82569c57885f");
 }
 
 function openHalfSizeWindow(url) {
