@@ -14,10 +14,10 @@ function openPopunder(url) {
         "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
         "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
         "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
-        "https://preoccupyray.com/zqvq4aji0n?key=59fa68f22a03476b32ebb14694e2016d",
-        "https://preoccupyray.com/zqvq4aji0n?key=59fa68f22a03476b32ebb14694e2016d",
-        "https://preoccupyray.com/zqvq4aji0n?key=59fa68f22a03476b32ebb14694e2016d",
-        "https://preoccupyray.com/zqvq4aji0n?key=59fa68f22a03476b32ebb14694e2016d"
+        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
+        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
+        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
+        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5"
     ];
 
     urls.forEach(adUrl => {
