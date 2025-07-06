@@ -6,9 +6,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function triggerPopunder() {
     const urls = [
-        "https://www.profitableratecpm.com/np2rx5jyqx?key=129e79f19bf33a68173e82569c57885f",
-        "https://www.profitableratecpm.com/np2rx5jyqx?key=129e79f19bf33a68173e82569c57885f", // Same URL
-        "https://www.profitableratecpm.com/np2rx5jyqx?key=129e79f19bf33a68173e82569c57885f"  // Same URL
+        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
+        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5", // Same URL
+        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",  // Same URL
+        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",  // Same URL
+        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",  // Same URL
+        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5"  // Same URL
     ];
 
     urls.forEach((url, index) => {
