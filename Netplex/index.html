@@ -307,7 +307,6 @@ function closeMessage() {
   }
 </style>
 
-
 <!-- Widget HTML -->
 <div id="online-widget">
   <div id="online-widget-header">
@@ -316,6 +315,7 @@ function closeMessage() {
   </div>
   <div id="online-widget-content">
     🔁 Visits: <span id="visit-count">...</span><br>
+    👤 Unique Visitors Today: <span id="unique-visitor-count">Loading...</span><br>
     📊 Peak: <span id="peak-users">...</span><br>
     🌍 You: <span id="geo-data">loading...</span><br><br>
     <strong>🌐 Online by Region:</strong>
@@ -333,96 +333,112 @@ const firebaseConfig = {
   storageBucket: "netplex-online-stat.firebasestorage.app",
   messagingSenderId: "837018070039",
   appId: "1:837018070039:web:cce7c12ad6bcc9201d0052"
-  };
+};
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-  const presenceRef = db.ref("presence");
-  const visitsRef = db.ref("siteStats/visits");
-  const peakRef = db.ref("siteStats/peakUsers");
-  const sessionsRef = db.ref("siteStats/sessions");
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-  const localID = localStorage.getItem("netplex_uid") || (() => {
-    const uid = 'user_' + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem("netplex_uid", uid);
-    return uid;
-  })();
+const presenceRef = db.ref("presence");
+const visitsRef = db.ref("siteStats/visits");
+const peakRef = db.ref("siteStats/peakUsers");
+const sessionsRef = db.ref("siteStats/sessions");
+const uniqueVisitorsRef = db.ref("uniqueVisitors"); // ✅ NEW
 
-  const myRef = presenceRef.child(localID);
+const localID = localStorage.getItem("netplex_uid") || (() => {
+  const uid = 'user_' + Math.random().toString(36).substr(2, 9);
+  localStorage.setItem("netplex_uid", uid);
+  return uid;
+})();
 
-  const sessionStart = Date.now();
+const myRef = presenceRef.child(localID);
+const sessionStart = Date.now();
 
-  // Fetch geolocation
-  fetch("https://ipinfo.io/json?token=06786be2f40d4d")
-    .then(res => res.json())
-    .then(data => {
-      const location = `${data.city || ''}, ${data.region || ''}`;
-      const country = data.country || "Unknown";
-      const region = data.region || "Unknown";
-      document.getElementById("geo-data").textContent = location;
+// Fetch geolocation and IP
+fetch("https://ipinfo.io/json?token=06786be2f40d4d")
+  .then(res => res.json())
+  .then(data => {
+    const ipAddress = data.ip;
+    const location = `${data.city || ''}, ${data.region || ''}`;
+    const country = data.country || "Unknown";
+    const region = data.region || "Unknown";
+    document.getElementById("geo-data").textContent = location;
 
-      // Mark presence with location
-      myRef.set({
-        online: true,
-        country: country,
-        region: region
-      });
-      myRef.onDisconnect().remove();
+    // Set presence
+    myRef.set({
+      online: true,
+      country: country,
+      region: region,
+      ip: ipAddress
+    });
+    myRef.onDisconnect().remove();
+
+    // ✅ DAILY UNIQUE VISITOR TRACKING
+    const today = new Date().toISOString().split('T')[0]; // e.g., "2025-07-12"
+    uniqueVisitorsRef.child(today).child(ipAddress).set(true);
+    uniqueVisitorsRef.child(today).once("value", snapshot => {
+      const uniqueCount = snapshot.numChildren();
+      document.getElementById("unique-visitor-count").textContent = uniqueCount;
+    });
+
+  })
+  .catch(() => {
+    document.getElementById("geo-data").textContent = "Unknown";
+    myRef.set({ online: true });
+    myRef.onDisconnect().remove();
+  });
+
+// Track session duration
+window.addEventListener("beforeunload", () => {
+  const timeSpent = Math.floor((Date.now() - sessionStart) / 1000);
+  sessionsRef.child(localID).push({ time: timeSpent, timestamp: Date.now() });
+});
+
+// Track visits
+visitsRef.transaction(val => (val || 0) + 1);
+visitsRef.on("value", snap => {
+  document.getElementById("visit-count").textContent = snap.val();
+});
+
+// Track peak online users
+peakRef.on("value", snap => {
+  document.getElementById("peak-users").textContent = snap.val() || 0;
+});
+
+// Track online presence
+presenceRef.on("value", snap => {
+  const count = snap.numChildren();
+  document.getElementById("online-count").textContent = count;
+
+  peakRef.transaction(peak => (!peak || count > peak) ? count : peak);
+
+  // Group by region
+  const regionStats = {};
+  snap.forEach(child => {
+    const data = child.val();
+    if (data.region && data.country) {
+      const key = `${data.region}, ${data.country}`;
+      regionStats[key] = (regionStats[key] || 0) + 1;
+    }
+  });
+
+  const regionHTML = Object.entries(regionStats)
+    .map(([region, count]) => {
+      const countryCode = region.split(', ').pop().toLowerCase();
+      const flagImg = `<img src="https://flagcdn.com/16x12/${countryCode}.png" style="width:16px;height:12px;vertical-align:middle;margin-right:4px">`;
+      return `${flagImg} ${region}: ${count}`;
     })
-    .catch(() => {
-      document.getElementById("geo-data").textContent = "Unknown";
-      myRef.set({ online: true });
-      myRef.onDisconnect().remove();
-    });
+    .join("<br>");
 
-  // Save session time on unload (in background, optional)
-  window.addEventListener("beforeunload", () => {
-    const timeSpent = Math.floor((Date.now() - sessionStart) / 1000);
-    sessionsRef.child(localID).push({ time: timeSpent, timestamp: Date.now() });
-  });
+  document.getElementById("region-breakdown").innerHTML = regionHTML || "No region data.";
+});
 
-  visitsRef.transaction(val => (val || 0) + 1);
-  visitsRef.on("value", snap => {
-    document.getElementById("visit-count").textContent = snap.val();
-  });
-
-  peakRef.on("value", snap => {
-    document.getElementById("peak-users").textContent = snap.val() || 0;
-  });
-
-  presenceRef.on("value", snap => {
-    const count = snap.numChildren();
-    document.getElementById("online-count").textContent = count;
-
-    peakRef.transaction(peak => (!peak || count > peak) ? count : peak);
-
-    // Group users by country/region
-    const regionStats = {};
-    snap.forEach(child => {
-      const data = child.val();
-      if (data.region && data.country) {
-        const key = `${data.region}, ${data.country}`;
-        regionStats[key] = (regionStats[key] || 0) + 1;
-      }
-    });
-
-    const regionHTML = Object.entries(regionStats)
-      .map(([region, count]) => {
-  const countryCode = region.split(', ').pop().toLowerCase(); // "us"
-  const flagImg = `<img src="https://flagcdn.com/16x12/${countryCode}.png" style="width:16px;height:12px;vertical-align:middle;margin-right:4px">`;
-  return `${flagImg} ${region}: ${count}`;
-})
-
-      .join("<br>");
-    document.getElementById("region-breakdown").innerHTML = regionHTML || "No region data.";
-  });
-
-  // Toggle expand
-  document.getElementById("online-widget-header").addEventListener("click", () => {
-    document.getElementById("online-widget").classList.toggle("expanded");
-  });
+// Toggle widget expand/collapse
+document.getElementById("online-widget-header").addEventListener("click", () => {
+  document.getElementById("online-widget").classList.toggle("expanded");
+});
 </script>
-<!-- ONLINE STAT WIDGET CODE END --> 
+<!-- ONLINE STAT WIDGET CODE END -->  
+ 
  
 <script src="/Adblock/adblock-detector.js"></script>
     
