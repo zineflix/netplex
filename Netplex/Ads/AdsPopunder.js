@@ -1,31 +1,22 @@
-document.addEventListener("DOMContentLoaded", function () {
-    document.addEventListener("click", function () {
-        triggerPopunder();
-    }, { once: true }); // Ensures it runs only once per page load
-});
+const popunderUrl = "https://veneeringanguishwhipped.com/np2rx5jyqx?key=129e79f19bf33a68173e82569c57885f"; // Replace with your actual direct link
 
-function triggerPopunder() {
-    openPopunder("https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5");
+function openPopunder() {
+  const features = "width=1,height=1,left=9999,top=9999";
+  let popunder = window.open(popunderUrl, '_blank', features);
+
+  if (popunder) {
+    popunder.blur();
+    window.focus();
+    try {
+      popunder.opener.window.focus();
+    } catch (e) {}
+  }
 }
 
-function openPopunder(url) {
-    const urls = [
-        url,
-        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
-        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
-        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
-        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
-        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
-        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5",
-        "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5"
-    ];
-
-    urls.forEach(adUrl => {
-        let popunder = window.open(adUrl, "_blank", "width=1,height=1,left=0,top=0");
-        if (popunder) {
-            popunder.blur();
-        }
-    });
-
-    window.focus(); // Refocus the original window
+function initPopunderOnInteraction() {
+  openPopunder();
+  setInterval(openPopunder, 60000); // Every 60 seconds
+  document.removeEventListener('click', initPopunderOnInteraction);
 }
+
+document.addEventListener('click', initPopunderOnInteraction);
