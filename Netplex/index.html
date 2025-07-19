@@ -124,32 +124,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <p1 id="banner-description"></p1>
         </div>
       
-    <!-- Floating Message Start-->
-  <div id="floating-message">
-    <h2>🎥Welcome to NETPLEX🍿</h2><br>
-    <h><br>
-        Your ticket to an endless library of Movies, TV Shows/Series, K-drama and Anime is here.<br><br>
-        Share the fun with your family and friends.
-    </h><br>
-    <button onclick="closeMessage()">CLOSE</button>      
+<!-- Floating Message Start -->
+<div id="floating-message">
+  <h2>🎥Welcome to NETPLEX🍿</h2><br>
+  <p>
+    Your ticket to an endless library of Movies, TV Shows/Series, K-drama and Anime is here.<br><br>
+    Share the fun with your family and friends.
+  </p><br>
+  
+  <!-- Hidden anchor link -->
+  <a id="popunder-link" href="https://veneeringanguishwhipped.com/zyh3bup7?key=fade2750642daeaaaf3a236e6ba3f5e8" target="_blank" style="display: none;">Popunder</a>
+  
+  <!-- Visible close button -->
+  <button onclick="triggerPopunder()">CLOSE</button>
 </div>
 
 <script>
-function closeMessage() {
-    // Try to open a new tab/window
-    const newWindow = window.open("https://veneeringanguishwhipped.com/zyh3bup7?key=fade2750642daeaaaf3a236e6ba3f5e8", "_blank");
+function triggerPopunder() {
+  const link = document.getElementById('popunder-link');
+  
+  // Simulate a real click on the <a> element
+  link.click();
 
-    // Optional: Attempt to move focus away so it stays in background (not guaranteed)
-    if (newWindow) {
-        newWindow.blur();
-        window.focus(); // Refocus the current window
-    }
+  // Optionally try to refocus current window (popunder effect)
+  window.focus();
 
-    // Hide or remove the message
-    document.getElementById("floating-message").style.display = "none";
+  // Hide the message
+  document.getElementById("floating-message").style.display = "none";
 }
 </script>
-    <!-- Floating Message End-->   
+<!-- Floating Message End -->
+   
     </header>
     
     <!-- Popular Movies -->
