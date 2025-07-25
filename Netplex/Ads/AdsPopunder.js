@@ -1,4 +1,4 @@
-const popunderUrl = "https://preoccupyray.com/atnj41y6?key=99e4a912dedac18eecb9005ee8e985b5"; // Replace with your actual direct link
+(const popunderUrl = "DL here"; // Replace with your actual direct link
 
 function openPopunder() {
   const features = "width=1,height=1,left=9999,top=9999";
