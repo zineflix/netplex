@@ -2388,3 +2388,14 @@ meta[http-equiv="refresh"] {
 /* Adsterra DL Style Ad Container Start */
  
 /* Adsterra DL Style Ad Container End */
+
+
+.sandbox-toggle {
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.sandbox-toggle input {
+    transform: scale(1.1);
+    margin-right: 4px;
+}
