@@ -525,46 +525,60 @@ function toggleFullscreen() {
 
 
 
-servers.forEach(server => {
-    const li = document.createElement('li');
+// Store sandbox states for each server
+const sandboxStates = {};
 
-    // Server button
-    const btn = document.createElement('button');
-    btn.textContent = server.name;
-    btn.addEventListener('click', () => loadServer(server, true)); // default with sandbox
-    li.appendChild(btn);
+function renderServerList(servers) {
+    const serverListEl = document.getElementById('server-list');
+    serverListEl.innerHTML = '';
 
-    // Sandbox toggle
-    const toggle = document.createElement('input');
-    toggle.type = 'checkbox';
-    toggle.checked = true;
-    toggle.classList.add('sandbox-toggle');
-    toggle.addEventListener('change', () => {
-        if (!toggle.checked) {
-            if (confirm("Disabling sandbox will put ads on the video source.\n\nProceed?")) {
-                loadServer(server, false); // load without sandbox
-            } else {
-                toggle.checked = true; // revert
+    servers.forEach(server => {
+        // List item wrapper
+        const li = document.createElement('li');
+        li.classList.add('server-item');
+        li.textContent = server.name;
+
+        // Create toggle wrapper
+        const toggleWrapper = document.createElement('label');
+        toggleWrapper.classList.add('toggle-switch');
+
+        const toggleInput = document.createElement('input');
+        toggleInput.type = 'checkbox';
+        toggleInput.checked = true; // default ON
+
+        const toggleSlider = document.createElement('span');
+        toggleSlider.classList.add('toggle-slider');
+
+        toggleWrapper.appendChild(toggleInput);
+        toggleWrapper.appendChild(toggleSlider);
+
+        // Toggle change event
+        toggleInput.addEventListener('change', () => {
+            if (!toggleInput.checked) {
+                const proceed = confirm(
+                    "Disabling sandbox will put ads on the video source. Proceed?"
+                );
+                if (!proceed) {
+                    toggleInput.checked = true; // revert
+                    return;
+                }
             }
-        } else {
-            loadServer(server, true); // load with sandbox
-        }
+            sandboxStates[server.id] = toggleInput.checked;
+            applySandboxSetting(server.id);
+        });
+
+        li.appendChild(toggleWrapper);
+        serverListEl.appendChild(li);
+
+        sandboxStates[server.id] = true;
     });
+}
 
-    const label = document.createElement('label');
-    label.appendChild(toggle);
-    label.appendChild(document.createTextNode('Sandbox'));
-
-    li.appendChild(label);
-
-    document.querySelector('#server-list').appendChild(li);
-});
-
-function loadServer(server, sandboxEnabled) {
-    const iframe = document.querySelector('#video-iframe');
-    iframe.src = server.url;
-    if (sandboxEnabled) {
-        iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups allow-forms');
+function applySandboxSetting(serverId) {
+    const iframe = document.querySelector('iframe#video-player');
+    if (!iframe) return;
+    if (sandboxStates[serverId]) {
+        iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups');
     } else {
         iframe.removeAttribute('sandbox');
     }
