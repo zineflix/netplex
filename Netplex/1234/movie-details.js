@@ -522,3 +522,36 @@ function toggleFullscreen() {
     }  
 }
 // Fullscreen Button Movie End //
+
+
+
+// Example dynamic server list creation with sandbox toggle
+servers.forEach(server => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+        ${server.name}
+        <label class="sandbox-toggle">
+            <input type="checkbox" checked data-server-id="${server.id}">
+            <span>Sandbox</span>
+        </label>
+    `;
+    document.getElementById('server-list').appendChild(li);
+});
+
+// Add toggle behavior
+document.addEventListener('change', function(e) {
+    if (e.target.matches('.sandbox-toggle input')) {
+        const serverId = e.target.dataset.serverId;
+        const iframe = document.querySelector(`#${serverId}-iframe`);
+
+        if (!e.target.checked) {
+            if (confirm("Disabling sandbox will put ads on the video source.\n\nProceed?")) {
+                iframe.removeAttribute('sandbox');
+            } else {
+                e.target.checked = true; // revert toggle if cancelled
+            }
+        } else {
+            iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups allow-forms');
+        }
+    }
+});
