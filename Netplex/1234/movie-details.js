@@ -530,7 +530,6 @@ let currentServerUrl = ""; // track the active server URL
 
 document.addEventListener('DOMContentLoaded', () => {
     const sandboxToggle = document.getElementById('sandbox-toggle');
-    const iframe = document.getElementById('movie-iframe');
 
     sandboxToggle.addEventListener('change', () => {
         if (!sandboxToggle.checked) {
@@ -543,10 +542,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         sandboxEnabled = sandboxToggle.checked;
-        applySandboxSetting(true); // reload iframe with current setting
+        applySandboxSetting(true); // reload iframe immediately
     });
 
-    // Apply default setting on page load
     applySandboxSetting();
 });
 
@@ -560,16 +558,20 @@ function applySandboxSetting(reload = false) {
         iframe.removeAttribute('sandbox');
     }
 
-    // Reload the video if requested
     if (reload && currentServerUrl) {
-        iframe.src = currentServerUrl;
+        iframe.src = currentServerUrl; // reload with current sandbox state
     }
 }
 
-// Call this when changing server
+// Always load new servers with sandbox ON
 function loadServer(serverUrl) {
+    const sandboxToggle = document.getElementById('sandbox-toggle');
+    sandboxEnabled = true;
+    sandboxToggle.checked = true; // ensure toggle shows ON
+
     currentServerUrl = serverUrl;
+
     const iframe = document.getElementById('movie-iframe');
     iframe.src = serverUrl;
-    applySandboxSetting(); // apply sandbox mode to this server
+    applySandboxSetting(); // sandbox ON by default
 }
