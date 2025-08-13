@@ -525,7 +525,8 @@ function toggleFullscreen() {
 
 
 // Toggle
-let sandboxEnabled = true; // default
+let sandboxEnabled = true;
+let currentServerUrl = ""; // track the active server URL
 
 document.addEventListener('DOMContentLoaded', () => {
     const sandboxToggle = document.getElementById('sandbox-toggle');
@@ -541,23 +542,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         sandboxEnabled = sandboxToggle.checked;
-        applySandboxSetting();
+        applySandboxSetting(true); // true = reload video immediately
     });
 });
 
-function applySandboxSetting() {
+function applySandboxSetting(reload = false) {
     const iframe = document.querySelector('iframe#video-player');
     if (!iframe) return;
+
     if (sandboxEnabled) {
         iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups');
     } else {
         iframe.removeAttribute('sandbox');
     }
+
+    if (reload && currentServerUrl) {
+        iframe.src = currentServerUrl; // reload the video with new sandbox setting
+    }
 }
 
-// Call this whenever a new server is loaded
+// Call this when changing server
 function loadServer(serverUrl) {
+    currentServerUrl = serverUrl;
     const iframe = document.querySelector('iframe#video-player');
     iframe.src = serverUrl;
-    applySandboxSetting(); // apply sandbox state to new server
+    applySandboxSetting(); // apply current sandbox setting to the new server
 }
