@@ -525,33 +525,47 @@ function toggleFullscreen() {
 
 
 
-// Example dynamic server list creation with sandbox toggle
 servers.forEach(server => {
     const li = document.createElement('li');
-    li.innerHTML = `
-        ${server.name}
-        <label class="sandbox-toggle">
-            <input type="checkbox" checked data-server-id="${server.id}">
-            <span>Sandbox</span>
-        </label>
-    `;
-    document.getElementById('server-list').appendChild(li);
-});
 
-// Add toggle behavior
-document.addEventListener('change', function(e) {
-    if (e.target.matches('.sandbox-toggle input')) {
-        const serverId = e.target.dataset.serverId;
-        const iframe = document.querySelector(`#${serverId}-iframe`);
+    // Server button
+    const btn = document.createElement('button');
+    btn.textContent = server.name;
+    btn.addEventListener('click', () => loadServer(server, true)); // default with sandbox
+    li.appendChild(btn);
 
-        if (!e.target.checked) {
+    // Sandbox toggle
+    const toggle = document.createElement('input');
+    toggle.type = 'checkbox';
+    toggle.checked = true;
+    toggle.classList.add('sandbox-toggle');
+    toggle.addEventListener('change', () => {
+        if (!toggle.checked) {
             if (confirm("Disabling sandbox will put ads on the video source.\n\nProceed?")) {
-                iframe.removeAttribute('sandbox');
+                loadServer(server, false); // load without sandbox
             } else {
-                e.target.checked = true; // revert toggle if cancelled
+                toggle.checked = true; // revert
             }
         } else {
-            iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups allow-forms');
+            loadServer(server, true); // load with sandbox
         }
-    }
+    });
+
+    const label = document.createElement('label');
+    label.appendChild(toggle);
+    label.appendChild(document.createTextNode('Sandbox'));
+
+    li.appendChild(label);
+
+    document.querySelector('#server-list').appendChild(li);
 });
+
+function loadServer(server, sandboxEnabled) {
+    const iframe = document.querySelector('#video-iframe');
+    iframe.src = server.url;
+    if (sandboxEnabled) {
+        iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts allow-popups allow-forms');
+    } else {
+        iframe.removeAttribute('sandbox');
+    }
+}
