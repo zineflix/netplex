@@ -2435,10 +2435,3 @@ meta[http-equiv="refresh"] {
 .toggle-switch input:checked + .toggle-slider:before {
   transform: translateX(20px);
 }
-
-/* Align toggle to the right */
-.server-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
