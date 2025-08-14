@@ -1,4 +1,4 @@
-const popunderUrl = "https://preoccupyray.com/xd85svczxx?key=5616a1fff848a3cb7920a6b47a4958fc"; // Replace with your actual direct link
+const popunderUrl = "https://suburban-anxiety.com/fZPc4G"; // Replace with your actual direct link
 let lastPopTime = 0;
 
 function openPopunder() {
@@ -27,4 +27,5 @@ function handleUserClick() {
 }
 
 document.addEventListener('click', handleUserClick);
+
 
