@@ -244,7 +244,7 @@ function openSearchPage() {
 // Array of movie endpoints with custom server names
 const MOVIE_ENDPOINTS = [
     { url: 'https://vidsrc.cc/v2/embed/movie/', name: 'Server 1' },
-    { url: 'https://player.videasy.net/movie/', name: 'Server 2' },    
+    { url: 'https://vidrock.net/movie/', name: 'Server 2' },    
     { url: 'https://embed.rgshows.me/api/1/movie/?id=', name: 'Server 3' },
     { url: 'https://vidsrc.cc/v3/embed/movie/', name: 'Server 4' },
     { url: 'https://embed.rgshows.me/api/3/movie/?id=', name: 'Server 5' },
@@ -254,6 +254,7 @@ const MOVIE_ENDPOINTS = [
     { url: 'https://vidfast.pro/movie/', name: 'Server 9' },
     { url: 'https://vidsrc.su/embed/movie/', name: 'Server 10' },
     { url: 'https://111movies.com/movie/', name: 'Server 11' },
+    { url: 'https://player.videasy.net/movie/', name: 'Server 12' },
 ];
 
 // Get the movie ID from the URL query string
