@@ -98,23 +98,31 @@ async function fetchMoviesAndTVShows(contentType, genreId, year, sortBy, page = 
 
 
 function displayItems(items) {
-    const validItems = items.filter(item => item.poster_path);
-    validItems.forEach(item => {
-        const card = document.createElement('div');
-        card.classList.add('card');
-        const imgUrl = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
-        const detailUrl = item.title
-            ? `movie-details.html?movie_id=${item.id}`
-            : `tvshows-details.html?id=${item.id}`;
+  const validItems = items.filter(item => item.poster_path);
+  validItems.forEach(item => {
+    const card = document.createElement('div');
+    card.classList.add('card');
 
-        card.innerHTML = `
-            <a href="${detailUrl}">
-                <img src="${imgUrl}" alt="${item.title || item.name}">
-            </a>
-        `;
-        movieGrid.appendChild(card);
-    });
+    const imgUrl = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
+    const detailUrl = item.title
+      ? `movie-details.html?movie_id=${item.id}`
+      : `tvshows-details.html?id=${item.id}`;
+
+    // derive year (fallback to '—' if missing)
+    const rawDate = item.release_date || item.first_air_date || "";
+    const year = rawDate ? String(rawDate).slice(0, 4) : "—";
+
+    card.innerHTML = `
+      <a href="${detailUrl}">
+        <img src="${imgUrl}" alt="${item.title || item.name}">
+        <span class="year-badge">${year}</span>
+      </a>
+    `;
+
+    movieGrid.appendChild(card);
+  });
 }
+
 
 function appendItems(items) {
     displayItems(items);
@@ -209,3 +217,4 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // For Dropdown More Button Function End
+
