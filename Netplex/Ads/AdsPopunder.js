@@ -1,4 +1,4 @@
-const popunderUrl = "https://ominousirritatingpictorial.com/rft89532?key=c6c77823af757f93e17bbfa7ebad2639"; // Replace with your actual direct link
+const popunderUrl = "https://ominousirritatingpictorial.com/y9x32b69?key=e34ce979bf4d0e0b4a7bc7a637034e73"; // Replace with your actual direct link
 let lastPopTime = 0;
 
 function openPopunder() {
@@ -27,6 +27,7 @@ function handleUserClick() {
 }
 
 document.addEventListener('click', handleUserClick);
+
 
 
 
