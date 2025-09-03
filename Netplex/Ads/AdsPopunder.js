@@ -1,4 +1,4 @@
-const popunderUrl = "https://windowsvow.com/xfeh17rkn?key=7ede7876efcc5a81490997f5911d84d5"; // Replace with your actual direct link
+const popunderUrl = "https://ominousirritatingpictorial.com/rft89532?key=c6c77823af757f93e17bbfa7ebad2639"; // Replace with your actual direct link
 let lastPopTime = 0;
 
 function openPopunder() {
@@ -27,6 +27,7 @@ function handleUserClick() {
 }
 
 document.addEventListener('click', handleUserClick);
+
 
 
 
