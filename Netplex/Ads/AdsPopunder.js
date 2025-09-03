@@ -1,4 +1,4 @@
-const popunderUrl = "https://ominousirritatingpictorial.com/y9x32b69?key=e34ce979bf4d0e0b4a7bc7a637034e73"; // Replace with your actual direct link
+const popunderUrl = "https://suburban-anxiety.com/b.3GV/0iPH3dpSv/bPmYVrJUZrDC0C2nN/TskuxJNhzYk_wcLYTYYv1hOeTQEX3fOYT/Eu"; // Replace with your actual direct link
 let lastPopTime = 0;
 
 function openPopunder() {
@@ -27,6 +27,7 @@ function handleUserClick() {
 }
 
 document.addEventListener('click', handleUserClick);
+
 
 
 
