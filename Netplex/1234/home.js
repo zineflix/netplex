@@ -30,6 +30,62 @@ async function fetchBanner() {
 
 fetchBanner();
 
+
+// Poster for New Release this Year Start //
+// Get current year dynamically
+const currentYear = new Date().getFullYear();
+
+// Fetch both Movies & TV released in the current year
+async function fetchNewReleases(containerId, pages = 3) {
+    const container = document.getElementById(containerId);
+
+    for (let page = 1; page <= pages; page++) {
+        const movieRes = await fetch(`${baseURL}/discover/movie?api_key=${apiKey}&primary_release_year=${currentYear}&sort_by=popularity.desc&page=${page}`);
+        const tvRes = await fetch(`${baseURL}/discover/tv?api_key=${apiKey}&first_air_date_year=${currentYear}&sort_by=popularity.desc&page=${page}`);
+
+        const movieData = await movieRes.json();
+        const tvData = await tvRes.json();
+
+        [...movieData.results, ...tvData.results].forEach(item => {
+            if (!item.poster_path) return; // Skip items without posters
+
+            const mediaItem = document.createElement("div");
+            mediaItem.classList.add("media-item");
+
+            const rating = item.vote_average.toFixed(1);
+            const yearText = (item.release_date || item.first_air_date || "").slice(0,4) || "";
+            mediaItem.innerHTML = `
+              <div class="poster-title" title="${item.title || item.name}">
+                ${item.title || item.name}
+              </div>
+              <div class="poster-card">
+                <div class="rating">
+                  <span class="star"><i class="fas fa-star"></i></span> 
+                  <span class="rating-number">${rating}</span>
+                </div>
+                <img src="${imgURL + item.poster_path}" alt="${item.title || item.name}">
+                <div class="play-button"><i class="fas fa-play"></i></div>
+                ${yearText ? `<div class="year-container">${yearText}</div>` : ""}
+              </div>
+            `;
+
+
+            mediaItem.addEventListener("click", () => {
+                window.location.href = item.media_type === "movie" || item.title
+                    ? `movie-details.html?movie_id=${item.id}`
+                    : `tvshows-details.html?id=${item.id}`;
+            });
+
+            container.appendChild(mediaItem);
+        });
+    }
+}
+
+// Load New Releases
+fetchNewReleases("new-releases", 5);
+// Poster for New Release this Year End // 
+
+
 // Fetch Media Rows
 const mediaState = {};
 
@@ -241,3 +297,4 @@ function getTypeForContainer(containerId) {
     return containerId.includes("tv") ? "tv" : "movie";
 }
 // Load More List End //
+
