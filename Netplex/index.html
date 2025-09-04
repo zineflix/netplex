@@ -180,36 +180,34 @@
         <!-- FLOATING MESSAGE -->
         <!-- ============================= -->
         <div id="floating-message">
-          <h2>🎥Welcome to NETPLEX🍿</h2><br>
-          <p>
-            Your ticket to an endless library of Movies, TV Shows/Series, K-drama and Anime is here.<br><br>
-            Share the fun with your family and friends.
-          </p><br>
-          
-          <!-- Hidden anchor link -->
-          <a id="popunder-link" href="https://iz.palankyurok.com/iGOLSo4kO6Lr/122520" target="_blank" style="display: none;">Popunder</a>
-          
-          <!-- Visible close button -->
-          <button onclick="triggerPopunder()">CLOSE</button>
+            <h2>🎥Welcome to NETPLEX🍿</h2><br>
+            <p>
+                Your ticket to an endless library of Movies, TV Shows/Series, K-drama and Anime is here.<br><br>
+                Share the fun with your family and friends.
+            </p><br>
+
+            <!-- Visible close button -->
+            <button onclick="closeMessage()">CLOSE</button>
         </div>
 
         <script>
-        function triggerPopunder() {
-          const link = document.getElementById('popunder-link');
-          
-          // Simulate a real click on the <a> element
-          link.click();
-        
-          // Optionally try to refocus current window (popunder effect)
-          window.focus();
-        
-          // Hide the message
-          document.getElementById("floating-message").style.display = "none";
-        }
+            function closeMessage() {
+                document.getElementById("floating-message").style.display = "none";
+            }
+
+            function triggerPopunder() {
+                const link = document.getElementById('popunder-link');
+                // Simulate a real click on the <a> element
+                link.click();
+                // Optionally try to refocus current window (popunder effect)
+                window.focus();
+                // Hide the message
+                document.getElementById("floating-message").style.display = "none";
+            }
         </script>
         <!-- ============================= -->
         <!-- END FLOATING MESSAGE -->
-        <!-- ============================= -->  
+        <!-- ============================= --> 
     </header>
 
     <!-- ============================= -->
@@ -540,3 +538,4 @@ document.getElementById("online-widget-header").addEventListener("click", () => 
   
 </html>
       
+
