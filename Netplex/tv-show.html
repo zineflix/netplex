@@ -121,32 +121,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>  
     </header>
 
-<!-- Floating Message Start-->
-  <div id="floating-message">
-    <h2>🎬Welcome to NETPLEX</h2><br>
-    <h><br>
-        Your tv show marathon starts here. Stream your favorite films anytime, anywhere.<br><br>
-        Grab your popcorn and press play!
-    </h><br>
-    <button onclick="closeMessage()">CLOSE</button>      
-</div>
+        <!-- ============================= -->
+        <!-- FLOATING MESSAGE -->
+        <!-- ============================= -->
+        <div id="floating-message">
+            <h2>🎥Welcome to NETPLEX🍿</h2><br>
+            <p>
+                Your ticket to an endless library of Movies, TV Shows/Series, K-drama and Anime is here.<br><br>
+                Share the fun with your family and friends.
+            </p><br>
 
-<script>
-function closeMessage() {
-    // Try to open a new tab/window
-    const newWindow = window.open("https://iz.palankyurok.com/iGOLSo4kO6Lr/122520", "_blank");
+            <!-- Visible close button -->
+            <button onclick="closeMessage()">CLOSE</button>
+        </div>
 
-    // Optional: Attempt to move focus away so it stays in background (not guaranteed)
-    if (newWindow) {
-        newWindow.blur();
-        window.focus(); // Refocus the current window
-    }
+        <script>
+            function closeMessage() {
+                document.getElementById("floating-message").style.display = "none";
+            }
 
-    // Hide or remove the message
-    document.getElementById("floating-message").style.display = "none";
-}
-</script>
-    <!-- Floating Message End-->
+            function triggerPopunder() {
+                const link = document.getElementById('popunder-link');
+                // Simulate a real click on the <a> element
+                link.click();
+                // Optionally try to refocus current window (popunder effect)
+                window.focus();
+                // Hide the message
+                document.getElementById("floating-message").style.display = "none";
+            }
+        </script>
+        <!-- ============================= -->
+        <!-- END FLOATING MESSAGE -->
+        <!-- ============================= --> 
 
     <!-- Upcoming Movies -->
 <section class="section">
@@ -465,3 +471,4 @@ const firebaseConfig = {
 </body>
   
 </html>
+
