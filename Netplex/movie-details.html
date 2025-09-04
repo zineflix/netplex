@@ -86,85 +86,87 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <div class="blurred-background"></div> <!-- Background Container -->
     
-    <div class="movie-details">
-        <!-- Close Button (X) -->
-        <button class="close-button" id="close-button"><span class="close-text">CLOSE</span>
-    &times; 
-</button>
-
-        <!-- Poster Container -->
-        <div class="movie-poster-container">
-            <img id="movie-poster" alt="Movie Poster" class="movie-poster" src="images/https://zinemax.netlify.app">
-            <!-- Button Container -->
-            <div class="button-container">
-    <button id="watch-now-btn" class="watch-now-btn"><h2><b>WATCH NOW!</b></h2></button>
-</div>
-
-<script>
-    document.getElementById('watch-now-btn').addEventListener('click', function () {
-        // Replace with your desired URL
-        const url = 'https://iz.palankyurok.com/iGOLSo4kO6Lr/122520';
-
-        // Open the link in a new background tab (modern browsers may block this without user interaction)
-        const newWindow = window.open(url, '_blank');
-
-        // Optional: blur the new tab to keep focus on the current window
-        if (newWindow) {
-            newWindow.blur();
-            window.focus();
-        } else {
-            alert("Popup blocked! Please allow popups for this website.");
-        }
-    });
-</script>
-
-<!-- Iframe container (hidden by default) -->
-<div id="iframe-container" style="display:none;">
-    <button id="close-iframe-btn">Close</button>
-    <button id="change-server-btn">Change Server</button>
-    <button onclick="toggleFullscreen()" class="fullscreen-btn">Fullscreen</button>
-        <!-- Dropdown for changing server -->
-        <div id="server-dropdown" class="server-dropdown" style="display:none;">
-            <ul id="server-list">
-                <!-- Server options will be populated here -->
-            </ul>
-        </div>
-
-    
-<!-- Iframe For Movie Start -->    
-    <iframe id="movie-iframe" width="100%" height="400" frameborder="0"  allowfullscreen= "" referrerpolicy="no-referrer" scrolling="no" sandbox="allow-scripts allow-presentation allow-same-origin"></iframe> 
-  </div>
-<!-- Iframe For Movie End -->
-    
-        <h1 id="movie-title"></h1>
-        <p id="movie-description"></p>
-
-        <!-- Genre Section -->
-        <div class="movie-genres" id="movie-genres"></div>
-
-        <div class="movie-info">
-            <div class="movie-rating" id="movie-rating"></div>
-            <div class="movie-release-date" id="movie-release-date">
-                <i class="fas fa-calendar-alt"></i> <!-- Calendar Icon -->
-                <span id="release-date-text"></span> <!-- The actual release date -->
-            </div>
+    <div class="container">
+        <div class="movie-details">
+            
+            <div id="iframe-container">
+                <!-- Controls ABOVE the video -->
+                <div class="video-controls-container">
+                    <div class="server-control">
+                        <button id="change-server-btn">
+                            Change Server <span class="dropdown-icon">&#9660;</span>
+                        </button>
+                        <!-- Dropdown anchored to the button -->
+                        <div id="server-dropdown" class="server-dropdown">
+                            <ul id="server-list"></ul>
+                        </div>
                     </div>
 
-        <div id="movie-release-date-container">
-            <span id="movie-release-date"></span>
-            <!-- Trailer Section -->
-            <div id="movie-trailer-container" style="display: none;">
-                <iframe id="movie-iframe" width="100%" height="400" frameborder="0" allowfullscreen 
-    sandbox="allow-scripts allow-same-origin allow-popups" referrerpolicy="origin" scrolling="no"></iframe>
+                    <button id="sandbox-toggle" class="sandbox-btn on">Sandbox: ON</button>
+                    <button onclick="toggleFullscreen()">Fullscreen</button>
+                    <button id="download-btn" class="download-btn">Download</button>
+                </div>
 
+                <!-- Video -->
+                <iframe id="movie-iframe" frameborder="0" allowfullscreen 
+                    referrerpolicy="no-referrer" scrolling="no" 
+                    sandbox="allow-scripts allow-presentation allow-same-origin">
+                </iframe>
             </div>
-        </div>        
 
-        <!-- Cast Section -->
-        <div class="movie-cast" id="movie-cast"></div>
+            <div class="movie-sidebar">
+                
+                <div class="poster-info-row">
+                    
+                    <div class="poster-container">
+                        <img id="movie-poster" alt="Movie Poster" class="movie-poster" src="images/placeholder.png">
+                        <button id="watch-trailer-btn">Watch Trailer</button>
+                    </div>        
+                    
+                    <div class="movie-info-section">
+                        <h1 id="movie-title">Movie Title</h1>
+                        <p id="movie-description">This is the movie description...</p>
+                        
+                        <div class="movie-genres" id="movie-genres"></div>
+
+                        <div class="movie-info">
+                            <div class="movie-rating" id="movie-rating"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-buttons"></div>            
+                
+                <div class="cast-container">
+                    <h2>Cast</h2>
+                    <div class="movie-cast" id="movie-cast"></div>
+                </div>    
+            </div>
+        </div>    
     </div>
+    
+    <div id="trailer-popup" class="trailer-popup">
+        <div class="trailer-content">
+            <span id="close-trailer" class="close-trailer">&times;</span>
+            <iframe id="movie-iframe-trailer" width="854" height="480" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>        
+    
+    <button class="close-button" id="close-button">
+        <span class="close-text">CLOSE</span>&times;
+    </button>
            
+<div id="sandbox-warning" class="sandbox-warning">
+  <div class="warning-content">
+    <p>Turning Sandbox OFF will enabled ADS from the server.</p>
+    <div class="warning-buttons">
+      <button id="proceed-btn">Proceed</button>
+      <button id="abort-btn">Abort</button>
+    </div>
+  </div>
+</div>
 
+        
 <!-- Floating Message Start-->
 <div id="floating-message">
     <i class="fa-solid fa-triangle-exclamation"></i>
@@ -580,6 +582,7 @@ const firebaseConfig = {
     
 </body>
 </html>
+
 
 
 
