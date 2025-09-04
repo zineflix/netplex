@@ -354,14 +354,13 @@ body {
 /* FLOATING MESSAGE START */
 #floating-message {
 position: fixed;
-top: 25%
-bottom: 0;
+top: 25%;
 left: 50%;
 transform: translateX(-50%);
 background-color: #121212;
 color: white;
 text-align: center;
-padding: 15px;
+padding: 16px;
 font-size: 15px;
 z-index: 1000;
 border-radius: 20px; /* Rounded top corners */
@@ -369,6 +368,10 @@ width: 30%; /* You can adjust the width as needed */
 backdrop-filter: blur(8px); /* Apply blur effect to the background */
 -webkit-backdrop-filter: blur(8px); /* Ensure blur effect works on iOS */
 border: 2px solid white;
+}
+
+#floating-message p {
+font-size: 14px;  
 }
 
 #floating-message button {
@@ -390,13 +393,15 @@ background-color: #0296cc; /* Darker green on hover */
 @media (max-width: 768px) {
    #floating-message {
      padding: 5px;
-     font-size: 15px;
+     font-size: 14px;
      width: 75%;
-     top: 25%;
-   
-}}
+     top: 25%;  
+}
+   #floating-message p {
+font-size: 12px;  
+}
+}
 /* FLOATING MESSAGE END */
-
 
 /* Star Rating Styles */
 /* Container for each media item */
@@ -678,3 +683,4 @@ background-color: #0296cc; /* Darker green on hover */
   box-shadow: 0 2px 4px rgba(0,0,0,0.4);
   pointer-events: none;
 }
+
