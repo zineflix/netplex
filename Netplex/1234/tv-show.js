@@ -10,7 +10,7 @@ const banner = document.querySelector(".banner");
 
 async function fetchBanner() {
     const response = await fetch(
-        `https://api.themoviedb.org/3/trending/all/week?api_key=${apiKey}&language=en-US`
+        `${baseURL}/trending/all/week?api_key=${apiKey}&language=en-US`
     );
     const data = await response.json();
     const randomItem = data.results[Math.floor(Math.random() * data.results.length)];
@@ -18,19 +18,16 @@ async function fetchBanner() {
     banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${randomItem.backdrop_path})`;
     bannerTitle.textContent = randomItem.title || randomItem.name;
     bannerDescription.textContent = randomItem.overview || "No description available.";
-    
-    // Fetch genres
-    const genresResponse = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`);
+
+    // Fetch genres (for TV this can be replaced with TV genre list if needed)
+    const genresResponse = await fetch(`${baseURL}/genre/tv/list?api_key=${apiKey}&language=en-US`);
     const genresData = await genresResponse.json();
     const genreMap = Object.fromEntries(genresData.genres.map(g => [g.id, g.name]));
     const genreNames = (randomItem.genre_ids || []).map(id => genreMap[id]).join(", ");
-    
+
     bannerGenre.textContent = `Genre: ${genreNames || "Unknown"}`;
 }
 
-fetchBanner();
-
-// Fetch Media Rows
 async function fetchMedia(url, containerId, type, pages = 3) {
     const container = document.getElementById(containerId);
     for (let page = 1; page <= pages; page++) {
@@ -41,27 +38,25 @@ async function fetchMedia(url, containerId, type, pages = 3) {
             const mediaItem = document.createElement("div");
             mediaItem.classList.add("media-item");
 
-            const year = (item.release_date || item.first_air_date || '').slice(0, 4) || '—';
-
-          
-            const rating = item.vote_average.toFixed(1);
+            const year = (item.first_air_date || item.release_date || "").slice(0, 4) || "—";
+            const rating = item.vote_average ? item.vote_average.toFixed(1) : "N/A";
 
             mediaItem.innerHTML = `
-    <div class="poster-title" title="${item.title || item.name}">${item.title || item.name}</div>
-    <div class="poster-card">
-        <div class="rating">
-            <span class="star"><i class="fas fa-star"></i></span> <span class="rating-number">${rating}</span>
-        </div>
-        <div class="year-container">
-            <span class="year">${year}</span>
-        </div>
-        <img src="${imgURL + item.poster_path}" alt="${item.title || item.name}">
-        <div class="play-button">
-            <i class="fas fa-play"></i>
-        </div>
-    </div>
-`;
-
+                <div class="poster-title" title="${item.name || item.title}">${item.name || item.title}</div>
+                <div class="poster-card">
+                    <div class="rating">
+                        <span class="star"><i class="fas fa-star"></i></span>
+                        <span class="rating-number">${rating}</span>
+                    </div>
+                    <div class="year-container">
+                        <span class="year">${year}</span>
+                    </div>
+                    <img src="${imgURL + item.poster_path}" alt="${item.name || item.title}">
+                    <div class="play-button">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+            `;
 
             mediaItem.addEventListener("click", () => {
                 window.location.href = type === "movie"
@@ -74,21 +69,37 @@ async function fetchMedia(url, containerId, type, pages = 3) {
     }
 }
 
+// ==============================
+// Get Current Year
+// ==============================
+const currentYear = new Date().getFullYear();
 
-
+// ==============================
 // Load Data
+// ==============================
 fetchBanner();
-fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&sort_by=popularity.desc&vote_count.gte=3000&vote_average=8&page=1`, "popular-tv-series", "tv", 10);
+
+// ✅ New Releases (TV Shows this year)
+fetchMedia(
+    `${baseURL}/discover/tv?api_key=${apiKey}&language=en-US&sort_by=first_air_date.desc&first_air_date_year=${currentYear}&vote_count.gte=10`,
+    "new-tv-releases",
+    "tv",
+    5
+);
+
+fetchMedia(`${baseURL}/tv/on_the_air?api_key=${apiKey}&language=en-US`, "upcoming-tv", "tv", 10);
+fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&sort_by=popularity.desc&vote_count.gte=3000&vote_average=8`, "popular-tv-series", "tv", 10);
 fetchMedia(`${baseURL}/trending/tv/week?api_key=${apiKey}`, "trending-tv-series", "tv", 10);
-fetchMedia(`${baseURL}/tv/top_rated?api_key=${apiKey}&language=en-US&page=1`, "top-rated-tv-series", "tv", 10);
-fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=5&vote_count.gte=500&with_genres=9648`, "mystery-tv-series", "tv", 10);
-fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=3&vote_count.gte=3&with_genres=10749`, "romance-tv-series", "tv", 10);
-fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=6&with_genres=18`, "drama-tv-series", "tv", 10);
-fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=5&vote_count.gte=1000&with_genres=35`, "comedy-tv-series", "tv", 10);
-fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&language=en-US&page=1&sort_by=popularity.desc&vote_average.gte=5&vote_count.gte=500&with_genres=80`, "crime-tv-series", "tv", 10);
+fetchMedia(`${baseURL}/tv/top_rated?api_key=${apiKey}&language=en-US`, "top-rated-tv-series", "tv", 10);
+fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&vote_average.gte=5&vote_count.gte=500&with_genres=9648`, "mystery-tv-series", "tv", 10);
+fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&vote_average.gte=3&vote_count.gte=3&with_genres=10749`, "romance-tv-series", "tv", 10);
+fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&vote_average.gte=6&with_genres=18`, "drama-tv-series", "tv", 10);
+fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&vote_average.gte=5&vote_count.gte=1000&with_genres=35`, "comedy-tv-series", "tv", 10);
+fetchMedia(`${baseURL}/discover/tv?api_key=${apiKey}&language=en-US&sort_by=popularity.desc&vote_average.gte=5&vote_count.gte=500&with_genres=80`, "crime-tv-series", "tv", 10);
 
-
-// Ensure the function is globally accessible
+// ==============================
+// Scroll Controls
+// ==============================
 document.addEventListener("DOMContentLoaded", function () {
     function scrollLeft(containerId) {
         let container = document.getElementById(containerId);
@@ -108,7 +119,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Attach event listeners to buttons (instead of inline HTML)
     document.querySelectorAll(".scroll-left").forEach(button => {
         button.addEventListener("click", function () {
             let targetId = this.nextElementSibling.id;
@@ -124,40 +134,33 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-
-
-// For Responsive Header
+// ==============================
+// Responsive Header
+// ==============================
 window.addEventListener("scroll", function () {
     let nav = document.querySelector("nav");
     if (window.scrollY > 50) {
-        nav.classList.add("nav-solid"); // Solid color after scrolling down
+        nav.classList.add("nav-solid");
     } else {
-        nav.classList.remove("nav-solid"); // Transparent at the top
+        nav.classList.remove("nav-solid");
     }
 });
 
-// For sticky header when scrolling
-    window.addEventListener("scroll", function () {
-      let nav = document.querySelector("nav");
-      if (window.scrollY > 50) {
-        nav.classList.add("nav-solid"); // Add solid background when scrolled
-      } else {
-        nav.classList.remove("nav-solid"); // Remove solid background at top
-      }
-    });
-
-    // Toggle menu visibility when menu button is clicked
-document.getElementById("menu-btn").addEventListener("click", function() {
+// ==============================
+// Toggle Menu
+// ==============================
+document.getElementById("menu-btn").addEventListener("click", function () {
     document.getElementById("menu").classList.toggle("active");
 });
 
-
-// For Dropdown More Button Function Start
+// ==============================
+// Dropdown Toggle
+// ==============================
 document.addEventListener("DOMContentLoaded", function () {
     const dropdown = document.querySelector(".dropdown");
-
-    dropdown.addEventListener("click", function () {
-        this.classList.toggle("active");
-    });
+    if (dropdown) {
+        dropdown.addEventListener("click", function () {
+            this.classList.toggle("active");
+        });
+    }
 });
-// For Dropdown More Button Function End
