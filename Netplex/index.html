@@ -1,172 +1,228 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- ============================= -->
+    <!-- GOOGLE TAG MANAGER -->
+    <!-- ============================= -->
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-PJ8ZMSNP');
+    </script>
+    <!-- ============================= -->
+    <!-- END GOOGLE TAG MANAGER -->
+    <!-- ============================= -->
 
-    <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-PJ8ZMSNP');</script>
-    <!-- End Google Tag Manager -->
-    
+    <!-- ============================= -->
+    <!-- META TAGS -->
+    <!-- ============================= -->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Netplex - Watch Movies, TV Series, K-Dramas & Anime for Free! | Stream Anytime, Anywhere.</title>
     <meta name="description" content="Stream Movies, TV-Series, K-dramas, and Anime for free on Netplex.site! Enjoy high-quality entertainment anytime, anywhere! — no registration & subscriptions, just non-stop streaming. Start watching now!">
     <meta name="keywords" content="Netplex, movies, TV shows, live tv streaming, K-Drama, anime, animation, online entertainment">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <link rel="icon" href="favicon.png" type="image/png">
-    <link rel="apple-touch-icon" href="img/Netplex.png">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta property="og:title" content="Netplex - Watch Movies, TV Series, K-Dramas & Anime for Free!">
     <meta property="og:description" content="Explore a vast collection of movies, TV series, K-Dramas, and anime on Netplex. Stream your favorite videos anytime, anywhere.">
     <meta property="og:image" content="img/netplex-logo.png">
     <meta property="og:url" content="https://netplex.site">
     <meta property="og:type" content="website">
+
+    <!-- ============================= -->
+    <!-- ICONS -->
+    <!-- ============================= -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="img/Netplex.png">
+
+    <!-- ============================= -->
+    <!-- APP SETTINGS -->
+    <!-- ============================= -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <link rel="canonical" href="https://netplex.site">
+
+    <!-- ============================= -->
+    <!-- STYLESHEETS -->
+    <!-- ============================= -->
     <link rel="stylesheet" href="1234/home.css">
     <link rel="preload" href="1234/home.css" as="style">
     <link rel="preload" href="1234/home.js" as="script">
-    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="canonical" href="https://netplex.site">
+
+    <!-- ============================= -->
+    <!-- SCRIPTS -->
+    <!-- ============================= -->
     <script defer src="1234/home.js"></script>
     <script src="security.js"></script>
-    
-    <!-- Chatroom Start -->
+
+    <!-- ============================= -->
+    <!-- CHATBRO WIDGET -->
+    <!-- ============================= -->
     <script id="chatBroEmbedCode">
-/* Chatbro Widget Embed Code Start */
-function ChatbroLoader(chats,async){async=!1!==async;var params={embedChatsParameters:chats instanceof Array?chats:[chats],lang:navigator.language||navigator.userLanguage,needLoadCode:'undefined'==typeof Chatbro,embedParamsVersion:localStorage.embedParamsVersion,chatbroScriptVersion:localStorage.chatbroScriptVersion},xhr=new XMLHttpRequest;xhr.withCredentials=!0,xhr.onload=function(){eval(xhr.responseText)},xhr.onerror=function(){console.error('Chatbro loading error')},xhr.open('GET','https://www.chatbro.com/embed.js?'+btoa(unescape(encodeURIComponent(JSON.stringify(params)))),async),xhr.send()}
-/* Chatbro Widget Embed Code End */
-ChatbroLoader({encodedChatId: '1946E'});
-</script>
-    <!-- Chatroom End -->
+        function ChatbroLoader(chats, async) {
+            async = !1 !== async;
+            var params = {
+                embedChatsParameters: chats instanceof Array ? chats : [chats],
+                lang: navigator.language || navigator.userLanguage,
+                needLoadCode: 'undefined' == typeof Chatbro,
+                embedParamsVersion: localStorage.embedParamsVersion,
+                chatbroScriptVersion: localStorage.chatbroScriptVersion
+            },
+                xhr = new XMLHttpRequest;
+            xhr.withCredentials = !0,
+                xhr.onload = function () { eval(xhr.responseText) },
+                xhr.onerror = function () { console.error('Chatbro loading error') },
+                xhr.open('GET', 'https://www.chatbro.com/embed.js?' + btoa(unescape(encodeURIComponent(JSON.stringify(params)))), async),
+                xhr.send()
+        }
+        ChatbroLoader({ encodedChatId: '1946E' });
+    </script>
+    <!-- ============================= -->
+    <!-- END CHATBRO WIDGET -->
+    <!-- ============================= -->
 
-<!-- ADNETWORK SECTION START -->
-    <!-- Google Adsense Start -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8187798540230740"
-     crossorigin="anonymous"></script>    
-    <!-- Google Adsense End -->
+    <!-- ============================= -->
+    <!-- GOOGLE ADSENSE -->
+    <!-- ============================= -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8187798540230740"
+        crossorigin="anonymous"></script>
 
-    <!-- PopAds Start -->
-<script type="text/javascript" data-cfasync="false">
-/*<![CDATA[/* */
-(function(){var p=window,g="ee0433eea163c6b8781280f331deb2a2",u=[["siteId",116*777-25+5089916],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],v=["d3d3LnByZW1pdW12ZXJ0aXNpbmcuY29tL3hML0R6UmphTS9oZmxhYy5taW4uanM=","ZDJqMDQyY2oxNDIxd2kuY2xvdWRmcm9udC5uZXQvemJvb3RzdHJhcFZhbGlkYXRvci5taW4uanM=","d3d3LndjY2lob2lnLmNvbS9MT2NJeUMvRlcvYWZsYWMubWluLmpz","d3d3LmNkZXdscWV5LmNvbS9iYm9vdHN0cmFwVmFsaWRhdG9yLm1pbi5qcw=="],o=-1,j,s,a=function(){clearTimeout(s);o++;if(v[o]&&!(1778945285000<(new Date).getTime()&&1<o)){j=p.document.createElement("script");j.type="text/javascript";j.async=!0;var z=p.document.getElementsByTagName("script")[0];j.src="https://"+atob(v[o]);j.crossOrigin="anonymous";j.onerror=a;j.onload=function(){clearTimeout(s);p[g.slice(0,16)+g.slice(0,16)]||a()};s=setTimeout(a,5E3);z.parentNode.insertBefore(j,z)}};if(!p[g]){try{Object.freeze(p[g]=u)}catch(e){}a()}})();
-/*]]>/* */
-</script>
-    <!-- PopAds End -->
-    
-    <!-- Galaksion Start -->
-  
-    <!-- Galaksion End -->
-<script data-cfasync="false" async type="text/javascript" src="//my.undecylupsends.com/ryIMduIUUPT5DkQS/122481"></script>   
-    <!-- Moneytag Start -->
-   
-    <!-- Moneytag End -->
-
-    <!-- AdMaven Start -->
-
-    <!-- AdMaven End -->
-
-    <!-- Adsterra Start -->
-<!--<script src="Ads/AdsPopunder.js"></script>
-    <!-- Adsterra End -->
-<!-- ADNETWORK SECTION END -->
-    
+    <!-- ============================= -->
+    <!-- POPADS SCRIPT -->
+    <!-- ============================= -->
+    <script type="text/javascript" data-cfasync="false">
+        (function () {
+            var p = window,
+                g = "ee0433eea163c6b8781280f331deb2a2",
+                u = [["siteId", 116 * 777 - 25 + 5089916], ["minBid", 0], ["popundersPerIP", "0"], ["delayBetween", 0], ["default", false], ["defaultPerDay", 0], ["topmostLayer", "auto"]],
+                v = ["d3d3LnByZW1pdW12ZXJ0aXNpbmcuY29tL3hML0R6UmphTS9oZmxhYy5taW4uanM=", "ZDJqMDQyY2oxNDIxd2kuY2xvdWRmcm9udC5uZXQvemJvb3RzdHJhcFZhbGlkYXRvci5taW4uanM=", "d3d3LndjY2lob2lnLmNvbS9MT2NJeUMvRlcvYWZsYWMubWluLmpz", "d3d3LmNkZXdscWV5LmNvbS9iYm9vdHN0cmFwVmFsaWRhdG9yLm1pbi5qcw=="],
+                o = -1, j, s,
+                a = function () {
+                    clearTimeout(s);
+                    o++;
+                    if (v[o] && !(1778945285000 < (new Date).getTime() && 1 < o)) {
+                        j = p.document.createElement("script");
+                        j.type = "text/javascript";
+                        j.async = !0;
+                        var z = p.document.getElementsByTagName("script")[0];
+                        j.src = "https://" + atob(v[o]);
+                        j.crossOrigin = "anonymous";
+                        j.onerror = a;
+                        j.onload = function () { clearTimeout(s); p[g.slice(0, 16) + g.slice(0, 16)] || a() };
+                        s = setTimeout(a, 5E3);
+                        z.parentNode.insertBefore(j, z)
+                    }
+                };
+            if (!p[g]) { try { Object.freeze(p[g] = u) } catch (e) { } a() }
+        })();
+    </script>
 </head>
-    
+
 <body>
-  
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PJ8ZMSNP"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
+    <!-- ============================= -->
+    <!-- GOOGLE TAG MANAGER (NOSCRIPT) -->
+    <!-- ============================= -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PJ8ZMSNP"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
 
-    
-<!-- FOR RESPONSIVE NAVIGATION BAR START -->  
-<nav>
-    <!-- Logo -->
-    <img id="logo" src="https://netplex.pages.dev/img/netplex.png" alt="NETPLEX">
-
-    <!-- Menu Button (visible only on mobile) -->
-    <span class="menu-btn" id="menu-btn">Menu</span>
-  
-    <!-- Navigation Menu -->
-    <ul id="menu">
-      <li><a href="index.html">HOME <i class="fa-solid fa-house" style="color: #0296cc;"></i></a></li>
-      <li><a href="movies.html">MOVIES <i class="fa-solid fa-film" style="color: #0296cc;"></i></a></li>
-      <li><a href="tv-show.html">TV-SHOWS <i class="fa-solid fa-tv" style="color: #0296cc;"></i></a></li>
-      <li><a href="category.html">CATEGORY <i class="fa-solid fa-layer-group" style="color: #0296cc;"></i></a></li>
-      <li><a href="search.html">SEARCH <i class="fa-solid fa-magnifying-glass" style="color: #0296cc;"></i></a></li>
-      <li><a href="https://animezone.pages.dev/">ANIME <i class="fa-solid fa-dragon" style="color: #0296cc;"></i></a></li>
-      <li class="dropdown">
-        <button class="dropbtn">MORE <i class="fa-solid fa-square-caret-down" style="color: #0296cc;"></i></button>
-        <ul class="dropdown-content">
-            <li><a href="tagalog-dub-movies.html">Tagalog Dub Movies</a></li>
-            <li><a href="tv-live-streaming.html">Live TV Streaming</a></li>
-            <li><a href="download-app.html">DOWNLOAD APP <i class="fa-solid fa-download" style="color: #0296cc;"></i></a></li>
-            <li><a href="about-us.html">About Us</a></li>
-            <li><a href="contact-us.html">Contact Us</a></li>
+    <!-- ============================= -->
+    <!-- NAVIGATION BAR -->
+    <!-- ============================= -->
+    <nav>
+        <img id="logo" src="https://netplex.pages.dev/img/netplex.png" alt="NETPLEX">
+        <span class="menu-btn" id="menu-btn">Menu</span>
+        <ul id="menu">
+            <li><a href="index.html">HOME <i class="fa-solid fa-house" style="color: #0296cc;"></i></a></li>
+            <li><a href="movies.html">MOVIES <i class="fa-solid fa-film" style="color: #0296cc;"></i></a></li>
+            <li><a href="tv-show.html">TV-SHOWS <i class="fa-solid fa-tv" style="color: #0296cc;"></i></a></li>
+            <li><a href="category.html">CATEGORY <i class="fa-solid fa-layer-group" style="color: #0296cc;"></i></a></li>
+            <li><a href="search.html">SEARCH <i class="fa-solid fa-magnifying-glass" style="color: #0296cc;"></i></a></li>
+            <li><a href="https://animezone.pages.dev/">ANIME <i class="fa-solid fa-dragon" style="color: #0296cc;"></i></a></li>
+            <li class="dropdown">
+                <button class="dropbtn">
+                    MORE <i class="fa-solid fa-square-caret-down" style="color: #0296cc;"></i>
+                </button>
+                <ul class="dropdown-content">
+                    <li><a href="tagalog-dub-movies.html">Tagalog Dub Movies</a></li>
+                    <li><a href="tv-live-streaming.html">Live TV Streaming</a></li>
+                    <li><a href="download-app.html">DOWNLOAD APP <i class="fa-solid fa-download" style="color: #0296cc;"></i></a></li>
+                    <li><a href="about-us.html">About Us</a></li>
+                    <li><a href="contact-us.html">Contact Us</a></li>
+                </ul>
+            </li>
         </ul>
-    </li>
-    </ul>
-    
-</nav>  
-<!-- FOR RESPONSIVE NAVIGATION BAR END -->
+    </nav>
 
-    <!-- Banner -->
+    <!-- ============================= -->
+    <!-- BANNER -->
+    <!-- ============================= -->
     <header class="banner">
         <div class="banner-content">
             <h1 id="banner-title"></h1>
             <p id="banner-genre"></p>
             <p1 id="banner-description"></p1>
         </div>
-      
-<!-- Floating Message Start -->
-<div id="floating-message">
-  <h2>🎥Welcome to NETPLEX🍿</h2><br>
-  <p>
-    Your ticket to an endless library of Movies, TV Shows/Series, K-drama and Anime is here.<br><br>
-    Share the fun with your family and friends.
-  </p><br>
-  
-  <!-- Hidden anchor link -->
-  <a id="popunder-link" href="https://iz.palankyurok.com/iGOLSo4kO6Lr/122520" target="_blank" style="display: none;">Popunder</a>
-  
-  <!-- Visible close button -->
-  <button onclick="triggerPopunder()">CLOSE</button>
-</div>
 
-<script>
-function triggerPopunder() {
-  const link = document.getElementById('popunder-link');
-  
-  // Simulate a real click on the <a> element
-  link.click();
+        <!-- ============================= -->
+        <!-- FLOATING MESSAGE -->
+        <!-- ============================= -->
+        <div id="floating-message">
+            <h2>🎥Welcome to NETPLEX🍿</h2><br>
+            <p>
+                Your ticket to an endless library of Movies, TV Shows/Series, K-drama and Anime is here.<br><br>
+                Share the fun with your family and friends.
+            </p><br>
 
-  // Optionally try to refocus current window (popunder effect)
-  window.focus();
+            <!-- Visible close button -->
+            <button onclick="closeMessage()">CLOSE</button>
+        </div>
 
-  // Hide the message
-  document.getElementById("floating-message").style.display = "none";
-}
-</script>
-<!-- Floating Message End -->
-   
+        <script>
+            function closeMessage() {
+                document.getElementById("floating-message").style.display = "none";
+            }
+
+            function triggerPopunder() {
+                const link = document.getElementById('popunder-link');
+                // Simulate a real click on the <a> element
+                link.click();
+                // Optionally try to refocus current window (popunder effect)
+                window.focus();
+                // Hide the message
+                document.getElementById("floating-message").style.display = "none";
+            }
+        </script>
+        <!-- ============================= -->
+        <!-- END FLOATING MESSAGE -->
+        <!-- ============================= -->
     </header>
 
-    <!-- New Releases (Movies + TV) -->
-<section class="section">
-    <h2>New Release</h2>
-    <div class="scroll-container">
-        <button class="scroll-left" onclick="scrollLeft('new-releases')"><i class="fas fa-chevron-left"></i></button>
-        <div class="media-row" id="new-releases"></div>
-        <button class="scroll-right" onclick="scrollRight('new-releases')"><i class="fas fa-chevron-right"></i></button>
-    </div>
-</section>
-    
-    <!-- Popular Movies -->
+    <!-- ============================= -->
+    <!-- NEW RELEASES (MOVIES + TV) -->
+    <!-- ============================= -->
+    <section class="section">
+        <h2>New Release</h2>
+        <div class="scroll-container">
+            <button class="scroll-left" onclick="scrollLeft('new-releases')"><i class="fas fa-chevron-left"></i></button>
+            <div class="media-row" id="new-releases"></div>
+            <button class="scroll-right" onclick="scrollRight('new-releases')"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <!-- ============================= -->
+    <!-- POPULAR MOVIES -->
+    <!-- ============================= -->
     <section class="section">
         <h2>Popular Movies</h2>
         <div class="scroll-container">
@@ -175,300 +231,290 @@ function triggerPopunder() {
             <button class="scroll-right" onclick="scrollRight('popular-movies')"><i class="fas fa-chevron-right"></i></button>
         </div>
     </section>
-  
-    <!-- Popular TV Shows -->
+
+    <!-- ============================= -->
+    <!-- POPULAR TV SHOWS -->
+    <!-- ============================= -->
     <section class="section">
         <h2>Popular TV Series</h2>
         <div class="scroll-container">
             <button class="scroll-left" onclick="scrollLeft('popular-tv-shows')"><i class="fas fa-chevron-left"></i></button>
             <div class="media-row" id="popular-tv-shows"></div>
             <button class="scroll-right" onclick="scrollRight('popular-tv-shows')"><i class="fas fa-chevron-right"></i></button>
-        
+        </div>
     </section>
-  
-    <!-- Trending Korean TV Shows -->
+
+    <!-- ============================= -->
+    <!-- TRENDING KOREAN TV SHOWS -->
+    <!-- ============================= -->
     <section class="section">
         <h2>Popular K-Drama</h2>
         <div class="scroll-container">
             <button class="scroll-left" onclick="scrollLeft('korean-tv-shows')"><i class="fas fa-chevron-left"></i></button>
             <div class="media-row" id="korean-tv-shows"></div>
             <button class="scroll-right" onclick="scrollRight('korean-tv-shows')"><i class="fas fa-chevron-right"></i></button>
+        </div>
     </section>
 
-    <!-- Popular Japanese Anime -->
+    <!-- ============================= -->
+    <!-- POPULAR JAPANESE ANIME -->
+    <!-- ============================= -->
     <section class="section">
         <h2>Popular Anime</h2>
-            <div class="scroll-container">
+        <div class="scroll-container">
             <button class="scroll-left" onclick="scrollLeft('japanese-animations')"><i class="fas fa-chevron-left"></i></button>
             <div class="media-row" id="japanese-animations"></div>
             <button class="scroll-right" onclick="scrollRight('japanese-animations')"><i class="fas fa-chevron-right"></i></button>
+        </div>
     </section>
-   
-    <!-- Popular Philippine Movies -->
+
+    <!-- ============================= -->
+    <!-- POPULAR PHILIPPINE MOVIES -->
+    <!-- ============================= -->
     <section class="section">
         <h2>Popular Vivamax</h2>
-            <div class="scroll-container">
+        <div class="scroll-container">
             <button class="scroll-left" onclick="scrollLeft('philippine-movies')"><i class="fas fa-chevron-left"></i></button>
             <div class="media-row" id="philippine-movies"></div>
             <button class="scroll-right" onclick="scrollRight('philippine-movies')"><i class="fas fa-chevron-right"></i></button>
+        </div>
     </section>
-    
-<!-- Footer Start -->  
-<footer class="site-footer">
-    
-  <p>&copy; 2025 Netplex — All Rights Reserved.</p>
-  <p>Made with ❤️ for movie lovers worldwide.</p>
-  <div class="footer-links">
-    <a href="contact-us.html">Contact Us</a> |
-    <a href="about-us.html">About Us</a> |
-    <a href="disclaimer.html">Disclaimer</a>
-  </div>
-  <p class="disclaimer-note">Disclaimer: Netplex does not host any media files on its servers. All content is provided by third-party sources.</p>
-</footer>
-<!-- Footer End -->   
 
-<!-- Chatroom Start -->
-<div id="netplex-chatroom"></div> 
-<!-- Chatroom End -->
+    <!-- ============================= -->
+    <!-- FOOTER -->
+    <!-- ============================= -->
+    <footer class="site-footer">
+        <p>&copy; 2025 Netplex — All Rights Reserved.</p>
+        <p>Made with ❤️ for movie lovers worldwide.</p>
+        <div class="footer-links">
+            <a href="contact-us.html">Contact Us</a> |
+            <a href="about-us.html">About Us</a> |
+            <a href="disclaimer.html">Disclaimer</a>
+        </div>
+        <p class="disclaimer-note">
+            Disclaimer: Netplex does not host any media files on its servers. All content is provided by third-party sources.
+        </p>
+    </footer>
 
-    
-<!-- Adsterra DL 3 Ad Container Start -->
+    <!-- ============================= -->
+    <!-- CHATROOM CONTAINER -->
+    <!-- ============================= -->
+    <div id="netplex-chatroom"></div>
 
-<!-- Adsterra DL 3 Ad Container End -->
+    <!-- ============================= -->
+    <!-- ADSTERRE DL 3 AD CONTAINER -->
+    <!-- ============================= -->
+    <!-- (Empty placeholder) -->
 
-    
-<!-- ONLINE STAT WIDGET CODE START -->    
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <!-- ============================= -->
+    <!-- ONLINE STAT WIDGET (FIREBASE) -->
+    <!-- ============================= -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-<!-- Widget Styles -->
-<style>
-  #online-widget {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background: #111;
-    color: #0ff;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    font-size: 14px;
-    z-index: 9999;
-    user-select: none;
-    cursor: pointer;
-    overflow: hidden;
-    width: 200px;
-    max-height: 400px;
-    transition: all 0.3s ease-in-out;
-  }
+    <style>
+        #online-widget {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #111;
+            color: #0ff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-size: 14px;
+            z-index: 9999;
+            user-select: none;
+            cursor: pointer;
+            overflow: hidden;
+            width: 200px;
+            max-height: 400px;
+            transition: all 0.3s ease-in-out;
+        }
 
-  #online-widget-header {
-    padding: 12px 18px;
-    border-bottom: 1px solid #0ff2;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+        #online-widget-header {
+            padding: 12px 18px;
+            border-bottom: 1px solid #0ff2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-  #online-widget-content {
-    padding: 10px 18px;
-    display: none;
-    overflow-y: auto;
-    max-height: 300px;
-  }
+        #online-widget-content {
+            padding: 10px 18px;
+            display: none;
+            overflow-y: auto;
+            max-height: 300px;
+        }
 
-  #online-widget.expanded #online-widget-content {
-    display: block;
-  }
+        #online-widget.expanded #online-widget-content {
+            display: block;
+        }
 
-  #online-widget-toggle {
-    font-weight: bold;
-    color: #fff;
-    margin-left: 10px;
-    transition: transform 0.3s ease;
-  }
+        #online-widget-toggle {
+            font-weight: bold;
+            color: #fff;
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
 
-  #online-widget.expanded #online-widget-toggle {
-    transform: rotate(180deg);
-  }
+        #online-widget.expanded #online-widget-toggle {
+            transform: rotate(180deg);
+        }
 
-  .region-stat {
-    font-size: 13px;
-    margin-top: 4px;
-  }
+        .region-stat {
+            font-size: 13px;
+            margin-top: 4px;
+        }
 
-  /* Mobile Responsiveness */
-  @media (max-width: 600px) {
-    #online-widget {
-      left: 20px;
-      bottom: 20px;
-      width: 90%;
-      max-width: 180px;
-      font-size: 14px;
-    }
+        @media (max-width: 600px) {
+            #online-widget {
+                left: 20px;
+                bottom: 20px;
+                width: 90%;
+                max-width: 180px;
+                font-size: 14px;
+            }
 
-    #online-widget-content {
-      max-height: 250px;
-    }
+            #online-widget-content {
+                max-height: 250px;
+            }
 
-    .region-stat {
-      font-size: 12px;
-    }
+            .region-stat {
+                font-size: 12px;
+            }
 
-    #online-widget-header {
-      padding: 10px 14px;
-    }
+            #online-widget-header {
+                padding: 10px 14px;
+            }
 
-    #online-widget-content {
-      padding: 8px 14px;
-    }
-  }
-</style>
+            #online-widget-content {
+                padding: 8px 14px;
+            }
+        }
+    </style>
 
-<!-- Widget HTML -->
-<div id="online-widget">
-  <div id="online-widget-header">
-    👥 <span id="online-count">...</span> online
-    <span id="online-widget-toggle">▲</span>
-  </div>
-  <div id="online-widget-content">
-    🔁 Visits: <span id="visit-count">...</span><br>
-    👤 Unique Visitors Today: <span id="unique-visitor-count">Loading...</span><br>
-    📊 Peak: <span id="peak-users">...</span><br>
-    🌍 You: <span id="geo-data">loading...</span><br><br>
-    <strong>🌐 Online by Region:</strong>
-    <div id="region-breakdown" class="region-stat">Loading...</div>
-  </div>
-</div>
+    <div id="online-widget">
+        <div id="online-widget-header">
+            👥 <span id="online-count">...</span> online
+            <span id="online-widget-toggle">▲</span>
+        </div>
+        <div id="online-widget-content">
+            🔁 Visits: <span id="visit-count">...</span><br>
+            👤 Unique Visitors Today: <span id="unique-visitor-count">Loading...</span><br>
+            📊 Peak: <span id="peak-users">...</span><br>
+            🌍 You: <span id="geo-data">loading...</span><br><br>
+            <strong>🌐 Online by Region:</strong>
+            <div id="region-breakdown" class="region-stat">Loading...</div>
+        </div>
+    </div>
 
-<!-- JS Logic -->
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyAcmo2t3zDxpFVexE3l3RB15Ig4qSngBCY",
-  authDomain: "netplex-online-stat.firebaseapp.com",
-  databaseURL: "https://netplex-online-stat-default-rtdb.firebaseio.com",
-  projectId: "netplex-online-stat",
-  storageBucket: "netplex-online-stat.firebasestorage.app",
-  messagingSenderId: "837018070039",
-  appId: "1:837018070039:web:cce7c12ad6bcc9201d0052"
-};
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAcmo2t3zDxpFVexE3l3RB15Ig4qSngBCY",
+            authDomain: "netplex-online-stat.firebaseapp.com",
+            databaseURL: "https://netplex-online-stat-default-rtdb.firebaseio.com",
+            projectId: "netplex-online-stat",
+            storageBucket: "netplex-online-stat.firebasestorage.app",
+            messagingSenderId: "837018070039",
+            appId: "1:837018070039:web:cce7c12ad6bcc9201d0052"
+        };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
 
-const presenceRef = db.ref("presence");
-const visitsRef = db.ref("siteStats/visits");
-const peakRef = db.ref("siteStats/peakUsers");
-const sessionsRef = db.ref("siteStats/sessions");
-const uniqueVisitorsRef = db.ref("uniqueVisitors"); // ✅ NEW
+        const presenceRef = db.ref("presence");
+        const visitsRef = db.ref("siteStats/visits");
+        const peakRef = db.ref("siteStats/peakUsers");
+        const sessionsRef = db.ref("siteStats/sessions");
+        const uniqueVisitorsRef = db.ref("uniqueVisitors");
 
-const localID = localStorage.getItem("netplex_uid") || (() => {
-  const uid = 'user_' + Math.random().toString(36).substr(2, 9);
-  localStorage.setItem("netplex_uid", uid);
-  return uid;
-})();
+        const localID = localStorage.getItem("netplex_uid") || (() => {
+            const uid = 'user_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem("netplex_uid", uid);
+            return uid;
+        })();
 
-const myRef = presenceRef.child(localID);
-const sessionStart = Date.now();
+        const myRef = presenceRef.child(localID);
+        const sessionStart = Date.now();
 
-// Fetch geolocation and IP
-fetch("https://ipinfo.io/json?token=06786be2f40d4d")
-  .then(res => res.json())
-  .then(data => {
-    const ipAddress = data.ip;
-    const location = `${data.city || ''}, ${data.region || ''}`;
-    const country = data.country || "Unknown";
-    const region = data.region || "Unknown";
-    document.getElementById("geo-data").textContent = location;
+        fetch("https://ipinfo.io/json?token=06786be2f40d4d")
+            .then(res => res.json())
+            .then(data => {
+                const ipAddress = data.ip;
+                const location = `${data.city || ''}, ${data.region || ''}`;
+                const country = data.country || "Unknown";
+                const region = data.region || "Unknown";
+                document.getElementById("geo-data").textContent = location;
 
-    // Set presence
-    myRef.set({
-      online: true,
-      country: country,
-      region: region,
-      ip: ipAddress
-    });
-    myRef.onDisconnect().remove();
+                myRef.set({
+                    online: true,
+                    country: country,
+                    region: region,
+                    ip: ipAddress
+                });
+                myRef.onDisconnect().remove();
 
-    // ✅ DAILY UNIQUE VISITOR TRACKING
-    const today = new Date().toISOString().split('T')[0]; // e.g., "2025-07-12"
-    uniqueVisitorsRef.child(today).child(ipAddress).set(true);
-    uniqueVisitorsRef.child(today).once("value", snapshot => {
-      const uniqueCount = snapshot.numChildren();
-      document.getElementById("unique-visitor-count").textContent = uniqueCount;
-    });
+                const today = new Date().toISOString().split('T')[0];
+                uniqueVisitorsRef.child(today).child(ipAddress).set(true);
+                uniqueVisitorsRef.child(today).once("value", snapshot => {
+                    const uniqueCount = snapshot.numChildren();
+                    document.getElementById("unique-visitor-count").textContent = uniqueCount;
+                });
+            })
+            .catch(() => {
+                document.getElementById("geo-data").textContent = "Unknown";
+                myRef.set({ online: true });
+                myRef.onDisconnect().remove();
+            });
 
-  })
-  .catch(() => {
-    document.getElementById("geo-data").textContent = "Unknown";
-    myRef.set({ online: true });
-    myRef.onDisconnect().remove();
-  });
+        window.addEventListener("beforeunload", () => {
+            const timeSpent = Math.floor((Date.now() - sessionStart) / 1000);
+            sessionsRef.child(localID).push({ time: timeSpent, timestamp: Date.now() });
+        });
 
-// Track session duration
-window.addEventListener("beforeunload", () => {
-  const timeSpent = Math.floor((Date.now() - sessionStart) / 1000);
-  sessionsRef.child(localID).push({ time: timeSpent, timestamp: Date.now() });
-});
+        visitsRef.transaction(val => (val || 0) + 1);
+        visitsRef.on("value", snap => {
+            document.getElementById("visit-count").textContent = snap.val();
+        });
 
-// Track visits
-visitsRef.transaction(val => (val || 0) + 1);
-visitsRef.on("value", snap => {
-  document.getElementById("visit-count").textContent = snap.val();
-});
+        peakRef.on("value", snap => {
+            document.getElementById("peak-users").textContent = snap.val() || 0;
+        });
 
-// Track peak online users
-peakRef.on("value", snap => {
-  document.getElementById("peak-users").textContent = snap.val() || 0;
-});
+        presenceRef.on("value", snap => {
+            const count = snap.numChildren();
+            document.getElementById("online-count").textContent = count;
+            peakRef.transaction(peak => (!peak || count > peak) ? count : peak);
 
-// Track online presence
-presenceRef.on("value", snap => {
-  const count = snap.numChildren();
-  document.getElementById("online-count").textContent = count;
+            const regionStats = {};
+            snap.forEach(child => {
+                const data = child.val();
+                if (data.region && data.country) {
+                    const key = `${data.region}, ${data.country}`;
+                    regionStats[key] = (regionStats[key] || 0) + 1;
+                }
+            });
 
-  peakRef.transaction(peak => (!peak || count > peak) ? count : peak);
+            const regionHTML = Object.entries(regionStats)
+                .map(([region, count]) => {
+                    const countryCode = region.split(', ').pop().toLowerCase();
+                    const flagImg = `<img src="https://flagcdn.com/16x12/${countryCode}.png" style="width:16px;height:12px;vertical-align:middle;margin-right:4px">`;
+                    return `${flagImg} ${region}: ${count}`;
+                })
+                .join("<br>");
+            document.getElementById("region-breakdown").innerHTML = regionHTML || "No region data.";
+        });
 
-  // Group by region
-  const regionStats = {};
-  snap.forEach(child => {
-    const data = child.val();
-    if (data.region && data.country) {
-      const key = `${data.region}, ${data.country}`;
-      regionStats[key] = (regionStats[key] || 0) + 1;
-    }
-  });
+        document.getElementById("online-widget-header").addEventListener("click", () => {
+            document.getElementById("online-widget").classList.toggle("expanded");
+        });
+    </script>
 
-  const regionHTML = Object.entries(regionStats)
-    .map(([region, count]) => {
-      const countryCode = region.split(', ').pop().toLowerCase();
-      const flagImg = `<img src="https://flagcdn.com/16x12/${countryCode}.png" style="width:16px;height:12px;vertical-align:middle;margin-right:4px">`;
-      return `${flagImg} ${region}: ${count}`;
-    })
-    .join("<br>");
-
-  document.getElementById("region-breakdown").innerHTML = regionHTML || "No region data.";
-});
-
-// Toggle widget expand/collapse
-document.getElementById("online-widget-header").addEventListener("click", () => {
-  document.getElementById("online-widget").classList.toggle("expanded");
-});
-</script>
-<!-- ONLINE STAT WIDGET CODE END -->  
- 
- 
-<script src="/Adblock/adblock-detector.js"></script>
-    
+    <!-- ============================= -->
+    <!-- ADBLOCK DETECTOR -->
+    <!-- ============================= -->
+    <script src="/Adblock/adblock-detector.js"></script>
 </body>
-  
 </html>
-      
-
-
-
-
-
-
 
