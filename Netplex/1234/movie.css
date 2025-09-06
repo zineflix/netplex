@@ -661,3 +661,61 @@ background-color: #0296cc; /* Darker green on hover */
    
 }}
 /* FLOATING MESSAGE END */
+
+/* ==============================
+  TELEGRAM WIDGET
+============================== */
+#telegram-widget {
+  position: fixed;
+  bottom: 75px;   /* stays above banner bottom fade */
+  right: 20px;
+  background: #0296cc;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  z-index: 1100;   /* higher than banner but below nav */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: background 0.3s;
+}
+
+#telegram-widget a {
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  font-size: 16px;
+  align-items: center;
+  gap: 8px;
+}
+
+#telegram-widget a i {
+  font-size: 16px;   /* Bigger icon */
+}
+
+#telegram-widget:hover {
+  background: #006fa1;
+}
+
+/* 📱 Mobile Responsiveness */
+@media (max-width: 600px) {
+  #telegram-widget {
+    bottom: 75px;       /* move up so it doesn't overlap footer or nav */
+    right: 20px;        /* closer to edge */
+    padding: 8px 10px;  /* smaller padding */
+    font-size: 14px;    /* smaller text */
+  }
+
+  #telegram-widget a i {
+    font-size: 14px;    /* slightly smaller icon for mobile */
+  }
+
+  /* Optionally hide text on extra-small screens */
+  @media (max-width: 400px) {
+    #telegram-widget a span {
+      display: none;    /* hide "Join Telegram" text */
+    }
+    #telegram-widget {
+      padding: 8px;
+    }
+  }
+}
