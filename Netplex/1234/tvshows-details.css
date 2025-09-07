@@ -448,61 +448,65 @@ button[onclick="toggleFullscreen()"]:hover {
 /* ==============================
    FLOATING MESSAGE
 ============================== */
-/* Floating Message */
 #floating-message {
-position: fixed;
-top: 25%;
-left: 50%;
-transform: translateX(-50%);
-background-color: #121212;
-color: white;
-text-align: center;
-padding: 15px;
-font-size: 15px;
-z-index: 1000;
-border-radius: 20px; /* Rounded top corners */
-width: 30%; /* You can adjust the width as needed */
-backdrop-filter: blur(8px); /* Apply blur effect to the background */
--webkit-backdrop-filter: blur(8px); /* Ensure blur effect works on iOS */
-border: 2px solid white;
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #121212;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  font-size: 15px;
+  z-index: 1000;
+  border-radius: 20px;
+  width: 30%;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid white;
 }
 
 #floating-message button {
-background-color: red; /* Green background for the "OK" button */
-color: white;
-border: none;
-font-size: 10px;
-padding: 8px 16px;
-cursor: pointer;
-border-radius: 5px; /* Rounded button corners */
-margin-top: 10px; /* Adds space between the message and the button */
+  background-color: #0296cc;
+  color: white;
+  border: none;
+  font-size: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
 }
 
 #floating-message button:hover {
-background-color: #0296cc; /* Darker green on hover */
+  background-color: #0275a6;
+}
+
+/* 🔴 Make the CLOSE button red */
+#floating-message .close-btn {
+  background-color: #cc2929;
+}
+
+#floating-message .close-btn:hover {
+  background-color: #a61e1e;
 }
 
 /* Adjustment of arrow button in mobile */
 @media (max-width: 768px) {
-       .scroll-left {
-          font-size: 20px;
-          padding: 8px;
-}
-       .scroll-right {
-          font-size: 20px;
-          padding: 8px;
-}
+  .scroll-left, .scroll-right {
+    font-size: 20px;
+    padding: 8px;
+  }
 }
 
 /* Adjustment of floating message in mobile */
 @media (max-width: 768px) {
-   #floating-message {
-     padding: 5px;
-     font-size: 15px;
-     width: 75%;
-     top: 25%;
-   
-}}
+  #floating-message {
+    padding: 5px;
+    font-size: 15px;
+    width: 75%;
+    top: 25%;
+  }
+}
 
 
 /* =====================
