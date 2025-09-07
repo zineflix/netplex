@@ -12,7 +12,9 @@ body {
     color: #ffffff;
 }
 
-/* NAVIGATION BAR START */
+/* ==============================
+   NAVIGATION BAR
+============================== */
     nav {
       width: 100%;
       background: rgba(0, 0, 0, 0); /* Transparent at the top */
@@ -159,10 +161,10 @@ body {
         display: none;  /* Hide the menu button on desktop */
       }
     }
-/* NAVIGATION BAR END */
 
-
-/* SCROLL CONTAINER START */
+/* ==============================
+   SCROLL CONTAINER
+============================== */
 .scroll-container {
     position: relative; /* Needed for absolute positioning of arrows */
     display: flex;
@@ -208,10 +210,10 @@ body {
           padding: 8px;
 }
 }
-/* SCROLL CONTAINER START */
 
-
-/* BANNER SECTION START */
+/* ==============================
+   BANNER SECTION
+============================== */
 .banner {
     position: relative;
     width: 100%;
@@ -276,9 +278,10 @@ body {
         font-size: 10px;
     }
 }
-/* BANNER SECTION END */
 
-/* Section Titles */
+/* ==============================
+   SECTION TITLES
+============================== */
 .section {
     margin: 20px;
 }
@@ -288,8 +291,9 @@ body {
     margin-bottom: -10px;
 }
 
-
-/* Poster Rows */
+/* ==============================
+   POSTER ROWS
+============================== */
 .media-row {
     display: flex;
     overflow-x: auto;
@@ -320,7 +324,9 @@ body {
     scrollbar-color: #ccc rgba(255, 255, 255, 0.1);
 }
 
-/* Media Items */
+/* ==============================
+   MEDIA ITEMS
+============================== */
 .media-item {
     position: relative;
     display: inline-block;
@@ -341,8 +347,6 @@ body {
     box-shadow: 0 10px 20px #0296cc;
 }
 
-
-
 /* Mobile Poster Adjustments */
 @media (max-width: 768px) {
     .media-item img {
@@ -350,8 +354,9 @@ body {
     }
 }
 
-
-/* Star Rating Styles */
+/* ==============================
+   STAR RATING
+============================== */
 /* Container for each media item */
 .media-item {
     position: relative;
@@ -381,7 +386,9 @@ body {
     align-items: center;
 }
 
-/* Star icon */
+/* ==============================
+   STAR ICON
+============================== */
 .star {
   font-size: 1.3rem;
   margin-right: 5px;
@@ -405,7 +412,9 @@ body {
     transition: transform 0.3s ease-in-out;
 }
 
-
+/* ==============================
+   PLAY BUTTON
+============================== */
 /* Galaxy Glow Play Button Overlay */
 .play-button {
     position: absolute;
@@ -443,8 +452,9 @@ body {
     font-size: 30px;
 }
 
-
-/* Dropdown MORE Button Start*/
+/* ==============================
+   DROPDOWN MORE BUTTON
+============================== */
 .dropdown {
     position: relative;
     display: inline-block;
@@ -515,10 +525,10 @@ body {
         display: block;
     }
 }
-/* Dropdown MORE Button End*/
 
-
-/* Footer Section Start*/
+/* ==============================
+   FOOTER SECTION
+============================== */
 .site-footer {
   background-color: #1e1e1e;
   color: white;
@@ -573,9 +583,10 @@ body {
     margin: 0;
   }
 }
-/* Footer Section End*/
 
-/* Poster Title Section Start*/
+/* ==============================
+   POSTER TITLE
+============================== */
 .poster-title {
     max-width: 205px;
     white-space: nowrap;
@@ -587,9 +598,10 @@ body {
     text-align: center;
     margin-bottom: 15px;
 }
-/* Poster Title Section End*/
 
-/* Chatroom Section Start */
+/* ==============================
+   CHATROOM
+============================== */
 #netplex-chatroom {
   position: fixed;
   bottom: 0px;
@@ -597,8 +609,10 @@ body {
   overflow: hidden;
   z-index: 9999;
 }
-/* Chatroom Section End */
 
+/* ==============================
+   POSTER YEAR
+============================== */
 .year-container {
   position: absolute;
   bottom: 8px;
@@ -614,8 +628,9 @@ body {
   pointer-events: none;
 }
 
-
-/* FLOATING MESSAGE START */
+/* ==============================
+   FLOATING MESSAGE
+============================== */
 #floating-message {
 position: fixed;
 top: 25%;
@@ -657,8 +672,8 @@ background-color: #0296cc; /* Darker green on hover */
      width: 75%;
      top: 25%;
    
-}}
-/* FLOATING MESSAGE END */
+}
+}
 
 /* ==============================
   TELEGRAM WIDGET
