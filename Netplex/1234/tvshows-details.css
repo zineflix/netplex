@@ -93,7 +93,6 @@ body {
     padding-top: 6px;
 }
 
-
 .details-poster {
     width: 75%;
     border-radius: 8px;
@@ -268,26 +267,14 @@ body {
 /* =====================
     Special button colors
 ===================== */
-.download-btn {
-    background: #222;
-}
-.download-btn:hover {
-    background: #0296cc;
-}
+.download-btn { background: #222; }
+.download-btn:hover { background: #0296cc; }
 
-button[onclick="toggleFullscreen()"] {
-    background: #222;
-}
-button[onclick="toggleFullscreen()"]:hover {
-    background: #0296cc;
-}
+button[onclick="toggleFullscreen()"] { background: #222; }
+button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
 
-#change-server-btn {
-    background: #222;
-}
-#change-server-btn:hover {
-    background: #0296cc;
-}
+#change-server-btn { background: #222; }
+#change-server-btn:hover { background: #0296cc; }
 
 /* =====================
     Icon
@@ -339,6 +326,50 @@ button[onclick="toggleFullscreen()"]:hover {
 }
 
 /* =====================
+    Episode List Scroll
+===================== */
+#episode-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#episode-list li {
+    padding: 8px 12px;
+    margin: 4px 0;
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+#episode-list li:hover {
+    background: #0296cc;
+}
+
+/* Enable vertical scroll ONLY if > 30 episodes */
+#episode-list:has(li:nth-child(n + 31)) {
+    max-height: 360px;
+    overflow-y: auto;
+    padding-right: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: #666 #222;
+}
+
+#episode-list:has(li:nth-child(n + 31))::-webkit-scrollbar {
+    width: 6px;
+}
+#episode-list:has(li:nth-child(n + 31))::-webkit-scrollbar-track {
+    background: #222;
+    border-radius: 4px;
+}
+#episode-list:has(li:nth-child(n + 31))::-webkit-scrollbar-thumb {
+    background: #666;
+    border-radius: 4px;
+}
+
+/* =====================
     Watch Trailer button
 ===================== */
 #watch-trailer-btn {
@@ -357,9 +388,7 @@ button[onclick="toggleFullscreen()"]:hover {
     transition: background 0.3s ease;
 }
 
-#watch-trailer-btn:hover {
-    background-color: #0275a6;
-}
+#watch-trailer-btn:hover { background-color: #0275a6; }
 
 /* =====================
     Close button
@@ -477,25 +506,15 @@ button[onclick="toggleFullscreen()"]:hover {
   margin-top: 10px;
 }
 
-#floating-message button:hover {
-  background-color: #0275a6;
-}
+#floating-message button:hover { background-color: #0275a6; }
 
 /* 🔴 Make the CLOSE button red */
-#floating-message .close-btn {
-  background-color: #cc2929;
-}
-
-#floating-message .close-btn:hover {
-  background-color: #a61e1e;
-}
+#floating-message .close-btn { background-color: #cc2929; }
+#floating-message .close-btn:hover { background-color: #a61e1e; }
 
 /* Adjustment of arrow button in mobile */
 @media (max-width: 768px) {
-  .scroll-left, .scroll-right {
-    font-size: 20px;
-    padding: 8px;
-  }
+  .scroll-left, .scroll-right { font-size: 20px; padding: 8px; }
 }
 
 /* Adjustment of floating message in mobile */
@@ -508,44 +527,32 @@ button[onclick="toggleFullscreen()"]:hover {
   }
 }
 
-
 /* =====================
     Mobile Responsiveness
 ===================== */
 @media (max-width: 768px) {
     .details-page { flex-direction: column; }
-
     #iframe-container,
     .details-sidebar { flex: 100%; }
-
     #iframe-container { order: 2; }
     .details-sidebar { order: 1; }
-
-    .poster-info-row {
-        flex-direction: column;
-        gap: 10px;
-    }
-
+    .poster-info-row { flex-direction: column; gap: 10px; }
     .details-poster { width: 50%; }
 }
 
 @media (max-width: 600px) {
     .cast-member { width: 50px; }
     .cast-member img { width: 100%; height: auto; }
-
     .cast-container h2 { font-size: 16px; margin-bottom: 8px; }
     .cast-member p { font-size: 8px; word-break: break-word; }
-
     .video-controls-container { flex-direction: column; gap: 6px; }
     .video-controls-container button { font-size: 10px; width: 100%; }
-
     #watch-trailer-btn {
         font-size: 12px;
         width: 75%;
         padding: 8px 8px;
         margin-top: 8px;
     }
-
     .server-dropdown {
         position: absolute;
         left: 50%;
@@ -557,7 +564,6 @@ button[onclick="toggleFullscreen()"]:hover {
         box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         z-index: 1000;
     }
-
     .server-dropdown ul {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -565,7 +571,6 @@ button[onclick="toggleFullscreen()"]:hover {
         gap: 6px;
         justify-items: center;
     }
-
     .server-dropdown li {
         text-align: center;
         padding: 6px 10px;
@@ -574,12 +579,11 @@ button[onclick="toggleFullscreen()"]:hover {
     }
 }
 
-
 /* ==============================
   SANDBOX WARNING POPUP
 ============================== */
 .sandbox-warning {
-  display: none; /* Initially hidden */
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -622,12 +626,5 @@ button[onclick="toggleFullscreen()"]:hover {
   font-size: 14px;
 }
 
-#proceed-btn {
-  background: #0296cc;
-  color: white;
-}
-
-#abort-btn {
-  background: #e50914;
-  color: white;
-}
+#proceed-btn { background: #0296cc; color: white; }
+#abort-btn { background: #e50914; color: white; }
