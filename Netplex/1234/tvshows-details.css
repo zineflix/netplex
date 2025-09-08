@@ -538,6 +538,10 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
     .details-sidebar { order: 1; }
     .poster-info-row { flex-direction: column; gap: 10px; }
     .details-poster { width: 50%; }
+    #iframe-container {
+    max-height: 480px;
+    padding-bottom: 125px;
+    }    
 }
 
 @media (max-width: 600px) {
