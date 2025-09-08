@@ -578,7 +578,7 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
     .server-dropdown li {
         text-align: center;
         padding: 6px 10px;
-        width: 100%;
+        width: 75%;
         white-space: nowrap;
     }
 }
