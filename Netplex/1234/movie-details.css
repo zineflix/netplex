@@ -528,6 +528,11 @@ button[onclick="toggleFullscreen()"]:hover {
     }
 
     .movie-poster { width: 50%; }
+
+    #iframe-container {
+    max-height: 480px;
+    padding-bottom: 125px;
+    }    
 }
 
 @media (max-width: 600px) {
