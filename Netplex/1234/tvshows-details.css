@@ -540,7 +540,7 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
     .details-poster { width: 50%; }
     #iframe-container {
     max-height: 480px;
-    padding-bottom: 125px;
+    padding-bottom: 150px;
     }    
 }
 
