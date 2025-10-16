@@ -177,14 +177,15 @@ const TV_ENDPOINTS = [
   { url: 'https://rivestream.org/embed?type=tv&id=', name: 'Server 10' },
   { url: 'https://player.vidplus.to/embed/tv/', name: 'Server 11' },
   { url: 'https://player.videasy.net/tv/', name: 'Server 12' },
-  { url: 'https://vidrock.net/tv/', name: 'Server 13 Ads' },  
-  { url: 'https://vidfast.pro/tv/', name: 'Server 14 Ads' },
-  { url: 'https://vidsrc.su/embed/tv/', name: 'Server 15 Ads' },
-  { url: 'https://111movies.com/tv/', name: 'Server 16 Ads' },
-  { url: 'https://vidlink.pro/tv/', name: 'Server 17 Ads' },
-  { url: 'https://vidsrc.net/embed/tv/', name: 'Server 18 Ads' },
-  { url: 'https://player.embed-api.stream/?id=', name: 'Server 19 Ads' },
-  { url: 'https://moviesapi.to/tv/', name: 'Server 20 Ads' },  
+  { url: 'https://flixer.sh/watch/tv/', name: 'Server 13' },
+  { url: 'https://vidrock.net/tv/', name: 'Server 14 Ads' },  
+  { url: 'https://vidfast.pro/tv/', name: 'Server 15 Ads' },
+  { url: 'https://vidsrc.su/embed/tv/', name: 'Server 16 Ads' },
+  { url: 'https://111movies.com/tv/', name: 'Server 17 Ads' },
+  { url: 'https://vidlink.pro/tv/', name: 'Server 18 Ads' },
+  { url: 'https://vidsrc.net/embed/tv/', name: 'Server 19 Ads' },
+  { url: 'https://player.embed-api.stream/?id=', name: 'Server 20 Ads' },
+  { url: 'https://moviesapi.to/tv/', name: 'Server 21 Ads' },  
 ];
 
 let currentTVServerIndex = 0;
@@ -667,3 +668,4 @@ safeOn(proceedBtn, 'click', disableSandbox);
 safeOn(abortBtn, 'click', () => {
     sandboxWarning.style.display = 'none';
 });
+
