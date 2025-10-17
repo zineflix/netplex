@@ -2,25 +2,43 @@ const apiKey = "a1e72fd93ed59f56e6332813b9f8dcae";
 const baseURL = "https://api.themoviedb.org/3";
 const imgURL = "https://image.tmdb.org/t/p/w500";
 
+// Get current year dynamically
+const currentYear = new Date().getFullYear();
+
 // Function to fetch and set a random trending movie/TV show as a banner
 const bannerTitle = document.getElementById("banner-title");
 const bannerGenre = document.getElementById("banner-genre");
 const bannerDescription = document.getElementById("banner-description");
 const banner = document.querySelector(".banner");
 
+// --- MODIFIED fetchBanner FUNCTION ---
 async function fetchBanner() {
-    const response = await fetch(
-        `https://api.themoviedb.org/3/trending/all/week?api_key=${apiKey}&language=en-US`
-    );
-    const data = await response.json();
-    const randomItem = data.results[Math.floor(Math.random() * data.results.length)];
+    // 1. Fetch New Releases for the current year (movies and TV)
+    const movieRes = await fetch(`${baseURL}/discover/movie?api_key=${apiKey}&primary_release_year=${currentYear}&sort_by=popularity.desc&page=1`);
+    const tvRes = await fetch(`${baseURL}/discover/tv?api_key=${apiKey}&first_air_date_year=${currentYear}&sort_by=popularity.desc&page=1`);
+    
+    const movieData = await movieRes.json();
+    const tvData = await tvRes.json();
 
+    const allNewReleases = [...movieData.results, ...tvData.results].filter(item => item.backdrop_path);
+
+    if (allNewReleases.length === 0) {
+        // Fallback or error handling if no new releases are found
+        console.error("No new releases found to set as banner.");
+        return;
+    }
+
+    // 2. Select a random item from the new releases
+    const randomItem = allNewReleases[Math.floor(Math.random() * allNewReleases.length)];
+
+    // 3. Set banner elements
     banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${randomItem.backdrop_path})`;
     bannerTitle.textContent = randomItem.title || randomItem.name;
     bannerDescription.textContent = randomItem.overview || "No description available.";
     
-    // Fetch genres
-    const genresResponse = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`);
+    // 4. Fetch and display genres
+    const mediaType = randomItem.title ? 'movie' : 'tv';
+    const genresResponse = await fetch(`${baseURL}/genre/${mediaType}/list?api_key=${apiKey}&language=en-US`);
     const genresData = await genresResponse.json();
     const genreMap = Object.fromEntries(genresData.genres.map(g => [g.id, g.name]));
     const genreNames = (randomItem.genre_ids || []).map(id => genreMap[id]).join(", ");
@@ -29,11 +47,10 @@ async function fetchBanner() {
 }
 
 fetchBanner();
+// -------------------------------------
 
 
 // Poster for New Release this Year Start //
-// Get current year dynamically
-const currentYear = new Date().getFullYear();
 
 // Fetch both Movies & TV released in the current year
 async function fetchNewReleases(containerId, pages = 3) {
@@ -104,7 +121,7 @@ async function fetchMedia(url, containerId, type, page = 1) {
         mediaItem.classList.add("media-item");
 
         const year = (item.release_date || item.first_air_date || '').slice(0, 4) || '—';
-      
+        
         const rating = item.vote_average.toFixed(1);
         mediaItem.innerHTML = `
     <div class="poster-title" title="${item.title || item.name}">${item.title || item.name}</div>
@@ -134,8 +151,6 @@ async function fetchMedia(url, containerId, type, page = 1) {
 
     mediaState[containerId].loading = false;
 }
-
-
 
 
 // Load Data
@@ -242,39 +257,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Function to increment page view count
 function incrementPageView() {
-  const pageViewRef = database.ref('pageViews');
-  pageViewRef.transaction((currentValue) => (currentValue || 0) + 1);
+  // Check for 'database' existence before attempting to use it
+  if (typeof database !== 'undefined') {
+    const pageViewRef = database.ref('pageViews');
+    pageViewRef.transaction((currentValue) => (currentValue || 0) + 1);
+  } else {
+    // console.warn("Firebase 'database' object is not defined. Skipping page view tracking.");
+  }
 }
 
 // Function to store unique visitors (using sessionStorage for simplicity)
 function trackUniqueVisitor() {
-  const visitorId = sessionStorage.getItem('visitorId');
-  if (!visitorId) {
-    // Generate a unique ID (or use a library like UUID)
-    const newVisitorId = 'visitor_' + Date.now();
-    sessionStorage.setItem('visitorId', newVisitorId);
+  if (typeof database !== 'undefined') {
+    const visitorId = sessionStorage.getItem('visitorId');
+    if (!visitorId) {
+      // Generate a unique ID (or use a library like UUID)
+      const newVisitorId = 'visitor_' + Date.now();
+      sessionStorage.setItem('visitorId', newVisitorId);
 
-    // Store unique visitor in the database
-    const visitorsRef = database.ref('uniqueVisitors');
-    visitorsRef.child(newVisitorId).set(true);
+      // Store unique visitor in the database
+      const visitorsRef = database.ref('uniqueVisitors');
+      visitorsRef.child(newVisitorId).set(true);
+    }
   }
 }
 
-// Call the tracking functions
-incrementPageView();
-trackUniqueVisitor();
+// Call the tracking functions (conditional execution)
+if (typeof database !== 'undefined') {
+  incrementPageView();
+  trackUniqueVisitor();
+}
+
 
 // Function to update the widget with current stats
 function updateStatsWidget() {
-  const pageViewRef = database.ref('pageViews');
-  pageViewRef.once('value', (snapshot) => {
-    document.getElementById('page-view-count').innerText = snapshot.val() || 0;
-  });
+  if (typeof database !== 'undefined' && document.getElementById('page-view-count') && document.getElementById('unique-visitors-count')) {
+    const pageViewRef = database.ref('pageViews');
+    pageViewRef.once('value', (snapshot) => {
+      document.getElementById('page-view-count').innerText = snapshot.val() || 0;
+    });
 
-  const uniqueVisitorsRef = database.ref('uniqueVisitors');
-  uniqueVisitorsRef.once('value', (snapshot) => {
-    document.getElementById('unique-visitors-count').innerText = snapshot.numChildren() || 0;
-  });
+    const uniqueVisitorsRef = database.ref('uniqueVisitors');
+    uniqueVisitorsRef.once('value', (snapshot) => {
+      document.getElementById('unique-visitors-count').innerText = snapshot.numChildren() || 0;
+    });
+  }
 }
 
 // Update stats when the page loads
@@ -297,4 +324,3 @@ function getTypeForContainer(containerId) {
     return containerId.includes("tv") ? "tv" : "movie";
 }
 // Load More List End //
-
