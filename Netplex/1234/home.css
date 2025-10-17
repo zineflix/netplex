@@ -757,3 +757,22 @@ font-size: 12px;
   }
 }
 
+/* ==============================
+  BANNER PLAY BUTTON
+============================== */
+.play-button-banner {
+  background-color: #8A00C4;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.play-button-banner:hover {
+  background-color: #f40612;
+}
+
