@@ -761,7 +761,7 @@ font-size: 12px;
   BANNER PLAY BUTTON
 ============================== */
 .play-button-banner {
-  background-color: #8A00C4;
+  background-color: #0275a6;
   border: none;
   color: white;
   padding: 10px 20px;
@@ -775,4 +775,6 @@ font-size: 12px;
 .play-button-banner:hover {
   background-color: #f40612;
 }
+
+
 
