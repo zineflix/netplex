@@ -5,11 +5,16 @@ const imgURL = "https://image.tmdb.org/t/p/w500";
 // Get current year dynamically
 const currentYear = new Date().getFullYear();
 
+// Global variable to store the banner item's data for the play button
+let currentBannerItem = null;
+
 // Function to fetch and set a random trending movie/TV show as a banner
 const bannerTitle = document.getElementById("banner-title");
 const bannerGenre = document.getElementById("banner-genre");
 const bannerDescription = document.getElementById("banner-description");
 const banner = document.querySelector(".banner");
+// Get the new banner play button
+const bannerPlayButton = document.getElementById("banner-play-btn"); 
 
 // --- MODIFIED fetchBanner FUNCTION ---
 async function fetchBanner() {
@@ -31,6 +36,9 @@ async function fetchBanner() {
     // 2. Select a random item from the new releases
     const randomItem = allNewReleases[Math.floor(Math.random() * allNewReleases.length)];
 
+    // ⭐️ STORE THE ITEM GLOBALLY
+    currentBannerItem = randomItem; 
+
     // 3. Set banner elements
     banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${randomItem.backdrop_path})`;
     bannerTitle.textContent = randomItem.title || randomItem.name;
@@ -49,6 +57,23 @@ async function fetchBanner() {
 fetchBanner();
 // -------------------------------------
 
+// ⭐️ NEW EVENT LISTENER FOR THE BANNER PLAY BUTTON
+if (bannerPlayButton) {
+    bannerPlayButton.addEventListener("click", () => {
+        if (!currentBannerItem) {
+            console.error("Banner item data not loaded yet.");
+            return;
+        }
+        
+        const item = currentBannerItem;
+        // Determine the media type and redirect
+        const mediaType = item.title ? 'movie' : 'tv';
+
+        window.location.href = mediaType === "movie"
+            ? `movie-details.html?movie_id=${item.id}`
+            : `tvshows-details.html?id=${item.id}`;
+    });
+}
 
 // Poster for New Release this Year Start //
 
@@ -324,3 +349,4 @@ function getTypeForContainer(containerId) {
     return containerId.includes("tv") ? "tv" : "movie";
 }
 // Load More List End //
+
