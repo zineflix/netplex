@@ -271,7 +271,7 @@ body {
     }
 
     .banner-content {
-        max-width: 75%;
+        max-width: 85%;
         font-size: 14px;
         padding: 5px;
     }
@@ -786,6 +786,7 @@ font-size: 12px;
 .play-button-banner:hover {
   background-color: #f40612;
 }
+
 
 
 
