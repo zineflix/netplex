@@ -235,6 +235,16 @@ body {
     }
 .banner p1 {
         font-size: 15px;
+        /* === NEW TRUNCATION STYLES === */
+        display: -webkit-box; /* Required for Webkit browsers (Chrome, Safari) */
+        -webkit-line-clamp: 3; /* Limit to 3 lines. Adjust this number as needed. */
+        -webkit-box-orient: vertical; /* Required for -webkit-line-clamp */
+        overflow: hidden; /* Hide overflow content */
+        text-overflow: ellipsis; /* Display ellipsis for clipped text */
+        white-space: normal; /* Allow text to wrap naturally before truncating */
+        max-height: 4.5em; /* (Optional) Set a max-height based on line-height * line-clamp.
+                                 Assuming 1.5em line-height for 3 lines, this is 3 * 1.5em.
+                                 Adjust line-height if it's different. */
     }
 
 .banner-content {
@@ -777,3 +787,4 @@ font-size: 12px;
 .play-button-banner:hover {
   background-color: #f40612;
 }
+
