@@ -778,7 +778,6 @@ font-size: 12px;
   font-size: 1rem;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 10px;
   transition: background-color 0.3s;
   z-index: 999
   position: relative;
@@ -787,4 +786,5 @@ font-size: 12px;
 .play-button-banner:hover {
   background-color: #f40612;
 }
+
 
