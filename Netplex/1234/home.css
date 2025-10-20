@@ -770,6 +770,8 @@ font-size: 12px;
   cursor: pointer;
   margin-top: 10px;
   transition: background-color 0.3s;
+  z-index: 1010;
+  position: relative;   
 }
 
 .play-button-banner:hover {
@@ -779,12 +781,21 @@ font-size: 12px;
 @media (max-width: 768px) {
     /* ... other existing mobile banner styles ... */
 
-    /* Make the Play button a comfortable touch target */
+    /* Ensure the play button is a large, easy touch target */
     .play-button-banner {
-        padding: 15px 30px; /* Increase vertical and horizontal padding */
-        font-size: 1.2rem; /* Make the text slightly larger */
-        min-width: 120px; /* Ensure a minimum width */
+        padding: 15px 30px; /* Increased to make a larger button area */
+        font-size: 1.2rem; /* Larger text */
+        min-width: 120px; /* Minimum width for consistency */
+        /* Important: Ensure it has high priority and is easy to tap */
+    }
+    
+    /* FIX: Make the banner content box less distracting on mobile */
+    .banner-content {
+        /* Reduce the padding so the button is closer to the edge, 
+           and the clickable area is more defined. */
+        padding: 10px; 
     }
 }
+
 
 
