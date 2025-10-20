@@ -277,7 +277,7 @@ body {
     }
 
     .banner h1 {
-        font-size: 25px;
+        font-size: 22px;
         margin-bottom: 5px;
     }
 
@@ -786,5 +786,6 @@ font-size: 12px;
 .play-button-banner:hover {
   background-color: #f40612;
 }
+
 
 
