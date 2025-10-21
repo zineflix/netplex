@@ -313,6 +313,38 @@ const TV_EPISODES = {
         ]
     },
     // Add more shows with episode links similarly
+    68814: {
+        links: [
+            "#",
+            "#",
+            "#",
+            "#",
+            "#",
+            "#",
+            "#",
+            "#",
+            "#",
+            "#",
+            "#",
+            "#",
+            "#",
+            "#",
+            "#",
+            "#",
+        ],
+        titles: [
+            "Episode 1",
+            "Episode 2",
+            "SEpisode 3",
+            "Episode 4",
+            "Episode 5",
+            "Episode 6",
+            "Episode 7",
+            "Episode 8",
+            "Episode 9",
+            "Episode 10",
+        ]
+    },
 };
 
 async function fetchTvShows() {
