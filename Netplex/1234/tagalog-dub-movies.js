@@ -163,6 +163,7 @@ const TV_SHOW_IDS = [
     135238,  // Gyeongseong Creature
     117378, // Mouse
     43899, // The Bible
+    68814, // Strong Woman Do Bong-Soon
     
     
 ];
@@ -335,7 +336,7 @@ const TV_EPISODES = {
         titles: [
             "Episode 1",
             "Episode 2",
-            "SEpisode 3",
+            "Episode 3",
             "Episode 4",
             "Episode 5",
             "Episode 6",
@@ -349,7 +350,6 @@ const TV_EPISODES = {
             "Episode 14",
             "Episode 15",
             "Episode 16",
-            "Episode 17",
         ]
     },
 };
