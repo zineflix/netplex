@@ -315,9 +315,9 @@ const TV_EPISODES = {
     },
     68814: {
         links: [
-            "//",
-            "//",
-            "//",
+            "https://drive.google.com/file/d/1mPc1PMbWb3JAZuRxdSgy6wmIT4Ff0pD2/view?usp=sharing",
+            "https://drive.google.com/file/d/1KMBx_YfyG9QMJxlFsSKj41dCjuARWz16/view?usp=sharing",
+            "https://drive.google.com/file/d/1-Q6U-Zw5taPKKL5IBx1WiJ0AqyyaSBKG/view?usp=sharing",
             "//",
             "//",
             "//",
