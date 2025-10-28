@@ -363,8 +363,10 @@ const TV_EPISODES = {
             "https://mxdrop.to/e/pk1xmz8kagnr7x",
             "https://mxdrop.to/e/j90733v8fplnp6",
             "https://mxdrop.to/e/rwzmddxka8n801",
-
-
+	        "https://ico3c.com/bkg/vu9wfs8uis2n",
+	        "https://ico3c.com/bkg/clkaqce8m5s1",
+	        "https://ico3c.com/bkg/wary01wvkjjg",
+	        "https://ico3c.com/bkg/k3ii4plllli2",
         ],
         titles: [
             "Season 1 Episode 1",
@@ -375,6 +377,14 @@ const TV_EPISODES = {
             "Season 1 Episode 6",
             "Season 1 Episode 7",
             "Season 1 Episode 8",
+            "Season 2 Episode 1",
+            "Season 2 Episode 2",
+            "Season 2 Episode 3",
+            "Season 2 Episode 4",
+            "Season 2 Episode 5(Soon)",
+            "Season 2 Episode 6(Soon)",
+            "Season 2 Episode 7(Soon)",
+            "Season 2 Episode 8(Soon)",
         ]
     },
 };
