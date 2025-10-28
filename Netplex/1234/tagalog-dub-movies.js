@@ -165,6 +165,7 @@ const TV_SHOW_IDS = [
     117378, // Mouse
     43899, // The Bible
     68814, // Strong Woman Do Bong-Soon
+    119051, // Wednesday (2022)
     
     
 ];
@@ -350,6 +351,30 @@ const TV_EPISODES = {
             "Episode 14",
             "Episode 15",
             "Episode 16",
+        ]
+    },
+    119051: {
+        links: [
+            "https://mxdrop.to/e/kn7kp7pkskol4x",
+            "https://mxdrop.to/e/1vr0mzelfw3p1g",
+            "https://mxdrop.to/e/6qkjlv10bqr41v",
+            "https://mxdrop.to/e/dqpv1pvnuvdjz3",
+            "https://mxdrop.to/e/dqpv1pxkaq8qxv",
+            "https://mxdrop.to/e/pk1xmz8kagnr7x",
+            "https://mxdrop.to/e/j90733v8fplnp6",
+            "https://mxdrop.to/e/rwzmddxka8n801",
+
+
+        ],
+        titles: [
+            "Season 1 Episode 1",
+            "Season 1 Episode 2",
+            "Season 1 Episode 3",
+            "Season 1 Episode 4",
+            "Season 1 Episode 5",
+            "Season 1 Episode 6",
+            "Season 1 Episode 7",
+            "Season 1 Episode 8",
         ]
     },
 };
