@@ -40,7 +40,7 @@ const API_KEY = "a1e72fd93ed59f56e6332813b9f8dcae";
         const MOVIE_IDS = [
             18377, 597, 57627, 455714, 9470, 396535, 20453, 1001311, 11770, 41387, 16269, 57663, 
             53658, 570511, 200085, 433945, 184219, 11178, 15859, 158445, 851644, 9056, 10753, 
-            11134, 9404, 11636, 52324, 58233, 219246, 1269208-84,
+            11134, 9404, 11636, 52324, 58233, 219246, 1269208,
         ];
         const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
         const movieGallery = document.getElementById("movieGallery");
@@ -81,7 +81,7 @@ const API_KEY = "a1e72fd93ed59f56e6332813b9f8dcae";
             11636: "https://short.icu/b4IONWrDS",
             52324: "//ok.ru/videoembed/9671939918414?nochat=1",
             58233: "//ok.ru/videoembed/9643975313998?nochat=1",
-            1269208-84: "https://drive.google.com/file/d/1fbECy9qUZg1Jc-21EReRWk3rZzr82Ahk/preview",
+            1269208: "https://drive.google.com/file/d/1fbECy9qUZg1Jc-21EReRWk3rZzr82Ahk/preview",
         };
 
 async function fetchMovies() {
