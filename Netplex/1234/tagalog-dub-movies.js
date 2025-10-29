@@ -166,6 +166,7 @@ const TV_SHOW_IDS = [
     43899, // The Bible
     68814, // Strong Woman Do Bong-Soon
     119051, // Wednesday (2022)
+	66776, // Love O2O (2016)
     
     
 ];
@@ -385,6 +386,73 @@ const TV_EPISODES = {
             "Season 2 Episode 6(Soon)",
             "Season 2 Episode 7(Soon)",
             "Season 2 Episode 8(Soon)",
+        ]
+    },
+	66776: {
+        links: [
+            "https://drive.google.com/file/d/1-00qYD9BcJRmGRZgKl49YGe5tOqh6zbF/preview",
+            "https://drive.google.com/file/d/1-0lhHRy0wu_16WgQaKqBcOl5KDYrclkD/preview",
+            "https://drive.google.com/file/d/1-Idxa1_A-EmF2dEaVtW8zxfPS3Ak2I1t/preview",
+            "https://drive.google.com/file/d/1-O6mxiWYWBu2vORbchLJGjZ4gdRDKXXb/preview",
+            "https://drive.google.com/file/d/1-CEcNwFVrnBMfRNWpawQJuBvAVA3LSqC/preview",
+            "https://drive.google.com/file/d/1-FxH4Vmjlp-rSR_2Y0jgXrtdShqBo_jM/preview",
+            "https://drive.google.com/file/d/1-HozFQjRW26ArPeldIbUJfXHl6Yu_Swe/preview",
+            "https://drive.google.com/file/d/1-JXTPFV2lrBBxs9WlPcP_RXj2z1gBkgh/preview",
+	    "https://drive.google.com/file/d/1-As0mGo6COFVgp2hHq94gdOLgN3q2EDX/preview",
+	    "https://drive.google.com/file/d/1-AyLArhlhrWcwxD05EVrDUbmmjfADi5u/preview",
+	    "https://drive.google.com/file/d/10so3ylSNPs8-Sg27x_otMh4E_gudnMjz/preview",
+	    "https://drive.google.com/file/d/11pbW-Hm9IktiQyvD9Rm0XijOPrwFV0Zs/preview",
+	    "https://drive.google.com/file/d/10aMEYqPSZ-sPOL1QBPJuKwX_ODNlboa2/preview",
+	    "https://drive.google.com/file/d/10cDhxptdbSXpKPgT_g9dy7tVWYn7STxw/preview",
+	    "https://drive.google.com/file/d/10eA6XtGLlJcDjoyJpgS7jwFBJNA2wO5q/preview",
+	    "https://drive.google.com/file/d/10eHSBAY0wLgesgsH5GC1Ak30qrJNrqDz/preview",
+	    "https://drive.google.com/file/d/11PW2g-xE0Vwk7q09lmcdCEDOexKhDPmX/preview",
+	    "https://drive.google.com/file/d/11RBlbL8xoNnHOBrQRXQTlh7h8A_qCTBX/preview",
+	    "https://drive.google.com/file/d/11U0tAB6F8e7v9ripQLoel6KpewvaJWEq/preview",
+	    "https://drive.google.com/file/d/11UDx85MNV2pIC7roNQN9G-G3d9bQ3bks/preview",
+	    "https://drive.google.com/file/d/1-8OLXP1NVsk__w02TjO0_Bn-AMe8qEVL/preview",
+            "https://drive.google.com/file/d/1-95ola9cdm_Wdp7rlfSq10cg1y6QtG0X/preview",
+            "https://drive.google.com/file/d/1-DeaQetLhI5DBRplM1esgHby13GcqQHJ/preview",
+            "https://drive.google.com/file/d/1-WLeiAFu8moC4yUGjKLtpF4mWHQ5i7aZ/preview",
+            "https://drive.google.com/file/d/1-9sJB8q4do2Tzu9x5osORqEiRPTD5pU8/preview",
+            "https://drive.google.com/file/d/1-H92eL74dwnuiRXX5DiAmhMrFr6FHR1E/preview",
+            "https://drive.google.com/file/d/1-IsbCqatIo8BP2EhfdeoIVBsq4UUEspH/preview",
+            "https://drive.google.com/file/d/1-T6tVfDPAvaL8DXCzEpnJM2kjZKdFZS-/preview",
+            "https://drive.google.com/file/d/1-FCILrQER3CyXSZo61kHIPlQNJH_c7dR/preview",
+            "https://drive.google.com/file/d/1-Ijg-EhcwfQAfFHCUlq3vQw-KAR2AeR3/preview",
+        ],
+        titles: [
+            "Season 1 Episode 1",
+            "Season 1 Episode 2",
+            "Season 1 Episode 3",
+            "Season 1 Episode 4",
+            "Season 1 Episode 5",
+            "Season 1 Episode 6",
+            "Season 1 Episode 7",
+            "Season 1 Episode 8",
+            "Season 1 Episode 9",
+            "Season 1 Episode 10",
+            "Season 1 Episode 11",
+            "Season 1 Episode 12",
+            "Season 1 Episode 13",
+            "Season 1 Episode 14",
+            "Season 1 Episode 15",
+            "Season 1 Episode 16",
+            "Season 1 Episode 17",
+            "Season 1 Episode 18",
+            "Season 1 Episode 19",
+            "Season 1 Episode 20",
+            "Season 1 Episode 21",
+            "Season 1 Episode 22",
+            "Season 1 Episode 23",
+            "Season 1 Episode 24",
+            "Season 1 Episode 25",
+            "Season 1 Episode 26",
+            "Season 1 Episode 27",
+            "Season 1 Episode 28",
+            "Season 1 Episode 29",
+            "Season 1 Episode 30",
+
         ]
     },
 };
