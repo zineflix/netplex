@@ -168,6 +168,7 @@ const TV_SHOW_IDS = [
     119051, // Wednesday (2022)
 	66776, // Love O2O (2016)
 	255779, // Bet (2025)
+	112836, // Money Heist: Korea - Joint Economic Area (2022)
     
     
 ];
@@ -481,6 +482,26 @@ const TV_EPISODES = {
             "Season 1 Episode 8",
             "Season 1 Episode 9",
             "Season 1 Episode 10",
+
+        ]
+    },
+	112836: {
+        links: [
+            "https://drive.google.com/file/d/11TOlTDkI9uYVKSe_9Y8NgbSk8LAqpjKQ/preview",
+            "https://drive.google.com/file/d/12bEqQWr3TUFBzHIpptuPGXfjav0fPegw/preview",
+            "https://drive.google.com/file/d/13CpN0ntYbkNvFXMLAyFpqFukO_3bUwot/preview",
+            "https://drive.google.com/file/d/15JKQxizL1nX1Ln19IS5mS3vq5Me-af_M/preview",
+            "https://drive.google.com/file/d/15M4LdTGUsLg9IZFJmcT7M1RZuSDzi0NL/preview",
+            "https://drive.google.com/file/d/16rw3CcGgtHgArkiQHFubrR_qTFjxHw9q/preview",
+
+        ],
+        titles: [
+            "Episode 1",
+            "Episode 2",
+            "Episode 3",
+            "Episode 4",
+            "Episode 5",
+            "Episode 6",
 
         ]
     },
