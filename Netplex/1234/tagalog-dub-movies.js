@@ -171,6 +171,7 @@ const TV_SHOW_IDS = [
 	66776, // Love O2O (2016)
 	255779, // Bet (2025)
 	112836, // Money Heist: Korea - Joint Economic Area (2022)
+	99966, // All of Us Are Dead (2022)
     
     
 ];
@@ -505,6 +506,36 @@ const TV_EPISODES = {
             "Episode 5",
             "Episode 6",
 
+        ]
+    },
+	99966: {
+        links: [
+            "https://drive.google.com/file/d/1hnGgota30kTY-zkCDIHCtMJYw2N3zs7S/preview",
+            "https://drive.google.com/file/d/19pbUbtlY1G3iXRoo6HqFeB3pX9upBLzb/preview",
+            "https://drive.google.com/file/d/1kaX-ElIJsxSuyK2PppTzbvKTsobJ0XDw/preview",
+            "https://drive.google.com/file/d/1uOWoICat8RN1agGwsBzpV4VMpi0fKMnF/preview",
+            "https://drive.google.com/file/d/15gJCABlOhDs9NSU7AbUeTAxNCNZob_9e/preview",
+            "https://drive.google.com/file/d/1wSii8PV69wSOuoxwfrR12_T06lO8EX8G/preview",
+	    "https://drive.google.com/file/d/1MDXwjrOitwKTj_82PonRwl5FWbLj9TyT/preview"
+	    "https://drive.google.com/file/d/1ActvH4O60sZb5DGdVKxa5pLgdGkl-vqr/preview"
+	    "https://drive.google.com/file/d/1Arw292ynbzrnYoS_m5FR3kMYtxWNMRTt/preview"
+	    "https://drive.google.com/file/d/1u6ONazARwEfU1LjzFJ1nAjoYXQckMpLm/preview"
+	    "https://drive.google.com/file/d/1ZcIP0EAGRkFr5TTSrLno8i9RDzIQm_RE/preview"
+	    "https://drive.google.com/file/d/1lIbFNZGdvnHxxCvOJC365zFexkXke6dp/preview"
+        ],
+        titles: [
+            "Season 1 Episode 1",
+            "Season 1 Episode 2",
+            "Season 1 Episode 3",
+            "Season 1 Episode 4",
+            "Season 1 Episode 5",
+            "Season 1 Episode 6",
+            "Season 1 Episode 7",
+            "Season 1 Episode 8",
+            "Season 1 Episode 9",
+            "Season 1 Episode 10",
+            "Season 1 Episode 11",
+            "Season 1 Episode 12",
         ]
     },
 };
