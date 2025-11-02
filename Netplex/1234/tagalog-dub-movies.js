@@ -167,6 +167,7 @@ const TV_SHOW_IDS = [
     68814, // Strong Woman Do Bong-Soon
     119051, // Wednesday (2022)
 	66776, // Love O2O (2016)
+	255779, // Bet (2025)
     
     
 ];
@@ -452,6 +453,34 @@ const TV_EPISODES = {
             "Season 1 Episode 28",
             "Season 1 Episode 29",
             "Season 1 Episode 30",
+
+        ]
+    },
+	255779: {
+        links: [
+            "https://drive.google.com/file/d/1x0NS3sTlKPOMvcP6Q3cG8bLEKHs1ftwZ/preview",
+            "https://drive.google.com/file/d/1RFqv0aIBby4VQTJTm0na1T5Wca1_7Y0-/preview",
+            "https://drive.google.com/file/d/1mRmIRjcTwWygak6eBVVr7l3sgUTUGTU8/preview",
+            "https://drive.google.com/file/d/1-FHnc386YHty9p38FuRjj-hh_E8zQ41g/preview",
+            "https://drive.google.com/file/d/1FLIAUPIn0W8u4lRUlDrRoGLWoQHT-x-F/preview",
+            "https://drive.google.com/file/d/1y1-aAzIEhoxqxh-e2dE6MfVgo9gVrNHq/preview",
+            "https://drive.google.com/file/d/114aSwH2ASll2yrRKjYOB1WgyVbGGz6N2/preview",
+            "https://drive.google.com/file/d/1JSN0tFkx6Bl7gHD1bnDZBhykwnfQ6BLs/preview",
+            "https://drive.google.com/file/d/1RHCTXC6qBq-pKSTGKW4eVssQtoxHfn_t/preview",
+            "https://drive.google.com/file/d/1KYL-Wb36Tds4FNMwBo-9cRCExBLZX0sV/preview",
+
+        ],
+        titles: [
+            "Season 1 Episode 1",
+            "Season 1 Episode 2",
+            "Season 1 Episode 3",
+            "Season 1 Episode 4",
+            "Season 1 Episode 5",
+            "Season 1 Episode 6",
+            "Season 1 Episode 7",
+            "Season 1 Episode 8",
+            "Season 1 Episode 9",
+            "Season 1 Episode 10",
 
         ]
     },
