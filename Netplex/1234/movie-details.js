@@ -459,52 +459,65 @@ function closeMessage() {
 }
 
 // ==============================
-// Fullscreen for iframe
+// Fullscreen for iframe (Improved)
 // ==============================
-// Fullscreen for iframe
 function toggleFullscreen() {
-  // Get the container of the iframe, which includes the controls
-  const iframeContainer = document.getElementById('iframe-container');
+  const iframe = document.getElementById('movie-iframe');
+  const iframeContainer = document.getElementById('iframe-container');
 
-  if (!iframeContainer) {
-    console.error('Iframe container not found.');
-    return;
-  }
+  if (!iframe) {
+    console.error('Movie iframe not found.');
+    return;
+  }
 
-  if (
-    document.fullscreenElement ||
-    document.webkitFullscreenElement ||
-    document.mozFullScreenElement ||
-    document.msFullscreenElement
-  ) {
-    // If already in fullscreen, exit fullscreen
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    }
-  } else {
-    // Otherwise, request fullscreen on the container
-    if (iframeContainer.requestFullscreen) {
-      iframeContainer.requestFullscreen();
-    } else if (iframeContainer.mozRequestFullScreen) {
-      iframeContainer.mozRequestFullScreen();
-    } else if (iframeContainer.webkitRequestFullscreen) {
-      iframeContainer.webkitRequestFullscreen();
-    } else if (iframeContainer.msRequestFullscreen) {
-      iframeContainer.msRequestFullscreen();
-    }
-  }
+  // Determine the current fullscreen element
+  const isFullscreen =
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.mozFullScreenElement ||
+    document.msFullscreenElement;
 
-  // Optional: attempt to lock screen orientation to landscape on mobile
-  if (screen.orientation?.lock) {
-    screen.orientation.lock('landscape').catch((e) => console.log('Orientation lock failed:', e));
-  }
+  if (isFullscreen) {
+    // Exit fullscreen mode
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+
+    // Optional: unlock screen orientation on exit
+    if (screen.orientation?.unlock) {
+      screen.orientation.unlock().catch(() => {});
+    }
+  } else {
+    // Try to request fullscreen on the iframe first
+    const elementToFullscreen = iframe.requestFullscreen
+      ? iframe
+      : iframeContainer; // fallback if iframe doesn’t support it
+
+    if (elementToFullscreen.requestFullscreen) {
+      elementToFullscreen.requestFullscreen();
+    } else if (elementToFullscreen.mozRequestFullScreen) {
+      elementToFullscreen.mozRequestFullScreen();
+    } else if (elementToFullscreen.webkitRequestFullscreen) {
+      elementToFullscreen.webkitRequestFullscreen();
+    } else if (elementToFullscreen.msRequestFullscreen) {
+      elementToFullscreen.msRequestFullscreen();
+    }
+
+    // Lock to landscape on mobile devices
+    if (screen.orientation?.lock) {
+      screen.orientation.lock('landscape').catch((e) =>
+        console.log('Orientation lock failed:', e)
+      );
+    }
+  }
 }
+
 
 
 // ==============================
