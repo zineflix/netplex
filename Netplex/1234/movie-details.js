@@ -459,65 +459,87 @@ function closeMessage() {
 }
 
 // ==============================
-// Fullscreen for iframe (Improved)
+// Fullscreen for iframe (TV + Desktop + Mobile)
 // ==============================
 function toggleFullscreen() {
   const iframe = document.getElementById('movie-iframe');
   const iframeContainer = document.getElementById('iframe-container');
 
-  if (!iframe) {
-    console.error('Movie iframe not found.');
+  if (!iframeContainer || !iframe) {
+    console.error('Iframe or container not found.');
     return;
   }
 
-  // Determine the current fullscreen element
+  // Detect fullscreen support
+  const doc = document;
   const isFullscreen =
-    document.fullscreenElement ||
-    document.webkitFullscreenElement ||
-    document.mozFullScreenElement ||
-    document.msFullscreenElement;
+    doc.fullscreenElement ||
+    doc.webkitFullscreenElement ||
+    doc.mozFullScreenElement ||
+    doc.msFullscreenElement;
+
+  // Detect if running on a Smart TV / TV browser
+  const userAgent = navigator.userAgent.toLowerCase();
+  const isTV =
+    /smart-tv|smarttv|appletv|googletv|hbbtv|netcast|viera|roku|dtv|firetv|aftb|afta|bravia|tizen|web0s|tv bro|tvbrowser|tv safari/.test(
+      userAgent
+    );
 
   if (isFullscreen) {
     // Exit fullscreen mode
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
+    if (doc.exitFullscreen) {
+      doc.exitFullscreen();
+    } else if (doc.webkitExitFullscreen) {
+      doc.webkitExitFullscreen();
+    } else if (doc.mozCancelFullScreen) {
+      doc.mozCancelFullScreen();
+    } else if (doc.msExitFullscreen) {
+      doc.msExitFullscreen();
     }
 
-    // Optional: unlock screen orientation on exit
-    if (screen.orientation?.unlock) {
+    // Exit CSS pseudo-fullscreen
+    iframeContainer.classList.remove('pseudo-fullscreen');
+
+    // Unlock orientation (for mobile)
+    if (!isTV && screen.orientation?.unlock) {
       screen.orientation.unlock().catch(() => {});
     }
-  } else {
-    // Try to request fullscreen on the iframe first
-    const elementToFullscreen = iframe.requestFullscreen
-      ? iframe
-      : iframeContainer; // fallback if iframe doesn’t support it
 
-    if (elementToFullscreen.requestFullscreen) {
-      elementToFullscreen.requestFullscreen();
-    } else if (elementToFullscreen.mozRequestFullScreen) {
-      elementToFullscreen.mozRequestFullScreen();
-    } else if (elementToFullscreen.webkitRequestFullscreen) {
-      elementToFullscreen.webkitRequestFullscreen();
-    } else if (elementToFullscreen.msRequestFullscreen) {
-      elementToFullscreen.msRequestFullscreen();
+  } else {
+    // Try Fullscreen API first
+    const requestFs =
+      iframe.requestFullscreen ||
+      iframe.webkitRequestFullscreen ||
+      iframe.mozRequestFullScreen ||
+      iframe.msRequestFullscreen;
+
+    const containerRequestFs =
+      iframeContainer.requestFullscreen ||
+      iframeContainer.webkitRequestFullscreen ||
+      iframeContainer.mozRequestFullScreen ||
+      iframeContainer.msRequestFullscreen;
+
+    // If browser supports fullscreen
+    if (requestFs) {
+      requestFs.call(iframe).catch(() => {
+        // fallback if iframe blocks fullscreen
+        if (containerRequestFs) containerRequestFs.call(iframeContainer);
+      });
+    } else if (containerRequestFs) {
+      containerRequestFs.call(iframeContainer);
+    } else {
+      // No fullscreen API — fallback for some TVs
+      iframeContainer.classList.add('pseudo-fullscreen');
     }
 
     // Lock to landscape on mobile devices
-    if (screen.orientation?.lock) {
-      screen.orientation.lock('landscape').catch((e) =>
-        console.log('Orientation lock failed:', e)
-      );
+    if (!isTV && screen.orientation?.lock) {
+      screen.orientation.lock('landscape').catch((e) => {
+        console.log('Orientation lock failed:', e);
+      });
     }
   }
 }
-
 
 
 // ==============================
