@@ -496,7 +496,7 @@ body {
     Mobile Responsiveness
 ===================== */
 @media (max-width: 768px) {
-    .movie-details { flex-direction: column; }
+    .movie-details { flex-direction: column; padding-bottom: 100;}
 
     #iframe-container,
     .movie-sidebar { 
