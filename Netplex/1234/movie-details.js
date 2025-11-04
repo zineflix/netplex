@@ -608,8 +608,6 @@ function removeAdsFromIframeContainer() {
   const ads = container.querySelectorAll(
     'iframe[src*="ads"], iframe[src*="doubleclick"], iframe[src*="googlesyndication"], iframe[src*="adservice"], ' +
     'iframe[name*="google"], iframe[id*="aswift"], div[id*="ad"], div[class*="ad"]'
-    // *** NEW ADDITIONS FOR COMMON AD CONTAINERS ***
-    'div[id*="google_ads_iframe"], div[class*="adsbygoogle"], ins[class*="adsbygoogle"]'
   );
 
   ads.forEach(ad => {
