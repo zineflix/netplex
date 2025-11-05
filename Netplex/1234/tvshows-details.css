@@ -1,3 +1,8 @@
+/* Add this crucial line globally to prevent padding/borders from causing overflow */
+* {
+    box-sizing: border-box;
+}
+
 /* =====================
     Layout
 ===================== */
