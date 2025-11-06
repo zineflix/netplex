@@ -11,8 +11,6 @@ body {
     font-family: Arial, sans-serif;
     background: #111;
     color: #fff;
-    /* CRITICAL FIX: Prevents horizontal scrolling caused by overflowing elements */
-    overflow-x: hidden; 
 }
 
 .container {
@@ -35,9 +33,7 @@ body {
     flex: 60%;
     background: #000;
     border-radius: 10px;
-/* CHANGE 1: Use 'auto' or 'scroll' for overflow-y */
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -48,6 +44,7 @@ body {
 
 #iframe-container iframe {
     width: 100%;
+    height: 100%;
     min-height: 400px;
     border: none;
 }
@@ -172,7 +169,7 @@ body {
 }
 
 /* ===================================
-    Horizontal scroll for movie cast
+   Horizontal scroll for movie cast
 =================================== */
 .movie-cast-wrapper {
     position: relative;
@@ -257,11 +254,10 @@ body {
 }
 
 /* =====================
-    General button style (Consolidated)
+    General button style
 ===================== */
 .video-controls-container button, 
-.sidebar-buttons button,
-#watch-trailer-btn { /* Included trailer button for consistency */
+.sidebar-buttons button {
     background: #222;
     color: #fff;
     border: none;
@@ -273,25 +269,32 @@ body {
 }
 
 .video-controls-container button:hover, 
-.sidebar-buttons button:hover,
-#watch-trailer-btn:hover {
+.sidebar-buttons button:hover {
     background: #0296cc;
 }
 
 /* =====================
-    Special button colors (Use classes only when colors deviate)
+    Special button colors
 ===================== */
-#watch-trailer-btn {
-    display: block;
-    width: 100%;
-    padding: 10px 15px;
-    margin-top: 10px;
-    background-color: #0296cc; /* Keep primary action color */
-    font-size: 16px;
+.download-btn {
+    background: #222;
+}
+.download-btn:hover {
+    background: #0296cc;
 }
 
-#watch-trailer-btn:hover {
-    background-color: #0275a6;
+button[onclick="toggleFullscreen()"] {
+    background: #222;
+}
+button[onclick="toggleFullscreen()"]:hover {
+    background: #0296cc;
+}
+
+#change-server-btn {
+    background: #222;
+}
+#change-server-btn:hover {
+    background: #0296cc;
 }
 
 /* =====================
@@ -341,6 +344,29 @@ body {
 
 .server-dropdown li:hover {
     background: #0296cc;
+}
+
+/* =====================
+    Watch Trailer button
+===================== */
+#watch-trailer-btn {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin-top: 10px;
+    background-color: #0296cc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    transition: background 0.3s ease;
+}
+
+#watch-trailer-btn:hover {
+    background-color: #0275a6;
 }
 
 /* =====================
@@ -423,14 +449,15 @@ body {
 .sandbox-btn.off { background: #dc3545; }
 
 /* ==============================
-    FLOATING MESSAGE
+   FLOATING MESSAGE
+============================== */
+/* ==============================
+   FLOATING MESSAGE
 ============================== */
 #floating-message {
   position: fixed;
   top: 25%;
   left: 50%;
-  /* Use max-width for safety on small screens */
-  max-width: 400px;
   transform: translateX(-50%);
   background-color: #121212;
   color: white;
@@ -480,14 +507,10 @@ body {
 /* Adjustment of floating message in mobile */
 @media (max-width: 768px) {
   #floating-message {
-    padding: 15px; /* Increased padding back for better touch targets */
+    padding: 5px;
     font-size: 15px;
-    width: 90%; /* CRITICAL FIX: Use a high percentage for max coverage */
-    max-width: 90%; /* Limit size to 90% of screen */
+    width: 75%;
     top: 25%;
-    /* Ensure perfect centering (already there, but important) */
-    left: 50%;
-    transform: translateX(-50%);
   }
 }
 
@@ -496,13 +519,10 @@ body {
     Mobile Responsiveness
 ===================== */
 @media (max-width: 768px) {
-    .movie-details { flex-direction: column; padding-bottom: 100;}
+    .movie-details { flex-direction: column; }
 
     #iframe-container,
-    .movie-sidebar { 
-        flex: 100%; 
-        width: 100%; /* Safety check for width */
-    }
+    .movie-sidebar { flex: 100%; }
     
     #iframe-container { order: 2; }
     .movie-sidebar { order: 1; }
@@ -510,20 +530,14 @@ body {
     .poster-info-row {
         flex-direction: column;
         gap: 10px; /* reduce space between poster & description */
-        width: 100%; /* Ensure full width of parent */
     }
 
-    .movie-poster { 
-        width: 50%; 
-        max-width: 100%; /* Safety check */
-    }
-    
-    /* Removed padding-bottom hack to prevent potential scroll conflict, rely on min-height */
+    .movie-poster { width: 50%; }
+
     #iframe-container {
-      max-height: 480px;
-      padding-bottom: 0; 
-      min-height: 300px; 
-    }   
+    max-height: 480px;
+    padding-bottom: 125px;
+    }    
 }
 
 @media (max-width: 600px) {
@@ -573,58 +587,58 @@ body {
 
 
 /* ==============================
-    SANDBOX WARNING POPUP
+  SANDBOX WARNING POPUP
 ============================== */
 .sandbox-warning {
-    display: none; /* Initially hidden */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
+  display: none; /* Initially hidden */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
 }
 
 .warning-content {
-    background: #121212;
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    width: 90%;
-    max-width: 400px;
-    border: 2px solid white;
+  background: #121212;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  border: 2px solid white;
 }
 
 .warning-content p {
-    margin-bottom: 20px;
-    font-size: 16px;
+  margin-bottom: 20px;
+  font-size: 16px;
 }
 
 .warning-buttons {
-    display: flex;
-    justify-content: space-around;
-    gap: 10px;
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
 }
 
 .warning-buttons button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 14px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 #proceed-btn {
-    background: #0296cc;
-    color: white;
+  background: #0296cc;
+  color: white;
 }
 
 #abort-btn {
-    background: #e50914;
-    color: white;
+  background: #e50914;
+  color: white;
 }
