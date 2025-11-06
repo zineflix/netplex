@@ -595,4 +595,3 @@ safeOn(proceedBtn, 'click', disableSandbox);
 safeOn(abortBtn, 'click', () => {
   sandboxWarning.style.display = 'none';
 });
-
