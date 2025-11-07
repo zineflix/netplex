@@ -1,301 +1,687 @@
-/* ✅ Global Reset & Base Layout */
+/* Add this crucial line globally to prevent padding/borders from causing overflow */
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
+/* =====================
+    Layout
+===================== */
 body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background-color: #0b0b0b;
-  color: #fff;
-  overflow-x: hidden;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: #fff;
+    /* CRITICAL FIX: Prevents horizontal scrolling caused by overflowing elements */
+    overflow-x: hidden;
 }
 
-/* ✅ Layout Containers */
+.container {
+    width: 100%;
+    max-width: 2100px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
 .details-page {
-  display: flex;
-  flex-direction: row;
-  min-height: 100vh;
-  padding-bottom: 100px;
+    display: flex;
+    gap: 20px;
+    position: relative;
 }
 
-.sidebar {
-  width: 280px;
-  background: #111;
-  padding: 20px;
-  overflow-y: auto;
-  border-right: 1px solid #222;
-  transition: width 0.3s ease;
-}
-
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-}
-
-/* ✅ Video Controls Container */
-.video-controls-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.6);
-  position: relative;
-  z-index: 10;
-}
-
-/* ✅ Control Buttons */
-.video-controls-container button {
-  flex: 1 1 auto;
-  min-width: 90px;
-  max-width: 150px;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 6px;
-  background-color: #222;
-  color: #fff;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.2s ease;
-}
-
-.video-controls-container button:hover {
-  background-color: #333;
-}
-
-/* ✅ Season / Episode Controls */
-.season-episode-controls {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-}
-
-.season-episode-controls select {
-  background: #111;
-  color: #fff;
-  border: 1px solid #333;
-  border-radius: 4px;
-  padding: 6px 10px;
-}
-
-/* ✅ Server Dropdown */
-.server-control {
-  position: relative;
-}
-
-.server-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  min-width: 180px;
-  background: #111;
-  border: 1px solid #222;
-  border-radius: 8px;
-  display: none;
-  flex-direction: column;
-  z-index: 999;
-}
-
-.server-dropdown.show {
-  display: flex;
-}
-
-.server-dropdown ul {
-  list-style: none;
-  margin: 0;
-  padding: 10px;
-}
-
-.server-dropdown li {
-  padding: 6px 8px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.server-dropdown li:hover {
-  background-color: #222;
-}
-
-/* ✅ Iframe Container */
+/* =====================
+    Iframe Container
+===================== */
 #iframe-container {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%;
-  background-color: #000;
-  overflow: hidden;
+    flex: 60%;
+    background: #000;
+    border-radius: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 3px solid #333; /* Dark border around iframe */
 }
 
 #iframe-container iframe {
-  position: absolute;
+    width: 100%;
+    min-height: 400px;
+    border: none;
+}
+
+/* =====================
+    Controls ABOVE the video
+===================== */
+.video-controls-container {
+    display: flex;
+    flex-wrap: wrap; /* ✅ Allows wrapping on smaller screens */
+    gap: 10px;
+    align-items: center;
+    justify-content: center; /* ✅ Center controls */
+    padding: 10px;
+    background: rgba(0,0,0,0.6);
+    position: relative;
+    z-index: 10;
+}
+
+/* =====================
+    Anchor dropdown to the Change Server button
+===================== */
+.server-control {
+    position: relative;
+    display: inline-block;
+}
+
+/* =====================
+    Sidebar
+===================== */
+.details-sidebar {
+    flex: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto;
+    padding-right: 15px;
+}
+
+.poster-info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.poster-container {
+    flex: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-top: 6px;
+}
+
+.details-poster {
+    width: 75%;
+    border-radius: 8px;
+    box-shadow: 0 0 8px #0296cc;
+}
+
+.info-section {
+    flex: 60%;
+    position: relative;
+}
+
+.info-section h1 {
+    font-size: 24px;
+    margin: 0 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#details-description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #ccc;
+    margin: 0 0 15px;
+}
+
+.details-genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.details-genres .genre {
+    background: #222;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.details-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.details-rating .star {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url('star-filled.png') no-repeat center / cover;
+}
+
+.details-rating .star.empty {
+    background: url('star-empty.png') no-repeat center / cover;
+}
+
+.cast-container {
+    margin-top: 0px;
+    background: #000;
+    padding: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.cast-container h2 {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* =====================
+    Horizontal scroll for cast
+===================== */
+.cast-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.details-cast {
+    display: flex;
+    gap: 10px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    padding-bottom: 5px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #0296cc #222;
+}
+
+.details-cast::-webkit-scrollbar {
+    height: 6px;
+    display: block;
+}
+
+.details-cast::-webkit-scrollbar-thumb {
+    background-color: #0296cc;
+    border-radius: 3px;
+}
+
+.cast-member {
+    flex: 0 0 auto;
+    text-align: center;
+    width: 70px;
+}
+
+.cast-member img {
+    width: 100%;
+    border-radius: 6px;
+}
+
+/* =====================
+    Optional: left/right navigation buttons
+===================== */
+.cast-scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    font-size: 18px;
+    transition: background 0.3s ease;
+    opacity: 0.8;
+}
+
+.cast-scroll-btn:hover {
+    background: #0296cc;
+}
+
+.cast-scroll-btn:disabled {
+    opacity: 0.2;
+    cursor: default;
+}
+
+.cast-scroll-left { left: 0; }
+.cast-scroll-right { right: 0; }
+
+.sidebar-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 0px;
+}
+
+/* =====================
+    General button style
+===================== */
+.video-controls-container button,
+.sidebar-buttons button {
+    background: #222;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+    flex: 1 1 auto; /* ✅ allows buttons to resize */
+    min-width: 90px;
+    max-width: 150px;
+    white-space: nowrap;
+}
+
+.video-controls-container button:hover,
+.sidebar-buttons button:hover {
+    background: #0296cc;
+}
+
+/* =====================
+    Special button colors
+===================== */
+.download-btn { background: #222; }
+.download-btn:hover { background: #0296cc; }
+
+button[onclick="toggleFullscreen()"] { background: #222; }
+button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
+
+#change-server-btn { background: #222; }
+#change-server-btn:hover { background: #0296cc; }
+
+/* =====================
+    Icon
+===================== */
+.dropdown-icon {
+    margin-left: 8px;
+    font-size: 10px;
+    transition: transform 0.3s ease;
+}
+.dropdown-icon.open { transform: rotate(-180deg); }
+
+/* =====================
+    Dropdown anchored to button
+===================== */
+.server-dropdown {
+    display: none;
+    background: #222;
+    border: 1px solid #444;
+    border-radius: 6px;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 1000;
+    padding: 10px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+}
+
+.server-dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    min-width: 260px;
+}
+
+.server-dropdown li {
+    padding: 8px 12px;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+}
+
+.server-dropdown li:hover {
+    background: #0296cc;
+}
+
+/* =====================
+    Episode List Scroll
+===================== */
+#episode-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#episode-list li {
+    padding: 8px 12px;
+    margin: 4px 0;
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+#episode-list li:hover {
+    background: #0296cc;
+}
+
+/* Enable vertical scroll ONLY if > 30 episodes */
+#episode-list:has(li:nth-child(n + 31)) {
+    max-height: 360px;
+    overflow-y: auto;
+    padding-right: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: #666 #222;
+}
+
+#episode-list:has(li:nth-child(n + 31))::-webkit-scrollbar {
+    width: 6px;
+}
+#episode-list:has(li:nth-child(n + 31))::-webkit-scrollbar-track {
+    background: #222;
+    border-radius: 4px;
+}
+#episode-list:has(li:nth-child(n + 31))::-webkit-scrollbar-thumb {
+    background: #666;
+    border-radius: 4px;
+}
+
+/* =====================
+    Watch Trailer button
+===================== */
+#watch-trailer-btn {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin-top: 10px;
+    background-color: #0296cc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    transition: background 0.3s ease;
+}
+
+#watch-trailer-btn:hover { background-color: #0275a6; }
+
+/* =====================
+    Close button
+===================== */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #e50914;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    transition: background 0.3s ease, transform 0.2s ease;
+    z-index: 100;
+}
+
+.close-button:hover {
+    background: #ff0712;
+    transform: scale(1.05);
+}
+
+.close-button .close-text { display: none; }
+
+/* =====================
+    Trailer Popup
+===================== */
+.trailer-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.trailer-content {
+    position: relative;
+    background: #000;
+    padding: 10px;
+    border-radius: 10px;
+    max-height: 70vh;
+}
+
+.trailer-content iframe {
+    max-width: 90vw;
+    max-height: 60vh;
+}
+
+.close-trailer {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 28px;
+    font-weight: bold;
+    background: #e50914;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* =====================
+    Sandbox Toggle Button states
+===================== */
+.sandbox-btn { background: #222; }
+.sandbox-btn.on { background: #222; }
+.sandbox-btn.off { background: #dc3545; }
+
+.season-episode-controls {
+    display: flex; 
+    gap: 10px;
+    flex-wrap: wrap; /* ✅ Allow wrapping */
+    justify-content: center;
+}
+
+/* ==============================
+   FLOATING MESSAGE
+============================== */
+#floating-message {
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  max-width: 400px;  
+  transform: translateX(-50%);
+  background-color: #121212;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  font-size: 15px;
+  z-index: 1000;
+  border-radius: 20px;
+  width: 30%;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid white;
+}
+
+#floating-message button {
+  background-color: #0296cc;
+  color: white;
+  border: none;
+  font-size: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+#floating-message button:hover { background-color: #0275a6; }
+
+#floating-message .close-btn { background-color: #cc2929; }
+#floating-message .close-btn:hover { background-color: #a61e1e; }
+
+/* Adjustment of arrow button in mobile */
+@media (max-width: 768px) {
+  .scroll-left, .scroll-right { font-size: 20px; padding: 8px; }
+}
+
+/* Adjustment of floating message in mobile */
+@media (max-width: 768px) {
+  #floating-message {
+    padding: 5px;
+    font-size: 15px;
+    width: 75%;
+    top: 25%;
+  }
+}
+
+/* =====================
+    Mobile Responsiveness
+===================== */
+@media (max-width: 768px) {
+    .details-page { flex-direction: column; padding-bottom: 100px; }
+    #iframe-container,
+    .details-sidebar { flex: 100%; }
+    #iframe-container { order: 2; }
+    .details-sidebar { order: 1; }
+    .poster-info-row { flex-direction: column; gap: 10px; }
+    .details-poster { width: 50%; }
+    #iframe-container {
+        max-height: none;
+        padding-bottom: 0;
+    }
+}
+
+/* =====================
+    Small Mobile (<600px)
+===================== */
+@media (max-width: 600px) {
+    .cast-member { width: 50px; }
+    .cast-member img { width: 100%; height: auto; }
+    .cast-container h2 { font-size: 16px; margin-bottom: 8px; }
+    .cast-member p { font-size: 8px; word-break: break-word; }
+
+    .video-controls-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+    }
+
+    .video-controls-container button { 
+        font-size: 10px; 
+        width: 100%; 
+    }
+
+    .season-episode-controls select {
+        width: 100%;
+    }
+
+    #watch-trailer-btn {
+        font-size: 12px;
+        width: 75%;
+        padding: 8px 8px;
+        margin-top: 8px;
+    }
+
+    .server-control {
+        width: 100%;
+        text-align: center;
+    }
+
+    #change-server-btn {
+        width: 100%;
+    }
+
+    .server-dropdown {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        display: none;
+        padding: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        z-index: 1000;
+        overflow-x: auto;
+    }
+
+    .server-dropdown ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .server-dropdown li {
+        flex: 1 1 30%;
+        text-align: center;
+        padding: 6px 10px;
+    }
+}
+
+/* ==============================
+  SANDBOX WARNING POPUP
+============================== */
+.sandbox-warning {
+  display: none;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  border: none;
-}
-
-/* ✅ Trailer Popup */
-.trailer-popup {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0, 0, 0, 0.85);
   justify-content: center;
   align-items: center;
-  z-index: 999;
-}
-
-.trailer-popup.show {
-  display: flex;
-  animation: fadeIn 0.25s ease-out;
-}
-
-.trailer-content {
-  background: #111;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 800px;
-  width: 90%;
-}
-
-.trailer-content iframe {
-  width: 100%;
-  height: 400px;
-  border: none;
-}
-
-/* ✅ Sandbox Warning */
-.sandbox-warning {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.sandbox-warning.show {
-  display: flex;
-  animation: fadeIn 0.25s ease-out;
+  z-index: 2000;
 }
 
 .warning-content {
-  background: #111;
+  background: #121212;
+  color: white;
   padding: 20px;
   border-radius: 10px;
   text-align: center;
-  max-width: 400px;
   width: 90%;
+  max-width: 400px;
+  border: 2px solid white;
   max-height: 80vh;
   overflow-y: auto;
 }
 
-/* ✅ Fade-in Animation */
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+.warning-content p {
+  margin-bottom: 20px;
+  font-size: 16px;
 }
 
-/* ✅ Scrollbar Styling */
-.cast-section::-webkit-scrollbar,
-.episodes-container::-webkit-scrollbar {
-  height: 6px;
+.warning-buttons {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
 }
 
-.cast-section::-webkit-scrollbar-thumb,
-.episodes-container::-webkit-scrollbar-thumb {
-  background-color: #333;
-  border-radius: 4px;
+.warning-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
 }
 
-/* ✅ Info Section */
-.info-section h1 {
-  font-size: 2rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+#proceed-btn { background: #0296cc; color: white; }
+#abort-btn { background: #e50914; color: white; }
 
-/* ✅ Smooth Scroll */
+/* ======================
+  Smooth Scroll Enhancement
+====================== */
 html {
   scroll-behavior: smooth;
-}
-
-/* ✅ Responsive Design */
-@media (max-width: 768px) {
-  .details-page {
-    flex-direction: column;
-    padding-bottom: 100px;
-  }
-
-  #iframe-container {
-    max-height: none;
-    padding-bottom: 0;
-  }
-
-  .server-dropdown {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    min-width: unset;
-    box-sizing: border-box;
-    overflow-x: auto;
-  }
-
-  .server-dropdown ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .server-dropdown li {
-    flex: 1 1 30%;
-    text-align: center;
-    padding: 6px 8px;
-  }
-
-  .season-episode-controls select {
-    width: 48%;
-  }
-}
-
-/* ✅ Mobile Controls Alignment Fix */
-@media (max-width: 600px) {
-  .video-controls-container {
-    flex-direction: column;
-    align-items: center; /* ✅ centers all buttons horizontally */
-  }
-
-  .video-controls-container button {
-    width: 90%;
-    max-width: 320px;
-    margin: 5px 0;
-    text-align: center;
-  }
-
-  #change-server-btn {
-    width: 90%;
-  }
-
-  .season-episode-controls {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .sandbox-warning,
-  .trailer-popup {
-    position: fixed;
-    inset: 0;
-    display: none;
-    justify-content: center;
-    align-items: center;
-  }
 }
