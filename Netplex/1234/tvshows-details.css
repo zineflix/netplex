@@ -718,7 +718,8 @@ html {
 }
 
 /* ==================================================
-   🩵 Season & Episode dropdowns — Match Change Server style (no horizontal scroll)
+   🩵 Season & Episode dropdowns — Full open, no scrolls
+   (same style as Change Server)
 ================================================== */
 
 .season-episode-controls {
@@ -728,10 +729,10 @@ html {
   gap: 10px;
   position: relative;
   z-index: 1000;
-  overflow-x: hidden !important; /* ✅ Prevent horizontal scroll */
+  overflow: visible !important;
 }
 
-/* Button-style selects */
+/* Closed button style */
 .season-episode-controls select {
   background: #222;
   color: #fff;
@@ -746,25 +747,14 @@ html {
   appearance: none;
   position: relative;
   z-index: 1001;
-  overflow: hidden;
 }
 
+/* Hover state */
 .season-episode-controls select:hover {
   background: #0296cc;
 }
 
-/* Arrow indicator */
-.season-episode-controls select::after {
-  content: "▼";
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 10px;
-  pointer-events: none;
-}
-
-/* Focus (open dropdown) */
+/* Dropdown “panel” when focused */
 .season-episode-controls select:focus {
   outline: none;
   position: absolute;
@@ -777,13 +767,14 @@ html {
   padding: 10px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
   z-index: 1002;
-  width: min(90vw, 300px); /* ✅ Never wider than viewport */
-  max-height: 300px;
-  overflow-y: auto;
-  overflow-x: hidden; /* ✅ Stop horizontal overflow */
+  width: auto !important;
+  max-width: 90vw;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important; /* ✅ No vertical or horizontal scroll */
 }
 
-/* 3-column layout */
+/* Show options as 3-column grid */
 .season-episode-controls select:focus option {
   display: inline-block;
   width: 30%;
@@ -796,20 +787,16 @@ html {
   padding: 6px;
   transition: background 0.2s ease;
   box-sizing: border-box;
+  white-space: nowrap;
 }
 
 .season-episode-controls select:focus option:hover {
   background: #0296cc;
 }
 
-/* ✅ Mobile safe: switch to 2-column grid */
+/* Mobile-friendly adjustment */
 @media (max-width: 600px) {
-  .season-episode-controls select:focus {
-    width: 90vw;
-  }
-
   .season-episode-controls select:focus option {
     width: 45%;
   }
 }
-
