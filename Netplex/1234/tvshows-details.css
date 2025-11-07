@@ -685,3 +685,19 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
 html {
   scroll-behavior: smooth;
 }
+
+/* =====================
+   Center control buttons on mobile
+===================== */
+@media (max-width: 600px) {
+  .video-controls-container {
+    justify-content: center;
+  }
+
+  .video-controls-container button.sandbox-btn,
+  .video-controls-container button[onclick="toggleFullscreen()"],
+  .video-controls-container button.download-btn {
+    margin: 0 auto;
+    display: block;
+  }
+}
