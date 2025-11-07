@@ -718,11 +718,9 @@ html {
 }
 
 /* ==================================================
-   🩵 Season & Episode dropdowns — Match Change Server style
-   (no HTML edits required)
+   🩵 Season & Episode dropdowns — Match Change Server style (no horizontal scroll)
 ================================================== */
 
-/* Wrap controls cleanly */
 .season-episode-controls {
   display: flex;
   flex-wrap: wrap;
@@ -730,9 +728,10 @@ html {
   gap: 10px;
   position: relative;
   z-index: 1000;
+  overflow-x: hidden !important; /* ✅ Prevent horizontal scroll */
 }
 
-/* Button-style selects (closed state) */
+/* Button-style selects */
 .season-episode-controls select {
   background: #222;
   color: #fff;
@@ -747,13 +746,14 @@ html {
   appearance: none;
   position: relative;
   z-index: 1001;
+  overflow: hidden;
 }
 
 .season-episode-controls select:hover {
   background: #0296cc;
 }
 
-/* Arrow icon */
+/* Arrow indicator */
 .season-episode-controls select::after {
   content: "▼";
   position: absolute;
@@ -764,33 +764,9 @@ html {
   pointer-events: none;
 }
 
-/* Dropdown menu imitation */
+/* Focus (open dropdown) */
 .season-episode-controls select:focus {
   outline: none;
-  background: #222;
-  position: relative;
-}
-
-/* Simulated dropdown panel */
-.season-episode-controls select:focus option {
-  display: block;
-  background: #222;
-  border: 1px solid #444;
-  border-radius: 6px;
-  margin: 2px;
-  padding: 8px 12px;
-  text-align: center;
-  white-space: nowrap;
-  transition: background 0.2s;
-}
-
-.season-episode-controls select:focus option:hover {
-  background: #0296cc;
-}
-
-/* Make the dropdown appear as a floating grid box */
-.season-episode-controls select:focus {
-  display: block;
   position: absolute;
   top: calc(100% + 6px);
   left: 50%;
@@ -799,28 +775,41 @@ html {
   border: 1px solid #444;
   border-radius: 6px;
   padding: 10px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
   z-index: 1002;
-  width: 280px;
+  width: min(90vw, 300px); /* ✅ Never wider than viewport */
   max-height: 300px;
   overflow-y: auto;
+  overflow-x: hidden; /* ✅ Stop horizontal overflow */
 }
 
-/* Make options appear as a 3-column grid */
+/* 3-column layout */
 .season-episode-controls select:focus option {
   display: inline-block;
   width: 30%;
   margin: 4px 1%;
   border: 1px solid #333;
   border-radius: 4px;
+  background: #222;
+  color: #fff;
+  text-align: center;
+  padding: 6px;
+  transition: background 0.2s ease;
+  box-sizing: border-box;
 }
 
-/* Responsive: reduce columns on small screens */
+.season-episode-controls select:focus option:hover {
+  background: #0296cc;
+}
+
+/* ✅ Mobile safe: switch to 2-column grid */
 @media (max-width: 600px) {
   .season-episode-controls select:focus {
-    width: 90%;
+    width: 90vw;
   }
+
   .season-episode-controls select:focus option {
     width: 45%;
   }
 }
+
