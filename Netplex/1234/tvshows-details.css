@@ -685,3 +685,32 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
 html {
   scroll-behavior: smooth;
 }
+
+
+/* ======================
+  Center action buttons on mobile
+====================== */
+.iframe-action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* ✅ Centers horizontally */
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.iframe-action-buttons button {
+  flex: 1 1 auto;
+  max-width: 200px; /* ✅ Keep nice width */
+  width: 100%;
+  text-align: center;
+}
+
+/* Optional: on desktop, space them out neatly */
+@media (min-width: 768px) {
+  .iframe-action-buttons {
+    justify-content: space-between;
+    gap: 10px;
+  }
+}
