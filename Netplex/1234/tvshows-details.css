@@ -625,6 +625,24 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
         text-align: center;
         padding: 6px 10px;
     }
+    
+    @media (max-width: 600px) {
+    /* ✅ Center video control buttons (sandbox, fullscreen, download) */
+    .video-controls-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center; /* Center horizontally */
+        align-items: center;     /* Center vertically */
+        text-align: center;
+    }
+
+    .video-controls-container button {
+        flex: 0 1 auto;         /* Prevents full width stretching */
+        width: auto;            /* Let buttons keep their natural size */
+        margin: 5px;            /* Add spacing */
+    }
+}
+
 }
 
 /* ==============================
