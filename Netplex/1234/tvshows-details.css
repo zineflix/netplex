@@ -718,45 +718,47 @@ html {
 }
 
 /* ======================
-  🩵 Fix horizontal scroll for Season & Episode dropdowns (no vertical scroll)
+   🧩 FINAL FIX — Ensure Season/Episode dropdown opens fully
 ====================== */
+
+/* Remove any clipping behavior around video controls */
+#iframe-container,
+.video-controls-container,
 .season-episode-controls {
-  display: flex;
-  flex-wrap: wrap;              /* ✅ allow wrapping instead of overflow */
-  justify-content: center;      /* ✅ center items neatly */
-  gap: 10px;                    /* spacing between dropdowns */
-  overflow-x: hidden;           /* ✅ prevent horizontal scroll */
-  overflow-y: visible;          /* ✅ ensure no vertical scroll inside */
-  width: 100%;
-  box-sizing: border-box;
+  overflow: visible !important;  /* ✅ allows dropdowns to expand fully */
 }
 
+/* Make sure the dropdown sits above all elements */
 .season-episode-controls select {
-  flex: 1 1 45%;                /* ✅ allow flexible resizing */
-  min-width: 120px;             /* prevent shrinking too small */
-  max-width: 200px;
-  text-align: center;
-  white-space: nowrap;          /* keep text in one line */
-  overflow: hidden;             /* prevent internal scrollbars */
+  position: relative;
+  z-index: 2001;                /* ✅ ensures it's above iframe/sidebar */
+  background-color: #111;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 14px;
+  appearance: none;
+  cursor: pointer;
 }
 
-/* ✅ On smaller screens, make dropdowns full width & stack nicely */
+/* On small mobile screens, make them big and centered */
 @media (max-width: 600px) {
   .season-episode-controls {
-    flex-direction: column;
-    align-items: center;
-    overflow-x: hidden;
-    overflow-y: visible;        /* ✅ make sure dropdowns expand naturally */
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px;
   }
 
   .season-episode-controls select {
-    width: 90%;                 /* ✅ take most of the screen width */
-    max-width: 300px;
+    width: 90% !important;
+    max-width: 340px !important;
+    font-size: 15px;
   }
 }
 
-/* Extra protection: prevent global horizontal scroll */
+/* Prevent global scrollbars caused by dropdown overflow */
 html, body {
   overflow-x: hidden !important;
-  overflow-y: auto; /* ✅ keeps normal page scrolling */
+  overflow-y: auto !important;
 }
