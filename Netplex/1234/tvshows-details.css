@@ -718,14 +718,15 @@ html {
 }
 
 /* ======================
-  🩵 Fix horizontal scroll for Season & Episode dropdowns
+  🩵 Fix horizontal scroll for Season & Episode dropdowns (no vertical scroll)
 ====================== */
 .season-episode-controls {
   display: flex;
   flex-wrap: wrap;              /* ✅ allow wrapping instead of overflow */
   justify-content: center;      /* ✅ center items neatly */
   gap: 10px;                    /* spacing between dropdowns */
-  overflow-x: hidden;           /* ✅ prevent any horizontal scroll */
+  overflow-x: hidden;           /* ✅ prevent horizontal scroll */
+  overflow-y: visible;          /* ✅ ensure no vertical scroll inside */
   width: 100%;
   box-sizing: border-box;
 }
@@ -736,6 +737,7 @@ html {
   max-width: 200px;
   text-align: center;
   white-space: nowrap;          /* keep text in one line */
+  overflow: hidden;             /* prevent internal scrollbars */
 }
 
 /* ✅ On smaller screens, make dropdowns full width & stack nicely */
@@ -744,6 +746,7 @@ html {
     flex-direction: column;
     align-items: center;
     overflow-x: hidden;
+    overflow-y: visible;        /* ✅ make sure dropdowns expand naturally */
   }
 
   .season-episode-controls select {
@@ -755,4 +758,5 @@ html {
 /* Extra protection: prevent global horizontal scroll */
 html, body {
   overflow-x: hidden !important;
+  overflow-y: auto; /* ✅ keeps normal page scrolling */
 }
