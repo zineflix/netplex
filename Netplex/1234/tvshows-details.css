@@ -717,61 +717,60 @@ html {
   }
 }
 
-/* ============================
-   🩵 FIX: Show full dropdown list cleanly
-============================ */
+/* ======================
+   🎬 Fix Season/Episode Dropdowns — Same as Change Server
+====================== */
+.season-episode-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  overflow: visible !important;      /* ensures dropdown is not clipped */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Reset all browser overrides — use native select behavior */
 .season-episode-controls select {
-  position: relative;
-  z-index: 3000;
-  background-color: #111;
+  all: unset;                        /* reset all custom styles */
+  display: block;
+  appearance: auto;                  /* ✅ use native dropdown behavior */
+  background: #111;
   color: #fff;
   border: 1px solid #333;
   border-radius: 6px;
-  padding: 6px 12px;
+  padding: 8px 12px;
   font-size: 15px;
-  width: 180px;                  /* default width */
-  max-width: 100%;
   cursor: pointer;
-  appearance: none;
-  overflow: visible;             /* ✅ ensure dropdown list expands */
+  width: 180px;
+  max-width: 100%;
+  text-align: center;
+  z-index: 1000;
 }
 
-/* When user clicks, the dropdown list should expand to fit contents */
+/* Ensure dropdown list expands fully and matches theme */
 .season-episode-controls select option {
-  white-space: nowrap;           /* keep single line */
+  background: #111;
+  color: #fff;
 }
 
-/* Ensure no horizontal or vertical scrollbars appear inside the select */
-select::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-
-/* For smaller mobile screens */
+/* Stack nicely on mobile */
 @media (max-width: 600px) {
   .season-episode-controls {
     flex-direction: column;
     align-items: center;
-    gap: 8px;
   }
 
   .season-episode-controls select {
-    width: 90%;                  /* full width on mobile */
+    width: 90%;
     max-width: 340px;
-    font-size: 16px;
   }
 }
 
-/* Make sure the dropdown is never clipped by parent containers */
-.video-controls-container,
+/* Global overflow protection */
+html, body,
 #iframe-container,
-.season-episode-controls {
-  overflow: visible !important;
-}
-
-/* Global safety: prevent extra scrollbars */
-html, body {
+.video-controls-container {
   overflow-x: hidden !important;
   overflow-y: auto !important;
 }
-
