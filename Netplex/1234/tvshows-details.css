@@ -717,48 +717,61 @@ html {
   }
 }
 
-/* ======================
-   🧩 FINAL FIX — Ensure Season/Episode dropdown opens fully
-====================== */
-
-/* Remove any clipping behavior around video controls */
-#iframe-container,
-.video-controls-container,
-.season-episode-controls {
-  overflow: visible !important;  /* ✅ allows dropdowns to expand fully */
-}
-
-/* Make sure the dropdown sits above all elements */
+/* ============================
+   🩵 FIX: Show full dropdown list cleanly
+============================ */
 .season-episode-controls select {
   position: relative;
-  z-index: 2001;                /* ✅ ensures it's above iframe/sidebar */
+  z-index: 3000;
   background-color: #111;
   color: #fff;
   border: 1px solid #333;
   border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 14px;
-  appearance: none;
+  padding: 6px 12px;
+  font-size: 15px;
+  width: 180px;                  /* default width */
+  max-width: 100%;
   cursor: pointer;
+  appearance: none;
+  overflow: visible;             /* ✅ ensure dropdown list expands */
 }
 
-/* On small mobile screens, make them big and centered */
+/* When user clicks, the dropdown list should expand to fit contents */
+.season-episode-controls select option {
+  white-space: nowrap;           /* keep single line */
+}
+
+/* Ensure no horizontal or vertical scrollbars appear inside the select */
+select::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* For smaller mobile screens */
 @media (max-width: 600px) {
   .season-episode-controls {
-    flex-direction: column !important;
-    align-items: center !important;
+    flex-direction: column;
+    align-items: center;
     gap: 8px;
   }
 
   .season-episode-controls select {
-    width: 90% !important;
-    max-width: 340px !important;
-    font-size: 15px;
+    width: 90%;                  /* full width on mobile */
+    max-width: 340px;
+    font-size: 16px;
   }
 }
 
-/* Prevent global scrollbars caused by dropdown overflow */
+/* Make sure the dropdown is never clipped by parent containers */
+.video-controls-container,
+#iframe-container,
+.season-episode-controls {
+  overflow: visible !important;
+}
+
+/* Global safety: prevent extra scrollbars */
 html, body {
   overflow-x: hidden !important;
   overflow-y: auto !important;
 }
+
