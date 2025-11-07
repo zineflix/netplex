@@ -35,14 +35,11 @@ body {
     flex: 60%;
     background: #000;
     border-radius: 10px;
-/* CHANGE 1: Use 'auto' or 'scroll' for overflow-y */
     overflow-x: hidden;
     overflow-y: auto;
     position: relative;
     display: flex;
     flex-direction: column;
-
-    /* Added styles */
     border: 3px solid #333; /* Dark border around iframe */
 }
 
@@ -57,13 +54,14 @@ body {
 ===================== */
 .video-controls-container {
     display: flex;
+    flex-wrap: wrap; /* ✅ Allows wrapping on smaller screens */
     gap: 10px;
     align-items: center;
+    justify-content: center; /* ✅ Center controls */
     padding: 10px;
     background: rgba(0,0,0,0.6);
     position: relative;
     z-index: 10;
-    flex-wrap: wrap;
 }
 
 /* =====================
@@ -115,6 +113,9 @@ body {
 .info-section h1 {
     font-size: 24px;
     margin: 0 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 #details-description {
@@ -231,19 +232,20 @@ body {
     z-index: 10;
     font-size: 18px;
     transition: background 0.3s ease;
+    opacity: 0.8;
 }
 
 .cast-scroll-btn:hover {
     background: #0296cc;
 }
 
-.cast-scroll-left {
-    left: 0;
+.cast-scroll-btn:disabled {
+    opacity: 0.2;
+    cursor: default;
 }
 
-.cast-scroll-right {
-    right: 0;
-}
+.cast-scroll-left { left: 0; }
+.cast-scroll-right { right: 0; }
 
 .sidebar-buttons {
     display: flex;
@@ -265,6 +267,10 @@ body {
     cursor: pointer;
     font-weight: bold;
     transition: background 0.3s ease;
+    flex: 1 1 auto; /* ✅ allows buttons to resize */
+    min-width: 90px;
+    max-width: 150px;
+    white-space: nowrap;
 }
 
 .video-controls-container button:hover,
@@ -450,11 +456,12 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
     background: #000;
     padding: 10px;
     border-radius: 10px;
+    max-height: 70vh;
 }
 
 .trailer-content iframe {
     max-width: 90vw;
-    max-height: 70vh;
+    max-height: 60vh;
 }
 
 .close-trailer {
@@ -480,6 +487,8 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
 .season-episode-controls {
     display: flex; 
     gap: 10px;
+    flex-wrap: wrap; /* ✅ Allow wrapping */
+    justify-content: center;
 }
 
 /* ==============================
@@ -489,7 +498,6 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
   position: fixed;
   top: 25%;
   left: 50%;
-  /* Use max-width for safety on small screens */
   max-width: 400px;  
   transform: translateX(-50%);
   background-color: #121212;
@@ -518,7 +526,6 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
 
 #floating-message button:hover { background-color: #0275a6; }
 
-/* 🔴 Make the CLOSE button red */
 #floating-message .close-btn { background-color: #cc2929; }
 #floating-message .close-btn:hover { background-color: #a61e1e; }
 
@@ -541,7 +548,7 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
     Mobile Responsiveness
 ===================== */
 @media (max-width: 768px) {
-    .details-page { flex-direction: column; padding-bottom: 100; }
+    .details-page { flex-direction: column; padding-bottom: 100px; }
     #iframe-container,
     .details-sidebar { flex: 100%; }
     #iframe-container { order: 2; }
@@ -549,47 +556,74 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
     .poster-info-row { flex-direction: column; gap: 10px; }
     .details-poster { width: 50%; }
     #iframe-container {
-    max-height: 480px;
-    padding-bottom: 150px;
-    }    
+        max-height: none;
+        padding-bottom: 0;
+    }
 }
 
+/* =====================
+    Small Mobile (<600px)
+===================== */
 @media (max-width: 600px) {
     .cast-member { width: 50px; }
     .cast-member img { width: 100%; height: auto; }
     .cast-container h2 { font-size: 16px; margin-bottom: 8px; }
     .cast-member p { font-size: 8px; word-break: break-word; }
-    .video-controls-container { flex-direction: column; gap: 6px; }
-    .video-controls-container button { font-size: 10px; width: 100%; }
+
+    .video-controls-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+    }
+
+    .video-controls-container button { 
+        font-size: 10px; 
+        width: 100%; 
+    }
+
+    .season-episode-controls select {
+        width: 100%;
+    }
+
     #watch-trailer-btn {
         font-size: 12px;
         width: 75%;
         padding: 8px 8px;
         margin-top: 8px;
     }
+
+    .server-control {
+        width: 100%;
+        text-align: center;
+    }
+
+    #change-server-btn {
+        width: 100%;
+    }
+
     .server-dropdown {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
-        width: auto;
-        min-width: 0;
+        width: 90%;
         display: none;
         padding: 8px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         z-index: 1000;
+        overflow-x: auto;
     }
+
     .server-dropdown ul {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-auto-rows: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
         gap: 6px;
-        justify-items: center;
     }
+
     .server-dropdown li {
+        flex: 1 1 30%;
         text-align: center;
         padding: 6px 10px;
-        width: 75%;
-        white-space: nowrap;
     }
 }
 
@@ -618,6 +652,8 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
   width: 90%;
   max-width: 400px;
   border: 2px solid white;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .warning-content p {
@@ -642,3 +678,10 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
 
 #proceed-btn { background: #0296cc; color: white; }
 #abort-btn { background: #e50914; color: white; }
+
+/* ======================
+  Smooth Scroll Enhancement
+====================== */
+html {
+  scroll-behavior: smooth;
+}
