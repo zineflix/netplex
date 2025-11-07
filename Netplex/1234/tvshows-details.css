@@ -718,43 +718,46 @@ html {
 }
 
 /* ======================
-   🎬 Fix Season/Episode Dropdowns — Same as Change Server
+   ✅ Fix Episode dropdown to show all options (no inner scroll)
 ====================== */
+
+/* Make sure the dropdown list isn't clipped by parent containers */
 .season-episode-controls {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  overflow: visible !important;      /* ensures dropdown is not clipped */
-  width: 100%;
-  box-sizing: border-box;
+  overflow: visible !important;
+  position: relative;
+  z-index: 1000;
 }
 
-/* Reset all browser overrides — use native select behavior */
+/* Allow dropdown to expand fully */
 .season-episode-controls select {
-  all: unset;                        /* reset all custom styles */
-  display: block;
-  appearance: auto;                  /* ✅ use native dropdown behavior */
+  appearance: auto; /* use native dropdown behavior */
   background: #111;
   color: #fff;
   border: 1px solid #333;
   border-radius: 6px;
   padding: 8px 12px;
   font-size: 15px;
-  cursor: pointer;
   width: 180px;
-  max-width: 100%;
   text-align: center;
-  z-index: 1000;
+  cursor: pointer;
+  position: relative;
+  z-index: 1001;
+  overflow: visible !important;
 }
 
-/* Ensure dropdown list expands fully and matches theme */
-.season-episode-controls select option {
-  background: #111;
-  color: #fff;
+/* Ensure dropdown expands outside the container if needed */
+.season-episode-controls select:focus,
+.season-episode-controls select:active {
+  overflow: visible !important;
 }
 
-/* Stack nicely on mobile */
+/* Make sure parent containers never hide the dropdown */
+.video-controls-container,
+#iframe-container {
+  overflow: visible !important;
+}
+
+/* For mobile view */
 @media (max-width: 600px) {
   .season-episode-controls {
     flex-direction: column;
@@ -765,12 +768,4 @@ html {
     width: 90%;
     max-width: 340px;
   }
-}
-
-/* Global overflow protection */
-html, body,
-#iframe-container,
-.video-controls-container {
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
 }
