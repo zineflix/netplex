@@ -11,8 +11,6 @@ body {
     font-family: Arial, sans-serif;
     background: #111;
     color: #fff;
-    /* CRITICAL FIX: Prevents horizontal scrolling caused by overflowing elements */
-    overflow-x: hidden;
 }
 
 .container {
@@ -35,9 +33,7 @@ body {
     flex: 60%;
     background: #000;
     border-radius: 10px;
-/* CHANGE 1: Use 'auto' or 'scroll' for overflow-y */
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -48,6 +44,7 @@ body {
 
 #iframe-container iframe {
     width: 100%;
+    height: 100%;
     min-height: 400px;
     border: none;
 }
@@ -489,8 +486,6 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
   position: fixed;
   top: 25%;
   left: 50%;
-  /* Use max-width for safety on small screens */
-  max-width: 400px;  
   transform: translateX(-50%);
   background-color: #121212;
   color: white;
