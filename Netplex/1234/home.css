@@ -68,38 +68,6 @@ body {
     nav ul li a.active {
       background-color: #0296cc;
     }
-/* Mobile Navbar */
-.menu-toggle {
-    display: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: white;
-}
-
-@media (max-width: 768px) {
-    .nav-links {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 60px;
-        right: 0;
-        background-color: #1e1e1e;
-        width: 100%;
-        text-align: center;
-    }
-
-    .nav-links.active {
-        display: flex;
-    }
-
-    .menu-toggle {
-        display: block;
-    }
-
-    .nav-links li {
-        padding: 15px 0;
-    }
-}
 
 /* Mobile Styles (Screen width below 768px) */
     @media (max-width: 768px) {
@@ -118,7 +86,7 @@ body {
       }
       /* Active state of the menu */
       nav.active ul {
-        display: flex; /* Show the menu when active */
+        display: flex; /* Show the menu when active (if JS adds nav.active) */
       }
       nav ul li {
         width: 100%;
@@ -150,9 +118,9 @@ body {
       }
 
       /* Show menu when active */
-#menu.active {
-    display: flex;
-}
+    #menu.active {
+        display: flex;
+    }
     }
 
     /* Hide the menu button on desktop */
@@ -201,11 +169,11 @@ body {
 
 /* Adjustment of arrow button in mobile */
 @media (max-width: 768px) {
-       .scroll-left {
+        .scroll-left {
           font-size: 20px;
           padding: 8px;
 }
-       .scroll-right {
+        .scroll-right {
           font-size: 20px;
           padding: 8px;
 }
@@ -233,18 +201,18 @@ body {
         font-size: 12px;
         margin-bottom: 20px;
     }
-.banner p1 {
+
+/* Corrected selector for banner description (was p1) */
+#banner-description { 
         font-size: 15px;
-        /* === NEW TRUNCATION STYLES === */
-        display: -webkit-box; /* Required for Webkit browsers (Chrome, Safari) */
-        -webkit-line-clamp: 3; /* Limit to 3 lines. Adjust this number as needed. */
-        -webkit-box-orient: vertical; /* Required for -webkit-line-clamp */
-        overflow: hidden; /* Hide overflow content */
-        text-overflow: ellipsis; /* Display ellipsis for clipped text */
-        white-space: normal; /* Allow text to wrap naturally before truncating */
-        max-height: 4.5em; /* (Optional) Set a max-height based on line-height * line-clamp.
-                                 Assuming 1.5em line-height for 3 lines, this is 3 * 1.5em.
-                                 Adjust line-height if it's different. */
+        /* === TRUNCATION STYLES (Kept as is for compatibility) === */
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+        max-height: 4.5em; 
     }
 
 .banner-content {
@@ -281,10 +249,11 @@ body {
         margin-bottom: 5px;
     }
 
-    .banner p {
+    .banner p { /* Targets the genre line */
         font-size: 8px;
     }
-    .banner p1 {
+    
+    #banner-description { /* Targets the description line */
         font-size: 10px;
     }
 }
@@ -312,7 +281,7 @@ body {
     gap: 10px;
     white-space: nowrap;
     scroll-behavior: smooth;
-    padding-bottom: 20px; 
+    padding-bottom: 20px;  
     object-fit: contain;
     padding-top: 30px;
     padding-bottom: 25px;
@@ -358,7 +327,12 @@ body {
     box-shadow: 0 10px 20px #0296cc;
 }
 
-
+/* Poster image */
+.poster-card img {
+    width: 205px;
+    border-radius: 8px;
+    transition: transform 0.3s ease-in-out;
+}
 
 /* Mobile Poster Adjustments */
 @media (max-width: 768px) {
@@ -467,13 +441,6 @@ font-size: 12px;
 .star.empty::before {
   content: '☆'; /* Empty star */
   color: #ccc; /* Light gray color for empty stars */
-}
-
-/* Poster image */
-.poster-card img {
-    width: 205px;
-    border-radius: 8px;
-    transition: transform 0.3s ease-in-out;
 }
 
 /* ==============================
@@ -714,14 +681,14 @@ font-size: 12px;
 ============================== */
 #telegram-widget {
   position: fixed;
-  bottom: 75px;   /* stays above banner bottom fade */
+  bottom: 75px;    /* stays above banner bottom fade */
   right: 20px;
   background: #0296cc;
   color: #fff;
   padding: 8px 10px;
   border-radius: 6px;
   font-weight: bold;
-  z-index: 1100;   /* higher than banner but below nav */
+  z-index: 1100;    /* higher than banner but below nav */
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   transition: background 0.3s;
 }
@@ -736,7 +703,7 @@ font-size: 12px;
 }
 
 #telegram-widget a i {
-  font-size: 16px;   /* Bigger icon */
+  font-size: 16px;    /* Bigger icon */
 }
 
 #telegram-widget:hover {
@@ -779,14 +746,10 @@ font-size: 12px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
-  z-index: 999
+  z-index: 999; /* Fixed missing semicolon */
   position: relative;
 }
 
 .play-button-banner:hover {
   background-color: #f40612;
 }
-
-
-
-
