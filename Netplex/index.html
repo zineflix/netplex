@@ -187,32 +187,19 @@
         <!-- ============================= -->
         <!-- FLOATING MESSAGE -->
         <!-- ============================= -->
-        <div id="floating-message">
-            <h2>🎥Welcome to NETPLEX🍿</h2><br>
-            <p>
-                Your ticket to an endless library of Movies, TV Shows/Series, K-drama and Anime for FREE!!!.<br><br>
-                Share the fun with your family and friends.
-            </p><br>
-
-            <!-- Visible close button -->
-            <button onclick="closeMessage()">CLOSE</button>
-        </div>
-
-        <script>
-            function closeMessage() {
-                document.getElementById("floating-message").style.display = "none";
-            }
-
-            function triggerPopunder() {
-                const link = document.getElementById('popunder-link');
-                // Simulate a real click on the <a> element
-                link.click();
-                // Optionally try to refocus current window (popunder effect)
-                window.focus();
-                // Hide the message
-                document.getElementById("floating-message").style.display = "none";
-            }
-        </script>
+<!-- Floating Message Start-->
+<div id="floating-message">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <h2>Notice!</h2><br>
+    <h>
+        netplex.site is temporarily unavailable. Please visit our backup site: netplex.pages.dev<br><br> 
+        Please also support our other sites<br>
+    </h>
+    <button onclick="window.location.href='https://netplex.pages.dev'">NETPLEX</button>
+    <br>
+    <button class="close-btn" onclick="closeMessage()">CLOSE</button>
+</div>
+<!-- Floating Message End-->
         <!-- ============================= -->
         <!-- END FLOATING MESSAGE -->
         <!-- ============================= --> 
@@ -559,6 +546,7 @@ document.getElementById("online-widget-header").addEventListener("click", () => 
   
 </html>
       
+
 
 
 
