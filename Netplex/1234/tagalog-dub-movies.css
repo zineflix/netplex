@@ -850,3 +850,23 @@ iframe {
   z-index: 9999;
 }
 /* Chatroom Section End */
+
+
+/* FPJ Movie Collection Start */
+/* Ensure the FPJ gallery uses the same grid as the main gallery */
+#fpjGallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    margin-bottom: 50px;
+}
+
+/* Responsive adjustment for small screens */
+@media (max-width: 600px) {
+    #fpjGallery {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+    }
+}
+/* FPJ Movie Collection End */
