@@ -164,6 +164,115 @@ function closeModal() {
         fetchMovies();
 // FOR TAGALOG DUB MOVIE SECTION END //
 
+
+
+// FOR FPJ MOVIE COLLECTION START //
+const FPJ_MOVIE_IDS = [
+    515847,
+];
+
+const fpjGallery = document.getElementById("fpjGallery");
+const fpjModal = document.getElementById("fpjModal");
+const fpjPoster = document.getElementById("fpjPoster");
+const fpjTitle = document.getElementById("fpjTitle");
+const fpjGenres = document.getElementById("fpjGenres");
+const fpjDescription = document.getElementById("fpjDescription");
+const fpjPlayer = document.getElementById("fpjPlayer");
+
+// FPJ Video Sources
+const FPJ_MOVIE_VIDEOS = {
+    515847: "https://drive.google.com/file/d/1Th3HpZgeY5SpNhGFtNY39GVgOKiasc4I/preview",
+
+};
+
+async function fetchFpjMovies() {
+
+    try {
+
+        const fpjRequests = FPJ_MOVIE_IDS.map(id =>
+            fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`)
+            .then(res => res.json())
+        );
+
+        const movies = await Promise.all(fpjRequests);
+
+        movies.forEach(movie => {
+
+            if(movie.poster_path){
+
+                const card = document.createElement("div");
+                card.classList.add("movie-card");
+
+                card.innerHTML = `
+                <img src="${IMAGE_BASE_URL}${movie.poster_path}" alt="${movie.title}">
+                <div class="play-button">▶</div>
+                `;
+
+                card.addEventListener("click", () => openFpjModal(movie));
+
+                fpjGallery.appendChild(card);
+
+            }
+
+        });
+
+    } catch(error){
+
+        console.error("Error loading FPJ movies:", error);
+        fpjGallery.innerHTML = "<p>Failed to load FPJ movies.</p>";
+
+    }
+
+}
+
+function openFpjModal(movie){
+
+    fpjPoster.src = `${IMAGE_BASE_URL}${movie.poster_path}`;
+    fpjPoster.alt = movie.title;
+
+    fpjTitle.textContent = movie.title;
+
+    fpjGenres.textContent = movie.genres
+        ? movie.genres.map(g => g.name).join(", ")
+        : "Unknown";
+
+    fpjDescription.textContent = movie.overview || "No description available.";
+
+    const videoUrl = FPJ_MOVIE_VIDEOS[movie.id] || "";
+    fpjPlayer.src = videoUrl;
+
+    fpjModal.classList.add("show");
+
+}
+
+function closeFpjModal(){
+
+    fpjModal.classList.remove("show");
+    fpjPlayer.src = "";
+
+}
+
+window.addEventListener("click", event => {
+
+    if(event.target === fpjModal){
+        closeFpjModal();
+    }
+
+});
+
+document.addEventListener("keydown", event => {
+
+    if(event.key === "Escape"){
+        closeFpjModal();
+    }
+
+});
+
+fetchFpjMovies();
+// FOR FPJ MOVIE COLLECTION END //
+
+
+
 // === FOR TV SHOW SECTION START === //
 const TV_SHOW_IDS = [
     219246, // When Life Gives You Tangerines
@@ -675,5 +784,4 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
     }
 });
 // Fullscreen Button for TV Trailer End //
-
 
