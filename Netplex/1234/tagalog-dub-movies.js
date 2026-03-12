@@ -680,7 +680,7 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
 
 // FPJ Movie Collection SECTION START //
 // 1. Define FPJ IDs (Example IDs for Panday, Probinsyano, etc.)
-const FPJ_MOVIE_IDS = [116343, 231070, 155799, 142533, 116346, 521971];
+const FPJ_MOVIE_IDS = [861421, 515847, 880757, 507653, 359768, 399456];
 
 // 2. Define FPJ Streaming Links
 const FPJ_VIDEOS = {
