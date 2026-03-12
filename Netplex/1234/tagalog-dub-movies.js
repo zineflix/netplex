@@ -677,3 +677,55 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
 });
 // Fullscreen Button for TV Trailer End //
 
+
+// FPJ Movie Collection SECTION START //
+// 1. Define FPJ IDs (Example IDs for Panday, Probinsyano, etc.)
+const FPJ_MOVIE_IDS = [116343, 231070, 155799, 142533, 116346, 521971];
+
+// 2. Define FPJ Streaming Links
+const FPJ_VIDEOS = {
+    116343: "https://link-to-panday-video", 
+    231070: "https://link-to-probinsyano-video",
+    155799: "https://link-to-eseng-video",
+    // Add more mappings here...
+};
+
+// 3. The Fetch Function for FPJ Section
+async function fetchFpjMovies() {
+    const fpjGallery = document.getElementById("fpjGallery");
+    try {
+        const movieRequests = FPJ_MOVIE_IDS.map(id =>
+            fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`)
+                .then(response => response.json())
+        );
+
+        const movies = await Promise.all(movieRequests);
+
+        movies.forEach(movie => {
+            if (movie.poster_path) {
+                const movieCard = document.createElement("div");
+                movieCard.classList.add("movie-card");
+
+                movieCard.innerHTML = `
+                    <img src="${IMAGE_BASE_URL}${movie.poster_path}" alt="${movie.title}">
+                    <div class="play-button">▶</div>
+                `;
+                
+                movieCard.addEventListener("click", () => {
+                    // We merge FPJ_VIDEOS into the main MOVIE_VIDEOS so openModal can find them
+                    Object.assign(MOVIE_VIDEOS, FPJ_VIDEOS); 
+                    openModal(movie);
+                });
+                
+                fpjGallery.appendChild(movieCard);
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching FPJ movies:", error);
+        fpjGallery.innerHTML = "<p>Failed to load FPJ Collection.</p>";
+    }
+}
+
+// 4. Initialize the new section
+fetchFpjMovies();
+// FPJ Movie Collection SECTION END //
