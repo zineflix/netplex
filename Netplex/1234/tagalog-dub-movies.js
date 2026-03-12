@@ -167,8 +167,11 @@ function closeModal() {
 
 
 // FOR FPJ MOVIE COLLECTION START //
+
+document.addEventListener("DOMContentLoaded", () => {
+
 const FPJ_MOVIE_IDS = [
-    515847,
+    515847
 ];
 
 const fpjGallery = document.getElementById("fpjGallery");
@@ -178,16 +181,21 @@ const fpjTitle = document.getElementById("fpjTitle");
 const fpjGenres = document.getElementById("fpjGenres");
 const fpjDescription = document.getElementById("fpjDescription");
 const fpjPlayer = document.getElementById("fpjPlayer");
+const fpjFullscreenButton = document.getElementById("fpjFullscreenButton");
 
 // FPJ Video Sources
 const FPJ_MOVIE_VIDEOS = {
-    515847: "https://drive.google.com/file/d/1Th3HpZgeY5SpNhGFtNY39GVgOKiasc4I/preview",
-
+    515847: "https://drive.google.com/file/d/1Th3HpZgeY5SpNhGFtNY39GVgOKiasc4I/preview"
 };
 
 async function fetchFpjMovies() {
 
+    if(!fpjGallery) return;
+
     try {
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const fpjId = urlParams.get("fpj");
 
         const fpjRequests = FPJ_MOVIE_IDS.map(id =>
             fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`)
@@ -204,13 +212,18 @@ async function fetchFpjMovies() {
                 card.classList.add("movie-card");
 
                 card.innerHTML = `
-                <img src="${IMAGE_BASE_URL}${movie.poster_path}" alt="${movie.title}">
-                <div class="play-button">▶</div>
+                    <img src="${IMAGE_BASE_URL}${movie.poster_path}" alt="${movie.title}">
+                    <div class="play-button">▶</div>
                 `;
 
                 card.addEventListener("click", () => openFpjModal(movie));
 
                 fpjGallery.appendChild(card);
+
+                // Auto open movie if URL has fpj parameter
+                if (fpjId && movie.id == fpjId) {
+                    openFpjModal(movie);
+                }
 
             }
 
@@ -219,13 +232,18 @@ async function fetchFpjMovies() {
     } catch(error){
 
         console.error("Error loading FPJ movies:", error);
-        fpjGallery.innerHTML = "<p>Failed to load FPJ movies.</p>";
+
+        if(fpjGallery){
+            fpjGallery.innerHTML = "<p>Failed to load FPJ movies.</p>";
+        }
 
     }
 
 }
 
 function openFpjModal(movie){
+
+    if(!fpjModal) return;
 
     fpjPoster.src = `${IMAGE_BASE_URL}${movie.poster_path}`;
     fpjPoster.alt = movie.title;
@@ -243,15 +261,22 @@ function openFpjModal(movie){
 
     fpjModal.classList.add("show");
 
+    // Update URL
+    window.history.pushState({ type: "fpj", id: movie.id }, "", `?fpj=${movie.id}`);
 }
 
 function closeFpjModal(){
 
+    if(!fpjModal) return;
+
     fpjModal.classList.remove("show");
     fpjPlayer.src = "";
 
+    // Reset URL
+    window.history.pushState({}, "", window.location.pathname);
 }
 
+// Close modal on outside click
 window.addEventListener("click", event => {
 
     if(event.target === fpjModal){
@@ -260,6 +285,7 @@ window.addEventListener("click", event => {
 
 });
 
+// Close on ESC
 document.addEventListener("keydown", event => {
 
     if(event.key === "Escape"){
@@ -268,7 +294,29 @@ document.addEventListener("keydown", event => {
 
 });
 
+// Fullscreen button
+if(fpjFullscreenButton){
+
+    fpjFullscreenButton.addEventListener("click", () => {
+
+        if(fpjPlayer.requestFullscreen){
+            fpjPlayer.requestFullscreen();
+        }
+        else if(fpjPlayer.webkitRequestFullscreen){
+            fpjPlayer.webkitRequestFullscreen();
+        }
+        else if(fpjPlayer.msRequestFullscreen){
+            fpjPlayer.msRequestFullscreen();
+        }
+
+    });
+
+}
+
 fetchFpjMovies();
+
+});
+
 // FOR FPJ MOVIE COLLECTION END //
 
 
