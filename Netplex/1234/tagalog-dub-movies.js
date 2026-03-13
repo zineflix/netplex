@@ -684,9 +684,13 @@ const FPJ_MOVIE_IDS = [861421, 515847, 880757, 507653, 359768, 399456];
 
 // 2. Define FPJ Streaming Links
 const FPJ_VIDEOS = {
-    116343: "https://link-to-panday-video", 
-    231070: "https://link-to-probinsyano-video",
-    155799: "https://link-to-eseng-video",
+    861421: "https://drive.google.com/file/d/1gGEkNBjFTYewkIYA9s6mvB9T6sTT6-XQ/preview", // May Isang Tsuper ng Taxi (1990)
+    515847: "https://drive.google.com/file/d/1Th3HpZgeY5SpNhGFtNY39GVgOKiasc4I/preview", // Pagbabalik ng Probinsyano (1998)
+    880757: "https://drive.google.com/file/d/1JNpJqll-0hfXk8kTDPOdQ9wUpaA5GgGo/preview", // Kapag Buhay Ang Inutang (1983)
+	507653: "https://drive.google.com/file/d/1ATqgMznm0YPkvTEkYdfmwI4SXYynj4jf/preview", // Ayos Na Ang Kasunod (2000)
+	359768: "https://drive.google.com/file/d/1OXyWQOqyfnHKHdc--AXfbfYh8CJWXq-B/preview", // Pakners (2003)
+	399456: "https://drive.google.com/file/d/1p9vsWKd77pZSQgr9P-ftcbIOBzi6bd4O/preview", // Ang Padrino (1984)
+	
     // Add more mappings here...
 };
 
