@@ -678,7 +678,7 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
 
 // FPJ Movie Collection SECTION START //
 // 1. Define FPJ IDs (Example IDs for Panday, Probinsyano, etc.)
-const FPJ_MOVIE_IDS = [861421, 515847, 880757, 507653, 359768, 399456];
+const FPJ_MOVIE_IDS = [861421, 515847, 880757, 507653, 359768, 399456, 492887, 533243, 491127,];
 
 // 2. Define FPJ Streaming Links
 const FPJ_VIDEOS = {
@@ -688,6 +688,10 @@ const FPJ_VIDEOS = {
 	507653: "https://drive.google.com/file/d/1ATqgMznm0YPkvTEkYdfmwI4SXYynj4jf/preview", // Ayos Na Ang Kasunod (2000)
 	359768: "https://drive.google.com/file/d/1OXyWQOqyfnHKHdc--AXfbfYh8CJWXq-B/preview", // Pakners (2003)
 	399456: "https://drive.google.com/file/d/1p9vsWKd77pZSQgr9P-ftcbIOBzi6bd4O/preview", // Ang Padrino (1984)
+	492887: "https://drive.google.com/file/d/13-wl6fLnitp5hAKJ4dxyqGuLUqmqFGhU/preview", // Dito sa Pitong Gatang (1992)
+	533243: "https://drive.google.com/file/d/1vFDJ93KGNHrGj_Ng4i8vsYPi0wDDlvJP/preview", // Walang Matigas Na Tinapay Sa Mainit Na Kape (1994)
+	491127: "LINK", //Eseng ng Tondo (1997)
+	
 	
     // Add more mappings here...
 };
