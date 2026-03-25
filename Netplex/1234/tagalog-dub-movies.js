@@ -678,19 +678,21 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
 
 // FPJ Movie Collection SECTION START //
 // 1. Define FPJ IDs (Example IDs for Panday, Probinsyano, etc.)
-const FPJ_MOVIE_IDS = [861421, 515847, 880757, 507653, 359768, 399456, 492887, 533243, 491127,];
+const FPJ_MOVIE_IDS = [861421, 515847, 880757, 507653, 359768, 399456, 492887, 533243, 491127, 801546, 496150,];
 
 // 2. Define FPJ Streaming Links
 const FPJ_VIDEOS = {
     861421: "https://drive.google.com/file/d/1gGEkNBjFTYewkIYA9s6mvB9T6sTT6-XQ/preview", // May Isang Tsuper ng Taxi (1990)
-    515847: "https://drive.google.com/file/d/1Th3HpZgeY5SpNhGFtNY39GVgOKiasc4I/preview", // Pagbabalik ng Probinsyano (1998)
+    515847: "https://drive.google.com/file/d/1Th3HpZgeY5SpNhGFtNY39GVgOKiasc4I/preview", // Kapag Puno na ang Salop Digitally (1989)
     880757: "https://drive.google.com/file/d/1JNpJqll-0hfXk8kTDPOdQ9wUpaA5GgGo/preview", // Kapag Buhay Ang Inutang (1983)
 	507653: "https://drive.google.com/file/d/1ATqgMznm0YPkvTEkYdfmwI4SXYynj4jf/preview", // Ayos Na Ang Kasunod (2000)
 	359768: "https://drive.google.com/file/d/1OXyWQOqyfnHKHdc--AXfbfYh8CJWXq-B/preview", // Pakners (2003)
 	399456: "https://drive.google.com/file/d/1p9vsWKd77pZSQgr9P-ftcbIOBzi6bd4O/preview", // Ang Padrino (1984)
 	492887: "https://drive.google.com/file/d/13-wl6fLnitp5hAKJ4dxyqGuLUqmqFGhU/preview", // Dito sa Pitong Gatang (1992)
 	533243: "https://drive.google.com/file/d/1vFDJ93KGNHrGj_Ng4i8vsYPi0wDDlvJP/preview", // Walang Matigas Na Tinapay Sa Mainit Na Kape (1994)
-	491127: "LINK", //Eseng ng Tondo (1997)
+	491127: "https://drive.google.com/file/d/1XBdp1g-4_vS0KLIGek2JvEE-8MzpCmmV/preview", //Eseng ng Tondo (1997)
+	801546: "https://drive.google.com/file/d/1z212RcbZpqovqr3TZPWMjbUkmFoidpRe/preview", //Batang Quiapo (1986)
+	496150: "https://drive.google.com/file/d/1KS3ChKEmrUzun3c0N7XwgAUdBHyPGe-l/preview", //Ang Pagbabalik Ng Probinsyano (1998)
 	
 	
     // Add more mappings here...
