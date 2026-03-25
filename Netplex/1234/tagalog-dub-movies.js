@@ -678,7 +678,7 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
 
 // FPJ Movie Collection SECTION START //
 // 1. Define FPJ IDs (Example IDs for Panday, Probinsyano, etc.)
-const FPJ_MOVIE_IDS = [861421, 515847, 880757, 507653, 359768, 399456, 492887, 533243, 491127, 801546, 496150, 586724, 954933, 360772, 966196, 767016, 515794,];
+const FPJ_MOVIE_IDS = [861421, 515847, 880757, 507653, 359768, 399456, 492887, 533243, 491127, 801546, 496150, 586724, 954933, 360772, 966196, 767016, 515794, 799393,];
 
 // 2. Define FPJ Streaming Links
 const FPJ_VIDEOS = {
@@ -698,7 +698,8 @@ const FPJ_VIDEOS = {
 	360772: "https://drive.google.com/file/d/1r7tqQaBgCTJyNT9k6EHHI2GS5yNxpVUG/preview", //Isang Bala Ka Lang, Part II (1993)
 	966196: "https://drive.google.com/file/d/1l72uIppz_2wpVthmGq8m8QKqn8RjOcNZ/preview", //Ang Lalaki... Ang Alamat... Ang Baril (1978)
 	767016: "https://drive.google.com/file/d/1PP6FXWGqV_PJs8KFCP_bsWbYBfachVuV/preview", //Kalibre .45 (1980)
-	515794: "LINK", //Ako Ang Huhusga: Kapag Puno Na Ang Salop 2 (1989)
+	515794: "https://drive.google.com/file/d/1BZ6GsIxpZyxYnORlPjlvPKUx2MIfo3I-/preview", //Ako Ang Huhusga: Kapag Puno Na Ang Salop 2 (1989)
+	799393: "https://drive.google.com/file/d/1HTa8HodERJx4bz2JhMdIaLU9Qg0QHZRO/preview", //Epimaco Velasco: NBI (1994)
 	
     // Add more mappings here...
 };
