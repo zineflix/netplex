@@ -678,7 +678,7 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
 
 // FPJ Movie Collection SECTION START //
 // 1. Define FPJ IDs (Example IDs for Panday, Probinsyano, etc.)
-const FPJ_MOVIE_IDS = [861421, 515847, 880757, 507653, 359768, 399456, 492887, 533243, 491127, 801546, 496150,];
+const FPJ_MOVIE_IDS = [861421, 515847, 880757, 507653, 359768, 399456, 492887, 533243, 491127, 801546, 496150, 586724, 954933, 360772, 966196, 767016,];
 
 // 2. Define FPJ Streaming Links
 const FPJ_VIDEOS = {
@@ -693,7 +693,11 @@ const FPJ_VIDEOS = {
 	491127: "https://drive.google.com/file/d/1XBdp1g-4_vS0KLIGek2JvEE-8MzpCmmV/preview", //Eseng ng Tondo (1997)
 	801546: "https://drive.google.com/file/d/1z212RcbZpqovqr3TZPWMjbUkmFoidpRe/preview", //Batang Quiapo (1986)
 	496150: "https://drive.google.com/file/d/1KS3ChKEmrUzun3c0N7XwgAUdBHyPGe-l/preview", //Ang Pagbabalik Ng Probinsyano (1998)
-	
+	586724: "https://drive.google.com/file/d/1EQZX8S2RWJvjtqULBOe8jxZSZauWDE7R/preview", //Ang Alamat ng Lawin (2002)
+	954933: "https://drive.google.com/file/d/1qGaGaXPbYtkSLSox0MEeJuxZrVbwrS0H/preview", //Umpisahan Mo… Tatapusin Ko! (1983)
+	360772: "https://drive.google.com/file/d/1r7tqQaBgCTJyNT9k6EHHI2GS5yNxpVUG/preview", //Isang Bala Ka Lang, Part II (1993)
+	966196: "https://drive.google.com/file/d/1l72uIppz_2wpVthmGq8m8QKqn8RjOcNZ/preview", //Ang Lalaki... Ang Alamat... Ang Baril (1978)
+	767016: "https://drive.google.com/file/d/1PP6FXWGqV_PJs8KFCP_bsWbYBfachVuV/preview", //Kalibre .45 (1980)
 	
     // Add more mappings here...
 };
