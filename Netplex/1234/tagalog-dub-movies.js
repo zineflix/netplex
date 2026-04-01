@@ -175,6 +175,7 @@ const TV_SHOW_IDS = [
 	255779, // Bet (2025)
 	112836, // Money Heist: Korea - Joint Economic Area (2022)
 	99966, // All of Us Are Dead (2022)
+	76557, // Welcome to Waikiki (2018)
     
     
 ];
