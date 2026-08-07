@@ -165,21 +165,22 @@ function renderSavedTVList() {
 // STREAMING SERVERS (DETAILS)
 // ==============================
 const TV_ENDPOINTS = [
-  { url: 'https://vidsrc.wiki/embed/tv/', name: 'Server 1' },  
-  { url: 'https://web.nxsha.app/embed/tv/', name: 'Server 2' },
-  { url: 'https://vidcore.org/embed/series/', name: 'Server 3' },
-  { url: 'https://1embed.cc/embed/tv/', name: 'Server 4' },
-  { url: 'https://vidlux.xyz/embed/tv/', name: 'Server 5' },
-  { url: 'https://vidup.to/tv/', name: 'Server 6 Ads' },  
-  { url: 'https://vsembed.ru/embed/tv/', name: 'Server 7 Ads' },
-  { url: 'https://vidlink.pro/tv/', name: 'Server 8 Ads' },
-  { url: 'https://player.videasy.to/tv/', name: 'Server 9 Ads' },
-  { url: 'https://www.vidking.net/embed/tv/', name: 'Server 10 Ads' },
-  { url: 'https://www.2embed.cc/embedtv/', name: 'Server 11 Ads' },
-  { url: 'https://moviesapi.to/tv/', name: 'Server 12 Ads' },
-  { url: 'https://vaplayer.ru/embed/tv/', name: 'Server 13 Ads' },
-  { url: 'https://vidfast.pro/tv/', name: 'Server 14 Ads' },
-  { url: 'https://111movies.net/tv/', name: 'Server 15 Ads' },
+  { url: 'https://vidsrc.wiki/embed/tv/', name: 'Server 1' }, 
+  { url: 'https://vidsrc.wiki/embed/tv/', name: 'Server 2' },  
+  { url: 'https://web.nxsha.app/embed/tv/', name: 'Server 3' },
+  { url: 'https://vidcore.org/embed/series/', name: 'Server 4' },
+  { url: 'https://1embed.cc/embed/tv/', name: 'Server 5' },
+  { url: 'https://vidlux.xyz/embed/tv/', name: 'Server 6' },
+  { url: 'https://vidup.to/tv/', name: 'Server 7 Ads' },  
+  { url: 'https://vsembed.ru/embed/tv/', name: 'Server 8 Ads' },
+  { url: 'https://vidlink.pro/tv/', name: 'Server 9 Ads' },
+  { url: 'https://player.videasy.to/tv/', name: 'Server 10 Ads' },
+  { url: 'https://www.vidking.net/embed/tv/', name: 'Server 11 Ads' },
+  { url: 'https://www.2embed.cc/embedtv/', name: 'Server 12 Ads' },
+  { url: 'https://moviesapi.to/tv/', name: 'Server 13 Ads' },
+  { url: 'https://vaplayer.ru/embed/tv/', name: 'Server 14 Ads' },
+  { url: 'https://vidfast.pro/tv/', name: 'Server 15 Ads' },
+  { url: 'https://111movies.net/tv/', name: 'Server 16 Ads' },
 ];
 
 let currentTVServerIndex = 0;
