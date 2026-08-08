@@ -1,7 +1,7 @@
 // ==============================
 // TMDB CONFIG
 // ==============================
-const apiKey = 'a1e72fd93ed59f56e6332813b9f8dcae';
+const apiKey = 'a1PbWWqgKDBDorh525uecKaGZD21FGSoCeR';
 const baseUrl = 'https://api.themoviedb.org/3';
 
 // ==============================
@@ -173,17 +173,16 @@ const MOVIE_ENDPOINTS = [
   { url: 'https://vidcore.org/embed/movie/', name: 'Server 4' },
   { url: 'https://1embed.cc/embed/movie/', name: 'Server 5' },
   { url: 'https://vidlux.xyz/embed/movie/', name: 'Server 6' },
-  { url: 'https://anyembed.xyz/embed/tmdb-movie-', name: 'Server 7' },  
-  { url: 'https://vidup.to/movie/', name: 'Server 8 Ads' },  
-  { url: 'https://vsembed.ru/embed/movie/', name: 'Server 9 Ads' },
-  { url: 'https://vidlink.pro/movie/', name: 'Server 10 Ads' },
-  { url: 'https://player.videasy.to/movie/', name: 'Server 11 Ads' },
-  { url: 'https://www.vidking.net/embed/movie/', name: 'Server 12 Ads' },
-  { url: 'https://www.2embed.cc/embed/', name: 'Server 13 Ads' },
-  { url: 'https://moviesapi.to/movie/', name: 'Server 14 Ads' },
-  { url: 'https://vaplayer.ru/embed/movie/', name: 'Server 15 Ads' },
-  { url: 'https://vidfast.pro/movie/', name: 'Server 16 Ads' },
-  { url: 'https://111movies.net/movie/', name: 'Server 17 Ads' },
+  { url: 'https://vidup.to/movie/', name: 'Server 7 Ads' },  
+  { url: 'https://vsembed.ru/embed/movie/', name: 'Server 8 Ads' },
+  { url: 'https://vidlink.pro/movie/', name: 'Server 9 Ads' },
+  { url: 'https://player.videasy.to/movie/', name: 'Server 10 Ads' },
+  { url: 'https://www.vidking.net/embed/movie/', name: 'Server 11 Ads' },
+  { url: 'https://www.2embed.cc/embed/', name: 'Server 12 Ads' },
+  { url: 'https://moviesapi.to/movie/', name: 'Server 13 Ads' },
+  { url: 'https://vaplayer.ru/embed/movie/', name: 'Server 14 Ads' },
+  { url: 'https://vidfast.pro/movie/', name: 'Server 15 Ads' },
+  { url: 'https://111movies.net/movie/', name: 'Server 16 Ads' },
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -253,7 +252,7 @@ if (titleEl) titleEl.textContent = movie.title || 'Untitled';
     const downloadBtn = byId('download-btn');
 safeOn(downloadBtn, 'click', () => {
   if (movieId) {
-    const downloadUrl = `https://vidvault.ru/movie/${movieId}`;
+    const downloadUrl = `https://dl.vidsrc.vip/movie/${movieId}`;
     window.open(downloadUrl, '_blank');
   }
 });
