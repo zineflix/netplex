@@ -252,7 +252,7 @@ if (titleEl) titleEl.textContent = movie.title || 'Untitled';
     const downloadBtn = byId('download-btn');
 safeOn(downloadBtn, 'click', () => {
   if (movieId) {
-    const downloadUrl = `https://dl.vidsrc.vip/movie/${movieId}`;
+    const downloadUrl = `https://vidvault.ru/movie/${movieId}`;
     window.open(downloadUrl, '_blank');
   }
 });
