@@ -167,7 +167,7 @@ function renderSavedList() {
 // STREAMING SERVERS (DETAILS)
 // ==============================
 const MOVIE_ENDPOINTS = [
-  { url: 'https://cinesrc.st/embed/movie/', name: 'Server 1' },  
+  { url: 'https://vidsrc.wiki/embed/movie/', name: 'Server 1' },  
   { url: 'https://vidsrc.wiki/embed/movie/', name: 'Server 2' },  
   { url: 'https://web.nxsha.app/embed/movie/', name: 'Server 3' },
   { url: 'https://vidcore.org/embed/movie/', name: 'Server 4' },
