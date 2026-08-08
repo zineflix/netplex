@@ -253,7 +253,7 @@ async function fetchTVDetails() {
     const downloadBtn = byId('download-btn');
     safeOn(downloadBtn, 'click', () => {
       if (tvId && currentSeason && currentEpisode) {
-        const downloadUrl = `https://dl.vidsrc.vip/tv/${tvId}/${currentSeason}/${currentEpisode}`;
+        const downloadUrl = `https://vidvault.ru/tv/${tvId}/${currentSeason}/${currentEpisode}`;
         window.open(downloadUrl, '_blank');
       }
     });
