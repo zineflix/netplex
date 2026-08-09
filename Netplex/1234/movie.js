@@ -79,13 +79,13 @@ async function fetchMedia(url, containerId, type, pages = 1) {
 fetchBanner();
 fetchMedia(`${baseURL}/movie/upcoming?api_key=${apiKey}&language=en-US&page=1`, "upcoming-movies", "movie", 10);
 fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&vote_count.gte=500&vote_average.gte=8`, "popular-movies", "movie", 10);
-fetchMedia(`${baseURL}/trending/movie/week?api_key=${apiKey}`, "trending-now", "movie", 10);
-fetchMedia(`${baseURL}/movie/top_rated?api_key=${apiKey}&language=en-US&page=1`, "top-rated", "movie", 10);
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=28&page=1`, "action-movies", "movie", 10);
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=35&page=1`, "comedy-movies", "movie", 10);
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=27&page=1`, "horror-movies", "movie", 10);
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=10749&page=1`, "romance-movies", "movie", 10);
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=16&page=1`, "animation-movies", "movie", 10);
+fetchMedia(`${baseURL}/trending/movie/week?api_key=${apiKey}`, "trending-now", "movie", 1);
+fetchMedia(`${baseURL}/movie/top_rated?api_key=${apiKey}&language=en-US&page=1`, "top-rated", "movie", 1);
+fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=28&page=1`, "action-movies", "movie", 1);
+fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=35&page=1`, "comedy-movies", "movie", 1);
+fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=27&page=1`, "horror-movies", "movie", 1);
+fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=10749&page=1`, "romance-movies", "movie", 1);
+fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=16&page=1`, "animation-movies", "movie", 1);
 
 
 // Ensure the function is globally accessible
