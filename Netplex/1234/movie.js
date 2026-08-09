@@ -1,163 +1,453 @@
+// ============================================================
+// TMDB CONFIG
+// ============================================================
 const apiKey = "a1e72fd93ed59f56e6332813b9f8dcae";
 const baseURL = "https://api.themoviedb.org/3";
 const imgURL = "https://image.tmdb.org/t/p/w500";
 
-// Function to fetch and set a random trending movie/TV show as a banner
+// ============================================================
+// DOM ELEMENTS
+// ============================================================
 const bannerTitle = document.getElementById("banner-title");
 const bannerGenre = document.getElementById("banner-genre");
 const bannerDescription = document.getElementById("banner-description");
 const banner = document.querySelector(".banner");
 
-async function fetchBanner() {
-    const response = await fetch(
-        `https://api.themoviedb.org/3/trending/all/week?api_key=${apiKey}&language=en-US`
-    );
-    const data = await response.json();
-    const randomItem = data.results[Math.floor(Math.random() * data.results.length)];
+// ============================================================
+// TMDB REQUEST
+// ============================================================
+async function tmdbFetch(endpoint, params = {}) {
+    try {
+        const url = new URL(`${baseURL}${endpoint}`);
+        url.searchParams.set("api_key", apiKey);
 
-    banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${randomItem.backdrop_path})`;
-    bannerTitle.textContent = randomItem.title || randomItem.name;
-    bannerDescription.textContent = randomItem.overview || "No description available.";
-    
-    // Fetch genres
-    const genresResponse = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`);
-    const genresData = await genresResponse.json();
-    const genreMap = Object.fromEntries(genresData.genres.map(g => [g.id, g.name]));
-    const genreNames = (randomItem.genre_ids || []).map(id => genreMap[id]).join(", ");
-    
-    bannerGenre.textContent = `Genre: ${genreNames || "Unknown"}`;
-}
-
-fetchBanner();
-
-// Fetch Media Rows
-async function fetchMedia(url, containerId, type, pages = 1) {
-    const container = document.getElementById(containerId);
-    for (let page = 1; page <= pages; page++) {
-        const response = await fetch(`${url}&page=${page}`);
-        const data = await response.json();
-        
-        data.results.forEach(item => {
-            const mediaItem = document.createElement("div");
-            mediaItem.classList.add("media-item");
-
-            const year = (item.release_date || item.first_air_date || '').slice(0, 4) || '—';
-
-          
-            const rating = item.vote_average.toFixed(1);
-
-            mediaItem.innerHTML = `
-    <div class="poster-title" title="${item.title || item.name}">${item.title || item.name}</div>
-    <div class="poster-card">
-        <div class="rating">
-            <span class="star"><i class="fas fa-star"></i></span> <span class="rating-number">${rating}</span>
-        </div>
-        <div class="year-container">
-            <span class="year">${year}</span>
-        </div>
-        <img src="${imgURL + item.poster_path}" alt="${item.title || item.name}">
-        <div class="play-button">
-            <i class="fas fa-play"></i>
-        </div>
-    </div>
-`;
-
-
-            mediaItem.addEventListener("click", () => {
-                window.location.href = type === "movie" 
-                    ? `movie-details.html?movie_id=${item.id}`
-                    : `tvshows-details.html?id=${item.id}`;
-            });
-
-            container.appendChild(mediaItem);
+        Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null) {
+                url.searchParams.set(key, value);
+            }
         });
+
+        console.log("TMDB Request:", url.toString());
+
+        const response = await fetch(url.toString());
+
+        if (!response.ok) {
+            throw new Error(`TMDB HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (data.status_code) {
+            throw new Error(`TMDB Error ${data.status_code}: ${data.status_message}`);
+        }
+
+        return data;
+    } catch (error) {
+        console.error("TMDB request failed:", error);
+        throw error;
     }
 }
 
+// ============================================================
+// MOVIE GENRES
+// ============================================================
+let movieGenreMap = {};
 
-// Load Data
-fetchBanner();
-fetchMedia(`${baseURL}/movie/upcoming?api_key=${apiKey}&language=en-US&page=1`, "upcoming-movies", "movie", 10);
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&vote_count.gte=500&vote_average.gte=8`, "popular-movies", "movie", 10);
-fetchMedia(`${baseURL}/trending/movie/week?api_key=${apiKey}`, "trending-now", "movie", 1);
-fetchMedia(`${baseURL}/movie/top_rated?api_key=${apiKey}&language=en-US&page=1`, "top-rated", "movie", 1);
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=28&page=1`, "action-movies", "movie", 1);
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=35&page=1`, "comedy-movies", "movie", 1);
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=27&page=1`, "horror-movies", "movie", 1);
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=10749&page=1`, "romance-movies", "movie", 1);
-fetchMedia(`${baseURL}/discover/movie?api_key=${apiKey}&with_genres=16&page=1`, "animation-movies", "movie", 1);
+async function loadMovieGenres() {
+    try {
+        const data = await tmdbFetch("/genre/movie/list", {
+            language: "en-US"
+        });
 
-
-// Ensure the function is globally accessible
-document.addEventListener("DOMContentLoaded", function () {
-    function scrollLeft(containerId) {
-        let container = document.getElementById(containerId);
-        if (container) {
-            container.scrollBy({ left: -300, behavior: "smooth" });
-        } else {
-            console.error("Container not found:", containerId);
+        if (data.genres) {
+            movieGenreMap = Object.fromEntries(
+                data.genres.map(genre => [genre.id, genre.name])
+            );
         }
+    } catch (error) {
+        console.error("Unable to load movie genres:", error);
+    }
+}
+
+// ============================================================
+// BANNER
+// ============================================================
+async function fetchBanner() {
+    if (!banner) return;
+
+    try {
+        const data = await tmdbFetch("/trending/all/week", {
+            language: "en-US"
+        });
+
+        const bannerItems = (data.results || []).filter(
+            item => item.backdrop_path
+        );
+
+        if (!bannerItems.length) return;
+
+        const randomItem =
+            bannerItems[Math.floor(Math.random() * bannerItems.length)];
+
+        banner.style.backgroundImage =
+            `url(https://image.tmdb.org/t/p/original${randomItem.backdrop_path})`;
+
+        if (bannerTitle) {
+            bannerTitle.textContent =
+                randomItem.title || randomItem.name || "Unknown";
+        }
+
+        if (bannerDescription) {
+            bannerDescription.textContent =
+                randomItem.overview || "No description available.";
+        }
+
+        if (bannerGenre) {
+            const genres = (randomItem.genre_ids || [])
+                .map(id => movieGenreMap[id])
+                .filter(Boolean)
+                .join(", ");
+
+            bannerGenre.textContent = `Genre: ${genres || "Unknown"}`;
+        }
+    } catch (error) {
+        console.error("Failed to load banner:", error);
+    }
+}
+
+// ============================================================
+// ESCAPE HTML
+// ============================================================
+function escapeHTML(value) {
+    if (value === undefined || value === null) return "";
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+// ============================================================
+// CREATE MEDIA CARD
+// ============================================================
+function createMediaCard(item, type = "movie") {
+    if (!item || !item.id || !item.poster_path) {
+        return null;
     }
 
-    function scrollRight(containerId) {
-        let container = document.getElementById(containerId);
-        if (container) {
-            container.scrollBy({ left: 300, behavior: "smooth" });
+    const mediaItem = document.createElement("div");
+    mediaItem.classList.add("media-item");
+
+    const title = item.title || item.name || "Unknown";
+    const year = (
+        item.release_date ||
+        item.first_air_date ||
+        ""
+    ).slice(0, 4) || "—";
+
+    const rating =
+        typeof item.vote_average === "number"
+            ? item.vote_average.toFixed(1)
+            : "0.0";
+
+    mediaItem.innerHTML = `
+        <div class="poster-title" title="${escapeHTML(title)}">
+            ${escapeHTML(title)}
+        </div>
+        <div class="poster-card">
+            <div class="rating">
+                <span class="star">
+                    <i class="fas fa-star"></i>
+                </span>
+                <span class="rating-number">${rating}</span>
+            </div>
+            <div class="year-container">
+                <span class="year">${year}</span>
+            </div>
+            <img
+                src="${imgURL}${item.poster_path}"
+                alt="${escapeHTML(title)}"
+                loading="lazy"
+            >
+            <div class="play-button">
+                <i class="fas fa-play"></i>
+            </div>
+        </div>
+    `;
+
+    mediaItem.addEventListener("click", () => {
+        if (type === "movie") {
+            window.location.href =
+                `movie-details.html?movie_id=${item.id}`;
         } else {
-            console.error("Container not found:", containerId);
+            window.location.href =
+                `tvshows-details.html?id=${item.id}`;
         }
+    });
+
+    return mediaItem;
+}
+
+// ============================================================
+// FETCH MEDIA
+// ============================================================
+async function fetchMedia(endpoint, containerId, type = "movie", params = {}) {
+    const container = document.getElementById(containerId);
+
+    if (!container) {
+        console.error(`Container not found: #${containerId}`);
+        return;
     }
 
-    // Attach event listeners to buttons (instead of inline HTML)
+    try {
+        const data = await tmdbFetch(endpoint, {
+            language: "en-US",
+            page: 1,
+            ...params
+        });
+
+        if (!Array.isArray(data.results)) {
+            throw new Error("TMDB returned no results.");
+        }
+
+        container.innerHTML = "";
+
+        data.results.forEach(item => {
+            const card = createMediaCard(item, type);
+
+            if (card) {
+                container.appendChild(card);
+            }
+        });
+
+        if (!container.children.length) {
+            container.innerHTML = `
+                <p style="color:#aaa;padding:20px;">
+                    No movies available.
+                </p>
+            `;
+        }
+
+        console.log(
+            `${containerId}: ${data.results.length} results`
+        );
+    } catch (error) {
+        console.error(`Failed to load ${containerId}:`, error);
+
+        container.innerHTML = `
+            <p style="color:#aaa;padding:20px;">
+                Unable to load movies.
+            </p>
+        `;
+    }
+}
+
+// ============================================================
+// LOAD MOVIE SECTIONS
+// ============================================================
+function loadMovieSections() {
+    // Upcoming
+    fetchMedia(
+        "/movie/upcoming",
+        "upcoming-movies",
+        "movie"
+    );
+
+    // Popular
+    fetchMedia(
+        "/discover/movie",
+        "popular-movies",
+        "movie",
+        {
+            sort_by: "popularity.desc",
+            vote_count_gte: 500,
+            vote_average_gte: 7
+        }
+    );
+
+    // Trending
+    fetchMedia(
+        "/trending/movie/week",
+        "trending-now",
+        "movie"
+    );
+
+    // Top Rated
+    fetchMedia(
+        "/movie/top_rated",
+        "top-rated",
+        "movie"
+    );
+
+    // Action
+    fetchMedia(
+        "/discover/movie",
+        "action-movies",
+        "movie",
+        {
+            sort_by: "popularity.desc",
+            with_genres: "28"
+        }
+    );
+
+    // Comedy
+    fetchMedia(
+        "/discover/movie",
+        "comedy-movies",
+        "movie",
+        {
+            sort_by: "popularity.desc",
+            with_genres: "35"
+        }
+    );
+
+    // Horror
+    fetchMedia(
+        "/discover/movie",
+        "horror-movies",
+        "movie",
+        {
+            sort_by: "popularity.desc",
+            with_genres: "27"
+        }
+    );
+
+    // Romance
+    fetchMedia(
+        "/discover/movie",
+        "romance-movies",
+        "movie",
+        {
+            sort_by: "popularity.desc",
+            with_genres: "10749"
+        }
+    );
+
+    // Animation
+    fetchMedia(
+        "/discover/movie",
+        "animation-movies",
+        "movie",
+        {
+            sort_by: "popularity.desc",
+            with_genres: "16"
+        }
+    );
+}
+
+// ============================================================
+// HORIZONTAL SCROLL
+// ============================================================
+function scrollLeft(containerId) {
+    const container = document.getElementById(containerId);
+
+    if (!container) return;
+
+    container.scrollBy({
+        left: -600,
+        behavior: "smooth"
+    });
+}
+
+function scrollRight(containerId) {
+    const container = document.getElementById(containerId);
+
+    if (!container) return;
+
+    container.scrollBy({
+        left: 600,
+        behavior: "smooth"
+    });
+}
+
+window.scrollLeft = scrollLeft;
+window.scrollRight = scrollRight;
+
+// ============================================================
+// SCROLL BUTTONS
+// ============================================================
+function initializeScrollButtons() {
     document.querySelectorAll(".scroll-left").forEach(button => {
-        button.addEventListener("click", function () {
-            let targetId = this.nextElementSibling.id;
-            scrollLeft(targetId);
+        button.addEventListener("click", () => {
+            const container = button.nextElementSibling;
+
+            if (container) {
+                scrollLeft(container.id);
+            }
         });
     });
 
     document.querySelectorAll(".scroll-right").forEach(button => {
-        button.addEventListener("click", function () {
-            let targetId = this.previousElementSibling.id;
-            scrollRight(targetId);
+        button.addEventListener("click", () => {
+            const container = button.previousElementSibling;
+
+            if (container) {
+                scrollRight(container.id);
+            }
         });
     });
-});
+}
 
+// ============================================================
+// NAVIGATION
+// ============================================================
+function initializeNavigation() {
+    const nav = document.querySelector("nav");
 
+    window.addEventListener("scroll", () => {
+        if (!nav) return;
 
-// For Responsive Header
-window.addEventListener("scroll", function () {
-    let nav = document.querySelector("nav");
-    if (window.scrollY > 50) {
-        nav.classList.add("nav-solid"); // Solid color after scrolling down
-    } else {
-        nav.classList.remove("nav-solid"); // Transparent at the top
-    }
-});
-
-// For sticky header when scrolling
-    window.addEventListener("scroll", function () {
-      let nav = document.querySelector("nav");
-      if (window.scrollY > 50) {
-        nav.classList.add("nav-solid"); // Add solid background when scrolled
-      } else {
-        nav.classList.remove("nav-solid"); // Remove solid background at top
-      }
+        if (window.scrollY > 50) {
+            nav.classList.add("nav-solid");
+        } else {
+            nav.classList.remove("nav-solid");
+        }
     });
 
-    // Toggle menu visibility when menu button is clicked
-document.getElementById("menu-btn").addEventListener("click", function() {
-    document.getElementById("menu").classList.toggle("active");
-});
+    const menuButton = document.getElementById("menu-btn");
+    const menu = document.getElementById("menu");
 
+    if (menuButton && menu) {
+        menuButton.addEventListener("click", () => {
+            menu.classList.toggle("active");
+        });
+    }
 
-// For Dropdown More Button Function Start
-document.addEventListener("DOMContentLoaded", function () {
     const dropdown = document.querySelector(".dropdown");
 
-    dropdown.addEventListener("click", function () {
-        this.classList.toggle("active");
+    if (dropdown) {
+        const dropButton = dropdown.querySelector(".dropbtn");
+
+        if (dropButton) {
+            dropButton.addEventListener("click", event => {
+                event.stopPropagation();
+                dropdown.classList.toggle("active");
+            });
+        }
+    }
+
+    document.addEventListener("click", event => {
+        const dropdown = document.querySelector(".dropdown");
+
+        if (dropdown && !dropdown.contains(event.target)) {
+            dropdown.classList.remove("active");
+        }
     });
+}
+
+// ============================================================
+// INITIALIZE
+// ============================================================
+document.addEventListener("DOMContentLoaded", async () => {
+    console.log("NETPLEX MOVIE PAGE INITIALIZING...");
+
+    initializeNavigation();
+    initializeScrollButtons();
+
+    await loadMovieGenres();
+
+    fetchBanner();
+    loadMovieSections();
 });
-// For Dropdown More Button Function End
