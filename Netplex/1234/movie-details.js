@@ -1,7 +1,7 @@
 // ==============================
 // TMDB CONFIG
 // ==============================
-const apiKey = 'a1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR';
+const apiKey = 'a1e72fd93ed59f56e6332813b9f8dcae';
 const baseUrl = 'https://api.themoviedb.org/3';
 
 // ==============================
