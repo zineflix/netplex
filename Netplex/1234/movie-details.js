@@ -167,31 +167,22 @@ function renderSavedList() {
 // STREAMING SERVERS (DETAILS)
 // ==============================
 const MOVIE_ENDPOINTS = [
-  { url: 'https://vidsrc.wiki/embed/movie/', name: 'Server 1' },  
-  { url: 'https://web.nxsha.app/embed/movie/', name: 'Server 2' },  
-  { url: 'https://anicine.xyz/embed?url=https://embed.asfnsa-alig.workers.dev/movie/', name: 'Server 3' },
-  { url: 'https://1embed.cc/embed/movie/', name: 'Server 4' },
-  { url: 'https://yapgrid.com/embed/movie/', name: 'Server 5' },
-  { url: 'https://cinevaro.app/media/tmdb-movie-', name: 'Server 6' },
-  { url: 'https://anyembed.xyz/embed/tmdb-movie-', name: 'Server 7' },  
-  { url: 'https://hexa.su/watch/movie/', name: 'Server 8' },
-  { url: 'https://vidzen.fun/movie/', name: 'Server 9' },
-  { url: 'https://rivestream.ru/watch?type=movie&id=', name: 'Server 10 },
-  { url: 'https://vidlux.xyz/embed/movie/', name: 'Server 11 },
-  { url: 'https://screenscape.me/embed?tmdb=', name: 'Server 12 },
-  { url: 'https://vidup.to/movie/', name: 'Server 13 Ads },
-  { url: 'https://vsembed.ru/embed/movie/', name: 'Server 14 Ads },
-  { url: 'https://api.cineby.homes/embed/movie/', name: 'Server 15 Ads },
-  { url: 'https://vidbolt.pro/movie/', name: 'Server 16 Ads },
-  { url: 'https://player.videasy.to/movie/', name: 'Server 17 Ads },
-  { url: 'https://vidcore.io/movie/', name: 'Server 18 Ads },
-  { url: 'https://vaplayer.ru/embed/movie/', name: 'Server 19 Ads },
-  { url: 'https://vidsrc.hair/embed/movie/', name: 'Server 20 Ads },
-  { url: 'https://player.zxcstream.xyz/player/movie/', name: 'Server 21 Ads },
-  { url: 'https://111movies.net/movie/', name: 'Server 22 Ads },
-  { url: 'https://moviesapi.to/movie/', name: 'Server 23 Ads },
-  { url: 'https://vidrock.net/movie/', name: 'Server 24 Ads },
-  { url: 'https://embedmaster.link/movie/', name: 'Server 25 Ads },
+  { url: 'https://cinesrc.st/embed/movie/', name: 'Server 1' },  
+  { url: 'https://vidsrc.wiki/embed/movie/', name: 'Server 2' },  
+  { url: 'https://web.nxsha.app/embed/movie/', name: 'Server 3' },
+  { url: 'https://vidcore.org/embed/movie/', name: 'Server 4' },
+  { url: 'https://1embed.cc/embed/movie/', name: 'Server 5' },
+  { url: 'https://vidlux.xyz/embed/movie/', name: 'Server 6' },
+  { url: 'https://vidup.to/movie/', name: 'Server 7 Ads' },  
+  { url: 'https://vsembed.ru/embed/movie/', name: 'Server 8 Ads' },
+  { url: 'https://vidlink.pro/movie/', name: 'Server 9 Ads' },
+  { url: 'https://player.videasy.to/movie/', name: 'Server 10 Ads' },
+  { url: 'https://www.vidking.net/embed/movie/', name: 'Server 11 Ads' },
+  { url: 'https://www.2embed.cc/embed/', name: 'Server 12 Ads' },
+  { url: 'https://moviesapi.to/movie/', name: 'Server 13 Ads' },
+  { url: 'https://vaplayer.ru/embed/movie/', name: 'Server 14 Ads' },
+  { url: 'https://vidfast.pro/movie/', name: 'Server 15 Ads' },
+  { url: 'https://111movies.net/movie/', name: 'Server 16 Ads' },
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -354,12 +345,11 @@ function changeServer(index) {
 
   // Build URL based on server format
   let url;
-
-  if (selectedServer.url.includes('screenscape.me/embed?tmdb=')) {
-    // Screenscape uses TMDB query parameter
+  if (selectedServer.url.includes('?id=')) {
+    // Query string format
     url = `${selectedServer.url}${movieId}`;
   } else if (selectedServer.url.includes('moviesapi.to/movie/')) {
-    // Special case for MoviesAPI
+    // Special case for Server 18 (no ?autoplay)
     url = `${selectedServer.url}${movieId}`;
   } else {
     // Standard path format
