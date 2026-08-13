@@ -359,21 +359,21 @@ async function fetchMovieDetails() {
       });
     }
 
-    // ==============================
-    // IFRAME + AUTO-LOAD SERVER 1
-    // ==============================
-    const iframeContainer = byId('iframe-container');
-    const movieIframe = byId('movie-iframe');
-    const watchNowBtn = byId('watch-now-btn');
+// ==============================
+// IFRAME + AUTO-LOAD SERVER 1
+// ==============================
+const iframeContainer = byId('iframe-container');
+const movieIframe = byId('movie-iframe');
+const watchNowBtn = byId('watch-now-btn');
 
-    if (iframeContainer && movieIframe) {
-      iframeContainer.style.display = 'flex';
-      movieIframe.src = buildServerUrl(MOVIE_ENDPOINTS[0], movieId);
+if (iframeContainer && movieIframe) {
+  iframeContainer.style.display = 'flex';
+  movieIframe.src = buildServerUrl(MOVIE_ENDPOINTS[0], movieId);
 
-      if (watchNowBtn) {
-        watchNowBtn.style.display = 'none';
-      }
-    }
+  if (watchNowBtn) {
+    watchNowBtn.style.display = 'none';
+  }
+}
 
     // ==============================
     // SERVERS DROPDOWN
