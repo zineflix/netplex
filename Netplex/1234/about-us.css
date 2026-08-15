@@ -287,7 +287,9 @@ p {
 
 /* About Us Section End*/
 
-/* Footer Section Start*/
+/* ==============================
+  FOOTER SECTION
+============================== */
 .site-footer {
   background-color: #1e1e1e;
   color: white;
@@ -342,7 +344,7 @@ p {
     margin: 0;
   }
 }
-/* Footer Section End*/
+
 
 /* Chatroom Section Start */
 #netplex-chatroom {
