@@ -335,6 +335,17 @@ function loadMovieSections() {
             with_genres: "16"
         }
     );
+  
+    // Vivamax
+    fetchMedia(
+        "/discover/movie",
+        "philippine-movies",
+        "movie",
+        {
+            sort_by: "popularity.desc",
+            with_companies: "149142"
+        }
+    );  
 }
 
 // ============================================================
