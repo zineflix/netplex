@@ -203,95 +203,105 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <!-- Adsterra DL 1 Ad Container End -->
 
-<!-- ONLINE STAT WIDGET CODE START -->    
+<!-- ============================= -->
+<!-- ONLINE STAT WIDGET (FIREBASE) -->
+<!-- ============================= -->
+
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <!-- Widget Styles -->
 <style>
-  #online-widget {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background: #111;
-    color: #0ff;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    font-size: 14px;
-    z-index: 9999;
-    user-select: none;
-    cursor: pointer;
-    overflow: hidden;
-    width: 200px;
-    max-height: 400px;
-    transition: all 0.3s ease-in-out;
-  }
+#online-widget {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: #111;
+  color: #0ff;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,255,255,0.3);
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 14px;
+  z-index: 9999;
+  user-select: none;
+  cursor: pointer;
+  overflow: hidden;
+  width: 200px;
+  max-height: 400px;
+  transition: all 0.3s ease-in-out;
+}
 
-  #online-widget-header {
-    padding: 12px 18px;
-    border-bottom: 1px solid #0ff2;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+#online-widget-header {
+  padding: 12px 18px;
+  border-bottom: 1px solid #0ff2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#online-widget-content {
+  padding: 10px 18px;
+  display: none;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+#online-widget.expanded #online-widget-content {
+  display: block;
+}
+
+#online-widget-toggle {
+  font-weight: bold;
+  color: #fff;
+  margin-left: 10px;
+  transition: transform 0.3s ease;
+}
+
+#online-widget.expanded #online-widget-toggle {
+  transform: rotate(180deg);
+}
+
+.region-stat {
+  font-size: 13px;
+  margin-top: 4px;
+  line-height: 1.6;
+}
+
+.region-stat img {
+  width: 16px;
+  height: 12px;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+@media (max-width: 600px) {
+  #online-widget {
+    left: 20px;
+    bottom: 20px;
+    width: 90%;
+    max-width: 135px;
+    font-size: 14px;
   }
 
   #online-widget-content {
-    padding: 10px 18px;
-    display: none;
-    overflow-y: auto;
-    max-height: 300px;
-  }
-
-  #online-widget.expanded #online-widget-content {
-    display: block;
-  }
-
-  #online-widget-toggle {
-    font-weight: bold;
-    color: #fff;
-    margin-left: 10px;
-    transition: transform 0.3s ease;
-  }
-
-  #online-widget.expanded #online-widget-toggle {
-    transform: rotate(180deg);
+    max-height: 250px;
   }
 
   .region-stat {
-    font-size: 13px;
-    margin-top: 4px;
+    font-size: 12px;
   }
 
-  /* Mobile Responsiveness */
-  @media (max-width: 600px) {
-    #online-widget {
-      left: 20px;
-      bottom: 20px;
-      width: 90%;
-      max-width: 180px;
-      font-size: 14px;
-    }
-
-    #online-widget-content {
-      max-height: 250px;
-    }
-
-    .region-stat {
-      font-size: 12px;
-    }
-
-    #online-widget-header {
-      padding: 10px 14px;
-    }
-
-    #online-widget-content {
-      padding: 8px 14px;
-    }
+  #online-widget-header {
+    padding: 10px 14px;
   }
+
+  #online-widget-content {
+    padding: 8px 14px;
+  }
+}
 </style>
-
 
 <!-- Widget HTML -->
 <div id="online-widget">
@@ -300,16 +310,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <span id="online-widget-toggle">▲</span>
   </div>
   <div id="online-widget-content">
-    🔁 Visits: <span id="visit-count">...</span><br>
-    📊 Peak: <span id="peak-users">...</span><br>
-    🌍 You: <span id="geo-data">loading...</span><br><br>
+    👤 Unique Visitors Today:
+    <span id="unique-visitor-count">Loading...</span><br>
+    📊 Peak:
+    <span id="peak-users">0</span><br>
+    🌍 You:
+    <span id="geo-data">Loading...</span><br><br>
     <strong>🌐 Online by Region:</strong>
     <div id="region-breakdown" class="region-stat">Loading...</div>
   </div>
 </div>
 
-<!-- JS Logic -->
+<!-- Visitor Counter -->
 <script>
+(() => {
+"use strict";
+
+/* ==============================
+   FIREBASE CONFIG
+============================== */
 const firebaseConfig = {
   apiKey: "AIzaSyAcmo2t3zDxpFVexE3l3RB15Ig4qSngBCY",
   authDomain: "netplex-online-stat.firebaseapp.com",
@@ -318,96 +337,552 @@ const firebaseConfig = {
   storageBucket: "netplex-online-stat.firebasestorage.app",
   messagingSenderId: "837018070039",
   appId: "1:837018070039:web:cce7c12ad6bcc9201d0052"
-  };
+};
 
+/* ==============================
+   FIREBASE INITIALIZATION
+============================== */
+if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-  const presenceRef = db.ref("presence");
-  const visitsRef = db.ref("siteStats/visits");
-  const peakRef = db.ref("siteStats/peakUsers");
-  const sessionsRef = db.ref("siteStats/sessions");
+}
 
-  const localID = localStorage.getItem("netplex_uid") || (() => {
-    const uid = 'user_' + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem("netplex_uid", uid);
-    return uid;
-  })();
+const db = firebase.database();
 
-  const myRef = presenceRef.child(localID);
+/* ==============================
+   FIREBASE REFERENCES
+============================== */
+const presenceRef = db.ref("presence");
+const dailyRef = db.ref("siteStats/daily");
+const resetRef = db.ref("siteStats/reset");
 
-  const sessionStart = Date.now();
+/* ==============================
+   DOM
+============================== */
+const widget = document.getElementById("online-widget");
+const header = document.getElementById("online-widget-header");
+const onlineCountEl = document.getElementById("online-count");
+const uniqueVisitorCountEl = document.getElementById("unique-visitor-count");
+const peakUsersEl = document.getElementById("peak-users");
+const geoDataEl = document.getElementById("geo-data");
+const regionBreakdownEl = document.getElementById("region-breakdown");
 
-  // Fetch geolocation
-  fetch("https://ipinfo.io/json?token=06786be2f40d4d")
-    .then(res => res.json())
-    .then(data => {
-      const location = `${data.city || ''}, ${data.region || ''}`;
-      const country = data.country || "Unknown";
-      const region = data.region || "Unknown";
-      document.getElementById("geo-data").textContent = location;
+/* ==============================
+   VISITOR ID
+   Shared by all tabs in the
+   same browser/profile.
+============================== */
+let visitorID = localStorage.getItem("netplex_uid");
 
-      // Mark presence with location
-      myRef.set({
-        online: true,
-        country: country,
-        region: region
+if (!visitorID) {
+  visitorID = "user_" + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+  localStorage.setItem("netplex_uid", visitorID);
+}
+
+/* ==============================
+   TAB ID
+   Different for every tab.
+============================== */
+const tabID = "tab_" + Math.random().toString(36).substring(2, 15) + "_" + Date.now().toString(36);
+
+/* ==============================
+   VISITOR PRESENCE
+============================== */
+const visitorRef = presenceRef.child(visitorID);
+const tabRef = visitorRef.child("tabs").child(tabID);
+
+/* ==============================
+   PHILIPPINES DATE
+   All daily statistics use
+   Asia/Manila.
+============================== */
+function getPhilippinesDate(date = new Date()) {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Manila",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(date);
+}
+
+/* ==============================
+   GET PREVIOUS PHILIPPINES DATE
+============================== */
+function getPreviousPhilippinesDate() {
+  const now = new Date();
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Manila",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(now);
+
+  let year;
+  let month;
+  let day;
+
+  parts.forEach(part => {
+    if (part.type === "year") year = Number(part.value);
+    if (part.type === "month") month = Number(part.value);
+    if (part.type === "day") day = Number(part.value);
+  });
+
+  const date = new Date(Date.UTC(year, month - 1, day));
+  date.setUTCDate(date.getUTCDate() - 1);
+
+  return date.toISOString().substring(0, 10);
+}
+
+/* ==============================
+   TODAY'S PATH
+============================== */
+let currentDate = getPhilippinesDate();
+let currentDailyRef = dailyRef.child(currentDate);
+
+/* ==============================
+   GEO CACHE
+   Avoid repeatedly requesting
+   IPinfo from every page load.
+============================== */
+const GEO_CACHE_KEY = "netplex_geo_cache";
+const GEO_CACHE_TIME = 24 * 60 * 60 * 1000;
+
+function getCachedGeo() {
+  try {
+    const cached = localStorage.getItem(GEO_CACHE_KEY);
+
+    if (!cached) return null;
+
+    const data = JSON.parse(cached);
+
+    if (!data.timestamp || Date.now() - data.timestamp > GEO_CACHE_TIME) {
+      localStorage.removeItem(GEO_CACHE_KEY);
+      return null;
+    }
+
+    return data.geo || null;
+  } catch (error) {
+    return null;
+  }
+}
+
+function saveGeoCache(geo) {
+  try {
+    localStorage.setItem(GEO_CACHE_KEY, JSON.stringify({
+      timestamp: Date.now(),
+      geo: geo
+    }));
+  } catch (error) {
+    /* Ignore storage errors */
+  }
+}
+
+/* ==============================
+   FLAG
+============================== */
+function getFlag(countryCode) {
+  if (!countryCode) return "";
+
+  const code = String(countryCode).toLowerCase().replace(/[^a-z]/g, "");
+
+  if (code.length !== 2) return "";
+
+  return `
+    <img src="https://flagcdn.com/16x12/${code}.png" alt="" loading="lazy">
+  `;
+}
+
+/* ==============================
+   GEO DISPLAY
+============================== */
+function updateGeoDisplay(data) {
+  const city = data.city || "";
+  const region = data.region || "";
+
+  if (city && region) {
+    geoDataEl.textContent = `${city}, ${region}`;
+  } else if (city) {
+    geoDataEl.textContent = city;
+  } else if (region) {
+    geoDataEl.textContent = region;
+  } else if (data.country) {
+    geoDataEl.textContent = data.country;
+  } else {
+    geoDataEl.textContent = "Unknown";
+  }
+}
+
+/* ==============================
+   IPINFO
+============================== */
+async function getGeoData() {
+  let geo = getCachedGeo();
+
+  if (geo) return geo;
+
+  try {
+    const response = await fetch("https://ipinfo.io/json?token=06786be2f40d4d");
+
+    if (!response.ok) {
+      throw new Error("IPinfo request failed");
+    }
+
+    const data = await response.json();
+
+    geo = {
+      city: data.city || "Unknown",
+      region: data.region || "Unknown",
+      country: data.country || "Unknown"
+    };
+
+    saveGeoCache(geo);
+    return geo;
+  } catch (error) {
+    return {
+      city: "Unknown",
+      region: "Unknown",
+      country: "Unknown"
+    };
+  }
+}
+
+/* ==============================
+   DAILY RESET
+   Only one visitor performs
+   the reset for a new date.
+   All previous daily data is
+   deleted, leaving only today's
+   data.
+============================== */
+async function performDailyReset() {
+  const today = getPhilippinesDate();
+
+  try {
+    const result = await resetRef.transaction(current => {
+      if (current && current.date === today) return;
+
+      return {
+        date: today,
+        resetAt: firebase.database.ServerValue.TIMESTAMP
+      };
+    });
+
+    /* ==========================
+       RESET WAS CLAIMED BY US
+    ========================== */
+    if (
+      result.committed &&
+      result.snapshot.val() &&
+      result.snapshot.val().date === today
+    ) {
+      const dailySnapshot = await dailyRef.once("value");
+      const updates = {};
+
+      dailySnapshot.forEach(child => {
+        const date = child.key;
+
+        if (date !== today) {
+          updates[date] = null;
+        }
       });
-      myRef.onDisconnect().remove();
-    })
-    .catch(() => {
-      document.getElementById("geo-data").textContent = "Unknown";
-      myRef.set({ online: true });
-      myRef.onDisconnect().remove();
-    });
 
-  // Save session time on unload (in background, optional)
-  window.addEventListener("beforeunload", () => {
-    const timeSpent = Math.floor((Date.now() - sessionStart) / 1000);
-    sessionsRef.child(localID).push({ time: timeSpent, timestamp: Date.now() });
-  });
-
-  visitsRef.transaction(val => (val || 0) + 1);
-  visitsRef.on("value", snap => {
-    document.getElementById("visit-count").textContent = snap.val();
-  });
-
-  peakRef.on("value", snap => {
-    document.getElementById("peak-users").textContent = snap.val() || 0;
-  });
-
-  presenceRef.on("value", snap => {
-    const count = snap.numChildren();
-    document.getElementById("online-count").textContent = count;
-
-    peakRef.transaction(peak => (!peak || count > peak) ? count : peak);
-
-    // Group users by country/region
-    const regionStats = {};
-    snap.forEach(child => {
-      const data = child.val();
-      if (data.region && data.country) {
-        const key = `${data.region}, ${data.country}`;
-        regionStats[key] = (regionStats[key] || 0) + 1;
+      if (Object.keys(updates).length) {
+        await dailyRef.update(updates);
       }
+
+      /* ========================
+         MAKE SURE TODAY EXISTS
+      ======================== */
+      await dailyRef.child(today).update({
+        peakUsers: 0
+      });
+    }
+  } catch (error) {
+    console.error("Daily reset error:", error);
+  }
+
+  currentDate = today;
+  currentDailyRef = dailyRef.child(currentDate);
+}
+
+/* ==============================
+   UNIQUE VISITOR
+============================== */
+async function registerUniqueVisitor() {
+  const uniqueRef = currentDailyRef.child("uniqueVisitors").child(visitorID);
+
+  try {
+    await uniqueRef.transaction(current => {
+      if (current) return;
+
+      return {
+        firstVisit: firebase.database.ServerValue.TIMESTAMP
+      };
     });
 
-    const regionHTML = Object.entries(regionStats)
-      .map(([region, count]) => {
-  const countryCode = region.split(', ').pop().toLowerCase(); // "us"
-  const flagImg = `<img src="https://flagcdn.com/16x12/${countryCode}.png" style="width:16px;height:12px;vertical-align:middle;margin-right:4px">`;
-  return `${flagImg} ${region}: ${count}`;
-})
+    updateUniqueVisitorCount();
+  } catch (error) {
+    console.error("Unique visitor error:", error);
+  }
+}
 
-      .join("<br>");
-    document.getElementById("region-breakdown").innerHTML = regionHTML || "No region data.";
-  });
+/* ==============================
+   UNIQUE COUNT DISPLAY
+============================== */
+function updateUniqueVisitorCount() {
+  currentDailyRef.child("uniqueVisitors").on(
+    "value",
+    snapshot => {
+      uniqueVisitorCountEl.textContent = snapshot.numChildren();
+    },
+    () => {
+      uniqueVisitorCountEl.textContent = "0";
+    }
+  );
+}
 
-  // Toggle expand
-  document.getElementById("online-widget-header").addEventListener("click", () => {
-    document.getElementById("online-widget").classList.toggle("expanded");
-  });
-</script>
-<!-- ONLINE STAT WIDGET CODE END -->  
+/* ==============================
+   PRESENCE SETUP
+============================== */
+async function setupPresence(geo) {
+  try {
+    await visitorRef.update({
+      online: true,
+      city: geo.city || "Unknown",
+      region: geo.region || "Unknown",
+      country: geo.country || "Unknown"
+    });
+
+    await tabRef.set(true);
+
+    /* ==========================
+       AUTOMATIC DISCONNECT
+    ========================== */
+    tabRef.onDisconnect().remove();
+  } catch (error) {
+    console.error("Presence error:", error);
+  }
+}
+
+/* ==============================
+   ONLINE COUNT
+   Each visitor is counted once,
+   regardless of how many tabs
+   they have open.
+============================== */
+presenceRef.on(
+  "value",
+  snapshot => {
+    let onlineCount = 0;
+    const regionStats = {};
+
+    snapshot.forEach(visitorSnapshot => {
+      const visitor = visitorSnapshot.val();
+
+      if (!visitor || !visitor.tabs) return;
+
+      const activeTabs = Object.values(visitor.tabs).filter(value => value === true);
+
+      /* ========================
+         NO ACTIVE TAB
+      ======================== */
+      if (activeTabs.length === 0) return;
+
+      /* ========================
+         ONE VISITOR
+         Even if:
+         Tab 1
+         Tab 2
+         Tab 3
+         = 1
+      ======================== */
+
+      onlineCount++;
+
+      const country = visitor.country || "Unknown";
+      const region = visitor.region || "Unknown";
+      const key = `${region}, ${country}`;
+
+      if (!regionStats[key]) {
+        regionStats[key] = {
+          count: 0,
+          country: country
+        };
+      }
+
+      regionStats[key].count++;
+    });
+
+    /* ==========================
+       ONLINE COUNT
+    ========================== */
+    onlineCountEl.textContent = onlineCount;
+
+    /* ==========================
+       DAILY PEAK
+    ========================== */
+    const peakRef = currentDailyRef.child("peakUsers");
+
+    peakRef.transaction(currentPeak => {
+      const peak = Number(currentPeak) || 0;
+      return onlineCount > peak ? onlineCount : peak;
+    });
+
+    /* ==========================
+       REGION BREAKDOWN
+    ========================== */
+    const sortedRegions = Object.entries(regionStats).sort(
+      (a, b) => b[1].count - a[1].count
+    );
+
+    if (sortedRegions.length === 0) {
+      regionBreakdownEl.textContent = "No region data.";
+      return;
+    }
+
+    regionBreakdownEl.innerHTML = sortedRegions
+      .map(([region, info]) => {
+        const flag = getFlag(info.country);
+
+        return `
+          <div>
+            ${flag}
+            ${region}: ${info.count}
+          </div>
+        `;
+      })
+      .join("");
+  },
+  () => {
+    onlineCountEl.textContent = "0";
+    regionBreakdownEl.textContent = "Unable to load.";
+  }
+);
+
+/* ==============================
+   PEAK DISPLAY
+============================== */
+function listenToPeak() {
+  currentDailyRef.child("peakUsers").on(
+    "value",
+    snapshot => {
+      peakUsersEl.textContent = Number(snapshot.val()) || 0;
+    }
+  );
+}
+
+/* ==============================
+   REMOVE THIS TAB
+============================== */
+function removeCurrentTab() {
+  tabRef.remove().catch(() => {});
+}
+
+window.addEventListener("pagehide", removeCurrentTab);
+
+/* ==============================
+   MIDNIGHT TIMER
+   Checks the Philippines date
+   and automatically switches
+   the visitor to the new day.
+============================== */
+function scheduleMidnightCheck() {
+  const now = new Date();
+
+  const nextCheck = new Date(
+    now.getTime() + 60 * 1000
+  );
+
+  const delay = Math.max(
+    1000,
+    nextCheck.getTime() - now.getTime()
+  );
+
+  setTimeout(async () => {
+    await checkForNewDay();
+    scheduleMidnightCheck();
+  }, delay);
+}
+
+/* ==============================
+   CHECK FOR NEW DAY
+============================== */
+async function checkForNewDay() {
+  const newDate = getPhilippinesDate();
+
+  if (newDate === currentDate) return;
+
+  /* ==========================
+     NEW DAY
+  ========================== */
+  await performDailyReset();
+
+  /* ==========================
+     MOVE UNIQUE VISITOR INTO
+     THE NEW DAY
+  ========================== */
+  await registerUniqueVisitor();
+
+  /* ==========================
+     UPDATE PEAK LISTENER
+  ========================== */
+  listenToPeak();
+}
+
+/* ==============================
+   INITIALIZATION
+============================== */
+async function initialize() {
+  /* ==========================
+     RESET FIRST
+  ========================== */
+  await performDailyReset();
+
+  /* ==========================
+     GET GEO
+  ========================== */
+  const geo = await getGeoData();
+  updateGeoDisplay(geo);
+
+  /* ==========================
+     PRESENCE
+  ========================== */
+  await setupPresence(geo);
+
+  /* ==========================
+     UNIQUE VISITOR
+  ========================== */
+  await registerUniqueVisitor();
+
+  /* ==========================
+     PEAK
+  ========================== */
+  listenToPeak();
+
+  /* ==========================
+     MIDNIGHT MONITOR
+  ========================== */
+  scheduleMidnightCheck();
+}
+
+/* ==============================
+   WIDGET TOGGLE
+============================== */
+header.addEventListener("click", () => {
+  widget.classList.toggle("expanded");
+});
+
+/* ==============================
+   START
+============================== */
+initialize();
+
+})();
+</script>  
+
+<!-- ============================= -->
+<!-- ADBLOCK DETECTOR -->
+<!-- ============================= -->
+<script src="/Adblock/adblock-detector.js"></script>
     
 </body>
 </html>
