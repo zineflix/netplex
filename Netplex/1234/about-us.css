@@ -300,8 +300,9 @@ p {
 }
 
 .site-footer p {
-  margin: 8px 0;
-  font-size: 16px;
+  text-align: center;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .footer-links {
