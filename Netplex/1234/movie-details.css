@@ -31,7 +31,7 @@ body {
 ============================== */
 #iframe-container {
     flex: 0 0 60%;
-    width: 60%;
+    width: 100%;
     background: #000;
     border-radius: 10px;
     overflow: visible;
