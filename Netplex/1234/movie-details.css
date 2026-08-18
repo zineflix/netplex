@@ -26,35 +26,29 @@ body {
     position: relative;
 }
 
-/* ==============================
-   FLEXIBLE VIDEO CONTAINER
-============================== */
+/* =====================
+    Iframe Container
+===================== */
 #iframe-container {
-    flex: 0 0 60%;
-    width: 100%;
+    flex: 60%;
     background: #000;
     border-radius: 10px;
-    overflow: visible;
+    overflow: hidden;
     position: relative;
     display: flex;
     flex-direction: column;
-    border: 3px solid #333;
-    min-width: 0;
+
+    /* Added styles */
+    border: 3px solid #333; /* Dark border around iframe */
 }
 
-/* ==============================
-   FLEXIBLE MOVIE IFRAME
-============================== */
 #iframe-container iframe {
-    display: block;
     width: 100%;
-    height: auto;
-    min-height: 0;
-    aspect-ratio: 16 / 9;
+    height: 100%;
+    min-height: 400px;
     border: none;
-    background: #000;
-    flex: 0 0 auto;
 }
+
 
 /* ============================
     Controls ABOVE the video
