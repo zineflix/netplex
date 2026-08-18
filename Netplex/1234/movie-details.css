@@ -668,6 +668,9 @@ button[onclick="toggleFullscreen()"]:hover {
 }
 
 /* ====================================================
+   Prevent AdSense Auto Ads
+==================================================== */
+/* ====================================================
    Prevent AdSense Auto Ads inside Video Controls
 ==================================================== */
 /* Hide any Auto Ads elements injected inside video controls */
@@ -709,4 +712,31 @@ button[onclick="toggleFullscreen()"]:hover {
 .movie-cast-wrapper,
 .movie-cast {
     isolation: isolate;
+}
+
+/* ====================================================
+   Strict AdSense Placement & Fallback Rules
+==================================================== */
+
+/* 1. Prevent Auto Ads inside sensitive containers */
+.no-auto-ads ins.adsbygoogle,
+.no-auto-ads .google-auto-placed {
+    display: none !important;
+}
+
+/* 2. Style dedicated ad slots between/below containers */
+.ad-container-between,
+.ad-container-bottom {
+    width: 100%;
+    margin: 15px 0;
+    text-align: center;
+    clear: both;
+    overflow: hidden;
+}
+
+/* Ensure injected ads inside dedicated containers fit cleanly without overflowing */
+.ad-container-between ins.adsbygoogle,
+.ad-container-bottom ins.adsbygoogle {
+    display: block !important;
+    margin: 0 auto !important;
 }
