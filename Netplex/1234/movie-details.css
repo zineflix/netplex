@@ -258,7 +258,7 @@ body {
 ===================== */
 .video-controls-container button, 
 .sidebar-buttons button {
-    background: #222;
+    background: #0296cc;
     color: #fff;
     border: none;
     padding: 8px 14px;
@@ -277,21 +277,21 @@ body {
     Special button colors
 ===================== */
 .download-btn {
-    background: #222;
+    background: #0296cc;
 }
 .download-btn:hover {
     background: #0296cc;
 }
 
 button[onclick="toggleFullscreen()"] {
-    background: #222;
+    background: #0296cc;
 }
 button[onclick="toggleFullscreen()"]:hover {
     background: #0296cc;
 }
 
 #change-server-btn {
-    background: #222;
+    background: #0296cc;
 }
 #change-server-btn:hover {
     background: #0296cc;
@@ -444,8 +444,8 @@ button[onclick="toggleFullscreen()"]:hover {
 /* =====================
     Sandbox Toggle Button states
 ===================== */
-.sandbox-btn { background: #222; }
-.sandbox-btn.on { background: #222; }
+.sandbox-btn { background: #0296cc; }
+.sandbox-btn.on { background: #0296cc; }
 .sandbox-btn.off { background: #dc3545; }
 
 /* ==============================
