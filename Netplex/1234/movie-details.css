@@ -666,3 +666,22 @@ button[onclick="toggleFullscreen()"]:hover {
   background: #e50914;
   color: white;
 }
+
+/* ====================================================
+   Prevent AdSense Auto Ads inside Video Controls
+==================================================== */
+/* Hide any Auto Ads elements injected inside video controls */
+.video-controls-container ins.adsbygoogle,
+.video-controls-container .google-auto-placed,
+.video-controls-container iframe[id^="aswift_"] {
+    display: none !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Force direct child elements to stick together without unexpected margins */
+.video-controls-container {
+    isolation: isolate; /* Creates a clean stacking context */
+}
