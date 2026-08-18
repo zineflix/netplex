@@ -685,3 +685,28 @@ button[onclick="toggleFullscreen()"]:hover {
 .video-controls-container {
     isolation: isolate; /* Creates a clean stacking context */
 }
+
+/* ====================================================
+   Prevent AdSense Auto Ads inside Cast Container
+==================================================== */
+/* Hide any Auto Ads elements inside the cast section */
+.cast-container ins.adsbygoogle,
+.cast-container .google-auto-placed,
+.cast-container iframe[id^="aswift_"],
+.movie-cast-wrapper ins.adsbygoogle,
+.movie-cast-wrapper .google-auto-placed,
+.movie-cast ins.adsbygoogle,
+.movie-cast .google-auto-placed {
+    display: none !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Prevent injected ads from breaking horizontal layout or scrolling */
+.cast-container,
+.movie-cast-wrapper,
+.movie-cast {
+    isolation: isolate;
+}
