@@ -535,7 +535,7 @@ button[onclick="toggleFullscreen()"]:hover {
     .movie-poster { width: 50%; }
 
     #iframe-container {
-    padding-bottom: 125px;
+    padding-bottom: 50px;
     }    
 }
 
