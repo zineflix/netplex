@@ -259,7 +259,7 @@ body {
 ===================== */
 .video-controls-container button,
 .sidebar-buttons button {
-    background: #222;
+    background: #0296cc;
     color: #fff;
     border: none;
     padding: 8px 14px;
@@ -281,13 +281,13 @@ body {
 /* =====================
     Special button colors
 ===================== */
-.download-btn { background: #222; }
+.download-btn { background: #0296cc; }
 .download-btn:hover { background: #0296cc; }
 
-button[onclick="toggleFullscreen()"] { background: #222; }
+button[onclick="toggleFullscreen()"] { background: #0296cc; }
 button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
 
-#change-server-btn { background: #222; }
+#change-server-btn { background: #0296cc; }
 #change-server-btn:hover { background: #0296cc; }
 
 /* =====================
@@ -480,8 +480,8 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
 /* =====================
     Sandbox Toggle Button states
 ===================== */
-.sandbox-btn { background: #222; }
-.sandbox-btn.on { background: #222; }
+.sandbox-btn { background: #0296cc; }
+.sandbox-btn.on { background: #0296cc; }
 .sandbox-btn.off { background: #dc3545; }
 
 .season-episode-controls {
@@ -548,7 +548,7 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
     Mobile Responsiveness
 ===================== */
 @media (max-width: 768px) {
-    .details-page { flex-direction: column; padding-bottom: 100px; }
+    .details-page { flex-direction: column; padding-bottom: 50px; }
     #iframe-container,
     .details-sidebar { flex: 100%; }
     #iframe-container { order: 2; }
