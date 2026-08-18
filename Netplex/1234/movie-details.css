@@ -540,14 +540,32 @@ button[onclick="toggleFullscreen()"]:hover {
 }
 
 @media (max-width: 600px) {
+    /* Set controls container to a 2x2 Grid layout */
+    .video-controls-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* 2 equal columns */
+        gap: 8px; /* Spacing between buttons */
+    }
+
+    /* Ensure button wrappers (like .server-control) span full width of their grid cell */
+    .video-controls-container .server-control {
+        width: 100%;
+    }
+
+    /* Make buttons expand to fill their grid area */
+    .video-controls-container button {
+        font-size: 11px;
+        width: 100%;
+        padding: 8px 6px;
+        white-space: nowrap; /* Prevents awkward text wrapping */
+    }
+
+    /* Rest of your existing mobile rules... */
     .cast-member { width: 50px; }
     .cast-member img { width: 100%; height: auto; }
 
     .cast-container h2 { font-size: 16px; margin-bottom: 8px; }
     .cast-member p { font-size: 8px; word-break: break-word; }
-    
-    .video-controls-container { flex-direction: column; gap: 6px; }
-    .video-controls-container button { font-size: 10px; width: 100%; }
 
     #watch-trailer-btn {
         font-size: 12px;
@@ -557,38 +575,38 @@ button[onclick="toggleFullscreen()"]:hover {
     }
 
     .server-dropdown {
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
-    width: 95vw;              /* keep it inside viewport */
-    max-width: 320px;         /* prevent it from being too wide */
-    overflow: hidden;         /* hide overflow to prevent scrolling */
-    display: none;
-    padding: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    background: #222;
-    border: 1px solid #444;
-    border-radius: 6px;
-    z-index: 1000;
-  }
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0%;
+        transform: none;
+        width: 95vw;
+        max-width: 320px;
+        overflow: hidden;
+        display: none;
+        padding: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        background: #222;
+        border: 1px solid #444;
+        border-radius: 6px;
+        z-index: 1000;
+    }
 
-  .server-dropdown ul {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); /* responsive grid */
-    gap: 6px;
-    justify-items: center;
-  }
+    .server-dropdown ul {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 6px;
+        justify-items: center;
+    }
 
-  .server-dropdown li {
-    text-align: center;
-    padding: 6px 8px;
-    width: 100%;
-    white-space: nowrap;
-    font-size: 12px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+    .server-dropdown li {
+        text-align: center;
+        padding: 6px 8px;
+        width: 100%;
+        white-space: nowrap;
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 
