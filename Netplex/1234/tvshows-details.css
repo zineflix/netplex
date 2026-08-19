@@ -802,3 +802,57 @@ html {
     display: block;
   }
 }
+
+/* ====================================================
+   ADSENSE AUTO ADS PREVENTION RULES (TV SHOW)
+==================================================== */
+/* Hide dynamically injected AdSense elements inside protected UI containers */
+.no-auto-ads ins.adsbygoogle,
+.no-auto-ads .google-auto-placed,
+.no-auto-ads iframe[id^="aswift_"],
+.video-controls-container ins.adsbygoogle,
+.video-controls-container .google-auto-placed,
+.cast-container ins.adsbygoogle,
+.cast-container .google-auto-placed,
+.cast-wrapper ins.adsbygoogle,
+.cast-wrapper .google-auto-placed,
+.details-cast ins.adsbygoogle,
+.details-cast .google-auto-placed,
+#episode-list ins.adsbygoogle,
+#episode-list .google-auto-placed,
+.season-episode-controls ins.adsbygoogle,
+.season-episode-controls .google-auto-placed {
+    display: none !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Prevent injected ads from breaking internal flexbox/grid mechanics */
+.video-controls-container,
+.season-episode-controls,
+.cast-container,
+.cast-wrapper,
+.details-cast,
+#episode-list {
+    isolation: isolate;
+}
+
+/* ====================================================
+   DEDICATED AD CONTAINERS (Between & Bottom)
+==================================================== */
+.ad-container-between,
+.ad-container-bottom {
+    width: 100%;
+    margin: 15px 0;
+    text-align: center;
+    clear: both;
+    overflow: hidden;
+}
+
+.ad-container-between ins.adsbygoogle,
+.ad-container-bottom ins.adsbygoogle {
+    display: block !important;
+    margin: 0 auto !important;
+}
