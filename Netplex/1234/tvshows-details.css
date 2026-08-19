@@ -561,69 +561,170 @@ button[onclick="toggleFullscreen()"]:hover { background: #0296cc; }
     }
 }
 
-/* =====================
-    Small Mobile (<600px)
-===================== */
+/* ====================================================
+   SMALL MOBILE (<600px) - FLEXIBLE & OVERLAP-PROOF
+==================================================== */
 @media (max-width: 600px) {
+    /* 1. Ensure the parent container allows floating dropdowns to overflow visibly */
+    #iframe-container {
+        overflow: visible !important; /* Prevents clipping dropdown overlays */
+        position: relative;
+    }
+
+    #iframe-container iframe {
+        width: 100%;
+        min-height: 250px; /* Reduced minimum height for mobile screens */
+        height: auto;
+        aspect-ratio: 16 / 9; /* Fluidly scales video without rigid heights */
+        border: none;
+        display: block;
+    }
+
+    /* 2. Grid Container for 3 Rows x 2 Columns */
+    .video-controls-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        width: 100%;
+        padding: 8px;
+        position: relative;
+        z-index: 20; /* Ensures control layer stays on top of iframe */
+    }
+
+    /* ROW 1: Season & Episode selects */
+    .season-episode-controls {
+        display: contents; /* Unwraps selects directly into parent grid */
+    }
+
+    .season-episode-controls select {
+        width: 100%;
+        height: 36px;
+        font-size: 12px;
+        min-width: 0;
+        background-color: #222;
+        color: #fff;
+        border: 1px solid #444;
+        border-radius: 6px;
+        -webkit-appearance: none; /* Removes OS default styling that blocks alignment */
+        -moz-appearance: none;
+        appearance: none;
+        box-sizing: border-box;
+    }
+
+    /* Episode Select: Align Right & Indent Right-to-Left */
+    .season-episode-controls select:last-child,
+    .season-episode-controls select[id*="episode"] {
+        direction: rtl; /* Sets primary layout flow from Right-to-Left */
+        text-align: right;
+        text-align-last: right; /* Forces Mobile WebKit/Chrome engines to stick text to right edge */
+        padding-right: 28px; /* Indents text inward from the right edge */
+        padding-left: 10px;
+        /* Position custom arrow icon on the left side due to RTL direction */
+        background: #222 url("data:image/svg+xml;utf8,<svg fill='white' height='10' viewBox='0 0 24 24' width='10' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat 10px center;
+    }
+
+    /* Keep individual options easy to read when the menu opens */
+    .season-episode-controls select[id*="episode"] option {
+        direction: ltr;
+        text-align: left;
+    }
+	
+    /* Shifts the entire Episode Dropdown container to the right */
+    #episode-dropdown {
+        left: auto !important;
+        right: 0 !important;
+        transform: none !important; /* Overrides any centered alignment */
+    }
+
+    /* Indents the individual episode list items */
+    #episode-list li {
+        padding-left: 20px; /* Adjust padding to increase/decrease right indent */
+        text-align: left;
+    }
+
+    /* ROW 2: Change Server & Sandbox */
+    .server-control {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center; /* Centers content horizontally within its grid cell */
+        align-items: center;
+    }
+
+    #change-server-btn {
+        width: 100%;
+        min-width: 0;
+        text-align: center; /* Centers text and dropdown icon inside the button */
+        padding: 8px 10px;
+        display: flex;
+        justify-content: center; /* Centers flex items (label + icon) */
+        align-items: center;
+        gap: 6px;
+    }
+
+    .sandbox-btn {
+        width: 100%;
+        min-width: 0;
+    }
+
+    /* 3. Server Dropdown Container - Flexible Overlay */
+    .server-dropdown {
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        width: 200%; /* Spans across both columns */
+        max-width: 100vw;
+        max-height: 250px;
+        overflow-y: auto;
+        z-index: 1000;
+        background: #1e1e1e;
+        border: 1px solid #444;
+        border-radius: 6px;
+        padding: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+    }
+
+    .server-dropdown ul {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 6px;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .server-dropdown li {
+        text-align: center;
+        padding: 8px 6px;
+        font-size: 12px;
+        background: #2a2a2a;
+        border-radius: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* ROW 3: Action Buttons */
+    .video-controls-container button { 
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        font-size: 11px;
+        padding: 8px 4px;
+        white-space: nowrap;
+    }
+
+    /* Other Mobile Adjustments */
     .cast-member { width: 50px; }
     .cast-member img { width: 100%; height: auto; }
     .cast-container h2 { font-size: 16px; margin-bottom: 8px; }
     .cast-member p { font-size: 8px; word-break: break-word; }
 
-    .video-controls-container {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 6px;
-    }
-
-    .video-controls-container button { 
-        font-size: 10px; 
-        width: 100%; 
-    }
-
-    .season-episode-controls select {
-        width: 100%;
-    }
-
     #watch-trailer-btn {
         font-size: 12px;
-        width: 75%;
-        padding: 8px 8px;
+        width: 100%;
+        padding: 10px;
         margin-top: 8px;
-    }
-
-    .server-control {
-        width: 100%;
-        text-align: center;
-    }
-
-    #change-server-btn {
-        width: 100%;
-    }
-
-    .server-dropdown {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 90%;
-        display: none;
-        padding: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        z-index: 1000;
-        overflow-x: auto;
-    }
-
-    .server-dropdown ul {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 6px;
-    }
-
-    .server-dropdown li {
-        flex: 1 1 30%;
-        text-align: center;
-        padding: 6px 10px;
     }
 }
 
@@ -701,58 +802,3 @@ html {
     display: block;
   }
 }
-
-/* ====================================================
-   ADSENSE AUTO ADS PREVENTION RULES (TV SHOW)
-==================================================== */
-/* Hide dynamically injected AdSense elements inside protected UI containers */
-.no-auto-ads ins.adsbygoogle,
-.no-auto-ads .google-auto-placed,
-.no-auto-ads iframe[id^="aswift_"],
-.video-controls-container ins.adsbygoogle,
-.video-controls-container .google-auto-placed,
-.cast-container ins.adsbygoogle,
-.cast-container .google-auto-placed,
-.cast-wrapper ins.adsbygoogle,
-.cast-wrapper .google-auto-placed,
-.details-cast ins.adsbygoogle,
-.details-cast .google-auto-placed,
-#episode-list ins.adsbygoogle,
-#episode-list .google-auto-placed,
-.season-episode-controls ins.adsbygoogle,
-.season-episode-controls .google-auto-placed {
-    display: none !important;
-    height: 0 !important;
-    width: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-/* Prevent injected ads from breaking internal flexbox/grid mechanics */
-.video-controls-container,
-.season-episode-controls,
-.cast-container,
-.cast-wrapper,
-.details-cast,
-#episode-list {
-    isolation: isolate;
-}
-
-/* ====================================================
-   DEDICATED AD CONTAINERS (Between & Bottom)
-==================================================== */
-.ad-container-between,
-.ad-container-bottom {
-    width: 100%;
-    margin: 15px 0;
-    text-align: center;
-    clear: both;
-    overflow: hidden;
-}
-
-.ad-container-between ins.adsbygoogle,
-.ad-container-bottom ins.adsbygoogle {
-    display: block !important;
-    margin: 0 auto !important;
-}
-
