@@ -1273,7 +1273,7 @@ button[onclick="toggleFullscreen()"]:hover {
     Mobile Responsiveness
 ===================== */
 @media (max-width: 768px) {
-    .movie-details { flex-direction: column; padding-bottom: 100; }
+    .movie-details { flex-direction: column; padding-bottom: 125; }
 
     #iframe-container,
     .movie-sidebar { flex: 100%; }
