@@ -124,13 +124,7 @@ function initArrowNavigation() {
 function toggleSearchBar() {
   qs('.search-bar')?.classList.toggle('show');
 }
-document.addEventListener('click', (e) => {
-  const bar = qs('.search-bar');
-  const icons = qs('.icons-container');
-  if (bar && !bar.contains(e.target) && !icons?.contains(e.target)) {
-    bar.classList.remove('show');
-  }
-});
+
 function openSearchPage() {
   window.location.href = 'search.html';
 }
@@ -167,31 +161,31 @@ function renderSavedList() {
 // STREAMING SERVERS (DETAILS)
 // ==============================
 const MOVIE_ENDPOINTS = [
-  { url: 'https://cinesrc.st/embed/movie/', name: 'Server 1' },  
-  { url: 'https://web.nxsha.app/embed/movie/', name: 'Server 2' },  
+  { url: 'https://cinesrc.st/embed/movie/', name: 'Server 1' },  
+  { url: 'https://web.nxsha.app/embed/movie/', name: 'Server 2' },  
   { url: 'https://anicine.xyz/embed?url=https://embed.asfnsa-alig.workers.dev/movie/', name: 'Server 3' },
   { url: 'https://1embed.cc/embed/movie/', name: 'Server 4' },
-  { url: 'https://yapgrid.com/embed/movie/', name: 'Server 5' },
+  { url: 'https://yapgrid.com/embed/movie/', name: 'Server 5' },
   { url: 'https://cinevaro.app/media/tmdb-movie-', name: 'Server 6' },
-  { url: 'https://anyembed.xyz/embed/tmdb-movie-', name: 'Server 7' },  
-  { url: 'https://hexa.su/watch/movie/', name: 'Server 8' },
-  { url: 'https://vidzen.fun/movie/', name: 'Server 9' },
-  { url: 'https://rivestream.ru/watch?type=movie&id=', name: 'Server 10' },
-  { url: 'https://vidlux.xyz/embed/movie/', name: 'Server 11' },
-  { url: 'https://vidup.to/movie/', name: 'Server 12 Ads' },
-  { url: 'https://vsembed.ru/embed/movie/', name: 'Server 13 Ads' },
-  { url: 'https://api.cineby.homes/embed/movie/', name: 'Server 14 Ads' },
-  { url: 'https://vidbolt.pro/movie/', name: 'Server 15 Ads' },
-  { url: 'https://player.videasy.to/movie/', name: 'Server 16 Ads' },
-  { url: 'https://vidcore.io/movie/', name: 'Server 17 Ads' },
-  { url: 'https://vaplayer.ru/embed/movie/', name: 'Server 18 Ads' },
-  { url: 'https://vidsrc.hair/embed/movie/', name: 'Server 19 Ads' },
-  { url: 'https://player.zxcstream.xyz/player/movie/', name: 'Server 20 Ads' },
-  { url: 'https://111movies.net/movie/', name: 'Server 21 Ads' },
-  { url: 'https://moviesapi.to/movie/', name: 'Server 22 Ads' },
-  { url: 'https://vidrock.net/movie/', name: 'Server 23 Ads' },
-  { url: 'https://embedmaster.link/movie/', name: 'Server 24 Ads' },
-  { url: 'https://mapple.rip/watch/movie/', name: 'Server 25 Ads' },
+  { url: 'https://anyembed.xyz/embed/tmdb-movie-', name: 'Server 7' },  
+  { url: 'https://hexa.su/watch/movie/', name: 'Server 8' },
+  { url: 'https://vidzen.fun/movie/', name: 'Server 9' },
+  { url: 'https://rivestream.ru/watch?type=movie&id=', name: 'Server 10' },
+  { url: 'https://vidlux.xyz/embed/movie/', name: 'Server 11' },
+  { url: 'https://vidup.to/movie/', name: 'Server 12 Ads' },
+  { url: 'https://vsembed.ru/embed/movie/', name: 'Server 13 Ads' },
+  { url: 'https://api.cineby.homes/embed/movie/', name: 'Server 14 Ads' },
+  { url: 'https://vidbolt.pro/movie/', name: 'Server 15 Ads' },
+  { url: 'https://player.videasy.to/movie/', name: 'Server 16 Ads' },
+  { url: 'https://vidcore.io/movie/', name: 'Server 17 Ads' },
+  { url: 'https://vaplayer.ru/embed/movie/', name: 'Server 18 Ads' },
+  { url: 'https://vidsrc.hair/embed/movie/', name: 'Server 19 Ads' },
+  { url: 'https://player.zxcstream.xyz/player/movie/', name: 'Server 20 Ads' },
+  { url: 'https://111movies.net/movie/', name: 'Server 21 Ads' },
+  { url: 'https://moviesapi.to/movie/', name: 'Server 22 Ads' },
+  { url: 'https://vidrock.net/movie/', name: 'Server 23 Ads' },
+  { url: 'https://embedmaster.link/movie/', name: 'Server 24 Ads' },
+  { url: 'https://mapple.rip/watch/movie/', name: 'Server 25 Ads' },
 ];
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -220,7 +214,7 @@ async function fetchMovieDetails() {
     if (desc) desc.textContent = movie.overview || 'No description available.';
 
     const titleEl = byId('movie-title');
-if (titleEl) titleEl.textContent = movie.title || 'Untitled';
+    if (titleEl) titleEl.textContent = movie.title || 'Untitled';
     
     // Cast
     const { cast = [] } = await getJSON(`${baseUrl}/movie/${movieId}/credits?api_key=${apiKey}&language=en-US`);
@@ -238,7 +232,7 @@ if (titleEl) titleEl.textContent = movie.title || 'Untitled';
       });
     }
 
- // Trailer (YouTube)
+    // Trailer (YouTube)
     const videos = await getJSON(`${baseUrl}/movie/${movieId}/videos?api_key=${apiKey}&language=en-US`);
     const trailer = (videos.results || []).find((v) => v.type === 'Trailer' && v.site === 'YouTube');
     const trailerIframe = byId('movie-iframe-trailer');
@@ -259,12 +253,12 @@ if (titleEl) titleEl.textContent = movie.title || 'Untitled';
 
     // Download
     const downloadBtn = byId('download-btn');
-safeOn(downloadBtn, 'click', () => {
-  if (movieId) {
-    const downloadUrl = `https://dl.vidsrc.vip/movie/${movieId}`;
-    window.open(downloadUrl, '_blank');
-  }
-});
+    safeOn(downloadBtn, 'click', () => {
+      if (movieId) {
+        const downloadUrl = `https://dl.vidsrc.vip/movie/${movieId}`;
+        window.open(downloadUrl, '_blank');
+      }
+    });
     
     // Rating (5 stars)
     const starWrap = byId('movie-rating');
@@ -299,7 +293,6 @@ safeOn(downloadBtn, 'click', () => {
     // Iframe + Auto-load Server 1
     const iframeContainer = byId('iframe-container');
     const movieIframe = byId('movie-iframe');
-    const button = document.getElementById("toggleSandbox");
     const watchNowBtn = byId('watch-now-btn');
 
     if (iframeContainer && movieIframe) {
@@ -323,62 +316,80 @@ safeOn(downloadBtn, 'click', () => {
       });
     }
 
-    safeOn(changeServerBtn, 'click', () => {
+    // Toggle server dropdown menu on button click
+    safeOn(changeServerBtn, 'click', (e) => {
+      e.stopPropagation();
       if (!serverDropdown) return;
-      serverDropdown.style.display = serverDropdown.style.display === 'block' ? 'none' : 'block';
+      
+      const isCurrentlyDisplayed = serverDropdown.style.display === 'block' || serverDropdown.classList.contains('show');
+      
+      if (isCurrentlyDisplayed) {
+        serverDropdown.style.display = 'none';
+        serverDropdown.classList.remove('show');
+      } else {
+        serverDropdown.style.display = 'block';
+        serverDropdown.classList.add('show');
+      }
+      
+      const icon = changeServerBtn.querySelector('.dropdown-icon');
+      if (icon) icon.classList.toggle('open', !isCurrentlyDisplayed);
     });
 
-function changeServer(index) {
-  if (index < 0 || index >= MOVIE_ENDPOINTS.length) {
-    console.error("Invalid server index.");
-    return;
-  }
+    function changeServer(index) {
+      if (index < 0 || index >= MOVIE_ENDPOINTS.length) {
+        console.error("Invalid server index.");
+        return;
+      }
 
-  currentServerIndex = index;
-  const movieIframe = byId('movie-iframe');
-  const serverDropdown = byId('server-dropdown');
-  const changeServerBtn = byId('change-server-btn');
-  const dropdownIcon = changeServerBtn.querySelector('.dropdown-icon');
-  const sandboxBtn = byId('sandbox-toggle');
-  const selectedServer = MOVIE_ENDPOINTS[currentServerIndex];
+      currentServerIndex = index;
+      const movieIframe = byId('movie-iframe');
+      const serverDropdown = byId('server-dropdown');
+      const changeServerBtn = byId('change-server-btn');
+      let dropdownIcon = changeServerBtn ? changeServerBtn.querySelector('.dropdown-icon') : null;
+      const sandboxBtn = byId('sandbox-toggle');
+      const selectedServer = MOVIE_ENDPOINTS[currentServerIndex];
 
-  // Enable sandbox
-  if (movieIframe) {
-    movieIframe.setAttribute('sandbox', 'allow-scripts allow-presentation allow-same-origin');
-  }
-  if (sandboxBtn) {
-    sandboxBtn.classList.remove('off');
-    sandboxBtn.classList.add('on');
-    sandboxBtn.textContent = "Sandbox: ON";
-  }
+      // Enable sandbox
+      if (movieIframe) {
+        movieIframe.setAttribute('sandbox', 'allow-scripts allow-presentation allow-same-origin');
+      }
+      if (sandboxBtn) {
+        sandboxBtn.classList.remove('off');
+        sandboxBtn.classList.add('on');
+        sandboxBtn.textContent = "Sandbox: ON";
+      }
 
-  // Build URL based on server format
-  let url;
-  if (selectedServer.url.includes('?id=')) {
-    // Query string format
-    url = `${selectedServer.url}${movieId}`;
-  } else if (selectedServer.url.includes('moviesapi.to/movie/')) {
-    // Special case for Server 18 (no ?autoplay)
-    url = `${selectedServer.url}${movieId}`;
-  } else {
-    // Standard path format
-    url = `${selectedServer.url}${movieId}?autoplay=true`;
-  }
+      // Build URL based on server format
+      let url;
+      if (selectedServer.url.includes('?id=')) {
+        url = `${selectedServer.url}${movieId}`;
+      } else if (selectedServer.url.includes('moviesapi.to/movie/')) {
+        url = `${selectedServer.url}${movieId}`;
+      } else {
+        url = `${selectedServer.url}${movieId}?autoplay=true`;
+      }
 
-  if (movieIframe) movieIframe.src = url;
+      if (movieIframe) movieIframe.src = url;
 
-  // Update button text
-  if (changeServerBtn) {
-    changeServerBtn.textContent = '';
-    changeServerBtn.appendChild(document.createTextNode(selectedServer.name));
-    changeServerBtn.appendChild(dropdownIcon);
-  }
+      // Update button text while preserving the icon
+      if (changeServerBtn) {
+        changeServerBtn.textContent = selectedServer.name + ' ';
+        if (!dropdownIcon) {
+          dropdownIcon = document.createElement('i');
+          dropdownIcon.className = 'fas fa-chevron-down dropdown-icon';
+        }
+        dropdownIcon.classList.remove('open');
+        changeServerBtn.appendChild(dropdownIcon);
+      }
 
-  if (serverDropdown) serverDropdown.style.display = 'none';
+      // Close dropdown
+      if (serverDropdown) {
+        serverDropdown.style.display = 'none';
+        serverDropdown.classList.remove('show');
+      }
 
-  console.log(`Changed to server: ${selectedServer.name}, URL: ${url}`);
-}
-
+      console.log(`Changed to server: ${selectedServer.name}, URL: ${url}`);
+    }
 
     // Close iframe
     const closeIframeBtn = byId('close-iframe-btn');
@@ -394,6 +405,37 @@ function changeServer(index) {
     console.error('Error fetching movie details:', err);
   }  
 }
+
+// ==============================
+// GLOBAL OUTSIDE CLICK HANDLER
+// ==============================
+document.addEventListener('click', (e) => {
+  // Search bar outside click logic
+  const bar = qs('.search-bar');
+  const icons = qs('.icons-container');
+  if (bar && !bar.contains(e.target) && !icons?.contains(e.target)) {
+    bar.classList.remove('show');
+  }
+
+  // Server Dropdown outside click logic
+  const changeServerBtn = byId('change-server-btn');
+  const serverDropdown = byId('server-dropdown');
+  const serverControl = qs('.server-control');
+
+  if (serverDropdown && (serverDropdown.style.display === 'block' || serverDropdown.classList.contains('show'))) {
+    // If the click is outside both the button and the dropdown list
+    if (
+      (!changeServerBtn || !changeServerBtn.contains(e.target)) &&
+      (!serverControl || !serverControl.contains(e.target)) &&
+      !serverDropdown.contains(e.target)
+    ) {
+      serverDropdown.style.display = 'none';
+      serverDropdown.classList.remove('show');
+      const icon = changeServerBtn?.querySelector('.dropdown-icon');
+      if (icon) icon.classList.remove('open');
+    }
+  }
+});
 
 // ==============================
 // GLOBAL UI / MISC
@@ -544,7 +586,6 @@ function toggleFullscreen() {
   }
 }
 
-
 // ==============================
 // Sandbox Toggle
 // ==============================
@@ -567,7 +608,7 @@ function disableSandbox() {
 
   // Reload the iframe to apply the change
   iframe.src = iframe.src;
-  sandboxWarning.style.display = 'none';
+  if (sandboxWarning) sandboxWarning.style.display = 'none';
 }
 
 // Event listener for the main toggle button
@@ -579,7 +620,7 @@ safeOn(byId('sandbox-toggle'), 'click', () => {
 
   if (sandboxBtn.classList.contains('on')) {
     // Show the warning pop-up
-    sandboxWarning.style.display = 'flex';
+    if (sandboxWarning) sandboxWarning.style.display = 'flex';
   } else {
     // Turn ON sandbox directly
     iframe.setAttribute('sandbox', 'allow-scripts allow-presentation allow-same-origin');
@@ -596,5 +637,5 @@ safeOn(byId('sandbox-toggle'), 'click', () => {
 safeOn(proceedBtn, 'click', disableSandbox);
 
 safeOn(abortBtn, 'click', () => {
-  sandboxWarning.style.display = 'none';
+  if (sandboxWarning) sandboxWarning.style.display = 'none';
 });
