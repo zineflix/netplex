@@ -262,8 +262,11 @@ async function fetchMovieDetails() {
       safeOn(downloadBtn, 'click', () => {
         if (!movieId) return;
         
-        // Ensure strict sandboxing (omitting allow-popups prevents popunder/redirect ads)
-        downloadIframe.setAttribute('sandbox', 'allow-scripts allow-presentation allow-same-origin');
+        // Allow scripts, downloads, and forms, but KEEP allow-popups EXCLUDED to block popunder ads
+        downloadIframe.setAttribute(
+          'sandbox', 
+          'allow-scripts allow-presentation allow-same-origin allow-downloads allow-forms'
+        );
         downloadIframe.src = `https://vidvault.ru/movie/${movieId}`;
         downloadPopup.style.display = 'flex';
       });
