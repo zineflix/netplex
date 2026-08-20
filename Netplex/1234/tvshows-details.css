@@ -1,796 +1,874 @@
-// ==============================
-// TMDB CONFIG
-// ==============================
-const apiKey='a1e72fd93ed59f56e6332813b9f8dcae';
-const baseUrl='https://api.themoviedb.org/3';
+/* Add this crucial line globally to prevent padding/borders from causing overflow */
+* {
+    box-sizing: border-box;
+}
 
-// ==============================
-// UTILITIES
-// ==============================
-const getJSON=async(url)=>{
-  const res=await fetch(url);
-  if(!res.ok)throw new Error(`HTTP ${res.status} for ${url}`);
-  return res.json();
-};
-const imgUrl=(path,size='w500')=>path?`https://image.tmdb.org/t/p/${size}${path}`:'https://via.placeholder.com/500x750?text=No+Image';
-const byId=id=>document.getElementById(id);
-const qs=(sel,root=document)=>root.querySelector(sel);
-const qsa=(sel,root=document)=>[...root.querySelectorAll(sel)];
-const safeOn=(el,ev,fn)=>el&&el.addEventListener(ev,fn);
+/* =====================
+    Layout
+===================== */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: #fff;
+    /* CRITICAL FIX: Prevents horizontal scrolling caused by overflowing elements */
+    overflow-x: hidden;
+}
 
-// ==============================
-// LIST/ROW FETCHING (HOME)
-// ==============================
-const CATEGORY_ENDPOINTS_TV={
-  popular:'/tv/popular',
-  trending:'/trending/tv/week',
-  top_rated:'/tv/top_rated',
-  action_adventure:'/discover/tv?with_genres=10759',
-  comedy:'/discover/tv?with_genres=35',
-  mystery:'/discover/tv?with_genres=9648',
-  scifi_fantasy:'/discover/tv?with_genres=10765',
-  animation:'/discover/tv?with_genres=16'
-};
+.container {
+    width: 100%;
+    max-width: 2100px;
+    margin: 0 auto;
+    padding: 20px;
+}
 
-async function fetchTVShows(category,rowId){
-  const endpoint=CATEGORY_ENDPOINTS_TV[category];
-  if(!endpoint)return console.warn(`Unknown TV category: ${category}`);
-  const container=byId(rowId);
-  if(!container)return;
-  try{
-    const separator=endpoint.includes('?')?'&':'?';
-    const data=await getJSON(`${baseUrl}${endpoint}${separator}api_key=${apiKey}&language=en-US&page=1`);
-    container.innerHTML='';
-    (data.results||[]).forEach(show=>{
-      const card=document.createElement('div');
-      card.className='movie-card';
-      card.style.position='relative';
-      card.innerHTML=`
-        <img class="row__poster" src="${imgUrl(show.poster_path)}" alt="${show.name}">
-        <div class="movie-rating"><i class="fas fa-star"></i> ${Number(show.vote_average||0).toFixed(1)}</div>
-        <div class="play-button"><i class="fas fa-play"></i></div>
-      `;
-      card.addEventListener('click',()=>window.location.href=`tv-details.html?tv_id=${show.id}`);
-      container.appendChild(card);
-    });
-  }catch(err){
-    console.error(`Error fetching ${category} TV shows:`,err);
+.details-page {
+    display: flex;
+    gap: 20px;
+    position: relative;
+}
+
+/* =====================
+    Iframe Container
+===================== */
+#iframe-container {
+    flex: 60%;
+    background: #000;
+    border-radius: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 3px solid #333; /* Dark border around iframe */
+}
+
+#iframe-container iframe {
+    width: 100%;
+    min-height: 400px;
+    border: none;
+}
+
+/* =====================
+    Controls ABOVE the video
+===================== */
+.video-controls-container {
+    display: flex;
+    flex-wrap: wrap; /* ✅ Allows wrapping on smaller screens */
+    gap: 5px; /* ⚡ Reduced gap */
+    align-items: center;
+    justify-content: center; /* ✅ Center controls */
+    padding: 10px;
+    background: rgba(0,0,0,0.6);
+    position: relative;
+    z-index: 10;
+}
+
+/* =====================
+    Anchor dropdown to the Change Server button
+===================== */
+.server-control {
+    position: relative;
+    display: inline-block;
+}
+
+/* =====================
+    Sidebar
+===================== */
+.details-sidebar {
+    flex: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto;
+    padding-right: 15px;
+}
+
+.poster-info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.poster-container {
+    flex: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-top: 6px;
+}
+
+.details-poster {
+    width: 75%;
+    border-radius: 8px;
+    box-shadow: 0 0 8px #0296cc;
+}
+
+.info-section {
+    flex: 60%;
+    position: relative;
+}
+
+.info-section h1 {
+    font-size: 24px;
+    margin: 0 0 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#details-description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #ccc;
+    margin: 0 0 15px;
+}
+
+.details-genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.details-genres .genre {
+    background: #222;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.details-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.details-rating .star {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url('star-filled.png') no-repeat center / cover;
+}
+
+.details-rating .star.empty {
+    background: url('star-empty.png') no-repeat center / cover;
+}
+
+.cast-container {
+    margin-top: 0px;
+    background: #000;
+    padding: 12px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.cast-container h2 {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* =====================
+    Horizontal scroll for cast
+===================== */
+.cast-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.details-cast {
+    display: flex;
+    gap: 10px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    padding-bottom: 5px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #0296cc #222;
+}
+
+.details-cast::-webkit-scrollbar {
+    height: 6px;
+    display: block;
+}
+
+.details-cast::-webkit-scrollbar-thumb {
+    background-color: #0296cc;
+    border-radius: 3px;
+}
+
+.cast-member {
+    flex: 0 0 auto;
+    text-align: center;
+    width: 70px;
+}
+
+.cast-member img {
+    width: 100%;
+    border-radius: 6px;
+}
+
+/* =====================
+    Optional: left/right navigation buttons
+===================== */
+.cast-scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    font-size: 18px;
+    transition: background 0.3s ease;
+    opacity: 0.8;
+}
+
+.cast-scroll-btn:hover {
+    background: #0296cc;
+}
+
+.cast-scroll-btn:disabled {
+    opacity: 0.2;
+    cursor: default;
+}
+
+.cast-scroll-left { left: 0; }
+.cast-scroll-right { right: 0; }
+
+.sidebar-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 0px;
+}
+
+/* ====================================================
+   UNIFIED DROPDOWN CONTROLS (Season, Episode, & Server)
+==================================================== */
+.season-episode-controls {
+    display: flex; 
+    gap: 5px;
+    flex-wrap: wrap; 
+    justify-content: center;
+    align-items: center;
+}
+
+/* General button style */
+.video-controls-container button,
+.sidebar-buttons button,
+.season-episode-controls select {
+    background: #0296cc;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+    font-family: inherit;
+    height: 36px;
+    box-sizing: border-box;
+    transition: background 0.3s ease;
+    flex: 1 1 auto;
+    min-width: 90px;
+    max-width: 150px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Custom dropdown chevron for HTML <select> elements */
+.season-episode-controls select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-right: 28px;
+    padding-left: 12px;
+    background: #0296cc url("data:image/svg+xml;utf8,<svg fill='white' height='12' viewBox='0 0 24 24' width='12' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>") no-repeat calc(100% - 8px) center;
+}
+
+.season-episode-controls select option {
+    background-color: #222;
+    color: #fff;
+    padding: 8px;
+    direction: ltr;
+    text-align: left;
+}
+
+/* Unified Hover State */
+.video-controls-container button:hover,
+.sidebar-buttons button:hover,
+.season-episode-controls select:hover,
+.season-episode-controls select:focus {
+    background-color: #0275a6;
+    outline: none;
+}
+
+/* Special button colors */
+.download-btn { background: #0296cc; }
+button[onclick="toggleFullscreen()"] { background: #0296cc; }
+#change-server-btn { background: #0296cc; }
+
+/* Icon */
+.dropdown-icon {
+    margin-left: 8px;
+    font-size: 10px;
+    transition: transform 0.3s ease;
+}
+.dropdown-icon.open { transform: rotate(-180deg); }
+
+/* ====================================================
+   UNIFIED DROPDOWN OVERLAYS & LISTS
+==================================================== */
+.server-dropdown,
+#episode-dropdown {
+    background: #222;
+    border: 1px solid #444;
+    border-radius: 6px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+}
+
+.server-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    z-index: 1000;
+    padding: 8px;
+}
+
+.server-dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    min-width: 260px;
+}
+
+.server-dropdown li,
+#episode-list li {
+    padding: 6px 10px;
+    margin: 2px 0;
+    background: #111;
+    color: #fff;
+    border: 1px solid #333;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    text-align: center;
+    white-space: nowrap;
+    transition: background 0.2s ease;
+}
+
+.server-dropdown li:hover,
+#episode-list li:hover {
+    background: #0296cc;
+    color: #fff;
+}
+
+/* Episode List Scroll */
+#episode-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Enable vertical scroll ONLY if > 30 episodes */
+#episode-list:has(li:nth-child(n + 31)) {
+    max-height: 360px;
+    overflow-y: auto;
+    padding-right: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: #666 #222;
+}
+
+#episode-list:has(li:nth-child(n + 31))::-webkit-scrollbar {
+    width: 6px;
+}
+#episode-list:has(li:nth-child(n + 31))::-webkit-scrollbar-track {
+    background: #222;
+    border-radius: 4px;
+}
+#episode-list:has(li:nth-child(n + 31))::-webkit-scrollbar-thumb {
+    background: #666;
+    border-radius: 4px;
+}
+
+/* =====================
+    Watch Trailer button
+===================== */
+#watch-trailer-btn {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin-top: 10px;
+    background-color: #0296cc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    transition: background 0.3s ease;
+}
+
+#watch-trailer-btn:hover { background-color: #0275a6; }
+
+/* =====================
+    Close button
+===================== */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #e50914;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    transition: background 0.3s ease, transform 0.2s ease;
+    z-index: 100;
+}
+
+.close-button:hover {
+    background: #ff0712;
+    transform: scale(1.05);
+}
+
+.close-button .close-text { display: none; }
+
+/* =====================
+    Trailer Popup
+===================== */
+.trailer-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.trailer-content {
+    position: relative;
+    background: #000;
+    padding: 10px;
+    border-radius: 10px;
+    max-height: 70vh;
+}
+
+.trailer-content iframe {
+    max-width: 90vw;
+    max-height: 60vh;
+}
+
+.close-trailer {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 28px;
+    font-weight: bold;
+    background: #e50914;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* =====================
+    Sandbox Toggle Button states
+===================== */
+.sandbox-btn { background: #0296cc; }
+.sandbox-btn.on { background: #0296cc; }
+.sandbox-btn.off { background: #dc3545; }
+
+/* ==============================
+   FLOATING MESSAGE
+============================== */
+#floating-message {
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  max-width: 400px;  
+  transform: translateX(-50%);
+  background-color: #121212;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  font-size: 15px;
+  z-index: 1000;
+  border-radius: 20px;
+  width: 30%;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid white;
+}
+
+#floating-message button {
+  background-color: #0296cc;
+  color: white;
+  border: none;
+  font-size: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+#floating-message button:hover { background-color: #0275a6; }
+
+#floating-message .close-btn { background-color: #cc2929; }
+#floating-message .close-btn:hover { background-color: #a61e1e; }
+
+/* Adjustment of arrow button in mobile */
+@media (max-width: 768px) {
+  .scroll-left, .scroll-right { font-size: 20px; padding: 8px; }
+}
+
+/* Adjustment of floating message in mobile */
+@media (max-width: 768px) {
+  #floating-message {
+    padding: 5px;
+    font-size: 15px;
+    width: 75%;
+    top: 25%;
   }
 }
 
-// ==============================
-// BANNER (HOME)
-// ==============================
-async function fetchTVBanner(){
-  const banner=qs('.banner');
-  if(!banner)return;
-  try{
-    const {results=[]}=await getJSON(`${baseUrl}/tv/popular?api_key=${apiKey}&language=en-US&page=1`);
-    if(!results.length)return;
-    const show=results[Math.floor(Math.random()*results.length)];
-    banner.style.backgroundImage=`url(${imgUrl(show.backdrop_path,'original')})`;
-    const titleEl=qs('.banner__title');
-    const descEl=qs('.banner__description');
-    if(titleEl)titleEl.textContent=show.name||'Untitled';
-    if(descEl){
-      const text=show.overview||'';
-      descEl.textContent=text.length>150?text.slice(0,150)+'...':text;
+/* =====================
+    Mobile Responsiveness
+===================== */
+@media (max-width: 768px) {
+    .details-page { flex-direction: column; padding-bottom: 50px; }
+    #iframe-container,
+    .details-sidebar { flex: 100%; }
+    #iframe-container { order: 2; }
+    .details-sidebar { order: 1; }
+    .poster-info-row { flex-direction: column; gap: 10px; }
+    .details-poster { width: 50%; }
+    #iframe-container {
+        max-height: none;
+        padding-bottom: 0;
     }
-    const bannerPlay=banner.querySelector('.play-button')||byId('banner-play-btn');
-    safeOn(bannerPlay,'click',()=>window.location.href=`tv-details.html?tv_id=${show.id}`);
-  }catch(err){
-    console.error('Error fetching TV banner:',err);
-  }
 }
 
-// ==============================
-// HORIZONTAL ARROW NAV (HOME)
-// ==============================
-function initArrowNavigation(){
-  qsa('.row__posters').forEach(row=>{
-    const prev=row.parentElement?.querySelector('.arrow-button.prev');
-    const next=row.parentElement?.querySelector('.arrow-button.next');
-    if(!prev||!next)return;
-    let x=0;
-    const step=220;
-    safeOn(prev,'click',()=>{
-      x=Math.max(0,x-step);
-      row.scrollTo({left:x,behavior:'smooth'});
-    });
-    safeOn(next,'click',()=>{
-      const max=row.scrollWidth-row.clientWidth;
-      x=Math.min(max,x+step);
-      row.scrollTo({left:x,behavior:'smooth'});
-    });
-  });
-}
-
-// ==============================
-// SEARCH BAR UI (GLOBAL)
-// ==============================
-function toggleSearchBar(){
-  qs('.search-bar')?.classList.toggle('show');
-}
-
-document.addEventListener('click',e=>{
-  const bar=qs('.search-bar');
-  const icons=qs('.icons-container');
-  if(bar&&!bar.contains(e.target)&&!icons?.contains(e.target))bar.classList.remove('show');
-});
-
-function openSearchPage(){
-  window.location.href='search.html';
-}
-
-// ==============================
-// FAVORITES / LIST PAGE (GLOBAL)
-// ==============================
-function renderSavedTVList(){
-  const container=byId('tv-list-container');
-  if(!container)return;
-  const tvList=JSON.parse(localStorage.getItem('tvList')||'[]');
-
-  if(!tvList.length){
-    container.innerHTML='<p>Your TV show list is empty!</p>';
-    return;
-  }
-
-  container.innerHTML='';
-
-  tvList.forEach(show=>{
-    const card=document.createElement('div');
-    card.className='movie-card';
-    card.innerHTML=`
-      <img class="row__poster" src="${imgUrl(show.poster_path)}" alt="${show.name}">
-      <p>${show.name}</p>
-    `;
-    card.addEventListener('click',()=>window.location.href=`tv-details.html?tv_id=${show.id}`);
-    container.appendChild(card);
-  });
-}
-
-// ==============================
-// STREAMING SERVERS (DETAILS)
-// ==============================
-const TV_ENDPOINTS=[
-  {url:'https://cinesrc.st/embed/tv/',name:'Server 1'},
-  {url:'https://web.nxsha.app/embed/tv/',name:'Server 2'},
-  {url:'https://anicine.xyz/embed?url=https://embed.asfnsa-alig.workers.dev/tv/',name:'Server 3'},
-  {url:'https://1embed.cc/embed/tv/',name:'Server 4'},
-  {url:'https://yapgrid.com/embed/tv/',name:'Server 5'},
-  {url:'https://cinevaro.app/media/tmdb-tv-',name:'Server 6'},
-  {url:'https://anyembed.xyz/embed/tmdb-tv-',name:'Server 7'},
-  {url:'https://hexa.su/watch/tv/',name:'Server 8'},
-  {url:'https://vidzen.fun/tv/',name:'Server 9'},
-  {url:'https://www.rivestream.ru/watch?type=tv&id=',name:'Server 10'},
-  {url:'https://vidlux.xyz/embed/tv/',name:'Server 11'},
-  {url:'https://vidup.to/tv/',name:'Server 12 Ads'},
-  {url:'https://vsembed.ru/embed/tv/',name:'Server 13 Ads'},
-  {url:'https://api.cineby.homes/embed/tv/',name:'Server 14 Ads'},
-  {url:'https://vidbolt.pro/tv/',name:'Server 15 Ads'},
-  {url:'https://player.videasy.to/tv/',name:'Server 16 Ads'},
-  {url:'https://vidcore.io/tv/',name:'Server 17 Ads'},
-  {url:'https://vaplayer.ru/embed/tv/',name:'Server 18 Ads'},
-  {url:'https://vidsrc.hair/embed/tv/',name:'Server 19 Ads'},
-  {url:'https://player.zxcstream.xyz/player/tv/',name:'Server 20 Ads'},
-  {url:'https://111movies.net/tv/',name:'Server 21 Ads'},
-  {url:'https://moviesapi.to/tv/',name:'Server 22 Ads'},
-  {url:'https://vidrock.net/tv/',name:'Server 23 Ads'},
-  {url:'https://embedmaster.link/tv/',name:'Server 24 Ads'},
-  {url:'https://mapple.rip/watch/tv/',name:'Server 25 Ads'}
-];
-
-let currentTVServerIndex=0;
-let currentSeason=1;
-let currentEpisode=1;
-let totalSeasons=1;
-
-// Helper to close all custom dropdown menus
-function closeAllDropdowns(exceptId = null) {
-  const dropdownIds = ['season-dropdown', 'episode-dropdown', 'server-dropdown'];
-  dropdownIds.forEach(id => {
-    if (id !== exceptId) {
-      const el = byId(id);
-      if (el) el.style.display = 'none';
-    }
-  });
-}
-
-// Close dropdowns when clicking anywhere outside of buttons or containers
-document.addEventListener('click', (e) => {
-  const isDropdownClick = e.target.closest(
-    '#season-dropdown-btn, #episode-dropdown-btn, #change-server-btn, #season-dropdown, #episode-dropdown, #server-dropdown'
-  );
-  if (!isDropdownClick) {
-    closeAllDropdowns();
-  }
-});
-
-// ==============================
-// TV SERVER URL BUILDER
-// ==============================
-function buildTVServerURL(serverIndex,id,season,episode){
-  const server=TV_ENDPOINTS[serverIndex];
-
-  if(!server){
-    console.error('Invalid TV server index:',serverIndex);
-    return '';
-  }
-
-  // Server 1, 7 and 25: ID-SEASON-EPISODE
-  if(serverIndex===0||serverIndex===6||serverIndex===24){
-    return `${server.url}${id}-${season}-${episode}`;
-  }
-
-  // Server 10: RiveStream query format
-  if(serverIndex===9){
-    return `${server.url}${id}&season=${season}&episode=${episode}`;
-  }
-
-  // Server 22: ID-SEASON-EPISODE
-  if(serverIndex===21){
-    return `${server.url}${id}-${season}-${episode}`;
-  }
-
-  // All other servers: ID/SEASON/EPISODE
-  return `${server.url}${id}/${season}/${episode}`;
-}
-
-// ==============================
-// DETAILS PAGE (TV SHOW)
-// ==============================
-async function fetchTVDetails(){
-  const params=new URLSearchParams(window.location.search);
-  const tvId=params.get('tv_id')||params.get('id');
-
-  if(!tvId)return;
-
-  try{
-    const show=await getJSON(`${baseUrl}/tv/${tvId}?api_key=${apiKey}&language=en-US`);
-
-    const poster=byId('tv-poster');
-    if(poster)poster.src=imgUrl(show.poster_path);
-
-    const bgEl=qs('.blurred-background');
-    if(bgEl){
-      bgEl.style.backgroundImage='none';
-      bgEl.style.backgroundColor='black';
+/* ====================================================
+   SMALL MOBILE (<600px) - FLEXIBLE & OVERLAP-PROOF
+==================================================== */
+@media (max-width: 600px) {
+    /* 1. Ensure the parent container allows floating dropdowns to overflow visibly */
+    #iframe-container {
+        overflow: visible !important;
+        position: relative;
     }
 
-    const desc=byId('tv-description');
-    if(desc)desc.textContent=show.overview||'No description available.';
-
-    const titleEl=byId('tv-title');
-    if(titleEl)titleEl.textContent=show.name||'Untitled';
-
-    // ==============================
-    // CAST
-    // ==============================
-    const {cast=[]}=await getJSON(`${baseUrl}/tv/${tvId}/credits?api_key=${apiKey}&language=en-US`);
-    const castContainer=byId('tv-cast');
-
-    if(castContainer){
-      castContainer.innerHTML='';
-
-      cast.slice(0,6).forEach(actor=>{
-        const member=document.createElement('div');
-        member.className='cast-member';
-
-        member.innerHTML=`
-          <img src="${actor.profile_path?imgUrl(actor.profile_path,'w185'):'https://via.placeholder.com/100x150?text=No+Image'}" alt="${actor.name}">
-          <p style="color:white">${actor.name}</p>
-        `;
-
-        castContainer.appendChild(member);
-      });
+    #iframe-container iframe {
+        width: 100%;
+        min-height: 250px;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        border: none;
+        display: block;
     }
 
-    // ==============================
-    // TRAILER
-    // ==============================
-    const videos=await getJSON(`${baseUrl}/tv/${tvId}/videos?api_key=${apiKey}&language=en-US`);
-    const trailer=(videos.results||[]).find(v=>v.type==='Trailer'&&v.site==='YouTube');
-
-    const trailerIframe=byId('tv-iframe-trailer');
-    const trailerPopup=byId('trailer-popup');
-    const closeTrailerBtn=byId('close-trailer');
-    const trailerBtn=byId('watch-trailer-btn');
-
-    if(trailer&&trailerBtn&&trailerPopup&&trailerIframe){
-      safeOn(trailerBtn,'click',()=>{
-        trailerPopup.style.display='flex';
-        trailerIframe.src=`https://www.youtube.com/embed/${trailer.key}?autoplay=1`;
-      });
-
-      safeOn(closeTrailerBtn,'click',()=>{
-        trailerPopup.style.display='none';
-        trailerIframe.src='';
-      });
+    /* 2. Grid Container for 3 Rows x 2 Columns */
+    .video-controls-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 4px;
+        width: 100%;
+        padding: 6px;
+        position: relative;
+        z-index: 20;
     }
 
-    // ==============================
-    // DOWNLOAD
-    // ==============================
-    const downloadBtn=byId('download-btn');
-
-    safeOn(downloadBtn,'click',()=>{
-      if(tvId&&currentSeason&&currentEpisode){
-        const downloadUrl=`https://vidvault.ru/tv/${tvId}/${currentSeason}/${currentEpisode}`;
-        window.open(downloadUrl,'_blank');
-      }
-    });
-
-    // ==============================
-    // RATING
-    // ==============================
-    const starWrap=byId('tv-rating');
-
-    if(starWrap){
-      starWrap.innerHTML='';
-
-      const filled=Math.round((show.vote_average||0)/2);
-      const empty=5-filled;
-
-      for(let i=0;i<filled;i++){
-        const s=document.createElement('span');
-        s.className='star filled';
-        starWrap.appendChild(s);
-      }
-
-      for(let i=0;i<empty;i++){
-        const s=document.createElement('span');
-        s.className='star empty';
-        starWrap.appendChild(s);
-      }
+    /* ROW 1: Season & Episode selects */
+    .season-episode-controls {
+        display: contents;
     }
 
-    // ==============================
-    // GENRES
-    // ==============================
-    const genreWrap=byId('tv-genres');
-
-    if(genreWrap){
-      genreWrap.innerHTML='';
-
-      (show.genres||[]).forEach(g=>{
-        const sp=document.createElement('span');
-        sp.className='genre';
-        sp.textContent=g.name;
-        genreWrap.appendChild(sp);
-      });
+    .season-episode-controls select,
+    #change-server-btn {
+        width: 100%;
+        height: 36px;
+        font-size: 12px;
+        min-width: 0;
+        max-width: none;
+        background-color: #0296cc;
+        color: #fff;
+        border-radius: 6px;
+        box-sizing: border-box;
     }
 
-    // ==============================
-    // SEASON AND EPISODE LOGIC
-    // ==============================
-    totalSeasons=show.number_of_seasons||1;
-
-    const seasonsList=byId('season-list');
-    const episodesList=byId('episode-list');
-    const currentSeasonEl=byId('current-season');
-    const currentEpisodeEl=byId('current-episode');
-
-    function populateSeasons(){
-      if(!seasonsList)return;
-
-      seasonsList.innerHTML='';
-
-      for(let i=1;i<=totalSeasons;i++){
-        const li=document.createElement('li');
-        li.textContent=`Season ${i}`;
-
-        li.addEventListener('click',()=>{
-          currentSeason=i;
-          currentEpisode=1;
-
-          if(currentSeasonEl)currentSeasonEl.textContent=i;
-          if(currentEpisodeEl)currentEpisodeEl.textContent=1;
-
-          populateEpisodes(i);
-          changeTVEpisode(tvId,currentSeason,currentEpisode);
-
-          const dropdown=byId('season-dropdown');
-          if(dropdown)dropdown.style.display='none';
-        });
-
-        seasonsList.appendChild(li);
-      }
+    /* Episode Select: Align Right & Indent Right-to-Left */
+    .season-episode-controls select:last-child,
+    .season-episode-controls select[id*="episode"] {
+        direction: rtl;
+        text-align: right;
+        text-align-last: right;
+        padding-right: 28px;
+        padding-left: 10px;
+        background-position: 10px center;
     }
 
-    async function populateEpisodes(seasonNumber){
-      if(!episodesList)return;
-
-      try{
-        const seasonData=await getJSON(`${baseUrl}/tv/${tvId}/season/${seasonNumber}?api_key=${apiKey}&language=en-US`);
-
-        episodesList.innerHTML='';
-
-        (seasonData.episodes||[]).forEach(episode=>{
-          const li=document.createElement('li');
-          li.textContent=`Episode ${episode.episode_number}`;
-
-          li.addEventListener('click',()=>{
-            currentEpisode=episode.episode_number;
-
-            if(currentEpisodeEl)currentEpisodeEl.textContent=currentEpisode;
-
-            changeTVEpisode(tvId,currentSeason,currentEpisode);
-
-            const dropdown=byId('episode-dropdown');
-            if(dropdown)dropdown.style.display='none';
-          });
-
-          episodesList.appendChild(li);
-        });
-      }catch(err){
-        console.error('Error fetching episodes:',err);
-      }
+    /* Keep individual options easy to read when the menu opens */
+    .season-episode-controls select[id*="episode"] option {
+        direction: ltr;
+        text-align: left;
+    }
+	
+    /* Shifts the entire Episode Dropdown container to the right */
+    #episode-dropdown {
+        left: auto !important;
+        right: 0 !important;
+        transform: none !important;
     }
 
-    populateSeasons();
-    populateEpisodes(currentSeason);
-
-    // ==============================
-    // SEASON DROPDOWN
-    // ==============================
-    safeOn(byId('season-dropdown-btn'),'click',()=>{
-      const dropdown=byId('season-dropdown');
-
-      if(!dropdown)return;
-
-      const isOpening = dropdown.style.display !== 'block';
-      closeAllDropdowns('season-dropdown');
-      dropdown.style.display = isOpening ? 'block' : 'none';
-    });
-
-    // ==============================
-    // EPISODE DROPDOWN
-    // ==============================
-    safeOn(byId('episode-dropdown-btn'),'click',()=>{
-      const dropdown=byId('episode-dropdown');
-
-      if(!dropdown)return;
-
-      const isOpening = dropdown.style.display !== 'block';
-      closeAllDropdowns('episode-dropdown');
-      dropdown.style.display = isOpening ? 'block' : 'none';
-    });
-
-    // ==============================
-    // IFRAME + AUTO-LOAD SERVER 1
-    // ==============================
-    const iframeContainer=byId('iframe-container');
-    const tvIframe=byId('tv-iframe');
-    const watchNowBtn=byId('watch-now-btn');
-
-    if(iframeContainer&&tvIframe){
-      iframeContainer.style.display='flex';
-      currentTVServerIndex=0;
-
-      changeTVEpisode(tvId,currentSeason,currentEpisode);
-
-      if(watchNowBtn)watchNowBtn.style.display='none';
+    /* Indents the individual episode list items */
+    #episode-list li {
+        padding-left: 12px;
+        text-align: left;
     }
 
-    // ==============================
-    // SERVERS DROPDOWN
-    // ==============================
-    const changeServerBtn=byId('change-server-btn');
-    const serverDropdown=byId('server-dropdown');
-    const serverList=byId('server-list');
-
-    if(serverList){
-      serverList.innerHTML='';
-
-      TV_ENDPOINTS.forEach((endpoint,idx)=>{
-        const li=document.createElement('li');
-
-        li.textContent=endpoint.name;
-
-        li.addEventListener('click',()=>changeTVServer(idx,tvId));
-
-        serverList.appendChild(li);
-      });
+    /* ROW 2: Change Server & Sandbox */
+    .server-control {
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    safeOn(changeServerBtn,'click',()=>{
-      if(!serverDropdown)return;
+    #change-server-btn {
+        width: 100%;
+        min-width: 0;
+        text-align: center;
+        padding: 8px 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+    }
 
-      const isOpening = serverDropdown.style.display !== 'block';
-      closeAllDropdowns('server-dropdown');
-      serverDropdown.style.display = isOpening ? 'block' : 'none';
-    });
+    .sandbox-btn {
+        width: 100%;
+        min-width: 0;
+    }
 
-    // ==============================
-    // CLOSE IFRAME
-    // ==============================
-    const closeIframeBtn=byId('close-iframe-btn');
+    /* 3. Server Dropdown Container - Flexible Overlay */
+    .server-dropdown {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        width: 200%;
+        max-width: 100vw;
+        max-height: 250px;
+        overflow-y: auto;
+        z-index: 1000;
+        background: #1e1e1e;
+        border: 1px solid #444;
+        border-radius: 6px;
+        padding: 6px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7);
+    }
 
-    safeOn(closeIframeBtn,'click',()=>{
-      if(!iframeContainer||!tvIframe||!watchNowBtn)return;
+    .server-dropdown ul {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 4px;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
 
-      iframeContainer.style.display='none';
-      tvIframe.src='';
-      watchNowBtn.style.display='block';
+    .server-dropdown li {
+        text-align: center;
+        padding: 6px 4px;
+        font-size: 12px;
+        background: #111;
+        border-radius: 4px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-      window.location.reload();
-    });
+    /* ROW 3: Action Buttons */
+    .video-controls-container button { 
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        font-size: 11px;
+        padding: 8px 4px;
+        white-space: nowrap;
+    }
 
-    // ==============================
-    // MORE LIKE THIS
-    // ==============================
-    fetchMoreLikeThisTV(tvId);
+    /* Other Mobile Adjustments */
+    .cast-member { width: 50px; }
+    .cast-member img { width: 100%; height: auto; }
+    .cast-container h2 { font-size: 16px; margin-bottom: 8px; }
+    .cast-member p { font-size: 8px; word-break: break-word; }
 
-  }catch(err){
-    console.error('Error fetching TV show details:',err);
+    #watch-trailer-btn {
+        font-size: 12px;
+        width: 100%;
+        padding: 10px;
+        margin-top: 8px;
+    }
+}
+
+/* ==============================
+  SANDBOX WARNING POPUP
+============================== */
+.sandbox-warning {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.warning-content {
+  background: #121212;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  border: 2px solid white;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.warning-content p {
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.warning-buttons {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+}
+
+.warning-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+#proceed-btn { background: #0296cc; color: white; }
+#abort-btn { background: #e50914; color: white; }
+
+/* ======================
+  Smooth Scroll Enhancement
+====================== */
+html {
+  scroll-behavior: smooth;
+}
+
+/* =====================
+   Center control buttons on mobile
+===================== */
+@media (max-width: 600px) {
+  .video-controls-container {
+    justify-content: center;
+  }
+
+  .video-controls-container button.sandbox-btn,
+  .video-controls-container button[onclick="toggleFullscreen()"],
+  .video-controls-container button.download-btn {
+    margin: 0 auto;
+    display: block;
   }
 }
 
-// ==============================
-// CHANGE TV SERVER
-// ==============================
-function changeTVServer(index,id){
-  if(index<0||index>=TV_ENDPOINTS.length){
-    console.error('Invalid server index.');
-    return;
-  }
-
-  currentTVServerIndex=index;
-
-  const tvIframe=byId('tv-iframe');
-  const serverDropdown=byId('server-dropdown');
-  const changeServerBtn=byId('change-server-btn');
-  const dropdownIcon=changeServerBtn?.querySelector('.dropdown-icon');
-  const sandboxBtn=byId('sandbox-toggle');
-  const selectedServer=TV_ENDPOINTS[currentTVServerIndex];
-
-  if(tvIframe){
-    tvIframe.setAttribute('sandbox','allow-scripts allow-presentation allow-same-origin');
-
-    if(sandboxBtn){
-      sandboxBtn.classList.remove('off');
-      sandboxBtn.classList.add('on');
-      sandboxBtn.textContent='Sandbox: ON';
-    }
-  }
-
-  const url=buildTVServerURL(currentTVServerIndex,id,currentSeason,currentEpisode);
-
-  if(tvIframe)tvIframe.src=url;
-
-  if(changeServerBtn){
-    changeServerBtn.textContent='';
-    changeServerBtn.appendChild(document.createTextNode(selectedServer.name));
-
-    if(dropdownIcon)changeServerBtn.appendChild(dropdownIcon);
-  }
-
-  if(serverDropdown)serverDropdown.style.display='none';
-
-  console.log(`Changed to TV server: ${selectedServer.name}, URL: ${url}`);
+/* ====================================================
+   ADSENSE AUTO ADS PREVENTION RULES (TV SHOW)
+==================================================== */
+/* Hide dynamically injected AdSense elements inside protected UI containers */
+.no-auto-ads ins.adsbygoogle,
+.no-auto-ads .google-auto-placed,
+.no-auto-ads iframe[id^="aswift_"],
+.video-controls-container ins.adsbygoogle,
+.video-controls-container .google-auto-placed,
+.cast-container ins.adsbygoogle,
+.cast-container .google-auto-placed,
+.cast-wrapper ins.adsbygoogle,
+.cast-wrapper .google-auto-placed,
+.details-cast ins.adsbygoogle,
+.details-cast .google-auto-placed,
+#episode-list ins.adsbygoogle,
+#episode-list .google-auto-placed,
+.season-episode-controls ins.adsbygoogle,
+.season-episode-controls .google-auto-placed {
+    display: none !important;
+    height: 0 !important;
+    width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-// ==============================
-// CHANGE TV EPISODE
-// ==============================
-function changeTVEpisode(id,season,episode){
-  const tvIframe=byId('tv-iframe');
-  const sandboxBtn=byId('sandbox-toggle');
-  const selectedServer=TV_ENDPOINTS[currentTVServerIndex];
-
-  if(!selectedServer){
-    console.error('TV server not found.');
-    return;
-  }
-
-  if(tvIframe){
-    tvIframe.setAttribute('sandbox','allow-scripts allow-presentation allow-same-origin');
-
-    if(sandboxBtn){
-      sandboxBtn.classList.remove('off');
-      sandboxBtn.classList.add('on');
-      sandboxBtn.textContent='Sandbox: ON';
-    }
-  }
-
-  const url=buildTVServerURL(currentTVServerIndex,id,season,episode);
-
-  if(tvIframe)tvIframe.src=url;
-
-  console.log(`Changed to Season ${season}, Episode ${episode} on ${selectedServer.name}, URL: ${url}`);
+/* Prevent injected ads from breaking internal flexbox/grid mechanics */
+.video-controls-container,
+.season-episode-controls,
+.cast-container,
+.cast-wrapper,
+.details-cast,
+#episode-list {
+    isolation: isolate;
 }
 
-// ==============================
-// MORE LIKE THIS
-// ==============================
-async function fetchMoreLikeThisTV(id){
-  const container=byId('similar-tv-container');
-
-  if(!container)return;
-
-  try{
-    const data=await getJSON(`${baseUrl}/tv/${id}/similar?api_key=${apiKey}&language=en-US`);
-
-    container.innerHTML='';
-
-    (data.results||[]).forEach(s=>{
-      const item=document.createElement('div');
-      item.className='similar-movie';
-
-      item.innerHTML=`
-        <img class="similar-movie-img" src="${imgUrl(s.poster_path,'original')}" alt="${s.name}">
-        <span class="movie-title" style="display:none">${s.name}</span>
-      `;
-
-      item.addEventListener('click',()=>{
-        window.location.href=`tv-details.html?tv_id=${s.id}`;
-      });
-
-      container.appendChild(item);
-    });
-  }catch(err){
-    console.error('Error fetching similar TV shows:',err);
-  }
+/* ====================================================
+   DEDICATED AD CONTAINERS (Between & Bottom)
+==================================================== */
+.ad-container-between,
+.ad-container-bottom {
+    width: 100%;
+    margin: 15px 0;
+    text-align: center;
+    clear: both;
+    overflow: hidden;
 }
 
-// ==============================
-// GLOBAL UI / MISC
-// ==============================
-safeOn(document,'DOMContentLoaded',()=>{
-  const rowMap=[
-    ['popular','popularTVShows'],
-    ['trending','trendingTVShows'],
-    ['top_rated','topRatedTV'],
-    ['action_adventure','actionAdventureTV'],
-    ['comedy','comedyTV'],
-    ['mystery','mysteryTV'],
-    ['scifi_fantasy','sciFiFantasyTV'],
-    ['animation','animationTV']
-  ];
-
-  rowMap.forEach(([cat,id])=>fetchTVShows(cat,id));
-
-  fetchTVBanner();
-  renderSavedTVList();
-  initArrowNavigation();
-
-  safeOn(window,'scroll',()=>{
-    const nav=qs('nav');
-    if(nav)nav.classList.toggle('nav-solid',window.scrollY>50);
-  });
-
-  safeOn(byId('menu-btn'),'click',()=>{
-    byId('menu')?.classList.toggle('active');
-  });
-
-  safeOn(byId('close-button'),'click',()=>{
-    window.location.href='index.html';
-  });
-
-  safeOn(window,'load',()=>{
-    setTimeout(()=>{
-      const loader=byId('loading-screen');
-      if(loader)loader.style.display='none';
-    },1000);
-  });
-
-  if(typeof getComments==='function'){
-    safeOn(window,'load',getComments);
-  }
-
-  fetchTVDetails();
-});
-
-// ==============================
-// FLOATING MESSAGE CLOSE
-// ==============================
-function closeMessage(){
-  const el=byId('floating-message');
-
-  if(el)el.style.display='none';
+.ad-container-between ins.adsbygoogle,
+.ad-container-bottom ins.adsbygoogle {
+    display: block !important;
+    margin: 0 auto !important;
 }
-
-// ==============================
-// FULLSCREEN FOR IFRAME
-// ==============================
-function toggleFullscreen(){
-  const iframeContainer=document.getElementById('iframe-container');
-
-  if(!iframeContainer){
-    console.error('Iframe container not found.');
-    return;
-  }
-
-  if(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement){
-    if(document.exitFullscreen)document.exitFullscreen();
-    else if(document.mozCancelFullScreen)document.mozCancelFullScreen();
-    else if(document.webkitExitFullscreen)document.webkitExitFullscreen();
-    else if(document.msExitFullscreen)document.msExitFullscreen();
-  }else{
-    if(iframeContainer.requestFullscreen)iframeContainer.requestFullscreen();
-    else if(iframeContainer.mozRequestFullScreen)iframeContainer.mozRequestFullScreen();
-    else if(iframeContainer.webkitRequestFullscreen)iframeContainer.webkitRequestFullscreen();
-    else if(iframeContainer.msRequestFullscreen)iframeContainer.msRequestFullscreen();
-  }
-
-  if(screen.orientation?.lock){
-    screen.orientation.lock('landscape').catch(e=>console.log('Orientation lock failed:',e));
-  }
-}
-
-// ==============================
-// SANDBOX TOGGLE
-// ==============================
-const sandboxWarning=byId('sandbox-warning');
-const proceedBtn=byId('proceed-btn');
-const abortBtn=byId('abort-btn');
-
-function disableSandbox(){
-  const sandboxBtn=byId('sandbox-toggle');
-  const iframe=byId('tv-iframe');
-
-  if(!iframe)return;
-
-  iframe.removeAttribute('sandbox');
-
-  if(sandboxBtn){
-    sandboxBtn.classList.remove('on');
-    sandboxBtn.classList.add('off');
-    sandboxBtn.textContent='Sandbox: OFF';
-  }
-
-  console.log('Sandbox disabled');
-
-  if(iframe.src&&iframe.src.trim()!==''){
-    const currentSrc=iframe.src;
-
-    iframe.src='';
-
-    setTimeout(()=>{
-      iframe.src=currentSrc;
-    },50);
-  }
-
-  if(sandboxWarning)sandboxWarning.style.display='none';
-}
-
-// ==============================
-// SANDBOX TOGGLE BUTTON
-// ==============================
-safeOn(byId('sandbox-toggle'),'click',()=>{
-  const sandboxBtn=byId('sandbox-toggle');
-  const iframe=byId('tv-iframe');
-
-  if(!iframe||!sandboxBtn)return;
-
-  if(sandboxBtn.classList.contains('on')){
-    if(sandboxWarning)sandboxWarning.style.display='flex';
-  }else{
-    iframe.setAttribute('sandbox','allow-scripts allow-presentation allow-same-origin');
-
-    sandboxBtn.classList.remove('off');
-    sandboxBtn.classList.add('on');
-    sandboxBtn.textContent='Sandbox: ON';
-
-    console.log('Sandbox enabled');
-
-    if(iframe.src&&iframe.src.trim()!==''){
-      const currentSrc=iframe.src;
-
-      iframe.src='';
-
-      setTimeout(()=>{
-        iframe.src=currentSrc;
-      },50);
-    }
-  }
-});
-
-// ==============================
-// SANDBOX POPUP BUTTONS
-// ==============================
-safeOn(proceedBtn,'click',disableSandbox);
-
-safeOn(abortBtn,'click',()=>{
-  if(sandboxWarning)sandboxWarning.style.display='none';
-});
