@@ -872,3 +872,31 @@ html {
     display: block !important;
     margin: 0 auto !important;
 }
+
+/* ====================================================
+   Mobile View Adjustments
+==================================================== */
+@media (max-width: 768px) {
+    /* 1. Remove horizontal padding from the main container on mobile */
+    .container {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+
+    /* 2. Make the video container stretch edge-to-edge and remove extra borders */
+    #iframe-container {
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+        border: 1px solid #333;
+        box-shadow: 0 0 8px #0296cc;
+    }
+
+    /* 3. Re-apply the 20px horizontal padding to the sidebar so content isn't flush with the screen edge */
+    .details-sidebar {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+}
