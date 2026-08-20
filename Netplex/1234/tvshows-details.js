@@ -185,6 +185,27 @@ let currentSeason=1;
 let currentEpisode=1;
 let totalSeasons=1;
 
+// Helper to close all custom dropdown menus
+function closeAllDropdowns(exceptId = null) {
+  const dropdownIds = ['season-dropdown', 'episode-dropdown', 'server-dropdown'];
+  dropdownIds.forEach(id => {
+    if (id !== exceptId) {
+      const el = byId(id);
+      if (el) el.style.display = 'none';
+    }
+  });
+}
+
+// Close dropdowns when clicking anywhere outside of buttons or containers
+document.addEventListener('click', (e) => {
+  const isDropdownClick = e.target.closest(
+    '#season-dropdown-btn, #episode-dropdown-btn, #change-server-btn, #season-dropdown, #episode-dropdown, #server-dropdown'
+  );
+  if (!isDropdownClick) {
+    closeAllDropdowns();
+  }
+});
+
 // ==============================
 // TV SERVER URL BUILDER
 // ==============================
@@ -417,7 +438,9 @@ async function fetchTVDetails(){
 
       if(!dropdown)return;
 
-      dropdown.style.display=dropdown.style.display==='block'?'none':'block';
+      const isOpening = dropdown.style.display !== 'block';
+      closeAllDropdowns('season-dropdown');
+      dropdown.style.display = isOpening ? 'block' : 'none';
     });
 
     // ==============================
@@ -428,7 +451,9 @@ async function fetchTVDetails(){
 
       if(!dropdown)return;
 
-      dropdown.style.display=dropdown.style.display==='block'?'none':'block';
+      const isOpening = dropdown.style.display !== 'block';
+      closeAllDropdowns('episode-dropdown');
+      dropdown.style.display = isOpening ? 'block' : 'none';
     });
 
     // ==============================
@@ -471,7 +496,9 @@ async function fetchTVDetails(){
     safeOn(changeServerBtn,'click',()=>{
       if(!serverDropdown)return;
 
-      serverDropdown.style.display=serverDropdown.style.display==='block'?'none':'block';
+      const isOpening = serverDropdown.style.display !== 'block';
+      closeAllDropdowns('server-dropdown');
+      serverDropdown.style.display = isOpening ? 'block' : 'none';
     });
 
     // ==============================
