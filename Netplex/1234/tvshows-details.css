@@ -567,7 +567,7 @@ button[onclick="toggleFullscreen()"] { background: #0296cc; }
     Mobile Responsiveness
 ===================== */
 @media (max-width: 768px) {
-    .details-page { flex-direction: column; padding-bottom: 50px; }
+    .details-page { flex-direction: column; padding-bottom: 125px; }
     #iframe-container,
     .details-sidebar { flex: 100%; }
     #iframe-container { order: 2; }
