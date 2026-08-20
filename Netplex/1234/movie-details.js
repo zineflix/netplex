@@ -251,14 +251,37 @@ async function fetchMovieDetails() {
       });
     }
 
-    // Download
+    // Download Modal Logic
     const downloadBtn = byId('download-btn');
-    safeOn(downloadBtn, 'click', () => {
-      if (movieId) {
-        const downloadUrl = `https://vidvault.ru/movie/${movieId}`;
-        window.open(downloadUrl, '_blank');
-      }
-    });
+    const downloadPopup = byId('download-popup');
+    const downloadIframe = byId('download-iframe');
+    const closeDownloadBtn = byId('close-download-popup');
+
+    if (downloadBtn && downloadPopup && downloadIframe) {
+      // Open modal on click
+      safeOn(downloadBtn, 'click', () => {
+        if (!movieId) return;
+        
+        // Ensure strict sandboxing (omitting allow-popups prevents popunder/redirect ads)
+        downloadIframe.setAttribute('sandbox', 'allow-scripts allow-presentation allow-same-origin');
+        downloadIframe.src = `https://vidvault.ru/movie/${movieId}`;
+        downloadPopup.style.display = 'flex';
+      });
+
+      // Close modal on close button click
+      safeOn(closeDownloadBtn, 'click', () => {
+        downloadPopup.style.display = 'none';
+        downloadIframe.src = ''; // Stops playback/loading in the background
+      });
+
+      // Close modal on clicking outside the content box
+      safeOn(downloadPopup, 'click', (e) => {
+        if (e.target === downloadPopup) {
+          downloadPopup.style.display = 'none';
+          downloadIframe.src = '';
+        }
+      });
+    }
     
     // Rating (5 stars)
     const starWrap = byId('movie-rating');
