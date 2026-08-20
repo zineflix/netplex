@@ -319,8 +319,8 @@ button[onclick="toggleFullscreen()"]:hover {
     top: calc(100% + 6px);  
     left: 0;
     z-index: 1000;          
-    padding: 10px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    padding: 8px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
 }
 
 .server-dropdown ul {
@@ -329,17 +329,22 @@ button[onclick="toggleFullscreen()"]:hover {
     margin: 0;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    gap: 4px;
     min-width: 260px;
 }
 
 .server-dropdown li {
-    padding: 8px 12px;
+    padding: 6px 10px;
+    margin: 2px 0;
+    background: #111;
+    color: #fff;
+    border: 1px solid #333;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 13px;
     text-align: center;
-    border-radius: 4px;
-    transition: background-color 0.2s;
     white-space: nowrap;
+    transition: background 0.2s ease;
 }
 
 .server-dropdown li:hover {
