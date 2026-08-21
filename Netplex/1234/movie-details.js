@@ -267,7 +267,7 @@ async function fetchMovieDetails() {
           'sandbox', 
           'allow-scripts allow-presentation allow-same-origin allow-downloads allow-forms'
         );
-        downloadIframe.src = `https://vidvault.ru/movie/${movieId}`;
+        downloadIframe.src = `https://video.moviepire.co/download/movie/${movieId}`;
         downloadPopup.style.display = 'flex';
       });
 
