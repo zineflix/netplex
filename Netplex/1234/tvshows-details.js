@@ -322,12 +322,9 @@ async function fetchTVDetails(){
       safeOn(downloadBtn, 'click', () => {
         if (!tvId) return;
         
-        // Allow scripts, downloads, and forms, but KEEP allow-popups EXCLUDED to block popunder ads
-        downloadIframe.setAttribute(
-          'sandbox', 
-          'allow-scripts allow-presentation allow-same-origin allow-downloads allow-forms'
-        );
-        downloadIframe.src = `https://vidvault.ru/tv/${tvId}/${currentSeason}/${currentEpisode}`;
+      // Remove sandbox restrictions from download iframe
+        downloadIframe.removeAttribute('sandbox');
+        downloadIframe.src = `https://web.nxsha.app/dl/tv/${tvId}/${currentSeason}/${currentEpisode}`;
         downloadPopup.style.display = 'flex';
       });
 
