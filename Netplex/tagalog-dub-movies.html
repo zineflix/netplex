@@ -175,12 +175,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     Welcome to <b>NETPLEX</b>
   </div>
 
+<html>
 <!-- LEAVE A COMMENT START -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
 
-    // Firebase configuration
+    // Firebase configuration (Replace with your Firebase project details)
     const firebaseConfig = {
       apiKey: "AIzaSyB3hd4278XIZ86TAgR9UetC1Qa5M8KswlQ",
       authDomain: "mynetplex-9fbbf.firebaseapp.com",
@@ -194,10 +195,62 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Helper to generate a random DiceBear Sprout avatar URL
-    function getRandomSproutAvatar() {
-      const randomSeed = Math.random().toString(36).substring(7);
-      return `https://api.dicebear.com/8.x/sprout/svg?seed=${randomSeed}`;
+    // Array of profile picture URLs
+    const profilePictures = [
+      "https://api.dicebear.com/10.x/sprouts/svg",
+      "https://avatar.iran.liara.run/public/2",
+      "https://avatar.iran.liara.run/public/3",
+      "https://avatar.iran.liara.run/public/37",
+      "https://avatar.iran.liara.run/public/45",
+      "https://avatar.iran.liara.run/public/38",
+      "https://avatar.iran.liara.run/public/24",
+      "https://avatar.iran.liara.run/public/73",
+      "https://avatar.iran.liara.run/public/56",
+      "https://avatar.iran.liara.run/public/58",
+      "https://avatar.iran.liara.run/public/77",
+      "https://avatar.iran.liara.run/public/95",
+      "https://avatar.iran.liara.run/public/68",
+      "https://avatar.iran.liara.run/public/90"
+    ];
+
+    let selectedAvatar = profilePictures[0]; // Default avatar
+
+    // Function to display available avatars
+    function displayAvatars() {
+      const avatarContainer = document.getElementById('avatarContainer');
+      avatarContainer.innerHTML = ""; // Clear existing avatars
+
+      profilePictures.forEach((url) => {
+        const avatarImg = document.createElement('img');
+        avatarImg.src = url;
+        avatarImg.alt = "Avatar";
+        avatarImg.classList.add('avatar');
+        
+        // Highlight the default selected avatar
+        if (url === selectedAvatar) {
+          avatarImg.classList.add('selected-avatar');
+        }
+
+        avatarImg.onclick = () => selectAvatar(url, avatarImg);
+        avatarContainer.appendChild(avatarImg);
+      });
+    }
+
+    // Function to select an avatar
+    function selectAvatar(avatar, selectedElement) {
+      selectedAvatar = avatar;
+      const avatarPreview = document.getElementById('avatarPreview');
+      avatarPreview.src = avatar; // Update the preview image
+
+      // Remove highlight from previous selection
+      document.querySelectorAll('.avatar').forEach(img => img.classList.remove('selected-avatar'));
+      selectedElement.classList.add('selected-avatar'); // Highlight new selection
+
+      // Hide "SELECTED AVATAR" text if it exists
+      const selectedText = document.getElementById("selectedAvatarText");
+      if (selectedText) {
+        selectedText.style.display = "none";
+      }
     }
 
     // Submit a new comment
@@ -215,8 +268,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         return;
       }
 
-      // Generate a random Sprout avatar for this submission
-      const profilePicture = getRandomSproutAvatar();
+      const profilePicture = selectedAvatar; // Use selected avatar
 
       try {
         await addDoc(collection(db, "comments"), {
@@ -252,7 +304,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
           commentElement.innerHTML = `
             <div class="commentHeader">
-              <img src="${data.profilePicture || getRandomSproutAvatar()}" class="profilePicture">
+              <img src="${data.profilePicture || 'https://example.com/default-profile.jpg'}" class="profilePicture">
               <strong>${data.user}</strong>
               <div class="timestamp">${data.timestamp ? new Date(data.timestamp.toDate()).toLocaleString() : "Just now"}</div>
             </div>
@@ -271,9 +323,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       }
     }
 
-    // Fetch comments when the page loads
+    // Fetch comments and display avatars when the page loads
     window.onload = () => {
       getComments();
+      displayAvatars(); // Display available avatars on page load
     };
 
     // Expose functions to global scope
