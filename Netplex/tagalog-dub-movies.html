@@ -175,7 +175,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     Welcome to <b>NETPLEX</b>
   </div>
 
-<html>
+  <!-- Leave a Comment Section -->
+  <div id="leaveCommentMessage">
+    Please leave a comment / Request a Movie
+  </div>
+
+  <div id="commentForm">
+    <input type="text" id="username" placeholder="Enter Username">
+    <textarea id="commentText" placeholder="Write a comment..."></textarea>
+    
+    <div id="avatarSelection">
+      <p>Select your avatar:</p>
+      <div id="avatarContainer"></div>
+      <img id="avatarPreview" src="https://example.com/profile1.jpg" alt="Selected Avatar">
+    </div>
+
+    <button onclick="submitComment()">Post Comment</button>
+  </div>
+
+  <div id="commentsContainer"></div> 
+
+  
 <!-- LEAVE A COMMENT START -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
@@ -197,7 +217,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     // Array of profile picture URLs
     const profilePictures = [
-      "https://api.dicebear.com/10.x/sprouts/svg",
+      "https://avatar.iran.liara.run/public/1",
       "https://avatar.iran.liara.run/public/2",
       "https://avatar.iran.liara.run/public/3",
       "https://avatar.iran.liara.run/public/37",
