@@ -873,16 +873,25 @@ initialize();
 <script src="/Adblock/adblock-detector.js"></script>  
 
 <!-- ============================= -->
-<!-- Download Popup Modal -->
+<!-- Download Popup -->
 <!-- ============================= -->
 <div id="download-popup" class="download-popup" style="display: none;">
-  <div class="download-modal-content">
-    <span id="close-download-popup" class="close-download-popup">&times;</span>
-    <iframe id="download-iframe" frameborder="0" allowfullscreen 
-            referrerpolicy="no-referrer" scrolling="yes" 
-            sandbox="allow-scripts allow-presentation allow-same-origin allow-downloads allow-forms">
-    </iframe>
-  </div>
+    <div class="download-modal-content">
+        <span id="close-download-popup" class="close-download-popup">&times;</span>
+
+        <h2>Download Movie</h2>
+        <p>Select a download source:</p>
+
+        <div class="download-buttons">
+            <button id="primary-download-btn" class="download-source-btn primary">
+                Primary Download
+            </button>
+
+            <button id="alternative-download-btn" class="download-source-btn alternative">
+                Alternative Download
+            </button>
+        </div>
+    </div>
 </div>
     
 </body>
