@@ -251,38 +251,68 @@ async function fetchMovieDetails() {
       });
     }
 
-    // Download Modal Logic
-    const downloadBtn = byId('download-btn');
-    const downloadPopup = byId('download-popup');
-    const downloadIframe = byId('download-iframe');
-    const closeDownloadBtn = byId('close-download-popup');
+// ==============================
+// DOWNLOAD OPTIONS
+// ==============================
+const downloadBtn = byId('download-btn');
+const downloadPopup = byId('download-popup');
+const closeDownloadBtn = byId('close-download-popup');
 
-    if (downloadBtn && downloadPopup && downloadIframe) {
-      // Open modal on click
-      safeOn(downloadBtn, 'click', () => {
+const primaryDownloadBtn = byId('primary-download-btn');
+const alternativeDownloadBtn = byId('alternative-download-btn');
+
+if (
+    downloadBtn &&
+    downloadPopup &&
+    closeDownloadBtn &&
+    primaryDownloadBtn &&
+    alternativeDownloadBtn
+) {
+    // Open download options
+    safeOn(downloadBtn, 'click', () => {
         if (!movieId) return;
-        
-      // Remove sandbox restrictions from download iframe
-        downloadIframe.removeAttribute('sandbox');
-        
-        downloadIframe.src = `https://web.nxsha.app/dl/movie/${movieId}`;
+
         downloadPopup.style.display = 'flex';
-      });
+    });
 
-      // Close modal on close button click
-      safeOn(closeDownloadBtn, 'click', () => {
+    // Primary Download
+    safeOn(primaryDownloadBtn, 'click', () => {
+        if (!movieId) return;
+
+        window.open(
+            `https://web.nxsha.app/dl/movie/${movieId}`,
+            '_blank',
+            'noopener,noreferrer'
+        );
+
         downloadPopup.style.display = 'none';
-        downloadIframe.src = ''; // Stops playback/loading in the background
-      });
+    });
 
-      // Close modal on clicking outside the content box
-      safeOn(downloadPopup, 'click', (e) => {
+    // Alternative Download
+    safeOn(alternativeDownloadBtn, 'click', () => {
+        if (!movieId) return;
+
+        window.open(
+            `https://vidvault.ru/movie/${movieId}`,
+            '_blank',
+            'noopener,noreferrer'
+        );
+
+        downloadPopup.style.display = 'none';
+    });
+
+    // Close popup
+    safeOn(closeDownloadBtn, 'click', () => {
+        downloadPopup.style.display = 'none';
+    });
+
+    // Close when clicking outside modal
+    safeOn(downloadPopup, 'click', (e) => {
         if (e.target === downloadPopup) {
-          downloadPopup.style.display = 'none';
-          downloadIframe.src = '';
+            downloadPopup.style.display = 'none';
         }
-      });
-    }
+    });
+}
     
     // Rating (5 stars)
     const starWrap = byId('movie-rating');
