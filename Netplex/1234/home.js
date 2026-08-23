@@ -1,3 +1,6 @@
+// ===================================
+// 1. TMDB CONFIG
+// ===================================
 const apiKey = "a1e72fd93ed59f56e6332813b9f8dcae";
 const baseURL = "https://api.themoviedb.org/3";
 const imgURL = "https://image.tmdb.org/t/p/w500";
@@ -15,9 +18,8 @@ const banner = document.querySelector(".banner");
 const bannerPlayButton = document.getElementById("banner-play-btn");
 
 // ===================================
-// 1. BANNER LOGIC
+// 2. BANNER LOGIC
 // ===================================
-
 async function fetchBanner() {
     // 1. Fetch New Releases for the current year (movies and TV) concurrently
     const [movieRes, tvRes] = await Promise.all([
@@ -87,9 +89,8 @@ if (bannerPlayButton) {
 }
 
 // ===================================
-// 2. MEDIA ROW GENERATION LOGIC
+// 3. MEDIA ROW GENERATION LOGIC
 // ===================================
-
 const mediaState = {};
 
 async function fetchMedia(url, containerId, type, page = 1) {
@@ -200,10 +201,9 @@ async function fetchNewReleases(containerId, pages = 5) {
 }
 
 // ===================================
-// 3. SCROLLING AND LAZY LOADING
+// 4. SCROLLING AND LAZY LOADING
 // (Moved to Global Scope)
 // ===================================
-
 function getURLForContainer(containerId) {
     const urls = {
         "popular-movies": `${baseURL}/discover/movie?api_key=${apiKey}&vote_count.gte=500&sort_by=popularity.desc`, // Removed &vote_average=10
@@ -257,9 +257,8 @@ function scrollRight(containerId) {
 
 
 // ===================================
-// 4. INITIALIZATION AND UI HANDLERS
+// 5. INITIALIZATION AND UI HANDLERS
 // ===================================
-
 // Initial Data Load
 fetchBanner();
 fetchNewReleases("new-releases", 3); // Load 3 pages of new releases
@@ -307,7 +306,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-
+// ===================================
+// 6. STICKY HEADER
+// ===================================
 // Handle Sticky Header (Combined and fixed)
 window.addEventListener("scroll", function () {
     let nav = document.querySelector("nav");
@@ -318,8 +319,52 @@ window.addEventListener("scroll", function () {
     }
 });
 
+// ===================================
+// 7. FLOATING MESSAGE
+// ===================================
 // For Floating Message Close Function Start (Kept for completeness, though already in HTML)
 function closeMessage() {
     document.getElementById("floating-message").style.display = "none";
 }
 // For Floating Message Close Function End
+
+
+// ===================================
+// 8. MOBILE NAVIGATION
+// ===================================
+document.addEventListener("DOMContentLoaded", function () {
+
+    const moreButton = document.getElementById("mobile-more-btn");
+    const moreMenu = document.getElementById("mobile-more-menu");
+
+    if (!moreButton || !moreMenu) return;
+
+
+    /* Open / close More menu */
+    moreButton.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+        moreMenu.classList.toggle("show");
+
+        moreButton.classList.toggle("active");
+
+    });
+
+
+    /* Prevent popup from closing when clicking inside */
+    moreMenu.addEventListener("click", function (event) {
+        event.stopPropagation();
+    });
+
+
+    /* Close popup when clicking elsewhere */
+    document.addEventListener("click", function () {
+
+        moreMenu.classList.remove("show");
+
+        moreButton.classList.remove("active");
+
+    });
+
+});
