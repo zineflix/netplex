@@ -1,5 +1,15 @@
-const apiKey = 'a1e72fd93ed59f56e6332813b9f8dcae';
+/* =========================================================
+   TMDB MOVIE & TV SHOWS
+   ========================================================= */
+
+const apiKey = 'aa1e72fd93ed59f56e6332813b9f8dcae';
 const baseUrl = 'https://api.themoviedb.org/3';
+const imageBaseUrl = 'https://image.tmdb.org/t/p/w500';
+
+/* =========================================================
+   DOM ELEMENTS
+   ========================================================= */
+
 const movieGrid = document.getElementById('movie-grid');
 const contentTypeSelect = document.getElementById('contentType');
 const genreSelect = document.getElementById('genreSelect');
@@ -7,240 +17,890 @@ const yearSelect = document.getElementById('yearSelect');
 const sortSelect = document.getElementById('sortSelect');
 const loadMoreBtn = document.getElementById('loadMoreBtn');
 
+/* =========================================================
+   STATE
+   ========================================================= */
+
 let movieGenres = [];
 let tvGenres = [];
-let currentYear = new Date().getFullYear();
+
+const currentYear = new Date().getFullYear();
+
 let currentPage = 1;
 let currentContentType = 'both';
 let currentGenre = 'all';
 let currentYearFilter = 'all';
 let currentSort = 'popularity.desc';
 
-async function fetchGenres() {
+let isLoading = false;
+
+/* =========================================================
+   INITIALIZATION
+   ========================================================= */
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeApp();
+    initializeNavigation();
+    initializeMoreDropdown();
+    initializeMobileMoreMenu();
+});
+
+
+async function initializeApp() {
     try {
-        const movieGenresResponse = await fetch(`${baseUrl}/genre/movie/list?api_key=${apiKey}&language=en-US`);
-        const tvGenresResponse = await fetch(`${baseUrl}/genre/tv/list?api_key=${apiKey}&language=en-US`);
-        const movieGenresData = await movieGenresResponse.json();
-        const tvGenresData = await tvGenresResponse.json();
-        movieGenres = movieGenresData.genres;
-        tvGenres = tvGenresData.genres;
-        populateGenreDropdown();
+        populateYearDropdown();
+
+        await fetchGenres();
+
+        updateGenreDropdown();
+
+        await updateAndFetch();
+
     } catch (error) {
-        console.error('Error fetching genres:', error);
+        console.error('Application initialization failed:', error);
+        showError('Unable to load movies and TV shows. Please refresh the page.');
     }
 }
 
-function populateGenreDropdown() {
-    genreSelect.innerHTML = '<option value="all">All Genres</option>';
+
+/* =========================================================
+   TMDB API HELPER
+   ========================================================= */
+
+async function tmdbFetch(endpoint, params = {}) {
+    const url = new URL(`${baseUrl}${endpoint}`);
+
+    url.searchParams.set('api_key', apiKey);
+    url.searchParams.set('language', 'en-US');
+
+    Object.entries(params).forEach(([key, value]) => {
+        if (
+            value !== undefined &&
+            value !== null &&
+            value !== ''
+        ) {
+            url.searchParams.set(key, value);
+        }
+    });
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        throw new Error(
+            `TMDB request failed: ${response.status} ${response.statusText}`
+        );
+    }
+
+    const data = await response.json();
+
+    if (data.success === false) {
+        throw new Error(data.status_message || 'TMDB API error.');
+    }
+
+    return data;
+}
+
+
+/* =========================================================
+   FETCH GENRES
+   ========================================================= */
+
+async function fetchGenres() {
+    try {
+        const [movieData, tvData] = await Promise.all([
+            tmdbFetch('/genre/movie/list'),
+            tmdbFetch('/genre/tv/list')
+        ]);
+
+        movieGenres = Array.isArray(movieData.genres)
+            ? movieData.genres
+            : [];
+
+        tvGenres = Array.isArray(tvData.genres)
+            ? tvData.genres
+            : [];
+
+    } catch (error) {
+        console.error('Error fetching genres:', error);
+
+        movieGenres = [];
+        tvGenres = [];
+
+        throw error;
+    }
+}
+
+
+/* =========================================================
+   GENRE DROPDOWN
+   ========================================================= */
+
+function updateGenreDropdown() {
+    if (!genreSelect) return;
+
+    const previousValue = currentGenre;
+
+    genreSelect.innerHTML = '';
+
+    const allOption = document.createElement('option');
+    allOption.value = 'all';
+    allOption.textContent = 'All Genres';
+    genreSelect.appendChild(allOption);
+
     let genresToShow = [];
 
     if (currentContentType === 'movies') {
-        genresToShow = movieGenres;
+
+        genresToShow = [...movieGenres];
+
     } else if (currentContentType === 'tvShows') {
-        genresToShow = tvGenres;
+
+        genresToShow = [...tvGenres];
+
     } else {
-        genresToShow = [...movieGenres, ...tvGenres];
+
+        /*
+         * Movies and TV have some different genre IDs.
+         * Merge them by genre name so the dropdown doesn't
+         * contain duplicate names.
+         */
+        const genreMap = new Map();
+
+        [...movieGenres, ...tvGenres].forEach(genre => {
+            if (!genreMap.has(genre.name)) {
+                genreMap.set(genre.name, genre);
+            }
+        });
+
+        genresToShow = [...genreMap.values()];
     }
+
+    genresToShow.sort((a, b) =>
+        a.name.localeCompare(b.name)
+    );
 
     genresToShow.forEach(genre => {
         const option = document.createElement('option');
+
         option.value = genre.id;
         option.textContent = genre.name;
+
         genreSelect.appendChild(option);
     });
+
+    /*
+     * Keep the previous selection if it still exists.
+     * Otherwise reset to All Genres.
+     */
+    const optionExists = [...genreSelect.options]
+        .some(option => option.value === String(previousValue));
+
+    if (optionExists) {
+        genreSelect.value = previousValue;
+    } else {
+        currentGenre = 'all';
+        genreSelect.value = 'all';
+    }
 }
 
+
+/* =========================================================
+   YEAR DROPDOWN
+   ========================================================= */
+
 function populateYearDropdown() {
+    if (!yearSelect) return;
+
+    yearSelect.innerHTML = '';
+
+    const allOption = document.createElement('option');
+    allOption.value = 'all';
+    allOption.textContent = 'All Years';
+
+    yearSelect.appendChild(allOption);
+
     for (let year = currentYear; year >= 1900; year--) {
         const option = document.createElement('option');
+
         option.value = year;
         option.textContent = year;
+
         yearSelect.appendChild(option);
     }
 }
 
-async function fetchMoviesAndTVShows(contentType, genreId, year, sortBy, page = 1, append = false) {
+
+/* =========================================================
+   FETCH MOVIES
+   ========================================================= */
+
+async function fetchMovies(year, genreId, sortBy, page) {
+
+    const params = {
+        page: page,
+        sort_by: sortBy
+    };
+
+    if (year !== 'all') {
+        params.primary_release_year = year;
+    }
+
+    if (genreId !== 'all') {
+        params.with_genres = genreId;
+    }
+
+    return tmdbFetch('/discover/movie', params);
+}
+
+
+/* =========================================================
+   FETCH TV SHOWS
+   ========================================================= */
+
+async function fetchTVShows(year, genreId, sortBy, page) {
+
+    const params = {
+        page: page,
+        sort_by: sortBy
+    };
+
+    if (year !== 'all') {
+        params.first_air_date_year = year;
+    }
+
+    if (genreId !== 'all') {
+        params.with_genres = genreId;
+    }
+
+    return tmdbFetch('/discover/tv', params);
+}
+
+
+/* =========================================================
+   FETCH CONTENT
+   ========================================================= */
+
+async function fetchMoviesAndTVShows(
+    contentType,
+    genreId,
+    year,
+    sortBy,
+    page = 1,
+    append = false
+) {
+
+    if (isLoading) return;
+
+    isLoading = true;
+
+    setLoadingState(true);
+
     try {
-        let moviesData = [];
-        let tvShowsData = [];
-        const genreQuery = genreId !== 'all' ? `&with_genres=${genreId}` : '';
-        const sortQuery = `&sort_by=${sortBy}`;
 
-        if (contentType === 'both' || contentType === 'movies') {
-            const yearQuery = year !== 'all' ? `&primary_release_year=${year}` : '';
-            const moviesResponse = await fetch(`${baseUrl}/discover/movie?api_key=${apiKey}&language=en-US&page=${page}${yearQuery}${genreQuery}${sortQuery}`);
-            const moviesDataResponse = await moviesResponse.json();
-            moviesData = moviesDataResponse.results;
+        let movies = [];
+        let tvShows = [];
+
+        /*
+         * Fetch movies and TV independently.
+         */
+        if (
+            contentType === 'both' ||
+            contentType === 'movies'
+        ) {
+
+            const moviesData = await fetchMovies(
+                year,
+                genreId,
+                sortBy,
+                page
+            );
+
+            movies = moviesData.results || [];
         }
 
-        if (contentType === 'both' || contentType === 'tvShows') {
-            const yearQuery = year !== 'all' ? `&first_air_date_year=${year}` : '';
-            const tvShowsResponse = await fetch(`${baseUrl}/discover/tv?api_key=${apiKey}&language=en-US&page=${page}${yearQuery}${genreQuery}${sortQuery}`);
-            const tvShowsDataResponse = await tvShowsResponse.json();
-            tvShowsData = tvShowsDataResponse.results;
+
+        if (
+            contentType === 'both' ||
+            contentType === 'tvShows'
+        ) {
+
+            const tvData = await fetchTVShows(
+                year,
+                genreId,
+                sortBy,
+                page
+            );
+
+            tvShows = tvData.results || [];
         }
 
-        const combinedData = [...moviesData, ...tvShowsData];
+
+        /*
+         * Add media type so we always know whether an item
+         * is a movie or TV show.
+         */
+        movies = movies.map(movie => ({
+            ...movie,
+            media_type: 'movie'
+        }));
+
+        tvShows = tvShows.map(show => ({
+            ...show,
+            media_type: 'tv'
+        }));
+
+
+        /*
+         * Combine results.
+         */
+        let combinedData = [
+            ...movies,
+            ...tvShows
+        ];
+
+
+        /*
+         * Remove items without posters.
+         */
+        combinedData = combinedData.filter(
+            item => item.poster_path
+        );
+
+
+        /*
+         * When displaying both types, sort the combined
+         * results again so the order is more consistent.
+         */
+        if (contentType === 'both') {
+
+            combinedData.sort((a, b) => {
+
+                if (sortBy === 'popularity.desc') {
+                    return (
+                        (b.popularity || 0) -
+                        (a.popularity || 0)
+                    );
+                }
+
+                if (sortBy === 'popularity.asc') {
+                    return (
+                        (a.popularity || 0) -
+                        (b.popularity || 0)
+                    );
+                }
+
+                if (sortBy === 'vote_average.desc') {
+                    return (
+                        (b.vote_average || 0) -
+                        (a.vote_average || 0)
+                    );
+                }
+
+                if (sortBy === 'vote_average.asc') {
+                    return (
+                        (a.vote_average || 0) -
+                        (b.vote_average || 0)
+                    );
+                }
+
+                return 0;
+            });
+        }
+
 
         if (append) {
+
             appendItems(combinedData);
+
         } else {
+
             movieGrid.innerHTML = '';
+
             displayItems(combinedData);
         }
 
-        loadMoreBtn.style.display = combinedData.length > 0 ? 'block' : 'none';
+
+        /*
+         * Show/hide Load More.
+         */
+        if (combinedData.length > 0) {
+            loadMoreBtn.style.display = 'block';
+        } else {
+            loadMoreBtn.style.display = 'none';
+
+            if (!append) {
+                showEmptyState();
+            }
+        }
 
     } catch (error) {
-        console.error('Error fetching data:', error);
+
+        console.error('Error fetching movies and TV shows:', error);
+
+        if (!append) {
+            showError(
+                'Unable to load content. Please try again.'
+            );
+        }
+
+    } finally {
+
+        isLoading = false;
+
+        setLoadingState(false);
     }
 }
 
 
+/* =========================================================
+   DISPLAY ITEMS
+   ========================================================= */
+
 function displayItems(items) {
-  const validItems = items.filter(item => item.poster_path);
-  validItems.forEach(item => {
-    const card = document.createElement('div');
-    card.classList.add('card');
 
-    const imgUrl = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
-    const detailUrl = item.title
-      ? `movie-details.html?movie_id=${item.id}`
-      : `tvshows-details.html?id=${item.id}`;
+    if (!movieGrid) return;
 
-    // derive year (fallback to '—' if missing)
-    const rawDate = item.release_date || item.first_air_date || "";
-    const year = rawDate ? String(rawDate).slice(0, 4) : "—";
+    items.forEach(item => {
 
-    card.innerHTML = `
-      <a href="${detailUrl}">
-        <img src="${imgUrl}" alt="${item.title || item.name}">
-        <span class="year-badge">${year}</span>
-      </a>
-    `;
+        if (!item.poster_path) return;
 
-    movieGrid.appendChild(card);
-  });
+
+        const card = document.createElement('div');
+
+        card.classList.add('card');
+
+
+        /*
+         * Determine whether this is a movie or TV show.
+         */
+        const isMovie =
+            item.media_type === 'movie' ||
+            (
+                !item.media_type &&
+                Boolean(item.title)
+            );
+
+
+        const title =
+            item.title ||
+            item.name ||
+            'Untitled';
+
+
+        const rawDate =
+            item.release_date ||
+            item.first_air_date ||
+            '';
+
+
+        const year =
+            rawDate
+                ? String(rawDate).substring(0, 4)
+                : '—';
+
+
+        const imgUrl =
+            `${imageBaseUrl}${item.poster_path}`;
+
+
+        /*
+         * Correct details page.
+         */
+        const detailUrl = isMovie
+            ? `movie-details.html?movie_id=${encodeURIComponent(item.id)}`
+            : `tvshows-details.html?id=${encodeURIComponent(item.id)}`;
+
+
+        /*
+         * Create elements instead of inserting untrusted
+         * TMDB data directly into innerHTML.
+         */
+        const link = document.createElement('a');
+        link.href = detailUrl;
+
+
+        const image = document.createElement('img');
+
+        image.src = imgUrl;
+        image.alt = title;
+        image.loading = 'lazy';
+
+
+        /*
+         * Prevent broken images from leaving ugly empty cards.
+         */
+        image.onerror = function () {
+            card.remove();
+        };
+
+
+        const yearBadge = document.createElement('span');
+
+        yearBadge.classList.add('year-badge');
+        yearBadge.textContent = year;
+
+
+        link.appendChild(image);
+        link.appendChild(yearBadge);
+
+        card.appendChild(link);
+
+        movieGrid.appendChild(card);
+    });
 }
 
+
+/* =========================================================
+   APPEND ITEMS
+   ========================================================= */
 
 function appendItems(items) {
     displayItems(items);
 }
 
-function updateAndFetch() {
-    currentYearFilter = yearSelect.value;
-    currentSort = sortSelect.value;
+
+/* =========================================================
+   UPDATE & FETCH
+   ========================================================= */
+
+async function updateAndFetch() {
+
+    currentYearFilter =
+        yearSelect.value;
+
+    currentSort =
+        sortSelect.value;
+
     currentPage = 1;
-    fetchMoviesAndTVShows(currentContentType, currentGenre, currentYearFilter, currentSort, currentPage);
+
+    await fetchMoviesAndTVShows(
+        currentContentType,
+        currentGenre,
+        currentYearFilter,
+        currentSort,
+        currentPage,
+        false
+    );
 }
 
-// Content type changes — refresh genres and fetch
-contentTypeSelect.addEventListener('change', () => {
-    currentContentType = contentTypeSelect.value;
-    populateGenreDropdown();
-    currentGenre = 'all';
-    genreSelect.value = 'all';
-    updateAndFetch();
-});
 
-// Genre changes — update currentGenre and fetch
-genreSelect.addEventListener('change', () => {
-    currentGenre = genreSelect.value;
-    updateAndFetch();
-});
+/* =========================================================
+   CONTENT TYPE CHANGE
+   ========================================================= */
 
-// Year and sort changes
-yearSelect.addEventListener('change', updateAndFetch);
-sortSelect.addEventListener('change', updateAndFetch);
+if (contentTypeSelect) {
 
-// Load more button
-loadMoreBtn.addEventListener('click', () => {
-    currentPage++;
-    fetchMoviesAndTVShows(currentContentType, currentGenre, currentYearFilter, currentSort, currentPage, true);
-});
+    contentTypeSelect.addEventListener(
+        'change',
+        async () => {
 
-window.onload = () => {
-    fetchGenres();
-    populateYearDropdown();
-    fetchMoviesAndTVShows(currentContentType, currentGenre, currentYearFilter, currentSort);
-};
+            currentContentType =
+                contentTypeSelect.value;
 
+            currentGenre = 'all';
 
+            updateGenreDropdown();
 
+            genreSelect.value = 'all';
 
-
-/* FOR RESPONSIVE NAVIGATION BAR START */
-// For Responsive Header
-window.addEventListener("scroll", function () {
-    let nav = document.querySelector("nav");
-    if (window.scrollY > 50) {
-        nav.classList.add("nav-solid"); // Solid color after scrolling down
-    } else {
-        nav.classList.remove("nav-solid"); // Transparent at the top
-    }
-});
-
-// For sticky header when scrolling
-    window.addEventListener("scroll", function () {
-      let nav = document.querySelector("nav");
-      if (window.scrollY > 50) {
-        nav.classList.add("nav-solid"); // Add solid background when scrolled
-      } else {
-        nav.classList.remove("nav-solid"); // Remove solid background at top
-      }
-    });
-
-    // Toggle menu visibility when menu button is clicked
-document.getElementById("menu-btn").addEventListener("click", function() {
-    document.getElementById("menu").classList.toggle("active");
-});
-/* FOR RESPONSIVE NAVIGATION BAR END */
-
-
-// For Dropdown More Button Function Start
-document.addEventListener("DOMContentLoaded", function () {
-    const dropdownButton = document.querySelector(".dropbtn");
-    const dropdownContent = document.querySelector(".dropdown-content");
-
-    dropdownButton.addEventListener("click", function (event) {
-        event.stopPropagation(); // Prevent event from bubbling up
-        dropdownContent.classList.toggle("active");
-    });
-
-    // Close dropdown if clicked outside
-    document.addEventListener("click", function (event) {
-        if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
-            dropdownContent.classList.remove("active");
+            await updateAndFetch();
         }
-    });
-});
+    );
+}
 
-// For Dropdown More Button Function End
 
-// ===================================
-//  MOBILE NAVIGATION
-// ===================================
-document.addEventListener("DOMContentLoaded", function () {
-    const moreButton = document.getElementById("mobile-more-btn");
-    const moreMenu = document.getElementById("mobile-more-menu");
-    if (!moreButton || !moreMenu) return;
+/* =========================================================
+   GENRE CHANGE
+   ========================================================= */
 
-    /* Open / close More menu */
-    moreButton.addEventListener("click", function (event) {
-        event.stopPropagation();
-        moreMenu.classList.toggle("show");
-        moreButton.classList.toggle("active");
-    });
+if (genreSelect) {
 
-    /* Prevent popup from closing when clicking inside */
-    moreMenu.addEventListener("click", function (event) {
-        event.stopPropagation();
-    });
+    genreSelect.addEventListener(
+        'change',
+        async () => {
 
-    /* Close popup when clicking elsewhere */
-    document.addEventListener("click", function () {
-        moreMenu.classList.remove("show");
-        moreButton.classList.remove("active");
-    });
-});
+            currentGenre =
+                genreSelect.value;
+
+            await updateAndFetch();
+        }
+    );
+}
+
+
+/* =========================================================
+   YEAR CHANGE
+   ========================================================= */
+
+if (yearSelect) {
+
+    yearSelect.addEventListener(
+        'change',
+        async () => {
+
+            await updateAndFetch();
+        }
+    );
+}
+
+
+/* =========================================================
+   SORT CHANGE
+   ========================================================= */
+
+if (sortSelect) {
+
+    sortSelect.addEventListener(
+        'change',
+        async () => {
+
+            await updateAndFetch();
+        }
+    );
+}
+
+
+/* =========================================================
+   LOAD MORE
+   ========================================================= */
+
+if (loadMoreBtn) {
+
+    loadMoreBtn.addEventListener(
+        'click',
+        async () => {
+
+            if (isLoading) return;
+
+            currentPage++;
+
+            await fetchMoviesAndTVShows(
+                currentContentType,
+                currentGenre,
+                currentYearFilter,
+                currentSort,
+                currentPage,
+                true
+            );
+        }
+    );
+}
+
+
+/* =========================================================
+   LOADING STATE
+   ========================================================= */
+
+function setLoadingState(loading) {
+
+    if (!loadMoreBtn) return;
+
+    if (loading) {
+
+        loadMoreBtn.disabled = true;
+        loadMoreBtn.textContent = 'Loading...';
+
+    } else {
+
+        loadMoreBtn.disabled = false;
+        loadMoreBtn.textContent = 'Load More';
+    }
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+function showEmptyState() {
+
+    if (!movieGrid) return;
+
+    movieGrid.innerHTML = '';
+
+    const message = document.createElement('div');
+
+    message.classList.add('empty-message');
+
+    message.textContent =
+        'No movies or TV shows found.';
+
+    movieGrid.appendChild(message);
+}
+
+
+/* =========================================================
+   ERROR STATE
+   ========================================================= */
+
+function showError(message) {
+
+    if (!movieGrid) return;
+
+    movieGrid.innerHTML = '';
+
+    const errorMessage = document.createElement('div');
+
+    errorMessage.classList.add('error-message');
+
+    errorMessage.textContent = message;
+
+    movieGrid.appendChild(errorMessage);
+
+    if (loadMoreBtn) {
+        loadMoreBtn.style.display = 'none';
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE NAVIGATION
+   ========================================================= */
+
+function initializeNavigation() {
+
+    const nav = document.querySelector('nav');
+
+    if (!nav) return;
+
+
+    /*
+     * One scroll listener only.
+     */
+    window.addEventListener(
+        'scroll',
+        () => {
+
+            if (window.scrollY > 50) {
+
+                nav.classList.add('nav-solid');
+
+            } else {
+
+                nav.classList.remove('nav-solid');
+            }
+        },
+        { passive: true }
+    );
+
+
+    /*
+     * Mobile menu.
+     */
+    const menuButton =
+        document.getElementById('menu-btn');
+
+    const menu =
+        document.getElementById('menu');
+
+
+    if (menuButton && menu) {
+
+        menuButton.addEventListener(
+            'click',
+            () => {
+
+                menu.classList.toggle('active');
+
+                menuButton.classList.toggle('active');
+            }
+        );
+    }
+}
+
+
+/* =========================================================
+   DESKTOP "MORE" DROPDOWN
+   ========================================================= */
+
+function initializeMoreDropdown() {
+
+    const dropdownButton =
+        document.querySelector('.dropbtn');
+
+    const dropdownContent =
+        document.querySelector('.dropdown-content');
+
+
+    if (!dropdownButton || !dropdownContent) {
+        return;
+    }
+
+
+    dropdownButton.addEventListener(
+        'click',
+        event => {
+
+            event.stopPropagation();
+
+            dropdownContent.classList.toggle('active');
+        }
+    );
+
+
+    document.addEventListener(
+        'click',
+        event => {
+
+            if (
+                !dropdownButton.contains(event.target) &&
+                !dropdownContent.contains(event.target)
+            ) {
+
+                dropdownContent.classList.remove('active');
+            }
+        }
+    );
+}
+
+
+/* =========================================================
+   MOBILE "MORE" MENU
+   ========================================================= */
+
+function initializeMobileMoreMenu() {
+
+    const moreButton =
+        document.getElementById('mobile-more-btn');
+
+    const moreMenu =
+        document.getElementById('mobile-more-menu');
+
+
+    if (!moreButton || !moreMenu) {
+        return;
+    }
+
+
+    moreButton.addEventListener(
+        'click',
+        event => {
+
+            event.stopPropagation();
+
+            moreMenu.classList.toggle('show');
+
+            moreButton.classList.toggle('active');
+        }
+    );
+
+
+    moreMenu.addEventListener(
+        'click',
+        event => {
+
+            event.stopPropagation();
+        }
+    );
+
+
+    document.addEventListener(
+        'click',
+        () => {
+
+            moreMenu.classList.remove('show');
+
+            moreButton.classList.remove('active');
+        }
+    );
+}
