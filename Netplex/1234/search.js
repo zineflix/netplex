@@ -176,10 +176,7 @@ window.addEventListener("scroll", function () {
       }
     });
 
-    // Toggle menu visibility when menu button is clicked
-document.getElementById("menu-btn").addEventListener("click", function() {
-    document.getElementById("menu").classList.toggle("active");
-});
+
 /* FOR RESPONSIVE NAVIGATION BAR END */
 
 
@@ -192,3 +189,71 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 // For Dropdown More Button Function End
+
+/* =========================================
+   MOBILE BOTTOM NAVIGATION
+========================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const moreButton =
+        document.getElementById("mobile-more-btn");
+
+    const moreMenu =
+        document.getElementById("mobile-more-menu");
+
+
+    if (!moreButton || !moreMenu) return;
+
+
+    /* Open / close More menu */
+
+    moreButton.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+        moreMenu.classList.toggle("show");
+
+        moreButton.classList.toggle("active");
+
+    });
+
+
+    /* Prevent popup from closing */
+
+    moreMenu.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+    });
+
+
+    /* Close when clicking outside */
+
+    document.addEventListener("click", function () {
+
+        moreMenu.classList.remove("show");
+
+        moreButton.classList.remove("active");
+
+    });
+
+
+    /* Close More menu after selecting a link */
+
+    const moreLinks =
+        moreMenu.querySelectorAll("a");
+
+    moreLinks.forEach(function (link) {
+
+        link.addEventListener("click", function () {
+
+            moreMenu.classList.remove("show");
+
+            moreButton.classList.remove("active");
+
+        });
+
+    });
+
+});
