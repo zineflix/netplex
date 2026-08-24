@@ -368,3 +368,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+// ===================================
+// MOBILE BOTTOM NAV ACTIVE BUTTON
+// ===================================
+
+document.addEventListener("DOMContentLoaded", function () {
+    const currentPage = window.location.pathname.split("/").pop() || "index.html";
+    const navItems = document.querySelectorAll(".mobile-nav-item[href]");
+
+    navItems.forEach(item => {
+        const linkPage = item.getAttribute("href").split("/").pop();
+
+        if (linkPage === currentPage) {
+            item.classList.add("active");
+        } else {
+            item.classList.remove("active");
+        }
+    });
+});
