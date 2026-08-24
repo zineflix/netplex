@@ -18,12 +18,6 @@ window.addEventListener("scroll", function () {
       }
     });
 
-    // Toggle menu visibility when menu button is clicked
-document.getElementById("menu-btn").addEventListener("click", function() {
-    document.getElementById("menu").classList.toggle("active");
-});
-
-
 // For Dropdown More Button Function Start
 document.addEventListener("DOMContentLoaded", function () {
     const dropdown = document.querySelector(".dropdown");
@@ -807,3 +801,235 @@ async function fetchFpjMovies() {
 // 4. Initialize the new section
 fetchFpjMovies();
 // FPJ Movie Collection SECTION END //
+
+/* =========================================================
+   NETPLEX MOBILE BOTTOM NAVIGATION
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const moreButton =
+        document.getElementById("mobile-more-btn");
+
+    const moreMenu =
+        document.getElementById("mobile-more-menu");
+
+    const nav =
+        document.getElementById("main-nav");
+
+
+    /* -----------------------------------------------------
+       Safety check
+    ----------------------------------------------------- */
+
+    if (!moreButton || !moreMenu) {
+        return;
+    }
+
+
+    /* -----------------------------------------------------
+       Open / Close More menu
+    ----------------------------------------------------- */
+
+    moreButton.addEventListener("click", function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const isOpen =
+            moreMenu.classList.contains("show");
+
+        if (isOpen) {
+
+            moreMenu.classList.remove("show");
+            moreButton.classList.remove("active");
+
+        } else {
+
+            moreMenu.classList.add("show");
+            moreButton.classList.add("active");
+
+        }
+
+    });
+
+
+    /* -----------------------------------------------------
+       Prevent popup from closing
+    ----------------------------------------------------- */
+
+    moreMenu.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+    });
+
+
+    /* -----------------------------------------------------
+       Close when clicking outside
+    ----------------------------------------------------- */
+
+    document.addEventListener("click", function (event) {
+
+        if (
+            !moreMenu.contains(event.target) &&
+            !moreButton.contains(event.target)
+        ) {
+
+            moreMenu.classList.remove("show");
+
+            moreButton.classList.remove("active");
+
+        }
+
+    });
+
+
+    /* -----------------------------------------------------
+       Close More menu when selecting an item
+    ----------------------------------------------------- */
+
+    const moreLinks =
+        moreMenu.querySelectorAll("a");
+
+    moreLinks.forEach(function (link) {
+
+        link.addEventListener("click", function () {
+
+            moreMenu.classList.remove("show");
+
+            moreButton.classList.remove("active");
+
+        });
+
+    });
+
+
+    /* -----------------------------------------------------
+       Highlight current page
+    ----------------------------------------------------- */
+
+    const currentPage =
+        window.location.pathname
+            .split("/")
+            .pop() || "index.html";
+
+
+    const navItems =
+        document.querySelectorAll(
+            ".mobile-bottom-nav .mobile-nav-item[data-page]"
+        );
+
+
+    navItems.forEach(function (item) {
+
+        const page =
+            item.getAttribute("data-page");
+
+        if (page === currentPage) {
+
+            item.classList.add("active");
+
+        } else {
+
+            item.classList.remove("active");
+
+        }
+
+    });
+
+
+    /* -----------------------------------------------------
+       More menu current page
+    ----------------------------------------------------- */
+
+    const moreLinksWithPage =
+        moreMenu.querySelectorAll("a");
+
+    moreLinksWithPage.forEach(function (link) {
+
+        const href =
+            link.getAttribute("href");
+
+        if (!href) return;
+
+        const linkPage =
+            href.split("/").pop();
+
+        if (linkPage === currentPage) {
+
+            link.style.backgroundColor =
+                "#0296cc";
+
+            const icon =
+                link.querySelector("i");
+
+            if (icon) {
+                icon.style.color = "#ffffff";
+            }
+
+        }
+
+    });
+
+
+    /* -----------------------------------------------------
+       Desktop nav background when scrolling
+    ----------------------------------------------------- */
+
+    function updateNavBackground() {
+
+        if (window.innerWidth > 768) {
+
+            if (window.scrollY > 50) {
+
+                nav.classList.add("nav-solid");
+
+            } else {
+
+                nav.classList.remove("nav-solid");
+
+            }
+
+        } else {
+
+            nav.classList.remove("nav-solid");
+
+        }
+
+    }
+
+
+    window.addEventListener(
+        "scroll",
+        updateNavBackground,
+        { passive: true }
+    );
+
+
+    window.addEventListener(
+        "resize",
+        updateNavBackground
+    );
+
+
+    updateNavBackground();
+
+
+    /* -----------------------------------------------------
+       Close More menu when screen becomes desktop
+    ----------------------------------------------------- */
+
+    window.addEventListener("resize", function () {
+
+        if (window.innerWidth > 768) {
+
+            moreMenu.classList.remove("show");
+
+            moreButton.classList.remove("active");
+
+        }
+
+    });
+
+});
