@@ -477,4 +477,328 @@ button {
 }
 /* Chatroom Section End */
 
+/* =========================================
+   NETPLEX MOBILE BOTTOM NAVIGATION
+========================================= */
 
+.mobile-bottom-nav,
+.mobile-more-menu {
+    display: none;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+    /* Hide desktop navigation */
+    #main-nav {
+        position: static;
+        width: 100%;
+        padding: 0;
+        background: transparent;
+        display: block;
+    }
+
+    #main-nav #logo {
+        display: none;
+    }
+
+    #main-nav .desktop-menu {
+        display: none !important;
+    }
+
+    #main-nav .menu-btn {
+        display: none !important;
+    }
+
+
+    /* =====================================
+       BOTTOM NAVIGATION
+    ===================================== */
+
+    .mobile-bottom-nav {
+        position: fixed;
+
+        left: 0;
+        bottom: 0;
+
+        width: 100%;
+        height: 65px;
+
+        display: flex;
+
+        background: rgba(15, 15, 15, 0.97);
+
+        border-top: 1px solid #333;
+
+        z-index: 99999;
+
+        justify-content: space-around;
+        align-items: center;
+
+        padding-bottom: env(safe-area-inset-bottom);
+
+        box-shadow:
+            0 -4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+
+    /* =====================================
+       NAV ITEMS
+    ===================================== */
+
+    .mobile-nav-item {
+        flex: 1;
+
+        height: 65px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: center;
+        align-items: center;
+
+        gap: 4px;
+
+        color: #aaa;
+
+        text-decoration: none;
+
+        background: transparent;
+
+        border: none;
+
+        font-family: inherit;
+
+        font-size: 11px;
+
+        font-weight: 500;
+
+        cursor: pointer;
+
+        transition:
+            color 0.2s ease,
+            transform 0.2s ease;
+    }
+
+
+    /* Icons */
+
+    .mobile-nav-item i {
+        font-size: 20px;
+
+        color: #aaa;
+
+        transition:
+            color 0.2s ease,
+            transform 0.2s ease;
+    }
+
+
+    /* Active */
+
+    .mobile-nav-item.active,
+    .mobile-nav-item.active i {
+        color: #0296cc;
+    }
+
+
+    /* Touch */
+
+    .mobile-nav-item:active {
+        color: #0296cc;
+
+        transform: scale(0.95);
+    }
+
+    .mobile-nav-item:active i {
+        color: #0296cc;
+
+        transform: scale(1.1);
+    }
+
+
+    /* =====================================
+       MORE POPUP
+    ===================================== */
+
+    .mobile-more-menu {
+        position: fixed;
+
+        right: 10px;
+
+        bottom: 75px;
+
+        width: 220px;
+
+        max-width: calc(100% - 20px);
+
+        background: rgba(25, 25, 25, 0.98);
+
+        border: 1px solid #333;
+
+        border-radius: 12px;
+
+        padding: 8px;
+
+        z-index: 100000;
+
+        box-shadow:
+            0 5px 25px rgba(0, 0, 0, 0.7);
+
+        display: none;
+    }
+
+
+    /* Show popup */
+
+    .mobile-more-menu.show {
+        display: block;
+
+        animation: moreMenuAnimation 0.2s ease;
+    }
+
+
+    /* Popup links */
+
+    .mobile-more-menu a {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        padding: 12px;
+
+        color: white;
+
+        text-decoration: none;
+
+        font-size: 14px;
+
+        border-radius: 8px;
+
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
+    }
+
+
+    /* Popup icons */
+
+    .mobile-more-menu a i {
+        width: 22px;
+
+        min-width: 22px;
+
+        text-align: center;
+
+        color: #0296cc;
+    }
+
+
+    /* Current page */
+
+    .mobile-more-menu a.current-page {
+        background: rgba(2, 150, 204, 0.15);
+
+        color: #0296cc;
+    }
+
+    .mobile-more-menu a.current-page i {
+        color: #0296cc;
+    }
+
+
+    /* Hover */
+
+    .mobile-more-menu a:hover {
+        background: #0296cc;
+
+        color: white;
+    }
+
+    .mobile-more-menu a:hover i {
+        color: white;
+    }
+
+
+    /* =====================================
+       BODY SPACE
+    ===================================== */
+
+    body {
+        padding-bottom: 75px;
+    }
+
+
+    /* =====================================
+       FOOTER
+    ===================================== */
+
+    .site-footer {
+        margin-bottom: 0 !important;
+
+        padding-bottom: 85px;
+    }
+
+
+    /* =====================================
+       ONLINE WIDGET
+    ===================================== */
+
+    #online-widget {
+        bottom: 80px !important;
+    }
+
+
+    /* =====================================
+       CHAT WIDGET
+    ===================================== */
+
+    #netplex-chatroom {
+        bottom: 70px !important;
+    }
+
+
+    /* =====================================
+       MORE MENU ANIMATION
+    ===================================== */
+
+    @keyframes moreMenuAnimation {
+
+        from {
+            opacity: 0;
+
+            transform:
+                translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+
+            transform:
+                translateY(0);
+        }
+
+    }
+
+}
+
+
+/* =========================================
+   DESKTOP
+========================================= */
+
+@media (min-width: 769px) {
+
+    .mobile-bottom-nav,
+    .mobile-more-menu {
+        display: none !important;
+    }
+
+}
