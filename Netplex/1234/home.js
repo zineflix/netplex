@@ -333,57 +333,25 @@ function closeMessage() {
 // 8. MOBILE NAVIGATION
 // ===================================
 document.addEventListener("DOMContentLoaded", function () {
-
     const moreButton = document.getElementById("mobile-more-btn");
     const moreMenu = document.getElementById("mobile-more-menu");
-
     if (!moreButton || !moreMenu) return;
-
 
     /* Open / close More menu */
     moreButton.addEventListener("click", function (event) {
-
         event.stopPropagation();
-
         moreMenu.classList.toggle("show");
-
         moreButton.classList.toggle("active");
-
     });
-
 
     /* Prevent popup from closing when clicking inside */
     moreMenu.addEventListener("click", function (event) {
         event.stopPropagation();
     });
 
-
     /* Close popup when clicking elsewhere */
     document.addEventListener("click", function () {
-
         moreMenu.classList.remove("show");
-
         moreButton.classList.remove("active");
-
-    });
-
-});
-
-// ===================================
-// MOBILE BOTTOM NAV ACTIVE BUTTON
-// ===================================
-
-document.addEventListener("DOMContentLoaded", function () {
-    const currentPage = window.location.pathname.split("/").pop() || "index.html";
-    const navItems = document.querySelectorAll(".mobile-nav-item[href]");
-
-    navItems.forEach(item => {
-        const linkPage = item.getAttribute("href").split("/").pop();
-
-        if (linkPage === currentPage) {
-            item.classList.add("active");
-        } else {
-            item.classList.remove("active");
-        }
     });
 });
