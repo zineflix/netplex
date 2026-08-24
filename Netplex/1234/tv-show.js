@@ -147,13 +147,6 @@ window.addEventListener("scroll", function () {
 });
 
 // ==============================
-// Toggle Menu
-// ==============================
-document.getElementById("menu-btn").addEventListener("click", function () {
-    document.getElementById("menu").classList.toggle("active");
-});
-
-// ==============================
 // Dropdown Toggle
 // ==============================
 document.addEventListener("DOMContentLoaded", function () {
