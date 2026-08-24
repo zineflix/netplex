@@ -18,11 +18,6 @@ window.addEventListener("scroll", function () {
       }
     });
 
-    // Toggle menu visibility when menu button is clicked
-document.getElementById("menu-btn").addEventListener("click", function() {
-    document.getElementById("menu").classList.toggle("active");
-});
-
 
 // For Dropdown More Button Function Start
 document.addEventListener("DOMContentLoaded", function () {
@@ -33,3 +28,114 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 // For Dropdown More Button Function End
+
+/* =========================================
+   MOBILE BOTTOM NAVIGATION
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const moreButton =
+            document.getElementById(
+                "mobile-more-btn"
+            );
+
+        const moreMenu =
+            document.getElementById(
+                "mobile-more-menu"
+            );
+
+
+        /* =====================================
+           CHECK ELEMENTS
+        ===================================== */
+
+        if (!moreButton || !moreMenu) {
+            return;
+        }
+
+
+        /* =====================================
+           OPEN / CLOSE MORE MENU
+        ===================================== */
+
+        moreButton.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+                moreMenu.classList.toggle("show");
+
+                moreButton.classList.toggle(
+                    "active"
+                );
+
+            }
+        );
+
+
+        /* =====================================
+           KEEP MENU OPEN WHEN CLICKING INSIDE
+        ===================================== */
+
+        moreMenu.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+            }
+        );
+
+
+        /* =====================================
+           CLOSE WHEN CLICKING OUTSIDE
+        ===================================== */
+
+        document.addEventListener(
+            "click",
+            function () {
+
+                moreMenu.classList.remove(
+                    "show"
+                );
+
+                moreButton.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+        /* =====================================
+           CLOSE WITH ESC KEY
+        ===================================== */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Escape") {
+
+                    moreMenu.classList.remove(
+                        "show"
+                    );
+
+                    moreButton.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
