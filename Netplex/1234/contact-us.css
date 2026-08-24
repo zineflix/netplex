@@ -66,103 +66,6 @@ body {
       background-color: #0296cc;
     }
 
-/* Mobile Navbar */
-.menu-toggle {
-    display: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: white;
-}
-
-@media (max-width: 768px) {
-    .nav-links {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 60px;
-        right: 0;
-        background-color: #1e1e1e;
-        width: 100%;
-        text-align: center;
-    }
-
-    .nav-links.active {
-        display: flex;
-    }
-
-    .menu-toggle {
-        display: block;
-    }
-
-    .nav-links li {
-        padding: 15px 0;
-    }
-}
-
-
-/* Mobile Styles (Screen width below 768px) */
-    @media (max-width: 768px) {
-      /* Navigation links initially hidden on mobile */
-      nav ul {
-        display: none;  /* Hidden by default */
-        flex-direction: column;
-        align-items: center;
-        background-color: rgba(0, 0, 0, 0.9);
-        position: absolute;
-        top: 50px; /* To place the menu below the nav bar */
-        left: 0;
-        right: 0;
-        width: 100%;
-        padding: 10px 0;
-      }
-      /* Active state of the menu */
-      nav.active ul {
-        display: flex; /* Show the menu when active */
-      }
-      nav ul li {
-        width: 100%;
-        text-align: center;
-        margin: 2px 0;
-      }
-
-      nav ul li a {
-        padding: 10px;
-        width: 100%;
-        text-align: center;
-      }
-
-      
-      /* Logo will adjust for smaller screens */
-      #logo {
-        max-height: 20px;
-      }
-
-      /* Menu Button visible on mobile */
-      .menu-btn {
-        color: white;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        background-color: #0296cc;
-        padding: 10px 20px;
-        border-radius: 5px;
-        display: block;  /* Visible on mobile */
-      }
-
-      /* Show menu when active */
-#menu.active {
-    display: flex;
-}
-    }
-
-    /* Hide the menu button on desktop */
-    @media (min-width: 769px) {
-      .menu-btn {
-        display: none;  /* Hide the menu button on desktop */
-      }
-    }
-
-
 /* Dropdown MORE Button Start*/
 .dropdown {
     position: relative;
@@ -485,3 +388,407 @@ section {
   z-index: 9999;
 }
 /* Chatroom Section End */
+
+/* =========================================
+   NETPLEX MOBILE BOTTOM NAVIGATION
+========================================= */
+
+.mobile-bottom-nav {
+    display: none;
+}
+
+.mobile-more-menu {
+    display: none;
+}
+
+
+/* =========================================
+   MOBILE ONLY
+========================================= */
+
+@media (max-width: 768px) {
+
+    /* -----------------------------------------
+       HIDE DESKTOP NAVIGATION
+    ----------------------------------------- */
+
+    #main-nav {
+        position: static !important;
+        width: 100%;
+        padding: 0 !important;
+        background: transparent !important;
+    }
+
+    #main-nav #logo {
+        display: none !important;
+    }
+
+    #main-nav .desktop-menu {
+        display: none !important;
+    }
+
+
+    /* =========================================
+       BOTTOM NAVIGATION
+    ========================================= */
+
+    .mobile-bottom-nav {
+
+        position: fixed;
+
+        display: flex;
+
+        left: 0;
+        bottom: 0;
+
+        width: 100%;
+
+        height: 65px;
+
+        background: rgba(15, 15, 15, 0.97);
+
+        border-top: 1px solid #333;
+
+        z-index: 99999;
+
+        justify-content: space-around;
+
+        align-items: center;
+
+        padding-bottom:
+            env(safe-area-inset-bottom);
+
+        box-shadow:
+            0 -4px 15px rgba(0, 0, 0, 0.5);
+
+    }
+
+
+    /* =========================================
+       NAVIGATION ITEM
+    ========================================= */
+
+    .mobile-nav-item {
+
+        flex: 1;
+
+        height: 65px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        justify-content: center;
+
+        align-items: center;
+
+        gap: 4px;
+
+        color: #aaa;
+
+        text-decoration: none;
+
+        background: transparent;
+
+        border: none;
+
+        font-family: inherit;
+
+        font-size: 11px;
+
+        font-weight: 500;
+
+        cursor: pointer;
+
+        transition:
+            color 0.2s ease,
+            transform 0.2s ease;
+
+        -webkit-tap-highlight-color:
+            transparent;
+
+    }
+
+
+    /* =========================================
+       ICON
+    ========================================= */
+
+    .mobile-nav-item i {
+
+        font-size: 20px;
+
+        color: #aaa;
+
+        transition:
+            color 0.2s ease,
+            transform 0.2s ease;
+
+    }
+
+
+    /* =========================================
+       ACTIVE MORE
+    ========================================= */
+
+    .mobile-nav-item.active {
+
+        color: #0296cc;
+
+    }
+
+    .mobile-nav-item.active i {
+
+        color: #0296cc;
+
+    }
+
+
+    /* =========================================
+       TOUCH / HOVER
+    ========================================= */
+
+    .mobile-nav-item:hover {
+
+        color: #0296cc;
+
+    }
+
+    .mobile-nav-item:hover i {
+
+        color: #0296cc;
+
+        transform: scale(1.1);
+
+    }
+
+    .mobile-nav-item:active {
+
+        color: #0296cc;
+
+        transform: scale(0.95);
+
+    }
+
+
+    /* =========================================
+       MORE POPUP
+    ========================================= */
+
+    .mobile-more-menu {
+
+        position: fixed;
+
+        display: none;
+
+        right: 10px;
+
+        bottom:
+            calc(75px + env(safe-area-inset-bottom));
+
+        width: 230px;
+
+        max-width:
+            calc(100vw - 20px);
+
+        background:
+            rgba(25, 25, 25, 0.98);
+
+        border: 1px solid #333;
+
+        border-radius: 12px;
+
+        padding: 8px;
+
+        z-index: 100000;
+
+        box-shadow:
+            0 5px 25px rgba(0, 0, 0, 0.7);
+
+        animation:
+            moreMenuAnimation 0.2s ease;
+
+    }
+
+
+    /* Show popup */
+
+    .mobile-more-menu.show {
+
+        display: block;
+
+    }
+
+
+    /* =========================================
+       MORE LINKS
+    ========================================= */
+
+    .mobile-more-menu a {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        padding: 12px;
+
+        color: #fff;
+
+        text-decoration: none;
+
+        font-size: 14px;
+
+        border-radius: 8px;
+
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
+
+    }
+
+
+    .mobile-more-menu a i {
+
+        width: 22px;
+
+        min-width: 22px;
+
+        text-align: center;
+
+        color: #0296cc;
+
+    }
+
+
+    .mobile-more-menu a:hover {
+
+        background: #0296cc;
+
+        color: #fff;
+
+    }
+
+
+    .mobile-more-menu a:hover i {
+
+        color: #fff;
+
+    }
+
+
+    /* =========================================
+       CURRENT PAGE
+    ========================================= */
+
+    .mobile-more-menu a.current-page {
+
+        background:
+            rgba(2, 150, 204, 0.18);
+
+        color: #0296cc;
+
+    }
+
+
+    .mobile-more-menu a.current-page i {
+
+        color: #0296cc;
+
+    }
+
+
+    /* =========================================
+       PAGE SPACE
+    ========================================= */
+
+    body {
+
+        padding-bottom:
+            calc(70px + env(safe-area-inset-bottom));
+
+    }
+
+
+    /* =========================================
+       FOOTER
+    ========================================= */
+
+    .site-footer {
+
+        margin-bottom: 0 !important;
+
+        padding-bottom:
+            calc(85px + env(safe-area-inset-bottom));
+
+    }
+
+
+    /* =========================================
+       TELEGRAM WIDGET
+    ========================================= */
+
+    #telegram-widget {
+
+        bottom:
+            calc(80px + env(safe-area-inset-bottom))
+            !important;
+
+    }
+
+
+    /* =========================================
+       ONLINE WIDGET
+    ========================================= */
+
+    #online-widget {
+
+        bottom:
+            calc(80px + env(safe-area-inset-bottom))
+            !important;
+
+    }
+
+
+    /* =========================================
+       ANIMATION
+    ========================================= */
+
+    @keyframes moreMenuAnimation {
+
+        from {
+
+            opacity: 0;
+
+            transform:
+                translateY(10px);
+
+        }
+
+        to {
+
+            opacity: 1;
+
+            transform:
+                translateY(0);
+
+        }
+
+    }
+
+}
+
+
+/* =========================================
+   DESKTOP
+========================================= */
+
+@media (min-width: 769px) {
+
+    .mobile-bottom-nav,
+    .mobile-more-menu {
+
+        display: none !important;
+
+    }
