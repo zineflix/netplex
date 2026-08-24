@@ -167,37 +167,6 @@ window.onload = () => {
 };
 
 
-
-
-
-/* FOR RESPONSIVE NAVIGATION BAR START */
-// For Responsive Header
-window.addEventListener("scroll", function () {
-    let nav = document.querySelector("nav");
-    if (window.scrollY > 50) {
-        nav.classList.add("nav-solid"); // Solid color after scrolling down
-    } else {
-        nav.classList.remove("nav-solid"); // Transparent at the top
-    }
-});
-
-// For sticky header when scrolling
-    window.addEventListener("scroll", function () {
-      let nav = document.querySelector("nav");
-      if (window.scrollY > 50) {
-        nav.classList.add("nav-solid"); // Add solid background when scrolled
-      } else {
-        nav.classList.remove("nav-solid"); // Remove solid background at top
-      }
-    });
-
-    // Toggle menu visibility when menu button is clicked
-document.getElementById("menu-btn").addEventListener("click", function() {
-    document.getElementById("menu").classList.toggle("active");
-});
-/* FOR RESPONSIVE NAVIGATION BAR END */
-
-
 // For Dropdown More Button Function Start
 document.addEventListener("DOMContentLoaded", function () {
     const dropdownButton = document.querySelector(".dropbtn");
@@ -217,3 +186,120 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // For Dropdown More Button Function End
+
+
+
+/* =====================================================
+   NETPLEX MOBILE BOTTOM NAVIGATION
+===================================================== */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const moreButton =
+        document.getElementById("mobile-more-btn");
+
+    const moreMenu =
+        document.getElementById("mobile-more-menu");
+
+
+    if (!moreButton || !moreMenu) {
+        return;
+    }
+
+
+    /* ================================================
+       OPEN / CLOSE MORE
+    ================================================ */
+
+    moreButton.addEventListener("click", function (event) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        const isOpen =
+            moreMenu.classList.contains("show");
+
+
+        if (isOpen) {
+
+            moreMenu.classList.remove("show");
+
+            moreButton.classList.remove("active");
+
+        } else {
+
+            moreMenu.classList.add("show");
+
+            moreButton.classList.add("active");
+
+        }
+
+    });
+
+
+    /* ================================================
+       PREVENT POPUP CLICK FROM CLOSING IT
+    ================================================ */
+
+    moreMenu.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+    });
+
+
+    /* ================================================
+       CLOSE WHEN CLICKING OUTSIDE
+    ================================================ */
+
+    document.addEventListener("click", function () {
+
+        moreMenu.classList.remove("show");
+
+        moreButton.classList.remove("active");
+
+    });
+
+
+    /* ================================================
+       CLOSE WHEN PRESSING ESC
+    ================================================ */
+
+    document.addEventListener("keydown", function (event) {
+
+        if (event.key === "Escape") {
+
+            moreMenu.classList.remove("show");
+
+            moreButton.classList.remove("active");
+
+        }
+
+    });
+
+});
+
+
+/* =====================================================
+   DESKTOP NAV SCROLL EFFECT
+===================================================== */
+
+window.addEventListener("scroll", function () {
+
+    const nav = document.querySelector("nav");
+
+    if (!nav) return;
+
+    if (window.scrollY > 50) {
+
+        nav.classList.add("nav-solid");
+
+    } else {
+
+        nav.classList.remove("nav-solid");
+
+    }
+
+});
+
