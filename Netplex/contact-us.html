@@ -34,7 +34,7 @@
     <script src="security.js"></script>
     
     <!-- Chatroom Start -->
-    <script id="chatBroEmbedCode">
+    <!-- <script id="chatBroEmbedCode">
 /* Chatbro Widget Embed Code Start */
 function ChatbroLoader(chats,async){async=!1!==async;var params={embedChatsParameters:chats instanceof Array?chats:[chats],lang:navigator.language||navigator.userLanguage,needLoadCode:'undefined'==typeof Chatbro,embedParamsVersion:localStorage.embedParamsVersion,chatbroScriptVersion:localStorage.chatbroScriptVersion},xhr=new XMLHttpRequest;xhr.withCredentials=!0,xhr.onload=function(){eval(xhr.responseText)},xhr.onerror=function(){console.error('Chatbro loading error')},xhr.open('GET','https://www.chatbro.com/embed.js?'+btoa(unescape(encodeURIComponent(JSON.stringify(params)))),async),xhr.send()}
 /* Chatbro Widget Embed Code End */
@@ -79,36 +79,250 @@ ChatbroLoader({encodedChatId: '1946E'});
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->    
 
-<!-- FOR RESPONSIVE NAVIGATION BAR START -->  
-<nav>
-    <!-- Logo -->
-    <img id="logo" src="https://netplex.pages.dev/img/netplex.png" alt="NETPLEX">
+<!-- ========================================= -->
+<!-- NETPLEX NAVIGATION -->
+<!-- ========================================= -->
 
-    <!-- Menu Button (visible only on mobile) -->
-    <span class="menu-btn" id="menu-btn">Menu</span>
-  
-    <!-- Navigation Menu -->
-    <ul id="menu">
-      <li><a href="index.html">HOME <i class="fa-solid fa-house" style="color: #0296cc;"></i></a></li>
-      <li><a href="movies.html">MOVIES <i class="fa-solid fa-film" style="color: #0296cc;"></i></a></li>
-      <li><a href="tv-show.html">TV-SHOWS <i class="fa-solid fa-tv" style="color: #0296cc;"></i></a></li>
-      <li><a href="category.html">CATEGORY <i class="fa-solid fa-layer-group" style="color: #0296cc;"></i></a></li>
-      <li><a href="search.html">SEARCH <i class="fa-solid fa-magnifying-glass" style="color: #0296cc;"></i></a></li>
-      <li><a href="https://animezone.pages.dev/">ANIME <i class="fa-solid fa-dragon" style="color: #0296cc;"></i></a></li>
-      <li class="dropdown">
-        <button class="dropbtn">MORE <i class="fa-solid fa-square-caret-down" style="color: #0296cc;"></i></button>
-        <ul class="dropdown-content">
-            <li><a href="tagalog-dub-movies.html">Tagalog Dub Movies</a></li>
-            <li><a href="tv-live-streaming.html">Live TV Streaming</a></li>
-            <li><a href="download-app.html">DOWNLOAD APP <i class="fa-solid fa-download" style="color: #0296cc;"></i></a></li>
-            <li><a href="about-us.html">About Us</a></li>
-            <li><a href="contact-us.html">Contact Us</a></li>
-        </ul>
-    </li>
+<nav id="main-nav">
+
+    <!-- Desktop Logo -->
+    <img
+        id="logo"
+        src="https://netplex.pages.dev/img/netplex.png"
+        alt="NETPLEX"
+    >
+
+    <!-- ========================================= -->
+    <!-- DESKTOP MENU -->
+    <!-- ========================================= -->
+
+    <ul id="menu" class="desktop-menu">
+
+        <li>
+            <a href="index.html">
+                HOME
+                <i class="fa-solid fa-house" style="color: #0296cc;"></i>
+            </a>
+        </li>
+
+        <li>
+            <a href="movies.html">
+                MOVIES
+                <i class="fa-solid fa-film" style="color: #0296cc;"></i>
+            </a>
+        </li>
+
+        <li>
+            <a href="tv-show.html">
+                TV-SHOWS
+                <i class="fa-solid fa-tv" style="color: #0296cc;"></i>
+            </a>
+        </li>
+
+        <li>
+            <a href="category.html">
+                CATEGORY
+                <i class="fa-solid fa-layer-group" style="color: #0296cc;"></i>
+            </a>
+        </li>
+
+        <li>
+            <a href="search.html">
+                SEARCH
+                <i class="fa-solid fa-magnifying-glass" style="color: #0296cc;"></i>
+            </a>
+        </li>
+
+        <li>
+            <a href="https://animezone.pages.dev/">
+                ANIME
+                <i class="fa-solid fa-dragon" style="color: #0296cc;"></i>
+            </a>
+        </li>
+
+        <!-- MORE -->
+        <li class="dropdown">
+
+            <button
+                class="dropbtn"
+                type="button"
+            >
+                MORE
+                <i class="fa-solid fa-square-caret-down" style="color: #0296cc;"></i>
+            </button>
+
+            <ul class="dropdown-content">
+
+                <li>
+                    <a href="tagalog-dub-movies.html">
+                        Tagalog Dub Movies
+                    </a>
+                </li>
+
+                <li>
+                    <a href="tv-live-streaming.html">
+                        Live TV Streaming
+                    </a>
+                </li>
+
+                <li>
+                    <a href="download-app.html">
+                        DOWNLOAD APP
+                    </a>
+                </li>
+
+                <li>
+                    <a href="about-us.html">
+                        About Us
+                    </a>
+                </li>
+
+                <li>
+                    <a href="contact-us.html">
+                        Contact Us
+                    </a>
+                </li>
+
+            </ul>
+
+        </li>
+
     </ul>
-    
-</nav>  
-<!-- FOR RESPONSIVE NAVIGATION BAR END -->
+
+
+    <!-- ========================================= -->
+    <!-- MOBILE BOTTOM NAVIGATION -->
+    <!-- ========================================= -->
+
+    <div class="mobile-bottom-nav">
+
+        <a
+            href="index.html"
+            class="mobile-nav-item"
+        >
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+
+
+        <a
+            href="movies.html"
+            class="mobile-nav-item"
+        >
+            <i class="fa-solid fa-film"></i>
+            <span>Movies</span>
+        </a>
+
+
+        <a
+            href="tv-show.html"
+            class="mobile-nav-item"
+        >
+            <i class="fa-solid fa-tv"></i>
+            <span>TV Show</span>
+        </a>
+
+
+        <!-- MORE -->
+        <button
+            class="mobile-nav-item active"
+            id="mobile-more-btn"
+            type="button"
+        >
+            <i class="fa-solid fa-bars"></i>
+            <span>More</span>
+        </button>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- MOBILE MORE MENU -->
+    <!-- ========================================= -->
+
+    <div
+        class="mobile-more-menu"
+        id="mobile-more-menu"
+    >
+
+        <a href="category.html">
+
+            <i class="fa-solid fa-layer-group"></i>
+
+            <span>Category</span>
+
+        </a>
+
+
+        <a href="search.html">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <span>Search</span>
+
+        </a>
+
+
+        <a href="https://animezone.pages.dev/">
+
+            <i class="fa-solid fa-dragon"></i>
+
+            <span>Anime</span>
+
+        </a>
+
+
+        <a href="tagalog-dub-movies.html">
+
+            <i class="fa-solid fa-film"></i>
+
+            <span>Tagalog Dub Movies</span>
+
+        </a>
+
+
+        <a href="tv-live-streaming.html">
+
+            <i class="fa-solid fa-tv"></i>
+
+            <span>Live TV</span>
+
+        </a>
+
+
+        <a href="download-app.html">
+
+            <i class="fa-solid fa-download"></i>
+
+            <span>Download App</span>
+
+        </a>
+
+
+        <a href="about-us.html">
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            <span>About Us</span>
+
+        </a>
+
+
+        <!-- CURRENT PAGE -->
+        <a
+            href="contact-us.html"
+            class="current-page"
+        >
+
+            <i class="fa-solid fa-envelope"></i>
+
+            <span>Contact Us</span>
+
+        </a>
+
+    </div>
+
+</nav>
 
 <!-- Contact Us Section Start -->  
  <section>
