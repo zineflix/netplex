@@ -18,11 +18,6 @@ window.addEventListener("scroll", function () {
       }
     });
 
-    // Toggle menu visibility when menu button is clicked
-document.getElementById("menu-btn").addEventListener("click", function() {
-    document.getElementById("menu").classList.toggle("active");
-});
-
 
 // For Dropdown More Button Function Start
 document.addEventListener("DOMContentLoaded", function () {
@@ -535,3 +530,154 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 // Fullscreen Button End //
+
+/* =========================================
+   NETPLEX NAVIGATION
+========================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const nav = document.getElementById("main-nav");
+
+    const moreButton =
+        document.getElementById("mobile-more-btn");
+
+    const moreMenu =
+        document.getElementById("mobile-more-menu");
+
+
+    /* =====================================
+       STICKY NAVIGATION BACKGROUND
+    ===================================== */
+
+    function updateNavigation() {
+
+        if (!nav) return;
+
+        if (window.scrollY > 50) {
+
+            nav.classList.add("nav-solid");
+
+        } else {
+
+            nav.classList.remove("nav-solid");
+
+        }
+
+    }
+
+    window.addEventListener(
+        "scroll",
+        updateNavigation,
+        { passive: true }
+    );
+
+    updateNavigation();
+
+
+    /* =====================================
+       MOBILE MORE BUTTON
+    ===================================== */
+
+    if (moreButton && moreMenu) {
+
+        moreButton.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+                moreMenu.classList.toggle("show");
+
+                moreButton.classList.toggle("active");
+
+            }
+        );
+
+
+        /* ---------------------------------
+           DON'T CLOSE WHEN CLICKING MENU
+        --------------------------------- */
+
+        moreMenu.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+            }
+        );
+
+
+        /* ---------------------------------
+           CLOSE WHEN CLICKING OUTSIDE
+        --------------------------------- */
+
+        document.addEventListener(
+            "click",
+            function () {
+
+                moreMenu.classList.remove("show");
+
+                moreButton.classList.remove("active");
+
+            }
+        );
+
+
+        /* ---------------------------------
+           CLOSE WITH ESC KEY
+        --------------------------------- */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Escape") {
+
+                    moreMenu.classList.remove("show");
+
+                    moreButton.classList.remove("active");
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================
+       CLOSE MOBILE MORE MENU AFTER
+       CLICKING A LINK
+    ===================================== */
+
+    if (moreMenu) {
+
+        const moreLinks =
+            moreMenu.querySelectorAll("a");
+
+        moreLinks.forEach(function (link) {
+
+            link.addEventListener(
+                "click",
+                function () {
+
+                    moreMenu.classList.remove("show");
+
+                    if (moreButton) {
+
+                        moreButton.classList.remove("active");
+
+                    }
+
+                }
+            );
+
+        });
+
+    }
+
+});
