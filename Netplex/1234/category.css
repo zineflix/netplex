@@ -283,100 +283,7 @@ h1 {
     nav ul li a.active {
       background-color: #0296cc;
     }
-/* Mobile Navbar */
-.menu-toggle {
-    display: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: white;
-}
 
-@media (max-width: 768px) {
-    .nav-links {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 60px;
-        right: 0;
-        background-color: #1e1e1e;
-        width: 100%;
-        text-align: center;
-    }
-
-    .nav-links.active {
-        display: flex;
-    }
-
-    .menu-toggle {
-        display: block;
-    }
-
-    .nav-links li {
-        padding: 15px 0;
-    }
-}
-
-/* Mobile Styles (Screen width below 768px) */
-    @media (max-width: 768px) {
-      /* Navigation links initially hidden on mobile */
-      nav ul {
-        display: none;  /* Hidden by default */
-        flex-direction: column;
-        align-items: center;
-        background-color: rgba(0, 0, 0, 0.9);
-        position: absolute;
-        top: 50px; /* To place the menu below the nav bar */
-        left: 0;
-        right: 0;
-        width: 100%;
-        padding: 10px 0;
-      }
-      /* Active state of the menu */
-      nav.active ul {
-        display: flex; /* Show the menu when active */
-      }
-      nav ul li {
-        width: 100%;
-        text-align: center;
-        margin: 2px 0;
-      }
-
-      nav ul li a {
-        padding: 10px;
-        width: 100%;
-        text-align: center;
-      }
-
-      /* Logo will adjust for smaller screens */
-      #logo {
-        max-height: 20px;
-      }
-
-      /* Menu Button visible on mobile */
-      .menu-btn {
-        color: white;
-        font-size: 18px;
-        font-weight: bold;
-        cursor: pointer;
-        background-color: #0296cc;
-        padding: 10px 20px;
-        border-radius: 5px;
-        display: block;  /* Visible on mobile */
-      }
-
-      /* Show menu when active */
-#menu.active {
-    display: flex;
-}
-    }
-
-    /* Hide the menu button on desktop */
-    @media (min-width: 769px) {
-      .menu-btn {
-        display: none;  /* Hide the menu button on desktop */
-      }
-    }
-/* NAVIGATION BAR END */
 
 
 /* Dropdown MORE Button Start*/
@@ -573,3 +480,358 @@ h1 {
   transform: translateY(-1px);
 }
 /* YEAR BADGE inside posters End */
+
+/* =====================================================
+   NETPLEX MOBILE BOTTOM NAVIGATION
+===================================================== */
+
+/* Hidden on desktop */
+.mobile-bottom-nav,
+.mobile-more-menu {
+    display: none;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+
+    /* ---------------------------------------------
+       Disable old desktop navigation on mobile
+    --------------------------------------------- */
+
+    nav {
+        position: static;
+        width: 100%;
+        padding: 0;
+        background: transparent;
+    }
+
+    nav #logo {
+        display: none;
+    }
+
+    nav .desktop-menu {
+        display: none !important;
+    }
+
+    /* Old menu button no longer needed */
+    .menu-btn {
+        display: none !important;
+    }
+
+
+    /* =================================================
+       BOTTOM NAVIGATION BAR
+    ================================================= */
+
+    .mobile-bottom-nav {
+        position: fixed;
+
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        width: 100%;
+        height: 65px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: space-around;
+
+        background: rgba(15, 15, 15, 0.97);
+
+        border-top: 1px solid #333;
+
+        box-shadow:
+            0 -4px 15px rgba(0, 0, 0, 0.5);
+
+        z-index: 99999;
+
+        padding-bottom: env(safe-area-inset-bottom);
+
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+
+    /* =================================================
+       NAV ITEMS
+    ================================================= */
+
+    .mobile-nav-item {
+
+        flex: 1;
+
+        height: 65px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 4px;
+
+        color: #aaa;
+
+        text-decoration: none;
+
+        background: transparent;
+
+        border: none;
+
+        outline: none;
+
+        font-family: inherit;
+
+        font-size: 11px;
+
+        font-weight: 500;
+
+        cursor: pointer;
+
+        transition:
+            color 0.2s ease,
+            transform 0.2s ease;
+    }
+
+
+    /* Icons */
+
+    .mobile-nav-item i {
+
+        font-size: 20px;
+
+        color: #aaa;
+
+        transition:
+            color 0.2s ease,
+            transform 0.2s ease;
+    }
+
+
+    /* =================================================
+       ACTIVE
+    ================================================= */
+
+    .mobile-nav-item.active,
+    .mobile-nav-item.active i {
+
+        color: #0296cc;
+    }
+
+
+    /* Category page:
+       More button is active because Category
+       is inside the More popup.
+    */
+
+    .mobile-nav-item:hover,
+    .mobile-nav-item:active {
+
+        color: #0296cc;
+    }
+
+    .mobile-nav-item:hover i,
+    .mobile-nav-item:active i {
+
+        color: #0296cc;
+
+        transform: scale(1.1);
+    }
+
+
+    /* =================================================
+       MORE POPUP
+    ================================================= */
+
+    .mobile-more-menu {
+
+        position: fixed;
+
+        right: 10px;
+
+        bottom: calc(75px + env(safe-area-inset-bottom));
+
+        width: 220px;
+
+        max-height: calc(100vh - 100px);
+
+        overflow-y: auto;
+
+        background: rgba(25, 25, 25, 0.98);
+
+        border: 1px solid #333;
+
+        border-radius: 12px;
+
+        padding: 8px;
+
+        z-index: 100000;
+
+        box-shadow:
+            0 5px 25px rgba(0, 0, 0, 0.7);
+
+        opacity: 0;
+
+        visibility: hidden;
+
+        transform: translateY(10px);
+
+        transition:
+            opacity 0.2s ease,
+            transform 0.2s ease,
+            visibility 0.2s ease;
+    }
+
+
+    /* Open state */
+
+    .mobile-more-menu.show {
+
+        display: block;
+
+        opacity: 1;
+
+        visibility: visible;
+
+        transform: translateY(0);
+    }
+
+
+    /* =================================================
+       MORE MENU LINKS
+    ================================================= */
+
+    .mobile-more-menu a {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        width: 100%;
+
+        padding: 12px;
+
+        color: #fff;
+
+        text-decoration: none;
+
+        font-size: 14px;
+
+        border-radius: 8px;
+
+        transition:
+            background 0.2s ease,
+            color 0.2s ease;
+    }
+
+
+    .mobile-more-menu a i {
+
+        width: 22px;
+
+        min-width: 22px;
+
+        text-align: center;
+
+        color: #0296cc;
+    }
+
+
+    /* Hover */
+
+    .mobile-more-menu a:hover {
+
+        background: #0296cc;
+
+        color: #fff;
+    }
+
+    .mobile-more-menu a:hover i {
+
+        color: #fff;
+    }
+
+
+    /* Current page */
+
+    .mobile-more-menu a.current-page {
+
+        background: rgba(2, 150, 204, 0.15);
+
+        color: #0296cc;
+    }
+
+    .mobile-more-menu a.current-page i {
+
+        color: #0296cc;
+    }
+
+
+    /* =================================================
+       BODY SPACE
+    ================================================= */
+
+    body {
+
+        padding-bottom:
+            calc(70px + env(safe-area-inset-bottom));
+    }
+
+
+    /* =================================================
+       FOOTER
+    ================================================= */
+
+    .site-footer {
+
+        margin-bottom: 0 !important;
+
+        padding-bottom:
+            calc(85px + env(safe-area-inset-bottom));
+    }
+
+
+    /* =================================================
+       EXISTING FLOATING WIDGETS
+    ================================================= */
+
+    #telegram-widget {
+        bottom: 80px !important;
+    }
+
+    #online-widget {
+        bottom: 80px !important;
+    }
+
+
+    /* Chatroom */
+
+    #netplex-chatroom {
+        bottom: 70px !important;
+    }
+
+}
+
+
+/* =====================================================
+   DESKTOP
+===================================================== */
+
+@media (min-width: 769px) {
+
+    .mobile-bottom-nav,
+    .mobile-more-menu {
+
+        display: none !important;
+    }
+
+}
