@@ -110,6 +110,14 @@ async function fetchMedia(url, containerId, type, page = 1) {
         const mediaItem = document.createElement("div");
         mediaItem.classList.add("media-item");
 
+// ===================================
+//  TV REMOTE/KEYBOARD CARD FOCUS
+// ===================================        
+/* Make card focusable by TV remote / keyboard */
+        mediaItem.setAttribute("tabindex", "0");
+        mediaItem.setAttribute("role", "button");
+/* Make card focusable by TV remote / keyboard */
+
         const title = item.title || item.name;
         const year = (item.release_date || item.first_air_date || '').slice(0, 4) || '—';
         const rating = item.vote_average.toFixed(1);
@@ -136,6 +144,20 @@ async function fetchMedia(url, containerId, type, page = 1) {
                 : `tvshows-details.html?id=${item.id}`;
         });
 
+
+// ===================================
+//  TV REMOTE OK/ENTER BUTTON
+// ===================================        
+/* TV remote OK / Enter button start */
+mediaItem.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        mediaItem.click();
+    }
+});
+/* TV remote OK / Enter button end */
+        
+        
         container.appendChild(mediaItem);
     });
 
