@@ -377,3 +377,165 @@ document.addEventListener("DOMContentLoaded", function () {
         moreButton.classList.remove("active");
     });
 });
+
+
+
+/* =========================================
+   TV REMOTE NAVIGATION
+========================================= */
+
+document.addEventListener("keydown", function (event) {
+
+    const focused = document.activeElement;
+
+    if (!focused || !focused.classList.contains("media-item")) {
+        return;
+    }
+
+    const currentRow = focused.closest(".media-row");
+
+    if (!currentRow) {
+        return;
+    }
+
+    const cards = Array.from(
+        currentRow.querySelectorAll(".media-item")
+    );
+
+    const currentIndex = cards.indexOf(focused);
+
+    if (currentIndex === -1) {
+        return;
+    }
+
+    /* =====================================
+       LEFT / RIGHT
+    ===================================== */
+
+    if (event.key === "ArrowRight") {
+
+        event.preventDefault();
+
+        const nextCard = cards[currentIndex + 1];
+
+        if (nextCard) {
+
+            nextCard.focus({
+                preventScroll: true
+            });
+
+            nextCard.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+                inline: "center"
+            });
+
+        } else {
+
+            /* Try loading more content at the end */
+            scrollRight(currentRow.id);
+
+        }
+    }
+
+    if (event.key === "ArrowLeft") {
+
+        event.preventDefault();
+
+        const previousCard = cards[currentIndex - 1];
+
+        if (previousCard) {
+
+            previousCard.focus({
+                preventScroll: true
+            });
+
+            previousCard.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+                inline: "center"
+            });
+        }
+    }
+
+    /* =====================================
+       UP / DOWN
+    ===================================== */
+
+    if (event.key === "ArrowDown") {
+
+        event.preventDefault();
+
+        const currentSection = currentRow.closest(".section");
+
+        if (!currentSection) return;
+
+        const nextSection =
+            currentSection.nextElementSibling;
+
+        if (!nextSection) return;
+
+        const nextRow =
+            nextSection.querySelector(".media-row");
+
+        if (!nextRow) return;
+
+        const nextCards =
+            nextRow.querySelectorAll(".media-item");
+
+        if (nextCards.length > 0) {
+
+            /* Try to keep the same card position */
+            const targetIndex = Math.min(
+                currentIndex,
+                nextCards.length - 1
+            );
+
+            nextCards[targetIndex].focus();
+
+            nextCards[targetIndex].scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+                inline: "center"
+            });
+        }
+    }
+
+    if (event.key === "ArrowUp") {
+
+        event.preventDefault();
+
+        const currentSection = currentRow.closest(".section");
+
+        if (!currentSection) return;
+
+        const previousSection =
+            currentSection.previousElementSibling;
+
+        if (!previousSection) return;
+
+        const previousRow =
+            previousSection.querySelector(".media-row");
+
+        if (!previousRow) return;
+
+        const previousCards =
+            previousRow.querySelectorAll(".media-item");
+
+        if (previousCards.length > 0) {
+
+            const targetIndex = Math.min(
+                currentIndex,
+                previousCards.length - 1
+            );
+
+            previousCards[targetIndex].focus();
+
+            previousCards[targetIndex].scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+                inline: "center"
+            });
+        }
+    }
+});
