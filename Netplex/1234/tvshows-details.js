@@ -728,7 +728,7 @@ safeOn(document,'DOMContentLoaded',()=>{
   });
 
   safeOn(byId('close-button'),'click',()=>{
-    window.location.href='index.html';
+    window.location.href='tv-show.html';
   });
 
   safeOn(window,'load',()=>{
