@@ -379,18 +379,125 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
 /* =========================================
-   TV REMOTE NAVIGATION
+   ANDROID TV INITIAL FOCUS
 ========================================= */
 
-document.addEventListener("keydown", function (event) {
+function focusFirstMovieCard() {
+
+    const firstCard = document.querySelector(
+        ".media-row .media-item"
+    );
+
+    if (firstCard) {
+
+        firstCard.focus();
+
+        firstCard.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "start"
+        });
+
+        console.log("TV Remote: First movie focused");
+
+    } else {
+
+        console.log("TV Remote: Waiting for movie cards...");
+
+        setTimeout(focusFirstMovieCard, 500);
+    }
+}
+
+
+/* Wait for dynamically loaded TMDB cards */
+window.addEventListener("load", () => {
+
+    setTimeout(() => {
+        focusFirstMovieCard();
+    }, 1500);
+
+});
+
+
+/* =========================================
+   ANDROID TV REMOTE NAVIGATION
+========================================= */
+
+document.addEventListener("keydown", function(event) {
+
+    const key = event.key;
+
+    /* Only handle TV navigation keys */
+    if (
+        key !== "ArrowLeft" &&
+        key !== "ArrowRight" &&
+        key !== "ArrowUp" &&
+        key !== "ArrowDown" &&
+        key !== "Enter" &&
+        key !== " "
+    ) {
+        return;
+    }
 
     const focused = document.activeElement;
 
-    if (!focused || !focused.classList.contains("media-item")) {
+    /* =====================================
+       ENTER / OK
+    ===================================== */
+
+    if (key === "Enter" || key === " ") {
+
+        if (
+            focused &&
+            focused.classList.contains("media-item")
+        ) {
+
+            event.preventDefault();
+
+            focused.click();
+
+        }
+
         return;
     }
+
+
+    /* =====================================
+       If nothing is focused
+       automatically select first poster
+    ===================================== */
+
+    if (
+        !focused ||
+        !focused.classList.contains("media-item")
+    ) {
+
+        const firstCard = document.querySelector(
+            ".media-row .media-item"
+        );
+
+        if (firstCard) {
+
+            event.preventDefault();
+
+            firstCard.focus();
+
+            firstCard.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+                inline: "start"
+            });
+
+        }
+
+        return;
+    }
+
+
+    /* =====================================
+       CURRENT ROW
+    ===================================== */
 
     const currentRow = focused.closest(".media-row");
 
@@ -398,21 +505,19 @@ document.addEventListener("keydown", function (event) {
         return;
     }
 
+
     const cards = Array.from(
         currentRow.querySelectorAll(".media-item")
     );
 
     const currentIndex = cards.indexOf(focused);
 
-    if (currentIndex === -1) {
-        return;
-    }
 
     /* =====================================
-       LEFT / RIGHT
+       RIGHT
     ===================================== */
 
-    if (event.key === "ArrowRight") {
+    if (key === "ArrowRight") {
 
         event.preventDefault();
 
@@ -420,9 +525,7 @@ document.addEventListener("keydown", function (event) {
 
         if (nextCard) {
 
-            nextCard.focus({
-                preventScroll: true
-            });
+            nextCard.focus();
 
             nextCard.scrollIntoView({
                 behavior: "smooth",
@@ -432,110 +535,173 @@ document.addEventListener("keydown", function (event) {
 
         } else {
 
-            /* Try loading more content at the end */
+            /* At the end of the row */
             scrollRight(currentRow.id);
 
+            /* Wait for lazy-loaded cards */
+            setTimeout(() => {
+
+                const updatedCards =
+                    currentRow.querySelectorAll(".media-item");
+
+                if (updatedCards[currentIndex + 1]) {
+
+                    updatedCards[currentIndex + 1].focus();
+
+                    updatedCards[currentIndex + 1]
+                        .scrollIntoView({
+                            behavior: "smooth",
+                            block: "nearest",
+                            inline: "center"
+                        });
+
+                }
+
+            }, 500);
         }
+
+        return;
     }
 
-    if (event.key === "ArrowLeft") {
+
+    /* =====================================
+       LEFT
+    ===================================== */
+
+    if (key === "ArrowLeft") {
 
         event.preventDefault();
 
-        const previousCard = cards[currentIndex - 1];
+        const previousCard =
+            cards[currentIndex - 1];
 
         if (previousCard) {
 
-            previousCard.focus({
-                preventScroll: true
-            });
+            previousCard.focus();
 
             previousCard.scrollIntoView({
                 behavior: "smooth",
                 block: "nearest",
                 inline: "center"
             });
+
         }
+
+        return;
     }
 
+
     /* =====================================
-       UP / DOWN
+       FIND SECTION
     ===================================== */
 
-    if (event.key === "ArrowDown") {
+    const currentSection =
+        currentRow.closest(".section");
+
+    if (!currentSection) {
+        return;
+    }
+
+
+    /* =====================================
+       DOWN
+    ===================================== */
+
+    if (key === "ArrowDown") {
 
         event.preventDefault();
-
-        const currentSection = currentRow.closest(".section");
-
-        if (!currentSection) return;
 
         const nextSection =
             currentSection.nextElementSibling;
 
-        if (!nextSection) return;
+        if (!nextSection) {
+            return;
+        }
 
         const nextRow =
             nextSection.querySelector(".media-row");
 
-        if (!nextRow) return;
+        if (!nextRow) {
+            return;
+        }
 
         const nextCards =
-            nextRow.querySelectorAll(".media-item");
-
-        if (nextCards.length > 0) {
-
-            /* Try to keep the same card position */
-            const targetIndex = Math.min(
-                currentIndex,
-                nextCards.length - 1
+            Array.from(
+                nextRow.querySelectorAll(".media-item")
             );
 
-            nextCards[targetIndex].focus();
-
-            nextCards[targetIndex].scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-                inline: "center"
-            });
+        if (!nextCards.length) {
+            return;
         }
+
+        const targetIndex = Math.min(
+            currentIndex,
+            nextCards.length - 1
+        );
+
+        const targetCard =
+            nextCards[targetIndex];
+
+        targetCard.focus();
+
+        targetCard.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "center"
+        });
+
+        return;
     }
 
-    if (event.key === "ArrowUp") {
+
+    /* =====================================
+       UP
+    ===================================== */
+
+    if (key === "ArrowUp") {
 
         event.preventDefault();
-
-        const currentSection = currentRow.closest(".section");
-
-        if (!currentSection) return;
 
         const previousSection =
             currentSection.previousElementSibling;
 
-        if (!previousSection) return;
+        if (!previousSection) {
+            return;
+        }
 
         const previousRow =
             previousSection.querySelector(".media-row");
 
-        if (!previousRow) return;
+        if (!previousRow) {
+            return;
+        }
 
         const previousCards =
-            previousRow.querySelectorAll(".media-item");
-
-        if (previousCards.length > 0) {
-
-            const targetIndex = Math.min(
-                currentIndex,
-                previousCards.length - 1
+            Array.from(
+                previousRow.querySelectorAll(".media-item")
             );
 
-            previousCards[targetIndex].focus();
-
-            previousCards[targetIndex].scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-                inline: "center"
-            });
+        if (!previousCards.length) {
+            return;
         }
+
+        const targetIndex = Math.min(
+            currentIndex,
+            previousCards.length - 1
+        );
+
+        const targetCard =
+            previousCards[targetIndex];
+
+        targetCard.focus();
+
+        targetCard.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "center"
+        });
+
+        return;
     }
+
 });
