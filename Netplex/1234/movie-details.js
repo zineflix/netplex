@@ -530,7 +530,7 @@ safeOn(document, 'DOMContentLoaded', () => {
   });
 
   // Close button (back to home)
-  safeOn(byId('close-button'), 'click', () => (window.location.href = 'index.html'));
+  safeOn(byId('close-button'), 'click', () => (window.location.href = 'movies.html'));
 
   // Loading screen hide
   safeOn(window, 'load', () => {
