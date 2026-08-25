@@ -757,29 +757,51 @@ function closeMessage(){
 // ==============================
 // FULLSCREEN FOR IFRAME
 // ==============================
-function toggleFullscreen(){
-  const iframeContainer=document.getElementById('iframe-container');
+// ==============================
+// FULLSCREEN FOR VIDEO ONLY
+// ==============================
+function toggleFullscreen() {
+    const iframe = document.getElementById('tv-iframe');
 
-  if(!iframeContainer){
-    console.error('Iframe container not found.');
-    return;
-  }
+    if (!iframe) {
+        console.error('TV iframe not found.');
+        return;
+    }
 
-  if(document.fullscreenElement||document.webkitFullscreenElement||document.mozFullScreenElement||document.msFullscreenElement){
-    if(document.exitFullscreen)document.exitFullscreen();
-    else if(document.mozCancelFullScreen)document.mozCancelFullScreen();
-    else if(document.webkitExitFullscreen)document.webkitExitFullscreen();
-    else if(document.msExitFullscreen)document.msExitFullscreen();
-  }else{
-    if(iframeContainer.requestFullscreen)iframeContainer.requestFullscreen();
-    else if(iframeContainer.mozRequestFullScreen)iframeContainer.mozRequestFullScreen();
-    else if(iframeContainer.webkitRequestFullscreen)iframeContainer.webkitRequestFullscreen();
-    else if(iframeContainer.msRequestFullscreen)iframeContainer.msRequestFullscreen();
-  }
+    const isFullscreen =
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement;
 
-  if(screen.orientation?.lock){
-    screen.orientation.lock('landscape').catch(e=>console.log('Orientation lock failed:',e));
-  }
+    if (isFullscreen) {
+        // Exit fullscreen
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+    } else {
+        // Fullscreen ONLY the video iframe
+        if (iframe.requestFullscreen) {
+            iframe.requestFullscreen();
+        } else if (iframe.mozRequestFullScreen) {
+            iframe.mozRequestFullScreen();
+        } else if (iframe.webkitRequestFullscreen) {
+            iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) {
+            iframe.msRequestFullscreen();
+        }
+    }
+
+    // Try landscape mode on mobile/TV devices
+    if (screen.orientation?.lock) {
+        screen.orientation.lock('landscape').catch(() => {});
+    }
 }
 
 // ==============================
