@@ -763,24 +763,35 @@ iframe {
 /* Chatroom Section End */
 
 
-/* FPJ Movie Collection Start */
-/* Ensure the FPJ gallery uses the same grid as the main gallery */
+/* =========================================================
+   FPJ MOVIE COLLECTION
+   ========================================================= */
+
 #fpjGallery {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
     padding: 20px;
     margin-bottom: 50px;
 }
 
-/* Responsive adjustment for small screens */
-@media (max-width: 600px) {
+/* Mobile: Always 3 columns */
+@media (max-width: 768px) {
     #fpjGallery {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 10px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        padding: 10px;
     }
 }
-/* FPJ Movie Collection End */
+
+/* Very small phones: Still 3 columns */
+@media (max-width: 480px) {
+    #fpjGallery {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+        padding: 8px;
+    }
+}
 
 /* =========================================================
    NETPLEX NAVIGATION
