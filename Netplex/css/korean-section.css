@@ -1,0 +1,962 @@
+@import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;400;500;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+/* ==============================
+  NAVIGATION BAR
+============================== */
+    nav {
+      width: 100%;
+      background: rgba(0, 0, 0, 0); /* Transparent at the top */
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      padding: 10px 20px;
+      transition: background-color 0.3s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Sticky Header when Scrolling */
+    .nav-solid {
+      background-color: rgba(0, 0, 0, 1); /* Solid background when scrolled */
+    }
+
+    /* Logo Style */
+    #logo {
+      max-height: 25px;
+      display: inline-block;
+    }
+
+    /* Navigation Menu (Links) */
+    nav ul {
+      display: flex;
+      justify-content: flex-end;
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+    }
+
+    nav ul li {
+      margin-left: 5px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 10px;
+      display: inline-block;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    nav ul li a:hover,
+    nav ul li a.active {
+      background-color: #0296cc;
+    }
+
+/* Mobile Styles (Screen width below 768px) */
+    @media (max-width: 768px) {
+      /* Navigation links initially hidden on mobile */
+      nav ul {
+        display: none;  /* Hidden by default */
+        flex-direction: column;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.9);
+        position: absolute;
+        top: 50px; /* To place the menu below the nav bar */
+        left: 0;
+        right: 0;
+        width: 100%;
+        padding: 10px 0;
+      }
+      /* Active state of the menu */
+      nav.active ul {
+        display: flex; /* Show the menu when active (if JS adds nav.active) */
+      }
+      nav ul li {
+        width: 100%;
+        text-align: center;
+        margin: 2px 0;
+      }
+
+      nav ul li a {
+        padding: 10px;
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Logo will adjust for smaller screens */
+      #logo {
+        max-height: 20px;
+      }
+
+      /* Menu Button visible on mobile */
+      .menu-btn {
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        background-color: #0296cc;
+        padding: 10px 20px;
+        border-radius: 5px;
+        display: block;  /* Visible on mobile */
+      }
+
+      /* Show menu when active */
+    #menu.active {
+        display: flex;
+    }
+    }
+
+    /* Hide the menu button on desktop */
+    @media (min-width: 769px) {
+      .menu-btn {
+        display: none;  /* Hide the menu button on desktop */
+      }
+    }
+
+/* ==============================
+  SCROLL CONTAINER
+============================== */
+.scroll-container {
+    position: relative; /* Needed for absolute positioning of arrows */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scroll-left, .scroll-right {
+    position: absolute;
+    top: 45%; /* Center vertically */
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    color: white;
+    border: none;
+    font-size: 30px;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 20; /* Ensure arrows are above the posters */
+    border-radius: 5%;
+}
+
+.scroll-left {
+    left: 0px; /* Adjust left arrow position */
+}
+
+.scroll-right {
+    right: 0px; /* Adjust right arrow position */
+}
+
+.scroll-left:hover, .scroll-right:hover {
+    background: rgba(255, 255, 255, 0.8);
+    color: black;
+}
+
+/* Adjustment of arrow button in mobile */
+@media (max-width: 768px) {
+        .scroll-left {
+          font-size: 20px;
+          padding: 8px;
+}
+        .scroll-right {
+          font-size: 20px;
+          padding: 8px;
+}
+}
+
+/* ==============================
+  BANNER SECTION
+============================== */
+.banner {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+.banner h1 {
+        font-size: 50px;
+        margin-bottom: 10px;
+    }
+
+.banner p {
+        font-size: 12px;
+        margin-bottom: 20px;
+    }
+
+/* Corrected selector for banner description (was p1) */
+#banner-description { 
+        font-size: 15px;
+        /* === TRUNCATION STYLES (Kept as is for compatibility) === */
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+        max-height: 4.5em; 
+    }
+
+.banner-content {
+    max-width: 40%;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 25px;
+    border-radius: 10px;
+}
+.banner::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, #121212 100%);
+        }
+
+/* Mobile Banner */
+@media (max-width: 768px) {
+    .banner {
+        height: 300px;
+        padding: 10px;
+    }
+
+    .banner-content {
+        max-width: 85%;
+        font-size: 14px;
+        padding: 5px;
+    }
+
+    .banner h1 {
+        font-size: 22px;
+        margin-bottom: 5px;
+    }
+
+    .banner p { /* Targets the genre line */
+        font-size: 8px;
+    }
+    
+    #banner-description { /* Targets the description line */
+        font-size: 10px;
+    }
+}
+
+/* ==============================
+  SECTION TITLE
+============================== */
+.section {
+    margin: 20px;
+}
+
+.section h2 {
+    color: white;
+    margin-bottom: -10px;
+}
+
+
+/* ==============================
+  POSTER ROW
+============================== */
+.media-row {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 10px;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    padding-bottom: 20px;  
+    object-fit: contain;
+    padding-top: 30px;
+    padding-bottom: 25px;
+}
+/* Make scrollbar always visible in Chrome */
+.media-row::-webkit-scrollbar {
+    height: 8px; /* Adjust scrollbar height */
+    background: rgba(255, 255, 255, 0.1); /* Light background for visibility */
+}
+
+/* Customize scrollbar thumb */
+.media-row::-webkit-scrollbar-thumb {
+    background: #ccc; /* Light gray scrollbar */
+    border-radius: 4px;
+}
+
+/* Ensure scrollbar is visible in Firefox */
+.media-row {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: #ccc rgba(255, 255, 255, 0.1);
+}
+
+/* ==============================
+  MEDIA ITEMS
+============================== */
+.media-item {
+    position: relative;
+    display: inline-block;
+    overflow: visible; /* Ensure the enlarged image is not clipped */
+}
+
+.poster-card {
+    position: relative;
+    display: inline-block;
+    border-radius: 8px;
+    overflow: hidden; /* Ensures image does not exceed bounds */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.poster-card:hover {
+    transform: scale(1.1);
+    z-index: 10; /* Ensures it appears above other elements */
+    box-shadow: 0 10px 20px #0296cc;
+}
+
+/* Poster image */
+.poster-card img {
+    width: 205px;
+    border-radius: 8px;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Mobile Poster Adjustments */
+@media (max-width: 768px) {
+    .media-item img {
+        width: 195px;
+    }
+}
+
+/* ==============================
+  FLOATING MESSAGE
+============================== */
+#floating-message {
+position: fixed;
+top: 25%;
+left: 50%;
+transform: translateX(-50%);
+background-color: #121212;
+color: white;
+text-align: center;
+padding: 16px;
+font-size: 15px;
+z-index: 1000;
+border-radius: 20px; /* Rounded top corners */
+width: 30%; /* You can adjust the width as needed */
+backdrop-filter: blur(8px); /* Apply blur effect to the background */
+-webkit-backdrop-filter: blur(8px); /* Ensure blur effect works on iOS */
+border: 2px solid white;
+}
+
+#floating-message p {
+font-size: 14px;  
+}
+
+#floating-message button {
+  background-color: #0296cc;
+  color: white;
+  border: none;
+  font-size: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+#floating-message button:hover {
+  background-color: #0275a6;
+}
+
+/* 🔴 Make the CLOSE button red */
+#floating-message .close-btn {
+  background-color: #cc2929;
+}
+
+#floating-message .close-btn:hover {
+  background-color: #a61e1e;
+}
+/* Adjustment of floating message in mobile */
+@media (max-width: 768px) {
+   #floating-message {
+     padding: 5px;
+     font-size: 14px;
+     width: 75%;
+     top: 25%;  
+}
+   #floating-message p {
+font-size: 12px;  
+}
+}
+
+/* ==============================
+  STAR RATING
+============================== */
+/* Container for each media item */
+.media-item {
+    position: relative;
+    display: inline-block;
+}
+
+/* Poster card wrapper */
+.poster-card {
+    position: relative;
+    display: inline-block;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Rating inside the card, positioned at the top-left */
+.rating {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(0, 0, 0, 0);
+    color: gold;
+    padding: 5px 8px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+/* Star icon */
+.star {
+  font-size: 1.3rem;
+  margin-right: 5px;
+  display: inline-block;
+}
+
+.star.filled::before {
+  content: '★'; /* Filled star */
+  color: #f7c400; /* Gold color */
+}
+
+.star.empty::before {
+  content: '☆'; /* Empty star */
+  color: #ccc; /* Light gray color for empty stars */
+}
+
+/* ==============================
+  PLAY BUTTON
+============================== */
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, #551A8B, #000);
+    color: white;
+    font-size: 28px;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    box-shadow: 0 0 15px violet;
+}
+
+/* Swirling Galaxy Effect */
+@keyframes galaxyGlow {
+    0% { box-shadow: 0 0 15px violet; }
+    50% { box-shadow: 0 0 30px blue; }
+    100% { box-shadow: 0 0 15px violet; }
+}
+
+.poster-card:hover .play-button {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+    animation: galaxyGlow 1.5s infinite alternate;
+}
+
+.play-button i {
+    font-size: 30px;
+}
+
+/* ==============================
+  DROPDOWN MORE BUTTON
+============================== */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background: none;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    text-transform: uppercase;
+    font-size: 17px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+.dropbtn:hover {
+    background-color: #0296cc;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #1e1e1e;
+    min-width: 150px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    border-radius: 5px;
+    right: 0;
+}
+
+.dropdown-content li {
+    list-style: none;
+    padding: 5px;
+    text-align: right;
+}
+
+.dropdown-content li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+    transition: background 0.3s;
+}
+
+.dropdown-content li a:hover {
+    background-color: #0296cc;
+}
+
+/* Show dropdown on hover (for larger screens) */
+@media (min-width: 769px) {
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+}
+
+/* Show dropdown on click (for mobile) */
+@media (max-width: 768px) {
+    .dropdown-content {
+        position: static;
+        display: none;
+    }
+    .dropdown-content li {
+        padding: 2px;
+    }
+    .dropdown.active .dropdown-content {
+        display: block;
+    }
+}
+
+/* ==============================
+  FOOTER SECTION
+============================== */
+.site-footer {
+  background-color: #1e1e1e;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 0px;
+  border-top: 1px solid #333;
+}
+
+.site-footer p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.footer-links {
+  margin-top: 10px;
+}
+
+.footer-links a {
+  color: #0296cc;
+  text-decoration: none;
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.disclaimer-note {
+  color: #bfbfbf;
+  font-family: Arial;
+}
+
+@media (max-width: 600px) {
+  .site-footer {
+    margin-bottom: 54px;
+    padding: 10px;
+  }
+  
+  .site-footer p {
+    font-size: 14px;
+  }
+
+  .footer-links {
+    flex-direction: row;
+    gap: 8px;
+    text-align: center;
+  }
+
+  .footer-links a {
+    margin: 0;
+  }
+}
+
+/* ==============================
+  POSTER TITLE
+============================== */
+.poster-title {
+    max-width: 205px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 15px;
+    font-weight: bold;
+    color: #00d4ff;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+/* ==============================
+  CHATROOM WIDGET
+============================== */
+#netplex-chatroom {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+/* ==============================
+  WIDGET
+============================== */
+#ga-widget {
+  padding: 10px;
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  font-family: Arial, sans-serif;
+}
+
+#ga-widget p {
+  margin: 5px 0;
+}
+
+#ga-widget strong {
+  color: #333;
+}
+
+.year-container {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  z-index: 2;
+  background-color: #0275a6;
+  color: #fff;
+  font-size: 13px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  pointer-events: none;
+}
+
+/* ==============================
+  TELEGRAM WIDGET
+============================== */
+#telegram-widget {
+  position: fixed;
+  bottom: 75px;    /* stays above banner bottom fade */
+  right: 20px;
+  background: #0296cc;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  z-index: 1100;    /* higher than banner but below nav */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: background 0.3s;
+}
+
+#telegram-widget a {
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  font-size: 16px;
+  align-items: center;
+  gap: 8px;
+}
+
+#telegram-widget a i {
+  font-size: 16px;    /* Bigger icon */
+}
+
+#telegram-widget:hover {
+  background: #006fa1;
+}
+
+/* 📱 Mobile Responsiveness */
+@media (max-width: 600px) {
+  #telegram-widget {
+    bottom: 75px;       /* move up so it doesn't overlap footer or nav */
+    right: 20px;        /* closer to edge */
+    padding: 8px 10px;  /* smaller padding */
+    font-size: 14px;    /* smaller text */
+  }
+
+  #telegram-widget a i {
+    font-size: 14px;    /* slightly smaller icon for mobile */
+  }
+
+  /* Optionally hide text on extra-small screens */
+  @media (max-width: 400px) {
+    #telegram-widget a span {
+      display: none;    /* hide "Join Telegram" text */
+    }
+    #telegram-widget {
+      padding: 8px;
+    }
+  }
+}
+
+/* ==============================
+  BANNER PLAY BUTTON
+============================== */
+.play-button-banner {
+  background-color: #0275a6;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  z-index: 999; /* Fixed missing semicolon */
+  position: relative;
+}
+
+.play-button-banner:hover {
+  background-color: #f40612;
+}
+
+
+/* =========================================
+   MOBILE BOTTOM NAVIGATION
+========================================= */
+
+.mobile-bottom-nav {
+    display: none;
+}
+
+.mobile-more-menu {
+    display: none;
+}
+
+/* =========================================
+   MOBILE ONLY
+========================================= */
+
+@media (max-width: 768px) {
+
+    /* Hide the old mobile menu system */
+    nav {
+        position: static;
+        padding: 0;
+        background: transparent;
+    }
+
+    nav #logo {
+        display: none;
+    }
+
+    nav .desktop-menu {
+        display: none !important;
+    }
+
+    .menu-btn {
+        display: none !important;
+    }
+
+    /* Bottom Navigation Bar */
+    .mobile-bottom-nav {
+        position: fixed;
+        display: flex;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 65px;
+        background: rgba(15, 15, 15, 0.97);
+        border-top: 1px solid #333;
+        z-index: 99999;
+        justify-content: space-around;
+        align-items: center;
+        padding-bottom: env(safe-area-inset-bottom);
+        box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Individual Navigation Item */
+    .mobile-nav-item {
+        flex: 1;
+        height: 65px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        color: #aaa;
+        text-decoration: none;
+        background: transparent;
+        border: none;
+        font-size: 11px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    /* Icons */
+    .mobile-nav-item i {
+        font-size: 20px;
+        color: #aaa;
+        transition: all 0.2s ease;
+    }
+
+    /* Active Navigation */
+    .mobile-nav-item.active,
+    .mobile-nav-item.active i {
+        color: #0296cc;
+    }
+
+    /* Tap / Hover Effect */
+    .mobile-nav-item:hover,
+    .mobile-nav-item:active {
+        color: #0296cc;
+    }
+
+    .mobile-nav-item:hover i,
+    .mobile-nav-item:active i {
+        color: #0296cc;
+        transform: scale(1.1);
+    }
+
+    /* =========================================
+       MORE POPUP
+    ========================================= */
+
+    .mobile-more-menu {
+        position: fixed;
+        right: 10px;
+        bottom: 75px;
+        width: 220px;
+        background: rgba(25, 25, 25, 0.98);
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 8px;
+        z-index: 100000;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
+        animation: moreMenuAnimation 0.2s ease;
+    }
+
+    .mobile-more-menu.show {
+        display: block;
+    }
+
+    .mobile-more-menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        border-radius: 8px;
+        transition: background 0.2s ease;
+    }
+
+    .mobile-more-menu a i {
+        width: 22px;
+        text-align: center;
+        color: #0296cc;
+    }
+
+    .mobile-more-menu a:hover {
+        background: #0296cc;
+    }
+
+    .mobile-more-menu a:hover i {
+        color: white;
+    }
+
+    /* =========================================
+       PAGE SPACE FOR BOTTOM NAV
+    ========================================= */
+
+    body {
+        padding-bottom: 70px;
+    }
+
+    /* Footer needs extra space */
+    .site-footer {
+        margin-bottom: 0 !important;
+        padding-bottom: 85px;
+    }
+
+    /* Telegram button stays above navigation */
+    #telegram-widget {
+        bottom: 80px !important;
+    }
+
+    /* Online widget stays above navigation */
+    #online-widget {
+        bottom: 80px !important;
+    }
+
+    /* More menu animation */
+    @keyframes moreMenuAnimation {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+/* =========================================
+   DESKTOP
+========================================= */
+
+@media (min-width: 769px) {
+    .mobile-bottom-nav,
+    .mobile-more-menu {
+        display: none !important;
+    }
+}
+
+
+
