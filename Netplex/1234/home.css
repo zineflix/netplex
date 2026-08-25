@@ -960,54 +960,49 @@ font-size: 12px;
 
 
 /* =========================================
-   TV REMOTE CONTROL / KEYBOARD FOCUS
+   ANDROID TV / TV REMOTE FOCUS
 ========================================= */
 
-/* Make movie/TV cards suitable for remote focus */
 .media-item {
-    scroll-snap-align: start;
+    position: relative;
+    flex: 0 0 auto;
     outline: none;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+    scroll-snap-align: start;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* TV remote / keyboard focused card */
-button:focus,
-a:focus,
+/* IMPORTANT: keyboard/remote focus */
 .media-item:focus,
-.movie-card:focus {
-    outline: 3px solid #ffffff;
-    outline-offset: 3px;
-    transform: scale(1.05);
-    z-index: 50;
-}
-
-/* Stronger focus for poster cards */
-.media-item:focus .poster-card {
-    box-shadow: 0 0 0 3px #ffffff, 0 0 25px #0296cc;
-}
-
-/* Smooth horizontal scrolling */
-.media-row {
-    scroll-snap-type: x proximity;
-}
-
-/* Prevent focus outline from being clipped */
-.media-row {
-    overflow-y: visible;
-}
-
-.poster-card {
-    overflow: hidden;
-}
-
-/* TV/remote friendly focus on navigation buttons */
-.scroll-left:focus,
-.scroll-right:focus,
-.play-button-banner:focus,
-.dropbtn:focus,
-.mobile-nav-item:focus {
-    outline: 3px solid #ffffff;
-    outline-offset: 3px;
-    transform: scale(1.05);
+.media-item:focus-visible {
+    outline: 3px solid #ffffff !important;
+    outline-offset: 4px;
+    transform: scale(1.06);
     z-index: 100;
+}
+
+/* Highlight the actual poster */
+.media-item:focus .poster-card,
+.media-item:focus-visible .poster-card {
+    box-shadow:
+        0 0 0 3px #ffffff,
+        0 0 25px rgba(2, 150, 204, 0.9);
+}
+
+/* Remote-focusable buttons and links */
+button:focus,
+button:focus-visible,
+a:focus,
+a:focus-visible {
+    outline: 3px solid #ffffff !important;
+    outline-offset: 3px;
+    z-index: 100;
+}
+
+/* Don't let the row clip the enlarged focused card */
+.media-row {
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-behavior: smooth;
+    scroll-snap-type: x proximity;
 }
