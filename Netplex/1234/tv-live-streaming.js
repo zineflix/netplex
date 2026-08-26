@@ -1,74 +1,35 @@
-// ===================================
-// 1. NAVIGATION
-// ===================================
-document.addEventListener("DOMContentLoaded", () => {
-    // 1. Horizontal Scroll Controls
-    document.querySelectorAll(".scroll-left").forEach(button => {
-        button.addEventListener("click", () => {
-            const targetId = button.nextElementSibling?.id;
-            if (targetId && typeof scrollLeft === "function") scrollLeft(targetId);
-        });
-    });
-
-    document.querySelectorAll(".scroll-right").forEach(button => {
-        button.addEventListener("click", () => {
-            const targetId = button.previousElementSibling?.id;
-            if (targetId && typeof scrollRight === "function") scrollRight(targetId);
-        });
-    });
-
-    // 2. Navigation & Dropdown Toggles
-    const menuBtn = document.getElementById("menu-btn");
-    const menu = document.getElementById("menu");
-    menuBtn?.addEventListener("click", () => menu?.classList.toggle("active"));
-
-    const dropdown = document.querySelector(".dropdown");
-    dropdown?.addEventListener("click", function () {
-        this.classList.toggle("active");
-    });
-
-    // 8. Mobile Navigation
-    const moreButton = document.getElementById("mobile-more-btn");
-    const moreMenu = document.getElementById("mobile-more-menu");
-
-    if (moreButton && moreMenu) {
-        moreButton.addEventListener("click", (event) => {
-            event.stopPropagation();
-            moreMenu.classList.toggle("show");
-            moreButton.classList.toggle("active");
-        });
-
-        moreMenu.addEventListener("click", (event) => event.stopPropagation());
-
-        document.addEventListener("click", () => {
-            moreMenu.classList.remove("show");
-            moreButton.classList.remove("active");
-        });
+// For Responsive Header
+window.addEventListener("scroll", function () {
+    let nav = document.querySelector("nav");
+    if (window.scrollY > 50) {
+        nav.classList.add("nav-solid"); // Solid color after scrolling down
+    } else {
+        nav.classList.remove("nav-solid"); // Transparent at the top
     }
 });
 
-// ===================================
-// 2. STICKY HEADER
-// ===================================
-const nav = document.querySelector("nav");
-if (nav) {
-    window.addEventListener("scroll", () => {
-        nav.classList.toggle("nav-solid", window.scrollY > 50);
-    }, { passive: true });
-}
-
-// ===================================
-// 3. FLOATING MESSAGE
-// ===================================
-function closeMessage() {
-    const msg = document.getElementById("floating-message");
-    if (msg) msg.style.display = "none";
-}
+// For sticky header when scrolling
+    window.addEventListener("scroll", function () {
+      let nav = document.querySelector("nav");
+      if (window.scrollY > 50) {
+        nav.classList.add("nav-solid"); // Add solid background when scrolled
+      } else {
+        nav.classList.remove("nav-solid"); // Remove solid background at top
+      }
+    });
 
 
-// ===================================
-// 4. TV LIVE
-// ===================================
+// For Dropdown More Button Function Start
+document.addEventListener("DOMContentLoaded", function () {
+    const dropdown = document.querySelector(".dropdown");
+
+    dropdown.addEventListener("click", function () {
+        this.classList.toggle("active");
+    });
+});
+// For Dropdown More Button Function End
+
+
 // TV Live Streaming Start //
 const channelData = {
             channels: [
@@ -172,7 +133,7 @@ const channelData = {
                     url: "https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_nickjr.mpd",
                     type: "mpd",
                     keys: {
-                        "bab5c1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR": "0ac679aad3b9d619ac39ad634ec76bc8"
+                        "bab5c1PbWWqgKDBDorh525uecKaGZD21FGSoCeR": "0ac679aad3b9d619ac39ad634ec76bc8"
                     }
                 },
                 {
@@ -228,7 +189,7 @@ const channelData = {
                     url: "https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/pbo_sd.mpd",
                     type: "mpd",
                     keys: {
-                        "dcbdaaa6662d4188bdf97f9f0ca5e830": "31PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR"
+                        "dcbdaaa6662d4188bdf97f9f0ca5e830": "31PbWWqgKDBDorh525uecKaGZD21FGSoCeR"
                     }
                 },
                 {
@@ -316,7 +277,7 @@ const channelData = {
                     url: "https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_crime_invest.mpd",
                     type: "mpd",
                     keys: {
-                        "21PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR": "db6bb638ccdfc1ad1a3e98d728486801"
+                        "21PbWWqgKDBDorh525uecKaGZD21FGSoCeR": "db6bb638ccdfc1ad1a3e98d728486801"
                     }
                 },
                 {
@@ -324,7 +285,7 @@ const channelData = {
                     url: "https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/cg_tagalogmovie.mpd",
                     type: "mpd",
                     keys: {
-                        "96701PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR": "ca2931211c1a261f082a3a2c4fd9f91b"
+                        "96701PbWWqgKDBDorh525uecKaGZD21FGSoCeR": "ca2931211c1a261f082a3a2c4fd9f91b"
                     }
                 },
                 {
@@ -332,7 +293,7 @@ const channelData = {
                     url: "https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/pbo_sd.mpd",
                     type: "mpd",
                     keys: {
-                        "dcbdaaa6662d4188bdf97f9f0ca5e830": "31PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR"
+                        "dcbdaaa6662d4188bdf97f9f0ca5e830": "31PbWWqgKDBDorh525uecKaGZD21FGSoCeR"
                     }
                 },
                 {
@@ -569,3 +530,154 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 // Fullscreen Button End //
+
+/* =========================================
+   NETPLEX NAVIGATION
+========================================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const nav = document.getElementById("main-nav");
+
+    const moreButton =
+        document.getElementById("mobile-more-btn");
+
+    const moreMenu =
+        document.getElementById("mobile-more-menu");
+
+
+    /* =====================================
+       STICKY NAVIGATION BACKGROUND
+    ===================================== */
+
+    function updateNavigation() {
+
+        if (!nav) return;
+
+        if (window.scrollY > 50) {
+
+            nav.classList.add("nav-solid");
+
+        } else {
+
+            nav.classList.remove("nav-solid");
+
+        }
+
+    }
+
+    window.addEventListener(
+        "scroll",
+        updateNavigation,
+        { passive: true }
+    );
+
+    updateNavigation();
+
+
+    /* =====================================
+       MOBILE MORE BUTTON
+    ===================================== */
+
+    if (moreButton && moreMenu) {
+
+        moreButton.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+
+                event.stopPropagation();
+
+                moreMenu.classList.toggle("show");
+
+                moreButton.classList.toggle("active");
+
+            }
+        );
+
+
+        /* ---------------------------------
+           DON'T CLOSE WHEN CLICKING MENU
+        --------------------------------- */
+
+        moreMenu.addEventListener(
+            "click",
+            function (event) {
+
+                event.stopPropagation();
+
+            }
+        );
+
+
+        /* ---------------------------------
+           CLOSE WHEN CLICKING OUTSIDE
+        --------------------------------- */
+
+        document.addEventListener(
+            "click",
+            function () {
+
+                moreMenu.classList.remove("show");
+
+                moreButton.classList.remove("active");
+
+            }
+        );
+
+
+        /* ---------------------------------
+           CLOSE WITH ESC KEY
+        --------------------------------- */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (event.key === "Escape") {
+
+                    moreMenu.classList.remove("show");
+
+                    moreButton.classList.remove("active");
+
+                }
+
+            }
+        );
+
+    }
+
+
+    /* =====================================
+       CLOSE MOBILE MORE MENU AFTER
+       CLICKING A LINK
+    ===================================== */
+
+    if (moreMenu) {
+
+        const moreLinks =
+            moreMenu.querySelectorAll("a");
+
+        moreLinks.forEach(function (link) {
+
+            link.addEventListener(
+                "click",
+                function () {
+
+                    moreMenu.classList.remove("show");
+
+                    if (moreButton) {
+
+                        moreButton.classList.remove("active");
+
+                    }
+
+                }
+            );
+
+        });
+
+    }
+
+});
