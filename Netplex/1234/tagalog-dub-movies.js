@@ -1,34 +1,73 @@
-// For Responsive Header
-window.addEventListener("scroll", function () {
-    let nav = document.querySelector("nav");
-    if (window.scrollY > 50) {
-        nav.classList.add("nav-solid"); // Solid color after scrolling down
-    } else {
-        nav.classList.remove("nav-solid"); // Transparent at the top
+// ===================================
+// 1. NAVIGATION
+// ===================================
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. Horizontal Scroll Controls
+    document.querySelectorAll(".scroll-left").forEach(button => {
+        button.addEventListener("click", () => {
+            const targetId = button.nextElementSibling?.id;
+            if (targetId && typeof scrollLeft === "function") scrollLeft(targetId);
+        });
+    });
+
+    document.querySelectorAll(".scroll-right").forEach(button => {
+        button.addEventListener("click", () => {
+            const targetId = button.previousElementSibling?.id;
+            if (targetId && typeof scrollRight === "function") scrollRight(targetId);
+        });
+    });
+
+    // 2. Navigation & Dropdown Toggles
+    const menuBtn = document.getElementById("menu-btn");
+    const menu = document.getElementById("menu");
+    menuBtn?.addEventListener("click", () => menu?.classList.toggle("active"));
+
+    const dropdown = document.querySelector(".dropdown");
+    dropdown?.addEventListener("click", function () {
+        this.classList.toggle("active");
+    });
+
+    // 8. Mobile Navigation
+    const moreButton = document.getElementById("mobile-more-btn");
+    const moreMenu = document.getElementById("mobile-more-menu");
+
+    if (moreButton && moreMenu) {
+        moreButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+            moreMenu.classList.toggle("show");
+            moreButton.classList.toggle("active");
+        });
+
+        moreMenu.addEventListener("click", (event) => event.stopPropagation());
+
+        document.addEventListener("click", () => {
+            moreMenu.classList.remove("show");
+            moreButton.classList.remove("active");
+        });
     }
 });
 
-// For sticky header when scrolling
-    window.addEventListener("scroll", function () {
-      let nav = document.querySelector("nav");
-      if (window.scrollY > 50) {
-        nav.classList.add("nav-solid"); // Add solid background when scrolled
-      } else {
-        nav.classList.remove("nav-solid"); // Remove solid background at top
-      }
-    });
+// ===================================
+// 2. STICKY HEADER
+// ===================================
+const nav = document.querySelector("nav");
+if (nav) {
+    window.addEventListener("scroll", () => {
+        nav.classList.toggle("nav-solid", window.scrollY > 50);
+    }, { passive: true });
+}
 
-// For Dropdown More Button Function Start
-document.addEventListener("DOMContentLoaded", function () {
-    const dropdown = document.querySelector(".dropdown");
+// ===================================
+// 3. FLOATING MESSAGE
+// ===================================
+function closeMessage() {
+    const msg = document.getElementById("floating-message");
+    if (msg) msg.style.display = "none";
+}
 
-    dropdown.addEventListener("click", function () {
-        this.classList.toggle("active");
-    });
-});
-// For Dropdown More Button Function End
-
-
+// ===================================
+// 4. TAGALOG DUB SECTION
+// ===================================
 // FOR TAGALOG DUB MOVIE SECTION START //
 const API_KEY = "a1e72fd93ed59f56e6332813b9f8dcae";
         const MOVIE_IDS = [
@@ -801,235 +840,3 @@ async function fetchFpjMovies() {
 // 4. Initialize the new section
 fetchFpjMovies();
 // FPJ Movie Collection SECTION END //
-
-/* =========================================================
-   NETPLEX MOBILE BOTTOM NAVIGATION
-========================================================= */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const moreButton =
-        document.getElementById("mobile-more-btn");
-
-    const moreMenu =
-        document.getElementById("mobile-more-menu");
-
-    const nav =
-        document.getElementById("main-nav");
-
-
-    /* -----------------------------------------------------
-       Safety check
-    ----------------------------------------------------- */
-
-    if (!moreButton || !moreMenu) {
-        return;
-    }
-
-
-    /* -----------------------------------------------------
-       Open / Close More menu
-    ----------------------------------------------------- */
-
-    moreButton.addEventListener("click", function (event) {
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        const isOpen =
-            moreMenu.classList.contains("show");
-
-        if (isOpen) {
-
-            moreMenu.classList.remove("show");
-            moreButton.classList.remove("active");
-
-        } else {
-
-            moreMenu.classList.add("show");
-            moreButton.classList.add("active");
-
-        }
-
-    });
-
-
-    /* -----------------------------------------------------
-       Prevent popup from closing
-    ----------------------------------------------------- */
-
-    moreMenu.addEventListener("click", function (event) {
-
-        event.stopPropagation();
-
-    });
-
-
-    /* -----------------------------------------------------
-       Close when clicking outside
-    ----------------------------------------------------- */
-
-    document.addEventListener("click", function (event) {
-
-        if (
-            !moreMenu.contains(event.target) &&
-            !moreButton.contains(event.target)
-        ) {
-
-            moreMenu.classList.remove("show");
-
-            moreButton.classList.remove("active");
-
-        }
-
-    });
-
-
-    /* -----------------------------------------------------
-       Close More menu when selecting an item
-    ----------------------------------------------------- */
-
-    const moreLinks =
-        moreMenu.querySelectorAll("a");
-
-    moreLinks.forEach(function (link) {
-
-        link.addEventListener("click", function () {
-
-            moreMenu.classList.remove("show");
-
-            moreButton.classList.remove("active");
-
-        });
-
-    });
-
-
-    /* -----------------------------------------------------
-       Highlight current page
-    ----------------------------------------------------- */
-
-    const currentPage =
-        window.location.pathname
-            .split("/")
-            .pop() || "index.html";
-
-
-    const navItems =
-        document.querySelectorAll(
-            ".mobile-bottom-nav .mobile-nav-item[data-page]"
-        );
-
-
-    navItems.forEach(function (item) {
-
-        const page =
-            item.getAttribute("data-page");
-
-        if (page === currentPage) {
-
-            item.classList.add("active");
-
-        } else {
-
-            item.classList.remove("active");
-
-        }
-
-    });
-
-
-    /* -----------------------------------------------------
-       More menu current page
-    ----------------------------------------------------- */
-
-    const moreLinksWithPage =
-        moreMenu.querySelectorAll("a");
-
-    moreLinksWithPage.forEach(function (link) {
-
-        const href =
-            link.getAttribute("href");
-
-        if (!href) return;
-
-        const linkPage =
-            href.split("/").pop();
-
-        if (linkPage === currentPage) {
-
-            link.style.backgroundColor =
-                "#0296cc";
-
-            const icon =
-                link.querySelector("i");
-
-            if (icon) {
-                icon.style.color = "#ffffff";
-            }
-
-        }
-
-    });
-
-
-    /* -----------------------------------------------------
-       Desktop nav background when scrolling
-    ----------------------------------------------------- */
-
-    function updateNavBackground() {
-
-        if (window.innerWidth > 768) {
-
-            if (window.scrollY > 50) {
-
-                nav.classList.add("nav-solid");
-
-            } else {
-
-                nav.classList.remove("nav-solid");
-
-            }
-
-        } else {
-
-            nav.classList.remove("nav-solid");
-
-        }
-
-    }
-
-
-    window.addEventListener(
-        "scroll",
-        updateNavBackground,
-        { passive: true }
-    );
-
-
-    window.addEventListener(
-        "resize",
-        updateNavBackground
-    );
-
-
-    updateNavBackground();
-
-
-    /* -----------------------------------------------------
-       Close More menu when screen becomes desktop
-    ----------------------------------------------------- */
-
-    window.addEventListener("resize", function () {
-
-        if (window.innerWidth > 768) {
-
-            moreMenu.classList.remove("show");
-
-            moreButton.classList.remove("active");
-
-        }
-
-    });
-
-});
