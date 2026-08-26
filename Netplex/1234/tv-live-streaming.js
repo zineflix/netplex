@@ -1,35 +1,74 @@
-// For Responsive Header
-window.addEventListener("scroll", function () {
-    let nav = document.querySelector("nav");
-    if (window.scrollY > 50) {
-        nav.classList.add("nav-solid"); // Solid color after scrolling down
-    } else {
-        nav.classList.remove("nav-solid"); // Transparent at the top
+// ===================================
+// 1. NAVIGATION
+// ===================================
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. Horizontal Scroll Controls
+    document.querySelectorAll(".scroll-left").forEach(button => {
+        button.addEventListener("click", () => {
+            const targetId = button.nextElementSibling?.id;
+            if (targetId && typeof scrollLeft === "function") scrollLeft(targetId);
+        });
+    });
+
+    document.querySelectorAll(".scroll-right").forEach(button => {
+        button.addEventListener("click", () => {
+            const targetId = button.previousElementSibling?.id;
+            if (targetId && typeof scrollRight === "function") scrollRight(targetId);
+        });
+    });
+
+    // 2. Navigation & Dropdown Toggles
+    const menuBtn = document.getElementById("menu-btn");
+    const menu = document.getElementById("menu");
+    menuBtn?.addEventListener("click", () => menu?.classList.toggle("active"));
+
+    const dropdown = document.querySelector(".dropdown");
+    dropdown?.addEventListener("click", function () {
+        this.classList.toggle("active");
+    });
+
+    // 8. Mobile Navigation
+    const moreButton = document.getElementById("mobile-more-btn");
+    const moreMenu = document.getElementById("mobile-more-menu");
+
+    if (moreButton && moreMenu) {
+        moreButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+            moreMenu.classList.toggle("show");
+            moreButton.classList.toggle("active");
+        });
+
+        moreMenu.addEventListener("click", (event) => event.stopPropagation());
+
+        document.addEventListener("click", () => {
+            moreMenu.classList.remove("show");
+            moreButton.classList.remove("active");
+        });
     }
 });
 
-// For sticky header when scrolling
-    window.addEventListener("scroll", function () {
-      let nav = document.querySelector("nav");
-      if (window.scrollY > 50) {
-        nav.classList.add("nav-solid"); // Add solid background when scrolled
-      } else {
-        nav.classList.remove("nav-solid"); // Remove solid background at top
-      }
-    });
+// ===================================
+// 2. STICKY HEADER
+// ===================================
+const nav = document.querySelector("nav");
+if (nav) {
+    window.addEventListener("scroll", () => {
+        nav.classList.toggle("nav-solid", window.scrollY > 50);
+    }, { passive: true });
+}
+
+// ===================================
+// 3. FLOATING MESSAGE
+// ===================================
+function closeMessage() {
+    const msg = document.getElementById("floating-message");
+    if (msg) msg.style.display = "none";
+}
 
 
-// For Dropdown More Button Function Start
-document.addEventListener("DOMContentLoaded", function () {
-    const dropdown = document.querySelector(".dropdown");
-
-    dropdown.addEventListener("click", function () {
-        this.classList.toggle("active");
-    });
-});
-// For Dropdown More Button Function End
-
-
+// ===================================
+// 4. TV LIVE
+// ===================================
 // TV Live Streaming Start //
 const channelData = {
             channels: [
@@ -38,7 +77,7 @@ const channelData = {
                     type: "mpd",
                     url: "https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/index.mpd",
                     keys: {
-                        "bd17afb5dc9648a39be79ee3634dd4b8": "3ecf305d54a7729299b93a3d69c02ea5"
+                        "bd1PbWWqgKDBDorh525uecKaGZD21FGSoCeR": "3ecf305d54a7729299b93a3d69c02ea5"
                     }
                 },
                 {
@@ -72,7 +111,7 @@ const channelData = {
                     url: "https://tglmp01.akamaized.net/out/v1/de55fad9216e4fe7ad8d2eed456ba1ec/manifest.mpd",
                     type: "mpd",
                     keys: {
-                        "edf1a715de9748638dd2fad75a419af2": "2f5a3199b26e9b693ae881af7ff864cf"
+                        "edf1PbWWqgKDBDorh525uecKaGZD21FGSoCeR": "2f5a31PbWWqgKDBDorh525uecKaGZD21FGSoCeR"
                     }
                 },
                 {
@@ -133,7 +172,7 @@ const channelData = {
                     url: "https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_nickjr.mpd",
                     type: "mpd",
                     keys: {
-                        "bab5c11178b646749fbae87962bf5113": "0ac679aad3b9d619ac39ad634ec76bc8"
+                        "bab5c1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR": "0ac679aad3b9d619ac39ad634ec76bc8"
                     }
                 },
                 {
@@ -189,7 +228,7 @@ const channelData = {
                     url: "https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/pbo_sd.mpd",
                     type: "mpd",
                     keys: {
-                        "dcbdaaa6662d4188bdf97f9f0ca5e830": "31e752b441bd2972f2b98a4b1bc1c7a1"
+                        "dcbdaaa6662d4188bdf97f9f0ca5e830": "31PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR"
                     }
                 },
                 {
@@ -277,7 +316,7 @@ const channelData = {
                     url: "https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_crime_invest.mpd",
                     type: "mpd",
                     keys: {
-                        "21e2843b561c4248b8ea487986a16d33": "db6bb638ccdfc1ad1a3e98d728486801"
+                        "21PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR": "db6bb638ccdfc1ad1a3e98d728486801"
                     }
                 },
                 {
@@ -285,7 +324,7 @@ const channelData = {
                     url: "https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/cg_tagalogmovie.mpd",
                     type: "mpd",
                     keys: {
-                        "96701d297d1241e492d41c397631d857": "ca2931211c1a261f082a3a2c4fd9f91b"
+                        "96701PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR": "ca2931211c1a261f082a3a2c4fd9f91b"
                     }
                 },
                 {
@@ -293,7 +332,7 @@ const channelData = {
                     url: "https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/pbo_sd.mpd",
                     type: "mpd",
                     keys: {
-                        "dcbdaaa6662d4188bdf97f9f0ca5e830": "31e752b441bd2972f2b98a4b1bc1c7a1"
+                        "dcbdaaa6662d4188bdf97f9f0ca5e830": "31PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR"
                     }
                 },
                 {
@@ -309,7 +348,7 @@ const channelData = {
                     url: "https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-tfcasia-dash-abscbnono/index.mpd",
                     type: "mpd",
                     keys: {
-                        "9568cc84e1d944f38eac304517eab6fd": "f12142af8f39b3bab79d3679d3665ebe"
+                        "9568cc84e1d944f38eac304517eab6fd": "f1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR"
                     }
                 },
                 {
@@ -357,7 +396,7 @@ const channelData = {
                     url: "https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_axn_sd.mpd",
                     type: "mpd",
                     keys: {
-                        "fd5d928f5d974ca4983f6e9295dfe410": "3aaa001ddc142fedbb9d5557be43792f"
+                        "fd5d928f5d974ca4983f6e9295dfe410": "3aaa001PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR"
                     }
                 },
                 {
@@ -530,154 +569,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 // Fullscreen Button End //
-
-/* =========================================
-   NETPLEX NAVIGATION
-========================================= */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const nav = document.getElementById("main-nav");
-
-    const moreButton =
-        document.getElementById("mobile-more-btn");
-
-    const moreMenu =
-        document.getElementById("mobile-more-menu");
-
-
-    /* =====================================
-       STICKY NAVIGATION BACKGROUND
-    ===================================== */
-
-    function updateNavigation() {
-
-        if (!nav) return;
-
-        if (window.scrollY > 50) {
-
-            nav.classList.add("nav-solid");
-
-        } else {
-
-            nav.classList.remove("nav-solid");
-
-        }
-
-    }
-
-    window.addEventListener(
-        "scroll",
-        updateNavigation,
-        { passive: true }
-    );
-
-    updateNavigation();
-
-
-    /* =====================================
-       MOBILE MORE BUTTON
-    ===================================== */
-
-    if (moreButton && moreMenu) {
-
-        moreButton.addEventListener(
-            "click",
-            function (event) {
-
-                event.preventDefault();
-
-                event.stopPropagation();
-
-                moreMenu.classList.toggle("show");
-
-                moreButton.classList.toggle("active");
-
-            }
-        );
-
-
-        /* ---------------------------------
-           DON'T CLOSE WHEN CLICKING MENU
-        --------------------------------- */
-
-        moreMenu.addEventListener(
-            "click",
-            function (event) {
-
-                event.stopPropagation();
-
-            }
-        );
-
-
-        /* ---------------------------------
-           CLOSE WHEN CLICKING OUTSIDE
-        --------------------------------- */
-
-        document.addEventListener(
-            "click",
-            function () {
-
-                moreMenu.classList.remove("show");
-
-                moreButton.classList.remove("active");
-
-            }
-        );
-
-
-        /* ---------------------------------
-           CLOSE WITH ESC KEY
-        --------------------------------- */
-
-        document.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (event.key === "Escape") {
-
-                    moreMenu.classList.remove("show");
-
-                    moreButton.classList.remove("active");
-
-                }
-
-            }
-        );
-
-    }
-
-
-    /* =====================================
-       CLOSE MOBILE MORE MENU AFTER
-       CLICKING A LINK
-    ===================================== */
-
-    if (moreMenu) {
-
-        const moreLinks =
-            moreMenu.querySelectorAll("a");
-
-        moreLinks.forEach(function (link) {
-
-            link.addEventListener(
-                "click",
-                function () {
-
-                    moreMenu.classList.remove("show");
-
-                    if (moreButton) {
-
-                        moreButton.classList.remove("active");
-
-                    }
-
-                }
-            );
-
-        });
-
-    }
-
-});
