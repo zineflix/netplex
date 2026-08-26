@@ -12,6 +12,225 @@ body {
     color: #ffffff;
 }
 
+
+/* TV Live Streaming Start */
+/* TV Live Streaming Layout */
+h {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  color: red;
+}
+h1 {
+  display: flex;
+  justify-content: center;
+  margin-top: 150px;
+  font-size: 50px;
+  font-weight: bold;
+}
+
+        #tv-container {
+    display: flex;
+    justify-content: center; /* Center everything horizontally */
+    align-items: flex-start; /* Center everything vertically */
+    flex-direction: row; /* Arrange items in a row */
+    width: 100%;
+    max-width: 1200px; /* Adjust width */
+    margin: auto;
+    padding: 10px;
+    gap: 20px; /* Space between channel list and video */
+    margin-top: 10px;
+    margin-bottom: 100px;
+}
+
+        #channel-list {
+    width: 30%;
+    max-width: 300px;
+    background: #222;
+    padding: 0; /* Remove padding from the main container */
+    border-radius: 5px;
+    overflow-y: auto; /* Enables vertical scrolling */
+    max-height: 400px; /* Set a height to allow scrolling */
+    position: relative;
+}
+#channel-header {
+    background: #333;
+    padding: 10px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 2px solid #0296cc;
+}
+
+        #channel-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px; /* Add some padding to prevent content from touching the edges */
+    
+}
+
+        .channel-btn {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    max-width: 250px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.2s, transform 0.1s;
+    font-size: 14px;
+}
+
+        .channel-btn:hover {
+            background: #0296cc;
+            transform: scale(1.05);
+        }
+
+        .channel-btn.active {
+            background: #0296cc;
+        }
+
+        #video-container {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0296cc;
+    border-radius: 0px;
+    padding: 5px;
+}
+
+        video {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+}
+.channel-btn.active {
+    background: #0296cc !important;
+    font-weight: bold;
+    transform: scale(1.05);
+}
+
+/* Responsive: Stack items in row on small screens */
+@media (max-width: 768px) {
+h1 {
+    font-size: 30px;
+    margin-top: 75px;
+  }
+#tv-container {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    margin-bottom: 50px;
+}
+    #channel-list {
+        width: 50%;
+        max-height: 300px;
+    }
+    #video-container {
+        width: 100%;
+        height: auto;
+        order: -1; /* Moves the video to the top */
+    }  
+}
+
+/* TV Live Streaming End */
+
+#fullscreen-btn {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #0296cc;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+#fullscreen-btn:hover {
+    background-color: #0275a6;
+}
+
+
+/* Footer Section Start*/
+.site-footer {
+  background-color: #1e1e1e;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 0px;
+  border-top: 1px solid #333;
+}
+
+.site-footer p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.footer-links {
+  margin-top: 10px;
+}
+
+.footer-links a {
+  color: #0296cc;
+  text-decoration: none;
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.disclaimer-note {
+  color: #bfbfbf;
+  font-family: Arial;
+}
+
+@media (max-width: 600px) {
+  .site-footer {
+    margin-bottom: 54px;
+    padding: 10px;
+  }
+  
+  .site-footer p {
+    font-size: 14px;
+  }
+
+  .footer-links {
+    flex-direction: row;
+    gap: 8px;
+    text-align: center;
+  }
+
+  .footer-links a {
+    margin: 0;
+  }
+}
+/* Footer Section End*/
+
+/* Chatroom Section Start */
+#netplex-chatroom {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  overflow: hidden;
+  z-index: 9999;
+}
+/* Chatroom Section End */
+
 /* ==============================
   NAVIGATION BAR
 ============================== */
@@ -130,69 +349,6 @@ body {
       }
     }
 
-
-/* ==============================
-  FLOATING MESSAGE
-============================== */
-#floating-message {
-position: fixed;
-top: 25%;
-left: 50%;
-transform: translateX(-50%);
-background-color: #121212;
-color: white;
-text-align: center;
-padding: 16px;
-font-size: 15px;
-z-index: 1000;
-border-radius: 20px; /* Rounded top corners */
-width: 30%; /* You can adjust the width as needed */
-backdrop-filter: blur(8px); /* Apply blur effect to the background */
--webkit-backdrop-filter: blur(8px); /* Ensure blur effect works on iOS */
-border: 2px solid white;
-}
-
-#floating-message p {
-font-size: 14px;  
-}
-
-#floating-message button {
-  background-color: #0296cc;
-  color: white;
-  border: none;
-  font-size: 10px;
-  padding: 8px 16px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: 10px;
-}
-
-#floating-message button:hover {
-  background-color: #0275a6;
-}
-
-/* 🔴 Make the CLOSE button red */
-#floating-message .close-btn {
-  background-color: #cc2929;
-}
-
-#floating-message .close-btn:hover {
-  background-color: #a61e1e;
-}
-/* Adjustment of floating message in mobile */
-@media (max-width: 768px) {
-   #floating-message {
-     padding: 5px;
-     font-size: 14px;
-     width: 75%;
-     top: 25%;  
-}
-   #floating-message p {
-font-size: 12px;  
-}
-}
-
-
 /* ==============================
   DROPDOWN MORE BUTTON
 ============================== */
@@ -266,66 +422,6 @@ font-size: 12px;
         display: block;
     }
 }
-
-/* ==============================
-  FOOTER SECTION
-============================== */
-.site-footer {
-  background-color: #1e1e1e;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  margin-bottom: 0px;
-  border-top: 1px solid #333;
-}
-
-.site-footer p {
-  margin: 8px 0;
-  font-size: 16px;
-}
-
-.footer-links {
-  margin-top: 10px;
-}
-
-.footer-links a {
-  color: #0296cc;
-  text-decoration: none;
-  margin: 0 10px;
-  font-weight: bold;
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
-}
-
-.disclaimer-note {
-  color: #bfbfbf;
-  font-family: Arial;
-}
-
-@media (max-width: 600px) {
-  .site-footer {
-    margin-bottom: 54px;
-    padding: 10px;
-  }
-  
-  .site-footer p {
-    font-size: 14px;
-  }
-
-  .footer-links {
-    flex-direction: row;
-    gap: 8px;
-    text-align: center;
-  }
-
-  .footer-links a {
-    margin: 0;
-  }
-}
-
-
 
 /* =========================================
    MOBILE BOTTOM NAVIGATION
@@ -520,156 +616,4 @@ font-size: 12px;
     .mobile-more-menu {
         display: none !important;
     }
-}
-
-
-
-/* TV Live Streaming Start */
-/* TV Live Streaming Layout */
-h {
-  display: flex;
-  justify-content: center;
-  font-weight: bold;
-  color: red;
-}
-h1 {
-  display: flex;
-  justify-content: center;
-  margin-top: 150px;
-  font-size: 50px;
-  font-weight: bold;
-}
-
-        #tv-container {
-    display: flex;
-    justify-content: center; /* Center everything horizontally */
-    align-items: flex-start; /* Center everything vertically */
-    flex-direction: row; /* Arrange items in a row */
-    width: 100%;
-    max-width: 1200px; /* Adjust width */
-    margin: auto;
-    padding: 10px;
-    gap: 20px; /* Space between channel list and video */
-    margin-top: 10px;
-    margin-bottom: 100px;
-}
-
-        #channel-list {
-    width: 30%;
-    max-width: 300px;
-    background: #222;
-    padding: 0; /* Remove padding from the main container */
-    border-radius: 5px;
-    overflow-y: auto; /* Enables vertical scrolling */
-    max-height: 400px; /* Set a height to allow scrolling */
-    position: relative;
-}
-#channel-header {
-    background: #333;
-    padding: 10px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    color: white;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    border-bottom: 2px solid #0296cc;
-}
-
-        #channel-buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    padding: 10px; /* Add some padding to prevent content from touching the edges */
-    
-}
-
-        .channel-btn {
-    background: #333;
-    color: white;
-    border: none;
-    padding: 10px;
-    width: 100%;
-    max-width: 250px;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background 0.2s, transform 0.1s;
-    font-size: 14px;
-}
-
-        .channel-btn:hover {
-            background: #0296cc;
-            transform: scale(1.05);
-        }
-
-        .channel-btn.active {
-            background: #0296cc;
-        }
-
-        #video-container {
-    width: 70%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #0296cc;
-    border-radius: 0px;
-    padding: 5px;
-}
-
-        video {
-    width: 100%;
-    max-width: 800px;
-    height: auto;
-}
-.channel-btn.active {
-    background: #0296cc !important;
-    font-weight: bold;
-    transform: scale(1.05);
-}
-
-/* Responsive: Stack items in row on small screens */
-@media (max-width: 768px) {
-h1 {
-    font-size: 30px;
-    margin-top: 75px;
-  }
-#tv-container {
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center horizontally */
-    justify-content: center; /* Center vertically */
-    margin-bottom: 50px;
-}
-    #channel-list {
-        width: 50%;
-        max-height: 300px;
-    }
-    #video-container {
-        width: 100%;
-        height: auto;
-        order: -1; /* Moves the video to the top */
-    }  
-}
-
-/* TV Live Streaming End */
-
-#fullscreen-btn {
-    display: block;
-    margin: 10px auto;
-    padding: 10px 15px;
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-    background-color: #0296cc;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background 0.3s;
-}
-
-#fullscreen-btn:hover {
-    background-color: #0275a6;
 }
