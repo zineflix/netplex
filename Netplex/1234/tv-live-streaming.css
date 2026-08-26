@@ -12,7 +12,9 @@ body {
     color: #ffffff;
 }
 
-/* Navigation Bar */
+/* ==============================
+  NAVIGATION BAR
+============================== */
     nav {
       width: 100%;
       background: rgba(0, 0, 0, 0); /* Transparent at the top */
@@ -55,6 +57,7 @@ body {
       color: #fff;
       text-decoration: none;
       font-weight: bold;
+      text-transform: uppercase;
       padding: 10px;
       display: inline-block;
       border-radius: 5px;
@@ -66,8 +69,133 @@ body {
       background-color: #0296cc;
     }
 
+/* Mobile Styles (Screen width below 768px) */
+    @media (max-width: 768px) {
+      /* Navigation links initially hidden on mobile */
+      nav ul {
+        display: none;  /* Hidden by default */
+        flex-direction: column;
+        align-items: center;
+        background-color: rgba(0, 0, 0, 0.9);
+        position: absolute;
+        top: 50px; /* To place the menu below the nav bar */
+        left: 0;
+        right: 0;
+        width: 100%;
+        padding: 10px 0;
+      }
+      /* Active state of the menu */
+      nav.active ul {
+        display: flex; /* Show the menu when active (if JS adds nav.active) */
+      }
+      nav ul li {
+        width: 100%;
+        text-align: center;
+        margin: 2px 0;
+      }
 
-/* Dropdown MORE Button Start*/
+      nav ul li a {
+        padding: 10px;
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Logo will adjust for smaller screens */
+      #logo {
+        max-height: 20px;
+      }
+
+      /* Menu Button visible on mobile */
+      .menu-btn {
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        background-color: #0296cc;
+        padding: 10px 20px;
+        border-radius: 5px;
+        display: block;  /* Visible on mobile */
+      }
+
+      /* Show menu when active */
+    #menu.active {
+        display: flex;
+    }
+    }
+
+    /* Hide the menu button on desktop */
+    @media (min-width: 769px) {
+      .menu-btn {
+        display: none;  /* Hide the menu button on desktop */
+      }
+    }
+
+
+/* ==============================
+  FLOATING MESSAGE
+============================== */
+#floating-message {
+position: fixed;
+top: 25%;
+left: 50%;
+transform: translateX(-50%);
+background-color: #121212;
+color: white;
+text-align: center;
+padding: 16px;
+font-size: 15px;
+z-index: 1000;
+border-radius: 20px; /* Rounded top corners */
+width: 30%; /* You can adjust the width as needed */
+backdrop-filter: blur(8px); /* Apply blur effect to the background */
+-webkit-backdrop-filter: blur(8px); /* Ensure blur effect works on iOS */
+border: 2px solid white;
+}
+
+#floating-message p {
+font-size: 14px;  
+}
+
+#floating-message button {
+  background-color: #0296cc;
+  color: white;
+  border: none;
+  font-size: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+#floating-message button:hover {
+  background-color: #0275a6;
+}
+
+/* 🔴 Make the CLOSE button red */
+#floating-message .close-btn {
+  background-color: #cc2929;
+}
+
+#floating-message .close-btn:hover {
+  background-color: #a61e1e;
+}
+/* Adjustment of floating message in mobile */
+@media (max-width: 768px) {
+   #floating-message {
+     padding: 5px;
+     font-size: 14px;
+     width: 75%;
+     top: 25%;  
+}
+   #floating-message p {
+font-size: 12px;  
+}
+}
+
+
+/* ==============================
+  DROPDOWN MORE BUTTON
+============================== */
 .dropdown {
     position: relative;
     display: inline-block;
@@ -93,7 +221,7 @@ body {
     display: none;
     position: absolute;
     background-color: #1e1e1e;
-    min-width: 150px;
+    min-width: 200px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     border-radius: 5px;
@@ -138,7 +266,262 @@ body {
         display: block;
     }
 }
-/* Dropdown MORE Button End*/
+
+/* ==============================
+  FOOTER SECTION
+============================== */
+.site-footer {
+  background-color: #1e1e1e;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 0px;
+  border-top: 1px solid #333;
+}
+
+.site-footer p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.footer-links {
+  margin-top: 10px;
+}
+
+.footer-links a {
+  color: #0296cc;
+  text-decoration: none;
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.disclaimer-note {
+  color: #bfbfbf;
+  font-family: Arial;
+}
+
+@media (max-width: 600px) {
+  .site-footer {
+    margin-bottom: 54px;
+    padding: 10px;
+  }
+  
+  .site-footer p {
+    font-size: 14px;
+  }
+
+  .footer-links {
+    flex-direction: row;
+    gap: 8px;
+    text-align: center;
+  }
+
+  .footer-links a {
+    margin: 0;
+  }
+}
+
+
+
+/* =========================================
+   MOBILE BOTTOM NAVIGATION
+========================================= */
+
+.mobile-bottom-nav {
+    display: none;
+}
+
+.mobile-more-menu {
+    display: none;
+}
+
+/* =========================================
+   MOBILE ONLY
+========================================= */
+
+@media (max-width: 768px) {
+
+    /* Hide the old mobile menu system */
+    nav {
+        position: static;
+        padding: 0;
+        background: transparent;
+    }
+
+    nav #logo {
+        display: none;
+    }
+
+    nav .desktop-menu {
+        display: none !important;
+    }
+
+    .menu-btn {
+        display: none !important;
+    }
+
+    /* Bottom Navigation Bar */
+    .mobile-bottom-nav {
+        position: fixed;
+        display: flex;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 65px;
+        background: rgba(15, 15, 15, 0.97);
+        border-top: 1px solid #333;
+        z-index: 99999;
+        justify-content: space-around;
+        align-items: center;
+        padding-bottom: env(safe-area-inset-bottom);
+        box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Individual Navigation Item */
+    .mobile-nav-item {
+        flex: 1;
+        height: 65px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        color: #aaa;
+        text-decoration: none;
+        background: transparent;
+        border: none;
+        font-size: 11px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    /* Icons */
+    .mobile-nav-item i {
+        font-size: 20px;
+        color: #aaa;
+        transition: all 0.2s ease;
+    }
+
+    /* Active Navigation */
+    .mobile-nav-item.active,
+    .mobile-nav-item.active i {
+        color: #0296cc;
+    }
+
+    /* Tap / Hover Effect */
+    .mobile-nav-item:hover,
+    .mobile-nav-item:active {
+        color: #0296cc;
+    }
+
+    .mobile-nav-item:hover i,
+    .mobile-nav-item:active i {
+        color: #0296cc;
+        transform: scale(1.1);
+    }
+
+    /* =========================================
+       MORE POPUP
+    ========================================= */
+
+    .mobile-more-menu {
+        position: fixed;
+        right: 10px;
+        bottom: 75px;
+        width: 220px;
+        background: rgba(25, 25, 25, 0.98);
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 8px;
+        z-index: 100000;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
+        animation: moreMenuAnimation 0.2s ease;
+    }
+
+    .mobile-more-menu.show {
+        display: block;
+    }
+
+    .mobile-more-menu a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        border-radius: 8px;
+        transition: background 0.2s ease;
+    }
+
+    .mobile-more-menu a i {
+        width: 22px;
+        text-align: center;
+        color: #0296cc;
+    }
+
+    .mobile-more-menu a:hover {
+        background: #0296cc;
+    }
+
+    .mobile-more-menu a:hover i {
+        color: white;
+    }
+
+    /* =========================================
+       PAGE SPACE FOR BOTTOM NAV
+    ========================================= */
+
+    body {
+        padding-bottom: 70px;
+    }
+
+    /* Footer needs extra space */
+    .site-footer {
+        margin-bottom: 0 !important;
+        padding-bottom: 85px;
+    }
+
+    /* Telegram button stays above navigation */
+    #telegram-widget {
+        bottom: 80px !important;
+    }
+
+    /* Online widget stays above navigation */
+    #online-widget {
+        bottom: 80px !important;
+    }
+
+    /* More menu animation */
+    @keyframes moreMenuAnimation {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+/* =========================================
+   DESKTOP
+========================================= */
+
+@media (min-width: 769px) {
+    .mobile-bottom-nav,
+    .mobile-more-menu {
+        display: none !important;
+    }
+}
+
 
 
 /* TV Live Streaming Start */
@@ -289,753 +672,4 @@ h1 {
 
 #fullscreen-btn:hover {
     background-color: #0275a6;
-}
-
-
-/* Footer Section Start*/
-.site-footer {
-  background-color: #1e1e1e;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  margin-bottom: 0px;
-  border-top: 1px solid #333;
-}
-
-.site-footer p {
-  margin: 8px 0;
-  font-size: 16px;
-}
-
-.footer-links {
-  margin-top: 10px;
-}
-
-.footer-links a {
-  color: #0296cc;
-  text-decoration: none;
-  margin: 0 10px;
-  font-weight: bold;
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
-}
-
-.disclaimer-note {
-  color: #bfbfbf;
-  font-family: Arial;
-}
-
-@media (max-width: 600px) {
-  .site-footer {
-    margin-bottom: 54px;
-    padding: 10px;
-  }
-  
-  .site-footer p {
-    font-size: 14px;
-  }
-
-  .footer-links {
-    flex-direction: row;
-    gap: 8px;
-    text-align: center;
-  }
-
-  .footer-links a {
-    margin: 0;
-  }
-}
-/* Footer Section End*/
-
-/* Chatroom Section Start */
-#netplex-chatroom {
-  position: fixed;
-  bottom: 0px;
-  right: 0px;
-  overflow: hidden;
-  z-index: 9999;
-}
-/* Chatroom Section End */
-
-/* =========================================
-   NETPLEX NAVIGATION
-========================================= */
-
-nav#main-nav {
-    width: 100%;
-    background: rgba(0, 0, 0, 0);
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-
-    padding: 10px 20px;
-
-    transition: background-color 0.3s ease;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-/* Solid navigation after scrolling */
-
-nav#main-nav.nav-solid {
-    background-color: rgba(0, 0, 0, 0.98);
-}
-
-
-/* =========================================
-   LOGO
-========================================= */
-
-nav#main-nav #logo {
-    max-height: 25px;
-    width: auto;
-    display: inline-block;
-}
-
-
-/* =========================================
-   DESKTOP MENU
-========================================= */
-
-nav#main-nav .desktop-menu {
-    display: flex;
-
-    justify-content: flex-end;
-    align-items: center;
-
-    margin: 0;
-    padding: 0;
-
-    list-style: none;
-}
-
-
-/* Desktop menu items */
-
-nav#main-nav .desktop-menu > li {
-    margin-left: 5px;
-}
-
-
-/* Desktop links */
-
-nav#main-nav .desktop-menu > li > a {
-
-    color: #ffffff;
-
-    text-decoration: none;
-
-    font-weight: bold;
-
-    padding: 10px;
-
-    display: inline-block;
-
-    border-radius: 5px;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease;
-}
-
-
-/* Desktop hover */
-
-nav#main-nav .desktop-menu > li > a:hover {
-
-    background-color: #0296cc;
-
-    color: #ffffff;
-}
-
-
-/* Desktop icons */
-
-nav#main-nav .desktop-menu i {
-
-    color: #0296cc;
-
-    margin-left: 4px;
-
-    transition: color 0.2s ease;
-}
-
-
-/* Icon becomes white when hovering */
-
-nav#main-nav .desktop-menu a:hover i {
-
-    color: #ffffff;
-}
-
-
-/* =========================================
-   DESKTOP MORE BUTTON
-========================================= */
-
-nav#main-nav .dropbtn {
-
-    background: transparent;
-
-    color: #ffffff;
-
-    font-weight: bold;
-
-    border: none;
-
-    cursor: pointer;
-
-    padding: 10px;
-
-    text-transform: uppercase;
-
-    font-size: 16px;
-
-    border-radius: 5px;
-
-    transition: background 0.2s ease;
-}
-
-
-nav#main-nav .dropbtn i {
-
-    color: #0296cc;
-
-    margin-left: 4px;
-}
-
-
-nav#main-nav .dropbtn:hover {
-
-    background-color: #0296cc;
-}
-
-
-nav#main-nav .dropbtn:hover i {
-
-    color: #ffffff;
-}
-
-
-/* =========================================
-   DESKTOP DROPDOWN
-========================================= */
-
-nav#main-nav .dropdown {
-
-    position: relative;
-}
-
-
-/* Hide dropdown */
-
-nav#main-nav .dropdown-content {
-
-    display: none;
-
-    position: absolute;
-
-    top: 100%;
-    right: 0;
-
-    min-width: 190px;
-
-    margin: 0;
-    padding: 6px;
-
-    list-style: none;
-
-    background: #1e1e1e;
-
-    border: 1px solid #333;
-
-    border-radius: 8px;
-
-    box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.6);
-
-    z-index: 10000;
-}
-
-
-/* Dropdown links */
-
-nav#main-nav .dropdown-content li {
-
-    margin: 0;
-
-    padding: 0;
-
-    width: 100%;
-}
-
-
-nav#main-nav .dropdown-content li a {
-
-    display: block;
-
-    width: 100%;
-
-    padding: 10px 12px;
-
-    color: #ffffff;
-
-    text-decoration: none;
-
-    border-radius: 5px;
-
-    font-size: 14px;
-
-    text-align: left;
-}
-
-
-nav#main-nav .dropdown-content li a:hover {
-
-    background-color: #0296cc;
-
-    color: #ffffff;
-}
-
-
-/* Desktop hover dropdown */
-
-@media (min-width: 769px) {
-
-    nav#main-nav .dropdown:hover .dropdown-content {
-
-        display: block;
-
-    }
-
-}
-
-
-/* =========================================
-   MOBILE BOTTOM NAVIGATION
-========================================= */
-
-.mobile-bottom-nav {
-
-    display: none;
-
-}
-
-
-.mobile-more-menu {
-
-    display: none;
-
-}
-
-
-/* =========================================
-   MOBILE
-========================================= */
-
-@media (max-width: 768px) {
-
-    /* -------------------------------------
-       REMOVE OLD MOBILE HEADER
-    ------------------------------------- */
-
-    nav#main-nav {
-
-        position: static;
-
-        width: 100%;
-
-        padding: 0;
-
-        background: transparent;
-
-        display: block;
-
-    }
-
-
-    nav#main-nav #logo {
-
-        display: none;
-
-    }
-
-
-    nav#main-nav .desktop-menu {
-
-        display: none !important;
-
-    }
-
-
-    /* -------------------------------------
-       BOTTOM NAVIGATION
-    ------------------------------------- */
-
-    .mobile-bottom-nav {
-
-        position: fixed;
-
-        display: flex;
-
-        left: 0;
-        right: 0;
-        bottom: 0;
-
-        width: 100%;
-
-        height: 65px;
-
-        background: rgba(15, 15, 15, 0.98);
-
-        border-top: 1px solid #333;
-
-        z-index: 99999;
-
-        justify-content: space-around;
-
-        align-items: center;
-
-        padding-bottom: env(safe-area-inset-bottom);
-
-        box-shadow:
-            0 -4px 15px rgba(0, 0, 0, 0.5);
-
-    }
-
-
-    /* -------------------------------------
-       MOBILE NAV ITEM
-    ------------------------------------- */
-
-    .mobile-nav-item {
-
-        flex: 1;
-
-        height: 65px;
-
-        display: flex;
-
-        flex-direction: column;
-
-        justify-content: center;
-
-        align-items: center;
-
-        gap: 4px;
-
-        color: #aaaaaa;
-
-        text-decoration: none;
-
-        background: transparent;
-
-        border: none;
-
-        font-family: inherit;
-
-        font-size: 11px;
-
-        font-weight: 500;
-
-        cursor: pointer;
-
-        transition:
-            color 0.2s ease,
-            transform 0.2s ease;
-
-        -webkit-tap-highlight-color: transparent;
-
-    }
-
-
-    /* -------------------------------------
-       MOBILE ICON
-    ------------------------------------- */
-
-    .mobile-nav-item i {
-
-        font-size: 20px;
-
-        color: #aaaaaa;
-
-        transition:
-            color 0.2s ease,
-            transform 0.2s ease;
-
-    }
-
-
-    /* -------------------------------------
-       ACTIVE
-    ------------------------------------- */
-
-    .mobile-nav-item.active {
-
-        color: #0296cc;
-
-    }
-
-
-    .mobile-nav-item.active i {
-
-        color: #0296cc;
-
-    }
-
-
-    /* -------------------------------------
-       TAP EFFECT
-    ------------------------------------- */
-
-    .mobile-nav-item:active {
-
-        color: #0296cc;
-
-        transform: scale(0.95);
-
-    }
-
-
-    .mobile-nav-item:active i {
-
-        color: #0296cc;
-
-        transform: scale(1.1);
-
-    }
-
-
-    /* =====================================
-       MOBILE MORE POPUP
-    ===================================== */
-
-    .mobile-more-menu {
-
-        position: fixed;
-
-        display: none;
-
-        right: 10px;
-
-        bottom: calc(75px + env(safe-area-inset-bottom));
-
-        width: 230px;
-
-        max-width: calc(100vw - 20px);
-
-        background: rgba(25, 25, 25, 0.98);
-
-        border: 1px solid #333;
-
-        border-radius: 12px;
-
-        padding: 8px;
-
-        z-index: 100000;
-
-        box-shadow:
-            0 5px 25px rgba(0, 0, 0, 0.7);
-
-        animation:
-            moreMenuAnimation 0.2s ease;
-
-    }
-
-
-    /* Show More menu */
-
-    .mobile-more-menu.show {
-
-        display: block;
-
-    }
-
-
-    /* -------------------------------------
-       MORE MENU LINKS
-    ------------------------------------- */
-
-    .mobile-more-menu a {
-
-        display: flex;
-
-        align-items: center;
-
-        gap: 12px;
-
-        width: 100%;
-
-        padding: 12px;
-
-        color: #ffffff;
-
-        text-decoration: none;
-
-        font-size: 14px;
-
-        border-radius: 8px;
-
-        transition:
-            background 0.2s ease,
-            color 0.2s ease;
-
-    }
-
-
-    .mobile-more-menu a i {
-
-        width: 22px;
-
-        min-width: 22px;
-
-        text-align: center;
-
-        color: #0296cc;
-
-    }
-
-
-    .mobile-more-menu a:hover {
-
-        background: #0296cc;
-
-        color: #ffffff;
-
-    }
-
-
-    .mobile-more-menu a:hover i {
-
-        color: #ffffff;
-
-    }
-
-
-    /* Current page */
-
-    .mobile-more-menu a.current-page {
-
-        background: rgba(2, 150, 204, 0.18);
-
-        color: #0296cc;
-
-    }
-
-
-    .mobile-more-menu a.current-page i {
-
-        color: #0296cc;
-
-    }
-
-
-    /* -------------------------------------
-       PAGE BOTTOM SPACE
-    ------------------------------------- */
-
-    body {
-
-        padding-bottom:
-            calc(70px + env(safe-area-inset-bottom));
-
-    }
-
-
-    /* -------------------------------------
-       TV CONTENT
-    ------------------------------------- */
-
-    #tv-container {
-
-        margin-bottom: 70px;
-
-    }
-
-
-    /* -------------------------------------
-       FOOTER
-    ------------------------------------- */
-
-    .site-footer {
-
-        margin-bottom: 0 !important;
-
-        padding-bottom:
-            calc(85px + env(safe-area-inset-bottom));
-
-    }
-
-
-    /* -------------------------------------
-       ONLINE WIDGET
-    ------------------------------------- */
-
-    #online-widget {
-
-        bottom:
-            calc(80px + env(safe-area-inset-bottom)) !important;
-
-    }
-
-
-    /* -------------------------------------
-       CHATROOM
-    ------------------------------------- */
-
-    #netplex-chatroom {
-
-        bottom:
-            calc(65px + env(safe-area-inset-bottom)) !important;
-
-    }
-
-
-    /* -------------------------------------
-       MORE ANIMATION
-    ------------------------------------- */
-
-    @keyframes moreMenuAnimation {
-
-        from {
-
-            opacity: 0;
-
-            transform:
-                translateY(10px);
-
-        }
-
-        to {
-
-            opacity: 1;
-
-            transform:
-                translateY(0);
-
-        }
-
-    }
-
-}
-
-
-/* =========================================
-   DESKTOP
-========================================= */
-
-@media (min-width: 769px) {
-
-    .mobile-bottom-nav,
-    .mobile-more-menu {
-
-        display: none !important;
-
-    }
-
 }
