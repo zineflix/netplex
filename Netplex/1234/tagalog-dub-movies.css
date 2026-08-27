@@ -160,6 +160,9 @@ iframe {
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Adjust grid for smaller screens */
         gap: 10px;
     }
+    .iframe-wrapper {
+       margin-bottom: 150px;
+  }
 }
 
 /* Make modal fit better on small screens */
@@ -168,9 +171,7 @@ iframe {
         width: 95%;
         padding: 0px;
     }
-    iframe {
-        height: 200px; /* Smaller video player */
-    }
+
     .poster-container img {
         max-height: 200px; /* Prevent oversized posters */
     }
@@ -184,6 +185,9 @@ iframe {
         font-size: 12px;
         padding: 10px 20px 0; /* 10px top, 20px left/right, 0 bottom */
     }
+    .iframe-wrapper {
+       margin-bottom: 150px;
+  }
 }
 
 /* Extra tweaks for very small screens */
@@ -191,9 +195,9 @@ iframe {
     .gallery {
         grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Even smaller grid */
     }
-    iframe {
-        height: 180px;
-    }
+    .iframe-wrapper {
+       margin-bottom: 150px;
+  }
 }
 
 /* FOR TAGALOG DUB MOVIE SECTION END */
@@ -519,9 +523,7 @@ iframe {
     width: 95%;
     padding: 15px;  
   }
-  #tvModal iframe {
-    height: 200px;
-  }
+
   #tvModal .modal-content img {
     max-height: 200px; /* Prevent oversized posters */
   }
@@ -540,8 +542,7 @@ iframe {
   #tvGallery {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   }
-  #tvModal iframe {
-    height: 180px;
+
   }  
 }
 /* TAGALOG TV SHOWS/SERIES END */
@@ -609,6 +610,7 @@ iframe {
     position: relative;
     display: inline-block;
     width: 100%;
+    aspect-ratio: 16 / 9;
     height: 300px;
 }
 
