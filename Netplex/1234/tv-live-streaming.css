@@ -1,374 +1,738 @@
-@import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;800&display=swap');
+
+/* =========================================================
+   GLOBAL
+========================================================= */
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-family: "Roboto", Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
-    background-color: #121212;
+    min-height: 100vh;
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(2, 150, 204, 0.10),
+            transparent 32%
+        ),
+        #121212;
     color: #ffffff;
 }
 
 
-/* TV Live Streaming Start */
-/* TV Live Streaming Layout */
-h {
-  display: flex;
-  justify-content: center;
-  font-weight: bold;
-  color: red;
-}
-h1 {
-  display: flex;
-  justify-content: center;
-  margin-top: 150px;
-  font-size: 50px;
-  font-weight: bold;
-}
+/* =========================================================
+   TV LIVE PAGE TITLE
+========================================================= */
 
-        #tv-container {
-    display: flex;
-    justify-content: center; /* Center everything horizontally */
-    align-items: flex-start; /* Center everything vertically */
-    flex-direction: row; /* Arrange items in a row */
+body > h1 {
     width: 100%;
-    max-width: 1200px; /* Adjust width */
-    margin: auto;
-    padding: 10px;
-    gap: 20px; /* Space between channel list and video */
-    margin-top: 10px;
-    margin-bottom: 100px;
-}
-
-        #channel-list {
-    width: 30%;
-    max-width: 300px;
-    background: #222;
-    padding: 0; /* Remove padding from the main container */
-    border-radius: 5px;
-    overflow-y: auto; /* Enables vertical scrolling */
-    max-height: 400px; /* Set a height to allow scrolling */
-    position: relative;
-}
-#channel-header {
-    background: #333;
-    padding: 10px;
+    margin: 0;
+    padding: 135px 20px 12px;
     text-align: center;
-    font-size: 18px;
-    font-weight: bold;
-    color: white;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    border-bottom: 2px solid #0296cc;
+    color: #ffffff;
+    font-size: clamp(30px, 4vw, 50px);
+    font-weight: 800;
+    letter-spacing: -1px;
 }
 
-        #channel-buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    padding: 10px; /* Add some padding to prevent content from touching the edges */
-    
-}
-
-        .channel-btn {
-    background: #333;
-    color: white;
-    border: none;
-    padding: 10px;
-    width: 100%;
-    max-width: 250px;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background 0.2s, transform 0.1s;
-    font-size: 14px;
-}
-
-        .channel-btn:hover {
-            background: #0296cc;
-            transform: scale(1.05);
-        }
-
-        .channel-btn.active {
-            background: #0296cc;
-        }
-
-        #video-container {
-    width: 70%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body > h1::after {
+    content: "";
+    display: block;
+    width: 55px;
+    height: 4px;
+    margin: 18px auto 0;
     background: #0296cc;
-    border-radius: 0px;
-    padding: 5px;
+    border-radius: 10px;
 }
 
-        video {
-    width: 100%;
-    max-width: 800px;
-    height: auto;
-}
-.channel-btn.active {
-    background: #0296cc !important;
-    font-weight: bold;
-    transform: scale(1.05);
-}
 
-/* Responsive: Stack items in row on small screens */
-@media (max-width: 768px) {
-h1 {
-    font-size: 30px;
-    margin-top: 75px;
-  }
-#tv-container {
-    display: flex;
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Center horizontally */
-    justify-content: center; /* Center vertically */
-    margin-bottom: 50px;
-}
-    #channel-list {
-        width: 50%;
-        max-height: 300px;
-    }
-    #video-container {
-        width: 100%;
-        height: auto;
-        order: -1; /* Moves the video to the top */
-    }  
-}
-
-/* TV Live Streaming End */
+/* =========================================================
+   FULLSCREEN BUTTON
+========================================================= */
 
 #fullscreen-btn {
     display: block;
-    margin: 10px auto;
-    padding: 10px 15px;
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-    background-color: #0296cc;
-    border: none;
+    margin: 20px auto 10px;
+    padding: 11px 22px;
+    background: #0296cc;
+    border: 2px solid #0296cc;
+    border-radius: 5px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
     cursor: pointer;
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+#fullscreen-btn:hover {
+    background: transparent;
+    color: #0296cc;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(2, 150, 204, 0.15);
+}
+
+#fullscreen-btn:focus-visible {
+    outline: 3px solid rgba(2, 150, 204, 0.45);
+    outline-offset: 3px;
+}
+
+
+/* =========================================================
+   CHANNEL SCROLL NOTE
+   Existing HTML uses <h>, so this keeps it working.
+========================================================= */
+
+body > h {
+    display: block;
+    width: fit-content;
+    margin: 0 auto 28px;
+    padding: 7px 14px;
+    color: #a9a9a9;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid #292929;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-align: center;
+}
+
+
+/* =========================================================
+   MAIN TV LIVE CONTAINER
+========================================================= */
+
+#tv-container {
+    width: calc(100% - 40px);
+    max-width: 1250px;
+    margin: 0 auto 85px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+
+/* =========================================================
+   VIDEO PLAYER
+========================================================= */
+
+#video-container {
+    order: 1;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: #000000;
+    border: 1px solid #292929;
+    border-radius: 7px;
+    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.55);
+}
+
+/* NETPLEX BLUE ACCENT */
+
+#video-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 3px;
+    background: #0296cc;
+    pointer-events: none;
+}
+
+#video {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: none;
+    aspect-ratio: 16 / 9;
+    background: #000000;
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   CHANNEL SECTION
+========================================================= */
+
+#channel-list {
+    order: 2;
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    padding: 0;
+    overflow: visible;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+}
+
+
+/* =========================================================
+   CHANNEL TITLE
+========================================================= */
+
+#channel-header {
+    position: static;
+    margin: 0 0 18px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    text-align: left;
+}
+
+#channel-header h3 {
+    margin: 0;
+    padding: 0;
+    color: #ffffff;
+    font-size: 25px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+#channel-header h3::before {
+    content: "";
+    display: inline-block;
+    width: 5px;
+    height: 25px;
+    margin-right: 11px;
+    vertical-align: -4px;
+    background: #0296cc;
+    border-radius: 5px;
+}
+
+
+/* =========================================================
+   NETFLIX-STYLE CHANNEL GRID
+========================================================= */
+
+#channel-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+    gap: 12px;
+    width: 100%;
+    max-height: 430px;
+    padding: 0 5px 5px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #444 transparent;
+}
+
+#channel-buttons::-webkit-scrollbar {
+    width: 7px;
+}
+
+#channel-buttons::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#channel-buttons::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 10px;
+}
+
+#channel-buttons::-webkit-scrollbar-thumb:hover {
+    background: #0296cc;
+}
+
+
+/* =========================================================
+   CHANNEL CARDS
+========================================================= */
+
+.channel-btn {
+    position: relative;
+    width: 100%;
+    min-height: 64px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+    background: #181818;
+    border: 1px solid #292929;
+    border-radius: 6px;
+    color: #d9d9d9;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: left;
+    cursor: pointer;
+    transition:
+        background 0.22s ease,
+        border-color 0.22s ease,
+        color 0.22s ease,
+        transform 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+
+/* LIVE INDICATOR */
+
+.channel-btn::before {
+    content: "";
+    flex: 0 0 7px;
+    width: 7px;
+    height: 7px;
+    margin-right: 11px;
+    background: #555;
+    border-radius: 50%;
+    transition:
+        background 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+
+/* HOVER */
+
+.channel-btn:hover {
+    background: #222222;
+    border-color: #414141;
+    color: #ffffff;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.28);
+}
+
+.channel-btn:hover::before {
+    background: #0296cc;
+    box-shadow: 0 0 10px rgba(2, 150, 204, 0.65);
+}
+
+
+/* ACTIVE CHANNEL */
+
+.channel-btn.active {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(2, 150, 204, 0.22),
+            rgba(2, 150, 204, 0.06)
+        ) !important;
+    border-color: #0296cc !important;
+    color: #ffffff !important;
+    font-weight: 700;
+    transform: none !important;
+    box-shadow:
+        inset 3px 0 0 #0296cc,
+        0 6px 20px rgba(2, 150, 204, 0.08);
+}
+
+.channel-btn.active::before {
+    background: #0296cc;
+    box-shadow: 0 0 10px rgba(2, 150, 204, 0.65);
+}
+
+
+/* KEYBOARD / TV REMOTE FOCUS */
+
+.channel-btn:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 3px;
+    z-index: 5;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    body > h1 {
+        padding-top: 110px;
+        font-size: 38px;
+    }
+
+    #tv-container {
+        width: calc(100% - 30px);
+        margin-bottom: 75px;
+    }
+
+    #channel-buttons {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        max-height: 410px;
+    }
+
+    .channel-btn {
+        min-height: 62px;
+        font-size: 13px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    body > h1 {
+        padding: 30px 15px 10px;
+        font-size: 29px;
+    }
+
+    body > h1::after {
+        width: 45px;
+        height: 3px;
+        margin-top: 14px;
+    }
+
+    #fullscreen-btn {
+        margin: 18px auto 10px;
+        padding: 10px 17px;
+        font-size: 13px;
+    }
+
+    body > h {
+        margin-bottom: 20px;
+        padding: 6px 11px;
+        font-size: 11px;
+    }
+
+    #tv-container {
+        width: 100%;
+        margin: 0 auto 60px;
+        gap: 27px;
+    }
+
+    /* Full-width cinematic mobile player */
+
+    #video-container {
+        width: 100%;
+        border-right: none;
+        border-left: none;
+        border-radius: 0;
+        box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
+    }
+
+    #video {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+    }
+
+    /* Channels */
+
+    #channel-list {
+        padding: 0 12px;
+    }
+
+    #channel-header {
+        margin-bottom: 15px;
+    }
+
+    #channel-header h3 {
+        font-size: 21px;
+    }
+
+    #channel-header h3::before {
+        width: 4px;
+        height: 21px;
+        margin-right: 9px;
+    }
+
+    #channel-buttons {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        max-height: 400px;
+        padding-right: 3px;
+    }
+
+    .channel-btn {
+        min-height: 58px;
+        padding: 11px;
+        font-size: 12px;
+        border-radius: 5px;
+    }
+
+    .channel-btn::before {
+        flex-basis: 6px;
+        width: 6px;
+        height: 6px;
+        margin-right: 8px;
+    }
+
+    .channel-btn:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 400px) {
+
+    body > h1 {
+        padding-top: 25px;
+        font-size: 26px;
+    }
+
+    #channel-list {
+        padding: 0 10px;
+    }
+
+    #channel-buttons {
+        gap: 8px;
+    }
+
+    .channel-btn {
+        min-height: 55px;
+        padding: 9px;
+        font-size: 11px;
+    }
+
+}
+
+
+/* =========================================================
+   FOOTER
+   ORIGINAL LAYOUT - KEPT
+========================================================= */
+
+.site-footer {
+    background-color: #1e1e1e;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 0;
+    border-top: 1px solid #333;
+}
+
+.site-footer p {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+.footer-links {
+    margin-top: 10px;
+}
+
+.footer-links a {
+    color: #0296cc;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.disclaimer-note {
+    color: #bfbfbf;
+    font-family: Arial, sans-serif;
+}
+
+@media (max-width: 600px) {
+
+    .site-footer {
+        margin-bottom: 54px;
+        padding: 10px;
+    }
+
+    .site-footer p {
+        font-size: 14px;
+    }
+
+    .footer-links {
+        flex-direction: row;
+        gap: 8px;
+        text-align: center;
+    }
+
+    .footer-links a {
+        margin: 0;
+    }
+
+}
+
+
+/* =========================================================
+   CHATROOM
+   ORIGINAL LAYOUT - KEPT
+========================================================= */
+
+#netplex-chatroom {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    z-index: 9999;
+}
+
+
+/* =========================================================
+   NAVIGATION BAR
+   ORIGINAL LAYOUT - KEPT
+========================================================= */
+
+nav {
+    width: 100%;
+    background: rgba(0, 0, 0, 0);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 10px 20px;
+    transition: background-color 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+/* STICKY HEADER */
+
+.nav-solid {
+    background-color: rgba(0, 0, 0, 1);
+}
+
+
+/* LOGO */
+
+#logo {
+    max-height: 25px;
+    display: inline-block;
+}
+
+
+/* DESKTOP NAVIGATION */
+
+nav ul {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+nav ul li {
+    margin-left: 5px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 10px;
+    display: inline-block;
     border-radius: 5px;
     transition: background 0.3s;
 }
 
-#fullscreen-btn:hover {
-    background-color: #0275a6;
+nav ul li a:hover,
+nav ul li a.active {
+    background-color: #0296cc;
 }
 
 
-/* Footer Section Start*/
-.site-footer {
-  background-color: #1e1e1e;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  margin-bottom: 0px;
-  border-top: 1px solid #333;
-}
+/* =========================================================
+   ORIGINAL MOBILE NAVIGATION RULES
+========================================================= */
 
-.site-footer p {
-  margin: 8px 0;
-  font-size: 16px;
-}
+@media (max-width: 768px) {
 
-.footer-links {
-  margin-top: 10px;
-}
-
-.footer-links a {
-  color: #0296cc;
-  text-decoration: none;
-  margin: 0 10px;
-  font-weight: bold;
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
-}
-
-.disclaimer-note {
-  color: #bfbfbf;
-  font-family: Arial;
-}
-
-@media (max-width: 600px) {
-  .site-footer {
-    margin-bottom: 54px;
-    padding: 10px;
-  }
-  
-  .site-footer p {
-    font-size: 14px;
-  }
-
-  .footer-links {
-    flex-direction: row;
-    gap: 8px;
-    text-align: center;
-  }
-
-  .footer-links a {
-    margin: 0;
-  }
-}
-/* Footer Section End*/
-
-/* Chatroom Section Start */
-#netplex-chatroom {
-  position: fixed;
-  bottom: 0px;
-  right: 0px;
-  overflow: hidden;
-  z-index: 9999;
-}
-/* Chatroom Section End */
-
-/* ==============================
-  NAVIGATION BAR
-============================== */
-    nav {
-      width: 100%;
-      background: rgba(0, 0, 0, 0); /* Transparent at the top */
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 1000;
-      padding: 10px 20px;
-      transition: background-color 0.3s;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    /* Sticky Header when Scrolling */
-    .nav-solid {
-      background-color: rgba(0, 0, 0, 1); /* Solid background when scrolled */
-    }
-
-    /* Logo Style */
-    #logo {
-      max-height: 25px;
-      display: inline-block;
-    }
-
-    /* Navigation Menu (Links) */
     nav ul {
-      display: flex;
-      justify-content: flex-end;
-      margin: 0;
-      padding: 0;
-      list-style-type: none;
-    }
-
-    nav ul li {
-      margin-left: 5px;
-    }
-
-    nav ul li a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-      text-transform: uppercase;
-      padding: 10px;
-      display: inline-block;
-      border-radius: 5px;
-      transition: background 0.3s;
-    }
-
-    nav ul li a:hover,
-    nav ul li a.active {
-      background-color: #0296cc;
-    }
-
-/* Mobile Styles (Screen width below 768px) */
-    @media (max-width: 768px) {
-      /* Navigation links initially hidden on mobile */
-      nav ul {
-        display: none;  /* Hidden by default */
+        display: none;
         flex-direction: column;
         align-items: center;
         background-color: rgba(0, 0, 0, 0.9);
         position: absolute;
-        top: 50px; /* To place the menu below the nav bar */
+        top: 50px;
         left: 0;
         right: 0;
         width: 100%;
         padding: 10px 0;
-      }
-      /* Active state of the menu */
-      nav.active ul {
-        display: flex; /* Show the menu when active (if JS adds nav.active) */
-      }
-      nav ul li {
+    }
+
+    nav.active ul {
+        display: flex;
+    }
+
+    nav ul li {
         width: 100%;
-        text-align: center;
         margin: 2px 0;
-      }
-
-      nav ul li a {
-        padding: 10px;
-        width: 100%;
         text-align: center;
-      }
+    }
 
-      /* Logo will adjust for smaller screens */
-      #logo {
+    nav ul li a {
+        width: 100%;
+        padding: 10px;
+        text-align: center;
+    }
+
+    #logo {
         max-height: 20px;
-      }
+    }
 
-      /* Menu Button visible on mobile */
-      .menu-btn {
+    .menu-btn {
+        display: block;
+        padding: 10px 20px;
+        background-color: #0296cc;
+        border-radius: 5px;
         color: white;
         font-size: 18px;
         font-weight: bold;
         cursor: pointer;
-        background-color: #0296cc;
-        padding: 10px 20px;
-        border-radius: 5px;
-        display: block;  /* Visible on mobile */
-      }
+    }
 
-      /* Show menu when active */
     #menu.active {
         display: flex;
     }
+
+}
+
+@media (min-width: 769px) {
+
+    .menu-btn {
+        display: none;
     }
 
-    /* Hide the menu button on desktop */
-    @media (min-width: 769px) {
-      .menu-btn {
-        display: none;  /* Hide the menu button on desktop */
-      }
-    }
+}
 
-/* ==============================
-  DROPDOWN MORE BUTTON
-============================== */
+
+/* =========================================================
+   DROPDOWN MORE BUTTON
+   ORIGINAL LAYOUT - KEPT
+========================================================= */
+
 .dropdown {
     position: relative;
     display: inline-block;
 }
 
 .dropbtn {
-    background: none;
-    color: white;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
     padding: 10px;
-    text-transform: uppercase;
-    font-size: 17px;
+    background: none;
+    border: none;
     border-radius: 5px;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
     transition: background 0.3s;
 }
+
 .dropbtn:hover {
     background-color: #0296cc;
 }
@@ -376,25 +740,25 @@ h1 {
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #1e1e1e;
-    min-width: 200px;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    border-radius: 5px;
     right: 0;
+    min-width: 200px;
+    background-color: #1e1e1e;
+    border-radius: 5px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
 }
 
 .dropdown-content li {
-    list-style: none;
     padding: 5px;
+    list-style: none;
     text-align: right;
 }
 
 .dropdown-content li a {
-    color: white;
-    text-decoration: none;
     display: block;
     padding: 10px;
+    color: white;
+    text-decoration: none;
     transition: background 0.3s;
 }
 
@@ -402,30 +766,36 @@ h1 {
     background-color: #0296cc;
 }
 
-/* Show dropdown on hover (for larger screens) */
 @media (min-width: 769px) {
+
     .dropdown:hover .dropdown-content {
         display: block;
     }
+
 }
 
-/* Show dropdown on click (for mobile) */
 @media (max-width: 768px) {
+
     .dropdown-content {
         position: static;
         display: none;
     }
+
     .dropdown-content li {
         padding: 2px;
     }
+
     .dropdown.active .dropdown-content {
         display: block;
     }
+
 }
 
-/* =========================================
+
+/* =========================================================
    MOBILE BOTTOM NAVIGATION
-========================================= */
+   ORIGINAL LAYOUT - KEPT
+========================================================= */
 
 .mobile-bottom-nav {
     display: none;
@@ -435,13 +805,10 @@ h1 {
     display: none;
 }
 
-/* =========================================
-   MOBILE ONLY
-========================================= */
-
 @media (max-width: 768px) {
 
-    /* Hide the old mobile menu system */
+    /* Hide old desktop navigation on mobile */
+
     nav {
         position: static;
         padding: 0;
@@ -460,24 +827,25 @@ h1 {
         display: none !important;
     }
 
-    /* Bottom Navigation Bar */
+
+    /* Bottom navigation */
+
     .mobile-bottom-nav {
         position: fixed;
-        display: flex;
         left: 0;
         bottom: 0;
+        z-index: 99999;
         width: 100%;
         height: 65px;
-        background: rgba(15, 15, 15, 0.97);
-        border-top: 1px solid #333;
-        z-index: 99999;
+        display: flex;
         justify-content: space-around;
         align-items: center;
         padding-bottom: env(safe-area-inset-bottom);
+        background: rgba(15, 15, 15, 0.97);
+        border-top: 1px solid #333;
         box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.5);
     }
 
-    /* Individual Navigation Item */
     .mobile-nav-item {
         flex: 1;
         height: 65px;
@@ -486,30 +854,28 @@ h1 {
         justify-content: center;
         align-items: center;
         gap: 4px;
-        color: #aaa;
-        text-decoration: none;
+        padding: 0;
         background: transparent;
         border: none;
+        color: #aaa;
         font-size: 11px;
         font-weight: 500;
+        text-decoration: none;
         cursor: pointer;
         transition: all 0.2s ease;
     }
 
-    /* Icons */
     .mobile-nav-item i {
-        font-size: 20px;
         color: #aaa;
+        font-size: 20px;
         transition: all 0.2s ease;
     }
 
-    /* Active Navigation */
     .mobile-nav-item.active,
     .mobile-nav-item.active i {
         color: #0296cc;
     }
 
-    /* Tap / Hover Effect */
     .mobile-nav-item:hover,
     .mobile-nav-item:active {
         color: #0296cc;
@@ -521,20 +887,19 @@ h1 {
         transform: scale(1.1);
     }
 
-    /* =========================================
-       MORE POPUP
-    ========================================= */
+
+    /* MORE POPUP */
 
     .mobile-more-menu {
         position: fixed;
         right: 10px;
         bottom: 75px;
+        z-index: 100000;
         width: 220px;
+        padding: 8px;
         background: rgba(25, 25, 25, 0.98);
         border: 1px solid #333;
         border-radius: 12px;
-        padding: 8px;
-        z-index: 100000;
         box-shadow: 0 5px 25px rgba(0, 0, 0, 0.7);
         animation: moreMenuAnimation 0.2s ease;
     }
@@ -549,16 +914,16 @@ h1 {
         gap: 12px;
         padding: 12px;
         color: white;
-        text-decoration: none;
         font-size: 14px;
+        text-decoration: none;
         border-radius: 8px;
         transition: background 0.2s ease;
     }
 
     .mobile-more-menu a i {
         width: 22px;
-        text-align: center;
         color: #0296cc;
+        text-align: center;
     }
 
     .mobile-more-menu a:hover {
@@ -569,32 +934,29 @@ h1 {
         color: white;
     }
 
-    /* =========================================
-       PAGE SPACE FOR BOTTOM NAV
-    ========================================= */
+
+    /* SPACE FOR BOTTOM NAVIGATION */
 
     body {
         padding-bottom: 70px;
     }
 
-    /* Footer needs extra space */
     .site-footer {
         margin-bottom: 0 !important;
         padding-bottom: 85px;
     }
 
-    /* Telegram button stays above navigation */
     #telegram-widget {
         bottom: 80px !important;
     }
 
-    /* Online widget stays above navigation */
     #online-widget {
         bottom: 80px !important;
     }
 
-    /* More menu animation */
+
     @keyframes moreMenuAnimation {
+
         from {
             opacity: 0;
             transform: translateY(10px);
@@ -604,16 +966,21 @@ h1 {
             opacity: 1;
             transform: translateY(0);
         }
+
     }
+
 }
 
-/* =========================================
+
+/* =========================================================
    DESKTOP
-========================================= */
+========================================================= */
 
 @media (min-width: 769px) {
+
     .mobile-bottom-nav,
     .mobile-more-menu {
         display: none !important;
     }
+
 }
