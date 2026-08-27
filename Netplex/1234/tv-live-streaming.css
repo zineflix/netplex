@@ -257,7 +257,7 @@ body > h {
 .channel-btn {
     position: relative;
     width: 100%;
-    min-height: 64px;
+    min-height: 40px;
     padding: 14px 16px;
     display: flex;
     align-items: center;
@@ -368,7 +368,7 @@ body > h {
     }
 
     .channel-btn {
-        min-height: 62px;
+        min-height: 40px;
         font-size: 13px;
     }
 
@@ -453,7 +453,7 @@ body > h {
     }
 
     .channel-btn {
-        min-height: 58px;
+        min-height: 40px;
         padding: 11px;
         font-size: 12px;
         border-radius: 5px;
@@ -494,7 +494,7 @@ body > h {
     }
 
     .channel-btn {
-        min-height: 55px;
+        min-height: 40px;
         padding: 9px;
         font-size: 11px;
     }
@@ -984,3 +984,5 @@ nav ul li a.active {
     }
 
 }
+
+
