@@ -8,8 +8,15 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #111;
-    color: white;  /* Set default text color to white */
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(2, 150, 204, 0.08),
+            transparent 100%
+        ),
+        #121212;
+
+    color: #ffffff;  /* Set default text color to white */
   }
   
   .container {
