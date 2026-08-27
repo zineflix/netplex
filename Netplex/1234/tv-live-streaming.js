@@ -38,7 +38,7 @@ const channelData = {
                     type: "mpd",
                     url: "https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/index.mpd",
                     keys: {
-                        "bd1PbWWqgKDBDorh525uecKaGZD21FGSoCeR": "3ecf305d54a7729299b93a3d69c02ea5"
+                        "bd1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR": "3ecf305d54a7729299b93a3d69c02ea5"
                     }
                 },
                 {
@@ -72,7 +72,7 @@ const channelData = {
                     url: "https://tglmp01.akamaized.net/out/v1/de55fad9216e4fe7ad8d2eed456ba1ec/manifest.mpd",
                     type: "mpd",
                     keys: {
-                        "edf1PbWWqgKDBDorh525uecKaGZD21FGSoCeR": "2f5a31PbWWqgKDBDorh525uecKaGZD21FGSoCeR"
+                        "edf1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR": "2f5a31PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR"
                     }
                 },
                 {
@@ -133,7 +133,7 @@ const channelData = {
                     url: "https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_nickjr.mpd",
                     type: "mpd",
                     keys: {
-                        "bab5c1PbWWqgKDBDorh525uecKaGZD21FGSoCeR": "0ac679aad3b9d619ac39ad634ec76bc8"
+                        "bab5c1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR": "0ac679aad3b9d619ac39ad634ec76bc8"
                     }
                 },
                 {
@@ -189,7 +189,7 @@ const channelData = {
                     url: "https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/pbo_sd.mpd",
                     type: "mpd",
                     keys: {
-                        "dcbdaaa6662d4188bdf97f9f0ca5e830": "31PbWWqgKDBDorh525uecKaGZD21FGSoCeR"
+                        "dcbdaaa6662d4188bdf97f9f0ca5e830": "31PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR"
                     }
                 },
                 {
@@ -277,7 +277,7 @@ const channelData = {
                     url: "https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_crime_invest.mpd",
                     type: "mpd",
                     keys: {
-                        "21PbWWqgKDBDorh525uecKaGZD21FGSoCeR": "db6bb638ccdfc1ad1a3e98d728486801"
+                        "21PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR": "db6bb638ccdfc1ad1a3e98d728486801"
                     }
                 },
                 {
@@ -285,7 +285,7 @@ const channelData = {
                     url: "https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/cg_tagalogmovie.mpd",
                     type: "mpd",
                     keys: {
-                        "96701PbWWqgKDBDorh525uecKaGZD21FGSoCeR": "ca2931211c1a261f082a3a2c4fd9f91b"
+                        "96701PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR": "ca2931211c1a261f082a3a2c4fd9f91b"
                     }
                 },
                 {
@@ -293,7 +293,7 @@ const channelData = {
                     url: "https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/pbo_sd.mpd",
                     type: "mpd",
                     keys: {
-                        "dcbdaaa6662d4188bdf97f9f0ca5e830": "31PbWWqgKDBDorh525uecKaGZD21FGSoCeR"
+                        "dcbdaaa6662d4188bdf97f9f0ca5e830": "31PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR"
                     }
                 },
                 {
@@ -681,4 +681,3 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 });
-
