@@ -763,6 +763,7 @@ nav .dropdown-content {
     border-radius: 8px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, .6);
     z-index: 10001;
+    font-weight: bold;
 }
 
 nav .dropdown-content li {
