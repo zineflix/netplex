@@ -8,7 +8,14 @@
 }
 
 body {
-    background-color: #121212;
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(2, 150, 204, 0.08),
+            transparent 100%
+        ),
+        #121212;
+
     color: #ffffff;
 }
 
