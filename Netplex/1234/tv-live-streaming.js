@@ -1,33 +1,38 @@
-// For Responsive Header
 window.addEventListener("scroll", function () {
     let nav = document.querySelector("nav");
     if (window.scrollY > 50) {
-        nav.classList.add("nav-solid"); // Solid color after scrolling down
+        nav.classList.add("nav-solid");
     } else {
-        nav.classList.remove("nav-solid"); // Transparent at the top
+        nav.classList.remove("nav-solid");
     }
 });
 
-// For sticky header when scrolling
-    window.addEventListener("scroll", function () {
-      let nav = document.querySelector("nav");
-      if (window.scrollY > 50) {
-        nav.classList.add("nav-solid"); // Add solid background when scrolled
-      } else {
-        nav.classList.remove("nav-solid"); // Remove solid background at top
-      }
-    });
-
-
-// For Dropdown More Button Function Start
 document.addEventListener("DOMContentLoaded", function () {
     const dropdown = document.querySelector(".dropdown");
+    if (dropdown) {
+        dropdown.addEventListener("click", function () {
+            this.classList.toggle("active");
+        });
+    }
 
-    dropdown.addEventListener("click", function () {
-        this.classList.toggle("active");
-    });
+    const mobileMoreBtn = document.getElementById("mobile-more-btn");
+    const mobileMoreMenu = document.getElementById("mobile-more-menu");
+    if (mobileMoreBtn && mobileMoreMenu) {
+        mobileMoreBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            mobileMoreMenu.classList.toggle("show");
+        });
+        document.addEventListener("click", function (e) {
+            if (!mobileMoreMenu.contains(e.target) && e.target !== mobileMoreBtn) {
+                mobileMoreMenu.classList.remove("show");
+            }
+        });
+    }
 });
-// For Dropdown More Button Function End
+
+
+
+
 
 
 // TV Live Streaming Start //
@@ -530,154 +535,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 // Fullscreen Button End //
-
-/* =========================================
-   NETPLEX NAVIGATION
-========================================= */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const nav = document.getElementById("main-nav");
-
-    const moreButton =
-        document.getElementById("mobile-more-btn");
-
-    const moreMenu =
-        document.getElementById("mobile-more-menu");
-
-
-    /* =====================================
-       STICKY NAVIGATION BACKGROUND
-    ===================================== */
-
-    function updateNavigation() {
-
-        if (!nav) return;
-
-        if (window.scrollY > 50) {
-
-            nav.classList.add("nav-solid");
-
-        } else {
-
-            nav.classList.remove("nav-solid");
-
-        }
-
-    }
-
-    window.addEventListener(
-        "scroll",
-        updateNavigation,
-        { passive: true }
-    );
-
-    updateNavigation();
-
-
-    /* =====================================
-       MOBILE MORE BUTTON
-    ===================================== */
-
-    if (moreButton && moreMenu) {
-
-        moreButton.addEventListener(
-            "click",
-            function (event) {
-
-                event.preventDefault();
-
-                event.stopPropagation();
-
-                moreMenu.classList.toggle("show");
-
-                moreButton.classList.toggle("active");
-
-            }
-        );
-
-
-        /* ---------------------------------
-           DON'T CLOSE WHEN CLICKING MENU
-        --------------------------------- */
-
-        moreMenu.addEventListener(
-            "click",
-            function (event) {
-
-                event.stopPropagation();
-
-            }
-        );
-
-
-        /* ---------------------------------
-           CLOSE WHEN CLICKING OUTSIDE
-        --------------------------------- */
-
-        document.addEventListener(
-            "click",
-            function () {
-
-                moreMenu.classList.remove("show");
-
-                moreButton.classList.remove("active");
-
-            }
-        );
-
-
-        /* ---------------------------------
-           CLOSE WITH ESC KEY
-        --------------------------------- */
-
-        document.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (event.key === "Escape") {
-
-                    moreMenu.classList.remove("show");
-
-                    moreButton.classList.remove("active");
-
-                }
-
-            }
-        );
-
-    }
-
-
-    /* =====================================
-       CLOSE MOBILE MORE MENU AFTER
-       CLICKING A LINK
-    ===================================== */
-
-    if (moreMenu) {
-
-        const moreLinks =
-            moreMenu.querySelectorAll("a");
-
-        moreLinks.forEach(function (link) {
-
-            link.addEventListener(
-                "click",
-                function () {
-
-                    moreMenu.classList.remove("show");
-
-                    if (moreButton) {
-
-                        moreButton.classList.remove("active");
-
-                    }
-
-                }
-            );
-
-        });
-
-    }
-
-});
