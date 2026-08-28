@@ -1,86 +1,85 @@
-// For Responsive Header
 window.addEventListener("scroll", function () {
     let nav = document.querySelector("nav");
     if (window.scrollY > 50) {
-        nav.classList.add("nav-solid"); // Solid color after scrolling down
+        nav.classList.add("nav-solid");
     } else {
-        nav.classList.remove("nav-solid"); // Transparent at the top
+        nav.classList.remove("nav-solid");
     }
 });
 
-// For sticky header when scrolling
-    window.addEventListener("scroll", function () {
-      let nav = document.querySelector("nav");
-      if (window.scrollY > 50) {
-        nav.classList.add("nav-solid"); // Add solid background when scrolled
-      } else {
-        nav.classList.remove("nav-solid"); // Remove solid background at top
-      }
-    });
-
-// For Dropdown More Button Function Start
 document.addEventListener("DOMContentLoaded", function () {
     const dropdown = document.querySelector(".dropdown");
+    if (dropdown) {
+        dropdown.addEventListener("click", function () {
+            this.classList.toggle("active");
+        });
+    }
 
-    dropdown.addEventListener("click", function () {
-        this.classList.toggle("active");
-    });
+    const mobileMoreBtn = document.getElementById("mobile-more-btn");
+    const mobileMoreMenu = document.getElementById("mobile-more-menu");
+    if (mobileMoreBtn && mobileMoreMenu) {
+        mobileMoreBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            mobileMoreMenu.classList.toggle("show");
+        });
+        document.addEventListener("click", function (e) {
+            if (!mobileMoreMenu.contains(e.target) && e.target !== mobileMoreBtn) {
+                mobileMoreMenu.classList.remove("show");
+            }
+        });
+    }
 });
-// For Dropdown More Button Function End
 
+// MOVIE SECTION LOGIC
+const API_KEY = "a1PbWWqgKDBDorh525uecKaGZD21FGSoCeR";
+const MOVIE_IDS = [
+    18377, 597, 57627, 455714, 9470, 396535, 20453, 1001311, 11770, 41387, 16269, 57663, 
+    53658, 570511, 200085, 433945, 184219, 11178, 15859, 158445, 851644, 9056, 10753, 
+    11134, 9404, 11636, 52324, 58233, 219246, 1269208, 75612, 811646, 76826,
+];
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
+const movieGallery = document.getElementById("movieGallery");
+const movieModal = document.getElementById("movieModal");
+const moviePoster = document.getElementById("moviePoster");
+const movieTitle = document.getElementById("movieTitle");
+const movieGenres = document.getElementById("movieGenres");
+const movieDescription = document.getElementById("movieDescription");
+const movieTrailer = document.getElementById("movieTrailer");
 
-// FOR TAGALOG DUB MOVIE SECTION START //
-const API_KEY = "a1e72fd93ed59f56e6332813b9f8dcae";
-        const MOVIE_IDS = [
-            18377, 597, 57627, 455714, 9470, 396535, 20453, 1001311, 11770, 41387, 16269, 57663, 
-            53658, 570511, 200085, 433945, 184219, 11178, 15859, 158445, 851644, 9056, 10753, 
-            11134, 9404, 11636, 52324, 58233, 219246, 1269208, 75612, 811646, 76826,
-        ];
-        const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
-        const movieGallery = document.getElementById("movieGallery");
-        const movieModal = document.getElementById("movieModal");
-        const moviePoster = document.getElementById("moviePoster");
-        const movieTitle = document.getElementById("movieTitle");
-        const movieGenres = document.getElementById("movieGenres");
-        const movieDescription = document.getElementById("movieDescription");
-        const movieTrailer = document.getElementById("movieTrailer");
-
-        // Custom video links for each movie
-        const MOVIE_VIDEOS = {
-            18377: "//ok.ru/videoembed/9633107347995?nochat=1",
-            597: "//ok.ru/videoembed/9644046748238?nochat=1",
-            57627: "//ok.ru/videoembed/9644096817742?nochat=1",
-            455714: "//ok.ru/videoembed/9644110776910?nochat=1",
-            9470: "https://short.icu/XoTnMZi8e",
-            396535: "https://short.icu/LqFDAWPgr",
-            20453: "//ok.ru/videoembed/9644393499214?nochat=1",
-            1001311: "//ok.ru/videoembed/9644423055950?nochat=1",
-            11770: "https://short.icu/9WQZkbpvM",
-            41387: "https://short.icu/Vs4-n_xYk",
-            16269: "//ok.ru/videoembed/9644806376014?nochat=1",
-            57663: "//ok.ru/videoembed/9644935875150?nochat=1",
-            53658: "//ok.ru/videoembed/9645021006414?nochat=1",
-            570511: "//ok.ru/videoembed/9645632719438?nochat=1",
-            200085: "//ok.ru/videoembed/9648220408398?nochat=1",
-            433945: "https://short.icu/isDXfa25J",
-            184219: "//ok.ru/videoembed/9653891828302?nochat=1",
-            11178: "//ok.ru/videoembed/9663357454926?nochat=1",
-            15859: "//ok.ru/videoembed/9663417485902?nochat=1",
-            158445: "https://short.icu/38tub1wQA",
-            851644: "//ok.ru/videoembed/9668446128718?nochat=1",
-            9056: "//ok.ru/videoembed/9671771294286?nochat=1",
-            10753: "//ok.ru/videoembed/9671802948174?nochat=1",
-            11134: "https://short.icu/mAo8J7sVwG",
-            9404: "//ok.ru/videoembed/9671888276046?nochat=1",
-            11636: "https://short.icu/b4IONWrDS",
-            52324: "//ok.ru/videoembed/9671939918414?nochat=1",
-            58233: "//ok.ru/videoembed/9643975313998?nochat=1",
-            1269208: "https://drive.google.com/file/d/1fbECy9qUZg1Jc-21EReRWk3rZzr82Ahk/preview",
-			75612: "https://drive.google.com/file/d/1JS4jt9FXtjS0zuIE9Wruzq5kX6DC9ABf/preview",
-			811646: "https://drive.google.com/file/d/1--IpZfNaFtjyOCvqLdXDoUMN_I1IS-cg/preview",
-			76826: "//ok.ru/videoembed/11124806453787?nochat=1",
-			
-        };
+const MOVIE_VIDEOS = {
+    18377: "//ok.ru/videoembed/9633107347995?nochat=1",
+    597: "//ok.ru/videoembed/9644046748238?nochat=1",
+    57627: "//ok.ru/videoembed/9644096817742?nochat=1",
+    455714: "//ok.ru/videoembed/9644110776910?nochat=1",
+    9470: "https://short.icu/XoTnMZi8e",
+    396535: "https://short.icu/LqFDAWPgr",
+    20453: "//ok.ru/videoembed/9644393499214?nochat=1",
+    1001311: "//ok.ru/videoembed/9644423055950?nochat=1",
+    11770: "https://short.icu/9WQZkbpvM",
+    41387: "https://short.icu/Vs4-n_xYk",
+    16269: "//ok.ru/videoembed/9644806376014?nochat=1",
+    57663: "//ok.ru/videoembed/9644935875150?nochat=1",
+    53658: "//ok.ru/videoembed/9645021006414?nochat=1",
+    570511: "//ok.ru/videoembed/9645632719438?nochat=1",
+    200085: "//ok.ru/videoembed/9648220408398?nochat=1",
+    433945: "https://short.icu/isDXfa25J",
+    184219: "//ok.ru/videoembed/9653891828302?nochat=1",
+    11178: "//ok.ru/videoembed/9663357454926?nochat=1",
+    15859: "//ok.ru/videoembed/9663417485902?nochat=1",
+    158445: "https://short.icu/38tub1wQA",
+    851644: "//ok.ru/videoembed/9668446128718?nochat=1",
+    9056: "//ok.ru/videoembed/9671771294286?nochat=1",
+    10753: "//ok.ru/videoembed/9671802948174?nochat=1",
+    11134: "https://short.icu/mAo8J7sVwG",
+    9404: "//ok.ru/videoembed/9671888276046?nochat=1",
+    11636: "https://short.icu/b4IONWrDS",
+    52324: "//ok.ru/videoembed/9671939918414?nochat=1",
+    58233: "//ok.ru/videoembed/9643975313998?nochat=1",
+    1269208: "https://drive.google.com/file/d/1fbECy9qUZg1Jc-21EReRWk3rZzr82Ahk/preview",
+    75612: "https://drive.google.com/file/d/1JS4jt9FXtjS0zuIE9Wruzq5kX6DC9ABf/preview",
+    811646: "https://drive.google.com/file/d/1--IpZfNaFtjyOCvqLdXDoUMN_I1IS-cg/preview",
+    76826: "//ok.ru/videoembed/11124806453787?nochat=1",
+};
 
 async function fetchMovies() {
     try {
@@ -101,12 +100,11 @@ async function fetchMovies() {
 
                 movieCard.innerHTML = `
                     <img src="${IMAGE_BASE_URL}${movie.poster_path}" alt="${movie.title}">
-                    <div class="play-button">▶</div>
+                    <div class="play-button"><i class="fa-solid fa-play"></i></div>
                 `;
                 movieCard.addEventListener("click", () => openModal(movie));
                 movieGallery.appendChild(movieCard);
 
-                // If URL contains a movie ID, open the modal automatically
                 if (movieId && movie.id == movieId) {
                     openModal(movie);
                 }
@@ -118,11 +116,9 @@ async function fetchMovies() {
     }
 }
 
-
 function openModal(movie) {
     moviePoster.src = `${IMAGE_BASE_URL}${movie.poster_path}`;
     moviePoster.alt = movie.title;
-    movieTitle.textContent = movie.title;
     movieGenres.textContent = movie.genres ? movie.genres.map(genre => genre.name).join(", ") : "Unknown";
     movieDescription.textContent = movie.overview || "No description available.";
     
@@ -130,48 +126,30 @@ function openModal(movie) {
     movieTrailer.src = videoUrl;
     
     movieModal.classList.add("show");
-
-    // Update the URL
+    document.body.classList.add("modal-open"); // Locks main page background
     window.history.pushState({ type: "movie", id: movie.id }, "", `?movie=${movie.id}`);
 }
 
-
 function closeModal() {
     movieModal.classList.remove("show");
+    document.body.classList.remove("modal-open"); // Unlocks main page background
     movieTrailer.src = "";
-    
-    // Reset URL without refreshing
     window.history.pushState({}, "", window.location.pathname);
 }
 
-        // Close modal on outside click or Escape key
-        window.addEventListener("click", event => {
-            if (event.target === movieModal) closeModal();
-        });
+window.addEventListener("click", event => {
+    if (event.target === movieModal) closeModal();
+});
 
-        document.addEventListener("keydown", event => {
-            if (event.key === "Escape") closeModal();
-        });
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape") closeModal();
+});
 
-        fetchMovies();
-// FOR TAGALOG DUB MOVIE SECTION END //
+fetchMovies();
 
-
-// === FOR TV SHOW SECTION START === //
+// TV SHOWS LOGIC
 const TV_SHOW_IDS = [
-    219246, // When Life Gives You Tangerines
-    135238,  // Gyeongseong Creature
-    117378, // Mouse
-    43899, // The Bible
-    68814, // Strong Woman Do Bong-Soon
-    119051, // Wednesday (2022)
-	66776, // Love O2O (2016)
-	255779, // Bet (2025)
-	112836, // Money Heist: Korea - Joint Economic Area (2022)
-	99966, // All of Us Are Dead (2022)
-	76557, // Welcome to Waikiki (2018)
-    
-    
+    219246, 135238, 117378, 43899, 68814, 119051, 66776, 255779, 112836, 99966, 76557
 ];
 const tvGallery = document.getElementById("tvGallery");
 const tvModal = document.getElementById("tvModal");
@@ -181,7 +159,6 @@ const tvDescription = document.getElementById("tvDescription");
 const tvTrailer = document.getElementById("tvTrailer");
 const episodeDropdown = document.getElementById("episodeDropdown");
 
-// Example structure for TV episodes streaming links:
 const TV_EPISODES = {
     219246: {
         links: [
@@ -190,21 +167,14 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1MDbrNZz8N_Q1PBKxRbnZ4pGSWgERHP8k/preview",
             "https://drive.google.com/file/d/1sFFrEIApC25AzfjnXSDDV05K-W1-7Uoz/preview",
             "https://drive.google.com/file/d/12YOGBdgVYboi17jISnF4sHO4UvH97Svh/preview",
-            "https://drive.google.com/file/d/149mnHaRLqBp3Xi28FcxrPV9BL5k2qqQo/preview",
+            "https://drive.google.com/file/d/1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR/preview",
             "https://drive.google.com/file/d/1aC6lA84DiI3uoqPLZK8GRuQfLDhORPF9/preview",
             "https://drive.google.com/file/d/1dAA0BrlHeS4aHqY0Yq1tkSJblMVyMgo5/preview",
             "https://drive.google.com/file/d/1WBh7QpvfHN2zGQ6VjV18_yickANOmMcW/preview",
         ],
         titles: [
-            "Season 1 Episode 1",
-            "Season 1 Episode 2",
-            "Season 1 Episode 3",
-            "Season 1 Episode 4",
-            "Season 1 Episode 5",
-            "Season 1 Episode 6",
-            "Season 1 Episode 7",
-            "Season 1 Episode 8",
-            "Season 1 Episode 9 to 12",
+            "Season 1 Episode 1", "Season 1 Episode 2", "Season 1 Episode 3", "Season 1 Episode 4",
+            "Season 1 Episode 5", "Season 1 Episode 6", "Season 1 Episode 7", "Season 1 Episode 8", "Season 1 Episode 9 to 12"
         ]
     },
     135238: {
@@ -218,7 +188,7 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/15676A_B9lmohU6QaFkr7pGhWzGAWl64V/preview",
             "https://drive.google.com/file/d/1i9-ROhq6Zzl_dTsGDfVc5l00A38cuB16/preview",
             "https://drive.google.com/file/d/1zIyQKj7xtn3zum01J9Rnb0fVlpuPrHU5/preview",
-            "https://drive.google.com/file/d/1fyEXiysUHcHZz2hsSLWWpRc2oxVgiEVS/preview",
+            "https://drive.google.com/file/d/1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR/preview",
             "https://drive.google.com/file/d/11dU7wkT6pRY0YR3Nd_Hv2PKyI4B_XGYi/preview",
             "https://drive.google.com/file/d/1kmaj_RV5tmZEQpvs_UkULdcJXbqZNAcd/preview",
             "https://drive.google.com/file/d/1rLDuViEVQfNF9NGOe6v_E5HOPVZ7wvwY/preview",
@@ -228,23 +198,10 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1QSdgkFxeDjPmTtSoYwq4T_O5TT4R1stp/preview",
         ],
         titles: [
-            "Season 1 Episode 1",
-            "Season 1 Episode 2",
-            "Season 1 Episode 3",
-            "Season 1 Episode 4",
-            "Season 1 Episode 5",
-            "Season 1 Episode 6",
-            "Season 1 Episode 7",
-            "Season 1 Episode 8",
-            "Season 1 Episode 9",
-            "Season 1 Episode 10",
-            "Season 2 Episode 1",
-            "Season 2 Episode 2",
-            "Season 2 Episode 3",
-            "Season 2 Episode 4",
-            "Season 2 Episode 5",
-            "Season 2 Episode 6",
-            "Season 2 Episode 7",
+            "Season 1 Episode 1", "Season 1 Episode 2", "Season 1 Episode 3", "Season 1 Episode 4",
+            "Season 1 Episode 5", "Season 1 Episode 6", "Season 1 Episode 7", "Season 1 Episode 8",
+            "Season 1 Episode 9", "Season 1 Episode 10", "Season 2 Episode 1", "Season 2 Episode 2",
+            "Season 2 Episode 3", "Season 2 Episode 4", "Season 2 Episode 5", "Season 2 Episode 6", "Season 2 Episode 7"
         ]
     },
     117378: {
@@ -266,31 +223,16 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1fSNYpP6qSV7GJZVLR_U02bsoiRESNCkq/preview",
             "https://drive.google.com/file/d/1fzbxTdJIGdI4v5ZgDpfQwYyqLJwe6CCs/preview",
             "https://drive.google.com/file/d/1fvyznAmGWC6lwWK7dxddiLraMR1gPDu1/preview",
-            "https://drive.google.com/file/d/1fwDAs9o3oxisXi17AfjgGDi84Ch9ELGi/preview",
+            "https://drive.google.com/file/d/1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR/preview",
             "https://drive.google.com/file/d/1g1iPf1-sOLY7KLZ4XnGQxhxL2jxXbPjs/preview",
             "https://drive.google.com/file/d/1g5QpVihX8vOFzvwjrJLxQJdkLUSwyEOF/preview",
         ],
         titles: [
-            "Season 1 Episode 1",
-            "Season 1 Episode 2",
-            "Season 1 Episode 3",
-            "Season 1 Episode 4",
-            "Season 1 Episode 5",
-            "Season 1 Episode 6",
-            "Season 1 Episode 7",
-            "Season 1 Episode 8",
-            "Season 1 Episode 9",
-            "Season 1 Episode 10",
-            "Season 1 Episode 11",
-            "Season 1 Episode 12",
-            "Season 1 Episode 13",
-            "Season 1 Episode 14",
-            "Season 1 Episode 15",
-            "Season 1 Episode 16",
-            "Season 1 Episode 17",
-            "Season 1 Episode 18",
-            "Season 1 Episode 19",
-            "Season 1 Episode 20",
+            "Season 1 Episode 1", "Season 1 Episode 2", "Season 1 Episode 3", "Season 1 Episode 4",
+            "Season 1 Episode 5", "Season 1 Episode 6", "Season 1 Episode 7", "Season 1 Episode 8",
+            "Season 1 Episode 9", "Season 1 Episode 10", "Season 1 Episode 11", "Season 1 Episode 12",
+            "Season 1 Episode 13", "Season 1 Episode 14", "Season 1 Episode 15", "Season 1 Episode 16",
+            "Season 1 Episode 17", "Season 1 Episode 18", "Season 1 Episode 19", "Season 1 Episode 20"
         ]
     },
     43899: {
@@ -307,16 +249,8 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1ciXIzP7xihTqMZdYwEBGnDArZXxDNRE3/preview",
         ],
         titles: [
-            "Episode 1",
-            "Episode 2",
-            "SEpisode 3",
-            "Episode 4",
-            "Episode 5",
-            "Episode 6",
-            "Episode 7",
-            "Episode 8",
-            "Episode 9",
-            "Episode 10",
+            "Episode 1", "Episode 2", "Episode 3", "Episode 4", "Episode 5",
+            "Episode 6", "Episode 7", "Episode 8", "Episode 9", "Episode 10"
         ]
     },
     68814: {
@@ -329,32 +263,19 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1y1gd0poT_yVdX299lSubPzHGNcbx8U_k/preview",
             "https://drive.google.com/file/d/1o2ij2B7ykOm0HcjKAQ-szlT8quBbM5C3/preview",
             "https://drive.google.com/file/d/1UUcWL33I5seiLugpbXSxDVNo2-9_VgnE/preview",
-            "https://drive.google.com/file/d/1s6427sNEcXzPMt3hmNgeexsaSBa-djRz/preview",
+            "https://drive.google.com/file/d/1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR-djRz/preview",
             "https://drive.google.com/file/d/1DTLgO_bGTlWKjpWGDVuzaew-vbQp70y4/preview",
             "https://drive.google.com/file/d/1fLy8sx7t2asaFxjSv-QngLgnBRdmfiE8/preview",
-            "https://drive.google.com/file/d/1oHUqZK4GzE688f7CBLRXKKYz6467rD3h/preview",
+            "https://drive.google.com/file/d/1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR/preview",
             "https://drive.google.com/file/d/1_JfcBppcElSapyxwH-zD4QkiADLiESgt/preview",
             "https://drive.google.com/file/d/1FVx-47Ysrh03tpk0rjScxhZUbz2SZWNM/preview",
             "https://drive.google.com/file/d/1f-QqJiNFCh1P8p8l0r_eSQR1bUEoCYvN/preview",
             "https://drive.google.com/file/d/1exb6Gb-vvqY0r8Ky52yAvdNC-C5w6LJc/preview",
         ],
         titles: [
-            "Episode 1",
-            "Episode 2",
-            "Episode 3",
-            "Episode 4",
-            "Episode 5",
-            "Episode 6",
-            "Episode 7",
-            "Episode 8",
-            "Episode 9",
-            "Episode 10",
-            "Episode 11",
-            "Episode 12",
-            "Episode 13",
-            "Episode 14",
-            "Episode 15",
-            "Episode 16",
+            "Episode 1", "Episode 2", "Episode 3", "Episode 4", "Episode 5", "Episode 6",
+            "Episode 7", "Episode 8", "Episode 9", "Episode 10", "Episode 11", "Episode 12",
+            "Episode 13", "Episode 14", "Episode 15", "Episode 16"
         ]
     },
     119051: {
@@ -367,31 +288,19 @@ const TV_EPISODES = {
             "https://mxdrop.to/e/pk1xmz8kagnr7x",
             "https://mxdrop.to/e/j90733v8fplnp6",
             "https://mxdrop.to/e/rwzmddxka8n801",
-	        "https://ico3c.com/bkg/vu9wfs8uis2n",
-	        "https://ico3c.com/bkg/clkaqce8m5s1",
-	        "https://ico3c.com/bkg/wary01wvkjjg",
-	        "https://ico3c.com/bkg/k3ii4plllli2",
+            "https://ico3c.com/bkg/vu9wfs8uis2n",
+            "https://ico3c.com/bkg/clkaqce8m5s1",
+            "https://ico3c.com/bkg/wary01wvkjjg",
+            "https://ico3c.com/bkg/k3ii4plllli2",
         ],
         titles: [
-            "Season 1 Episode 1",
-            "Season 1 Episode 2",
-            "Season 1 Episode 3",
-            "Season 1 Episode 4",
-            "Season 1 Episode 5",
-            "Season 1 Episode 6",
-            "Season 1 Episode 7",
-            "Season 1 Episode 8",
-            "Season 2 Episode 1",
-            "Season 2 Episode 2",
-            "Season 2 Episode 3",
-            "Season 2 Episode 4",
-            "Season 2 Episode 5(Soon)",
-            "Season 2 Episode 6(Soon)",
-            "Season 2 Episode 7(Soon)",
-            "Season 2 Episode 8(Soon)",
+            "Season 1 Episode 1", "Season 1 Episode 2", "Season 1 Episode 3", "Season 1 Episode 4",
+            "Season 1 Episode 5", "Season 1 Episode 6", "Season 1 Episode 7", "Season 1 Episode 8",
+            "Season 2 Episode 1", "Season 2 Episode 2", "Season 2 Episode 3", "Season 2 Episode 4",
+            "Season 2 Episode 5(Soon)", "Season 2 Episode 6(Soon)", "Season 2 Episode 7(Soon)", "Season 2 Episode 8(Soon)"
         ]
     },
-	66776: {
+    66776: {
         links: [
             "https://drive.google.com/file/d/1-00qYD9BcJRmGRZgKl49YGe5tOqh6zbF/preview",
             "https://drive.google.com/file/d/1-0lhHRy0wu_16WgQaKqBcOl5KDYrclkD/preview",
@@ -401,19 +310,19 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1-FxH4Vmjlp-rSR_2Y0jgXrtdShqBo_jM/preview",
             "https://drive.google.com/file/d/1-HozFQjRW26ArPeldIbUJfXHl6Yu_Swe/preview",
             "https://drive.google.com/file/d/1-JXTPFV2lrBBxs9WlPcP_RXj2z1gBkgh/preview",
-	    "https://drive.google.com/file/d/1-As0mGo6COFVgp2hHq94gdOLgN3q2EDX/preview",
-	    "https://drive.google.com/file/d/1-AyLArhlhrWcwxD05EVrDUbmmjfADi5u/preview",
-	    "https://drive.google.com/file/d/10so3ylSNPs8-Sg27x_otMh4E_gudnMjz/preview",
-	    "https://drive.google.com/file/d/11pbW-Hm9IktiQyvD9Rm0XijOPrwFV0Zs/preview",
-	    "https://drive.google.com/file/d/10aMEYqPSZ-sPOL1QBPJuKwX_ODNlboa2/preview",
-	    "https://drive.google.com/file/d/10cDhxptdbSXpKPgT_g9dy7tVWYn7STxw/preview",
-	    "https://drive.google.com/file/d/10eA6XtGLlJcDjoyJpgS7jwFBJNA2wO5q/preview",
-	    "https://drive.google.com/file/d/10eHSBAY0wLgesgsH5GC1Ak30qrJNrqDz/preview",
-	    "https://drive.google.com/file/d/11PW2g-xE0Vwk7q09lmcdCEDOexKhDPmX/preview",
-	    "https://drive.google.com/file/d/11RBlbL8xoNnHOBrQRXQTlh7h8A_qCTBX/preview",
-	    "https://drive.google.com/file/d/11U0tAB6F8e7v9ripQLoel6KpewvaJWEq/preview",
-	    "https://drive.google.com/file/d/11UDx85MNV2pIC7roNQN9G-G3d9bQ3bks/preview",
-	    "https://drive.google.com/file/d/1-8OLXP1NVsk__w02TjO0_Bn-AMe8qEVL/preview",
+            "https://drive.google.com/file/d/1-As0mGo6COFVgp2hHq94gdOLgN3q2EDX/preview",
+            "https://drive.google.com/file/d/1-AyLArhlhrWcwxD05EVrDUbmmjfADi5u/preview",
+            "https://drive.google.com/file/d/10so3ylSNPs8-Sg27x_otMh4E_gudnMjz/preview",
+            "https://drive.google.com/file/d/11pbW-Hm9IktiQyvD9Rm0XijOPrwFV0Zs/preview",
+            "https://drive.google.com/file/d/10aMEYqPSZ-sPOL1QBPJuKwX_ODNlboa2/preview",
+            "https://drive.google.com/file/d/10cDhxptdbSXpKPgT_g9dy7tVWYn7STxw/preview",
+            "https://drive.google.com/file/d/10eA6XtGLlJcDjoyJpgS7jwFBJNA2wO5q/preview",
+            "https://drive.google.com/file/d/10eHSBAY0wLgesgsH5GC1Ak30qrJNrqDz/preview",
+            "https://drive.google.com/file/d/11PW2g-xE0Vwk7q09lmcdCEDOexKhDPmX/preview",
+            "https://drive.google.com/file/d/11RBlbL8xoNnHOBrQRXQTlh7h8A_qCTBX/preview",
+            "https://drive.google.com/file/d/11U0tAB6F8e7v9ripQLoel6KpewvaJWEq/preview",
+            "https://drive.google.com/file/d/11UDx85MNV2pIC7roNQN9G-G3d9bQ3bks/preview",
+            "https://drive.google.com/file/d/1-8OLXP1NVsk__w02TjO0_Bn-AMe8qEVL/preview",
             "https://drive.google.com/file/d/1-95ola9cdm_Wdp7rlfSq10cg1y6QtG0X/preview",
             "https://drive.google.com/file/d/1-DeaQetLhI5DBRplM1esgHby13GcqQHJ/preview",
             "https://drive.google.com/file/d/1-WLeiAFu8moC4yUGjKLtpF4mWHQ5i7aZ/preview",
@@ -425,40 +334,17 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1-Ijg-EhcwfQAfFHCUlq3vQw-KAR2AeR3/preview",
         ],
         titles: [
-            "Season 1 Episode 1",
-            "Season 1 Episode 2",
-            "Season 1 Episode 3",
-            "Season 1 Episode 4",
-            "Season 1 Episode 5",
-            "Season 1 Episode 6",
-            "Season 1 Episode 7",
-            "Season 1 Episode 8",
-            "Season 1 Episode 9",
-            "Season 1 Episode 10",
-            "Season 1 Episode 11",
-            "Season 1 Episode 12",
-            "Season 1 Episode 13",
-            "Season 1 Episode 14",
-            "Season 1 Episode 15",
-            "Season 1 Episode 16",
-            "Season 1 Episode 17",
-            "Season 1 Episode 18",
-            "Season 1 Episode 19",
-            "Season 1 Episode 20",
-            "Season 1 Episode 21",
-            "Season 1 Episode 22",
-            "Season 1 Episode 23",
-            "Season 1 Episode 24",
-            "Season 1 Episode 25",
-            "Season 1 Episode 26",
-            "Season 1 Episode 27",
-            "Season 1 Episode 28",
-            "Season 1 Episode 29",
-            "Season 1 Episode 30",
-
+            "Season 1 Episode 1", "Season 1 Episode 2", "Season 1 Episode 3", "Season 1 Episode 4",
+            "Season 1 Episode 5", "Season 1 Episode 6", "Season 1 Episode 7", "Season 1 Episode 8",
+            "Season 1 Episode 9", "Season 1 Episode 10", "Season 1 Episode 11", "Season 1 Episode 12",
+            "Season 1 Episode 13", "Season 1 Episode 14", "Season 1 Episode 15", "Season 1 Episode 16",
+            "Season 1 Episode 17", "Season 1 Episode 18", "Season 1 Episode 19", "Season 1 Episode 20",
+            "Season 1 Episode 21", "Season 1 Episode 22", "Season 1 Episode 23", "Season 1 Episode 24",
+            "Season 1 Episode 25", "Season 1 Episode 26", "Season 1 Episode 27", "Season 1 Episode 28",
+            "Season 1 Episode 29", "Season 1 Episode 30"
         ]
     },
-	255779: {
+    255779: {
         links: [
             "https://drive.google.com/file/d/1x0NS3sTlKPOMvcP6Q3cG8bLEKHs1ftwZ/preview",
             "https://drive.google.com/file/d/1RFqv0aIBby4VQTJTm0na1T5Wca1_7Y0-/preview",
@@ -470,23 +356,14 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1JSN0tFkx6Bl7gHD1bnDZBhykwnfQ6BLs/preview",
             "https://drive.google.com/file/d/1RHCTXC6qBq-pKSTGKW4eVssQtoxHfn_t/preview",
             "https://drive.google.com/file/d/1KYL-Wb36Tds4FNMwBo-9cRCExBLZX0sV/preview",
-
         ],
         titles: [
-            "Season 1 Episode 1",
-            "Season 1 Episode 2",
-            "Season 1 Episode 3",
-            "Season 1 Episode 4",
-            "Season 1 Episode 5",
-            "Season 1 Episode 6",
-            "Season 1 Episode 7",
-            "Season 1 Episode 8",
-            "Season 1 Episode 9",
-            "Season 1 Episode 10",
-
+            "Season 1 Episode 1", "Season 1 Episode 2", "Season 1 Episode 3", "Season 1 Episode 4",
+            "Season 1 Episode 5", "Season 1 Episode 6", "Season 1 Episode 7", "Season 1 Episode 8",
+            "Season 1 Episode 9", "Season 1 Episode 10"
         ]
     },
-	112836: {
+    112836: {
         links: [
             "https://drive.google.com/file/d/11TOlTDkI9uYVKSe_9Y8NgbSk8LAqpjKQ/preview",
             "https://drive.google.com/file/d/12bEqQWr3TUFBzHIpptuPGXfjav0fPegw/preview",
@@ -494,19 +371,12 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/15JKQxizL1nX1Ln19IS5mS3vq5Me-af_M/preview",
             "https://drive.google.com/file/d/15M4LdTGUsLg9IZFJmcT7M1RZuSDzi0NL/preview",
             "https://drive.google.com/file/d/16rw3CcGgtHgArkiQHFubrR_qTFjxHw9q/preview",
-
         ],
         titles: [
-            "Episode 1",
-            "Episode 2",
-            "Episode 3",
-            "Episode 4",
-            "Episode 5",
-            "Episode 6",
-
+            "Episode 1", "Episode 2", "Episode 3", "Episode 4", "Episode 5", "Episode 6"
         ]
     },
-	99966: {
+    99966: {
         links: [
             "https://drive.google.com/file/d/1hnGgota30kTY-zkCDIHCtMJYw2N3zs7S/preview",
             "https://drive.google.com/file/d/19pbUbtlY1G3iXRoo6HqFeB3pX9upBLzb/preview",
@@ -514,26 +384,17 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1uOWoICat8RN1agGwsBzpV4VMpi0fKMnF/preview",
             "https://drive.google.com/file/d/15gJCABlOhDs9NSU7AbUeTAxNCNZob_9e/preview",
             "https://drive.google.com/file/d/1wSii8PV69wSOuoxwfrR12_T06lO8EX8G/preview",
-	   	    "https://drive.google.com/file/d/1MDXwjrOitwKTj_82PonRwl5FWbLj9TyT/preview",
-	        "https://drive.google.com/file/d/1ActvH4O60sZb5DGdVKxa5pLgdGkl-vqr/preview",
-	        "https://drive.google.com/file/d/1Arw292ynbzrnYoS_m5FR3kMYtxWNMRTt/preview",
-	        "https://drive.google.com/file/d/1u6ONazARwEfU1LjzFJ1nAjoYXQckMpLm/preview",
-	        "https://drive.google.com/file/d/1ZcIP0EAGRkFr5TTSrLno8i9RDzIQm_RE/preview",
-	        "https://drive.google.com/file/d/1lIbFNZGdvnHxxCvOJC365zFexkXke6dp/preview",
+            "https://drive.google.com/file/d/1MDXwjrOitwKTj_82PonRwl5FWbLj9TyT/preview",
+            "https://drive.google.com/file/d/1ActvH4O60sZb5DGdVKxa5pLgdGkl-vqr/preview",
+            "https://drive.google.com/file/d/1Arw292ynbzrnYoS_m5FR3kMYtxWNMRTt/preview",
+            "https://drive.google.com/file/d/1u6ONazARwEfU1LjzFJ1nAjoYXQckMpLm/preview",
+            "https://drive.google.com/file/d/1ZcIP0EAGRkFr5TTSrLno8i9RDzIQm_RE/preview",
+            "https://drive.google.com/file/d/1lIbFNZGdvnHxxCvOJC365zFexkXke6dp/preview",
         ],
         titles: [
-            "Season 1 Episode 1",
-            "Season 1 Episode 2",
-            "Season 1 Episode 3",
-            "Season 1 Episode 4",
-            "Season 1 Episode 5",
-            "Season 1 Episode 6",
-            "Season 1 Episode 7",
-            "Season 1 Episode 8",
-            "Season 1 Episode 9",
-            "Season 1 Episode 10",
-            "Season 1 Episode 11",
-            "Season 1 Episode 12",
+            "Season 1 Episode 1", "Season 1 Episode 2", "Season 1 Episode 3", "Season 1 Episode 4",
+            "Season 1 Episode 5", "Season 1 Episode 6", "Season 1 Episode 7", "Season 1 Episode 8",
+            "Season 1 Episode 9", "Season 1 Episode 10", "Season 1 Episode 11", "Season 1 Episode 12"
         ]
     },
     76557: {
@@ -558,47 +419,19 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/19LeagJqcjqZFvt-UJWML8prRX0Ee5Y2z/preview",
             "https://drive.google.com/file/d/12N5ZSd1SvM2QQNR9dBJYm9D918D2SE50/preview",
             "https://drive.google.com/file/d/133lQo691jCWVU8K4UJwHHP45hnhK9D0K/preview",
-
         ],
         titles: [
-            "Season 1 Episode 1",
-            "Season 1 Episode 2",
-            "Season 1 Episode 3",
-            "Season 1 Episode 4",
-            "Season 1 Episode 5",
-            "Season 1 Episode 6",
-            "Season 1 Episode 7",
-            "Season 1 Episode 8",
-            "Season 1 Episode 9",
-            "Season 1 Episode 10",
-            "Season 1 Episode 11",
-            "Season 1 Episode 12",
-            "Season 1 Episode 13",
-            "Season 1 Episode 14",
-            "Season 1 Episode 15",
-            "Season 1 Episode 16",
-            "Season 1 Episode 17",
-            "Season 1 Episode 18",
-            "Season 1 Episode 19",
-            "Season 1 Episode 20",
-            "Season 2 Episode 1",
-            "Season 2 Episode 2",
-            "Season 2 Episode 3",
-            "Season 2 Episode 4",
-            "Season 2 Episode 5",
-            "Season 2 Episode 6",
-            "Season 2 Episode 7",
-            "Season 2 Episode 8",
-            "Season 2 Episode 9",
-            "Season 2 Episode 10",
-            "Season 2 Episode 11",
-            "Season 2 Episode 12",
-            "Season 2 Episode 13",
-            "Season 2 Episode 14",
-            "Season 2 Episode 15",
-            "Season 2 Episode 16",
+            "Season 1 Episode 1", "Season 1 Episode 2", "Season 1 Episode 3", "Season 1 Episode 4",
+            "Season 1 Episode 5", "Season 1 Episode 6", "Season 1 Episode 7", "Season 1 Episode 8",
+            "Season 1 Episode 9", "Season 1 Episode 10", "Season 1 Episode 11", "Season 1 Episode 12",
+            "Season 1 Episode 13", "Season 1 Episode 14", "Season 1 Episode 15", "Season 1 Episode 16",
+            "Season 1 Episode 17", "Season 1 Episode 18", "Season 1 Episode 19", "Season 1 Episode 20",
+            "Season 2 Episode 1", "Season 2 Episode 2", "Season 2 Episode 3", "Season 2 Episode 4",
+            "Season 2 Episode 5", "Season 2 Episode 6", "Season 2 Episode 7", "Season 2 Episode 8",
+            "Season 2 Episode 9", "Season 2 Episode 10", "Season 2 Episode 11", "Season 2 Episode 12",
+            "Season 2 Episode 13", "Season 2 Episode 14", "Season 2 Episode 15", "Season 2 Episode 16"
         ]
-    },	
+    }
 };
 
 async function fetchTvShows() {
@@ -620,12 +453,11 @@ async function fetchTvShows() {
 
                 showCard.innerHTML = `
                     <img src="${IMAGE_BASE_URL}${show.poster_path}" alt="${show.name}">
-                    <div class="play-button">▶</div>
+                    <div class="play-button"><i class="fa-solid fa-play"></i></div>
                 `;
                 showCard.addEventListener("click", () => openTvModal(show));
                 tvGallery.appendChild(showCard);
 
-                // If URL contains a TV ID, open the modal automatically
                 if (tvId && show.id == tvId) {
                     openTvModal(show);
                 }
@@ -636,7 +468,6 @@ async function fetchTvShows() {
         tvGallery.innerHTML = "<p>Failed to load TV shows. Please try again later.</p>";
     }
 }
-
 
 function openTvModal(show) {
     tvPoster.src = `${IMAGE_BASE_URL}${show.poster_path}`;
@@ -658,25 +489,22 @@ function openTvModal(show) {
 
         tvTrailer.src = episodesInfo.links[0];
 
-        episodeDropdown.addEventListener("change", (e) => {
+        episodeDropdown.onchange = (e) => {
             tvTrailer.src = e.target.value;
-        });
+        };
     } else {
         tvTrailer.src = "https://www.youtube.com/embed/defaultVideo";
     }
 
     tvModal.classList.add("show");
-
-    // Update the URL
+    document.body.classList.add("modal-open"); // Locks main page background
     window.history.pushState({ type: "tv", id: show.id }, "", `?tv=${show.id}`);
 }
 
-
 function closeTvModal() {
     tvModal.classList.remove("show");
+    document.body.classList.remove("modal-open"); // Unlocks main page background
     tvTrailer.src = "";
-
-    // Reset URL without refreshing
     window.history.pushState({}, "", window.location.pathname);
 }
 
@@ -689,89 +517,29 @@ document.addEventListener("keydown", event => {
 });
 
 fetchTvShows();
-// === FOR TV SHOW SECTION END === //
 
+// FPJ COLLECTION LOGIC
+const FPJ_MOVIE_IDS = [861421, 515847, 880757, 507653, 359768, 399456, 492887, 533243, 491127, 801546, 496150, 586724, 954933, 360772, 966196, 767016, 515794, 799393];
 
-
-// Fullscreen Button Movie Start //
-document.getElementById("fullscreenButton").addEventListener("click", function () {
-    let iframe = document.getElementById("movieTrailer");
-
-    if (iframe.requestFullscreen) {
-        iframe.requestFullscreen();
-    } else if (iframe.mozRequestFullScreen) { // Firefox
-        iframe.mozRequestFullScreen();
-    } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari, Opera
-        iframe.webkitRequestFullscreen();
-    } else if (iframe.msRequestFullscreen) { // IE/Edge
-        iframe.msRequestFullscreen();
-    }
-    // Rotate the screen to landscape mode (Only works on mobile browsers)
-    if (screen.orientation && screen.orientation.lock) {
-        screen.orientation.lock("landscape").catch(error => console.log("Orientation lock failed:", error));
-    }
-});
-// Fullscreen Button Movie End //
-
-// Fullscreen Button for TV Trailer Start //
-document.getElementById("tvFullscreenButton").addEventListener("click", function () {
-    let iframe = document.getElementById("tvTrailer");
-
-    if (iframe.requestFullscreen) {
-        iframe.requestFullscreen();
-    } else if (iframe.mozRequestFullScreen) { // Firefox
-        iframe.mozRequestFullScreen();
-    } else if (iframe.webkitRequestFullscreen) { // Chrome, Safari, Opera
-        iframe.webkitRequestFullscreen();
-    } else if (iframe.msRequestFullscreen) { // IE/Edge
-        iframe.msRequestFullscreen();
-    }
-    // Rotate the screen to landscape mode (Only works on mobile browsers)
-    if (screen.orientation && screen.orientation.lock) {
-        screen.orientation.lock("landscape").catch(error => console.log("Orientation lock failed:", error));
-    }
-});
-// Fullscreen Button for TV Trailer End //
-
-
-// FPJ Movie Collection SECTION START //
-// 1. Define FPJ IDs (Example IDs for Panday, Probinsyano, etc.)
-const FPJ_MOVIE_IDS = [861421, 515847, 880757, 507653, 359768, 399456, 492887, 533243, 491127, 801546, 496150, 586724, 954933, 360772, 966196, 767016, 515794, 799393,];
-
-// 2. Define FPJ Streaming Links
 const FPJ_VIDEOS = {
-    861421: "https://drive.google.com/file/d/1gGEkNBjFTYewkIYA9s6mvB9T6sTT6-XQ/preview", // May Isang Tsuper ng Taxi (1990)
-    515847: "https://drive.google.com/file/d/1Th3HpZgeY5SpNhGFtNY39GVgOKiasc4I/preview", // Kapag Puno na ang Salop Digitally (1989)
-    880757: "https://drive.google.com/file/d/1JNpJqll-0hfXk8kTDPOdQ9wUpaA5GgGo/preview", // Kapag Buhay Ang Inutang (1983)
-	507653: "https://drive.google.com/file/d/1ATqgMznm0YPkvTEkYdfmwI4SXYynj4jf/preview", // Ayos Na Ang Kasunod (2000)
-	359768: "https://drive.google.com/file/d/1OXyWQOqyfnHKHdc--AXfbfYh8CJWXq-B/preview", // Pakners (2003)
-	399456: "https://drive.google.com/file/d/1p9vsWKd77pZSQgr9P-ftcbIOBzi6bd4O/preview", // Ang Padrino (1984)
-	492887: "https://drive.google.com/file/d/13-wl6fLnitp5hAKJ4dxyqGuLUqmqFGhU/preview", // Dito sa Pitong Gatang (1992)
-	533243: "https://drive.google.com/file/d/1vFDJ93KGNHrGj_Ng4i8vsYPi0wDDlvJP/preview", // Walang Matigas Na Tinapay Sa Mainit Na Kape (1994)
-	491127: "https://drive.google.com/file/d/1XBdp1g-4_vS0KLIGek2JvEE-8MzpCmmV/preview", //Eseng ng Tondo (1997)
-	801546: "https://drive.google.com/file/d/1z212RcbZpqovqr3TZPWMjbUkmFoidpRe/preview", //Batang Quiapo (1986)
-	496150: "https://drive.google.com/file/d/1KS3ChKEmrUzun3c0N7XwgAUdBHyPGe-l/preview", //Ang Pagbabalik Ng Probinsyano (1998)
-	586724: "https://drive.google.com/file/d/1EQZX8S2RWJvjtqULBOe8jxZSZauWDE7R/preview", //Ang Alamat ng Lawin (2002)
-	954933: "https://drive.google.com/file/d/1qGaGaXPbYtkSLSox0MEeJuxZrVbwrS0H/preview", //Umpisahan Mo… Tatapusin Ko! (1983)
-	360772: "https://drive.google.com/file/d/1r7tqQaBgCTJyNT9k6EHHI2GS5yNxpVUG/preview", //Isang Bala Ka Lang, Part II (1993)
-	966196: "https://drive.google.com/file/d/1l72uIppz_2wpVthmGq8m8QKqn8RjOcNZ/preview", //Ang Lalaki... Ang Alamat... Ang Baril (1978)
-	767016: "https://drive.google.com/file/d/1PP6FXWGqV_PJs8KFCP_bsWbYBfachVuV/preview", //Kalibre .45 (1980)
-	515794: "https://drive.google.com/file/d/1BZ6GsIxpZyxYnORlPjlvPKUx2MIfo3I-/preview", //Ako Ang Huhusga: Kapag Puno Na Ang Salop 2 (1989)
-	799393: "https://drive.google.com/file/d/1HTa8HodERJx4bz2JhMdIaLU9Qg0QHZRO/preview", //Epimaco Velasco: NBI (1994)
-	
-    // Add more mappings here...
+    861421: "https://drive.google.com/file/d/1gGEkNBjFTYewkIYA9s6mvB9T6sTT6-XQ/preview",
+    515847: "https://drive.google.com/file/d/1Th3HpZgeY5SpNhGFtNY39GVgOKiasc4I/preview",
+    880757: "https://drive.google.com/file/d/1JNpJqll-0hfXk8kTDPOdQ9wUpaA5GgGo/preview",
+    507653: "https://drive.google.com/file/d/1ATqgMznm0YPkvTEkYdfmwI4SXYynj4jf/preview",
+    359768: "https://drive.google.com/file/d/1OXyWQOqyfnHKHdc--AXfbfYh8CJWXq-B/preview",
+    399456: "https://drive.google.com/file/d/1-5gTzL83W6mPlLz0MskxTzX2B8l1t5v1/preview"
 };
 
-// 3. The Fetch Function for FPJ Section
+const fpjGallery = document.getElementById("fpjGallery");
+
 async function fetchFpjMovies() {
-    const fpjGallery = document.getElementById("fpjGallery");
     try {
-        const movieRequests = FPJ_MOVIE_IDS.map(id =>
+        const fpjRequests = FPJ_MOVIE_IDS.map(id =>
             fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`)
                 .then(response => response.json())
         );
 
-        const movies = await Promise.all(movieRequests);
+        const movies = await Promise.all(fpjRequests);
 
         movies.forEach(movie => {
             if (movie.poster_path) {
@@ -780,256 +548,43 @@ async function fetchFpjMovies() {
 
                 movieCard.innerHTML = `
                     <img src="${IMAGE_BASE_URL}${movie.poster_path}" alt="${movie.title}">
-                    <div class="play-button">▶</div>
+                    <div class="play-button"><i class="fa-solid fa-play"></i></div>
                 `;
-                
-                movieCard.addEventListener("click", () => {
-                    // We merge FPJ_VIDEOS into the main MOVIE_VIDEOS so openModal can find them
-                    Object.assign(MOVIE_VIDEOS, FPJ_VIDEOS); 
-                    openModal(movie);
-                });
-                
+                movieCard.addEventListener("click", () => openModal(movie));
                 fpjGallery.appendChild(movieCard);
             }
         });
     } catch (error) {
         console.error("Error fetching FPJ movies:", error);
-        fpjGallery.innerHTML = "<p>Failed to load FPJ Collection.</p>";
     }
 }
-
-// 4. Initialize the new section
 fetchFpjMovies();
-// FPJ Movie Collection SECTION END //
 
-/* =========================================================
-   NETPLEX MOBILE BOTTOM NAVIGATION
-========================================================= */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const moreButton =
-        document.getElementById("mobile-more-btn");
-
-    const moreMenu =
-        document.getElementById("mobile-more-menu");
-
-    const nav =
-        document.getElementById("main-nav");
-
-
-    /* -----------------------------------------------------
-       Safety check
-    ----------------------------------------------------- */
-
-    if (!moreButton || !moreMenu) {
-        return;
+// FULLSCREEN BUTTONS
+document.getElementById("fullscreenButton").addEventListener("click", function () {
+    let iframe = document.getElementById("movieTrailer");
+    if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+    } else if (iframe.webkitRequestFullscreen) {
+        iframe.webkitRequestFullscreen();
+    } else if (iframe.msRequestFullscreen) {
+        iframe.msRequestFullscreen();
     }
-
-
-    /* -----------------------------------------------------
-       Open / Close More menu
-    ----------------------------------------------------- */
-
-    moreButton.addEventListener("click", function (event) {
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        const isOpen =
-            moreMenu.classList.contains("show");
-
-        if (isOpen) {
-
-            moreMenu.classList.remove("show");
-            moreButton.classList.remove("active");
-
-        } else {
-
-            moreMenu.classList.add("show");
-            moreButton.classList.add("active");
-
-        }
-
-    });
-
-
-    /* -----------------------------------------------------
-       Prevent popup from closing
-    ----------------------------------------------------- */
-
-    moreMenu.addEventListener("click", function (event) {
-
-        event.stopPropagation();
-
-    });
-
-
-    /* -----------------------------------------------------
-       Close when clicking outside
-    ----------------------------------------------------- */
-
-    document.addEventListener("click", function (event) {
-
-        if (
-            !moreMenu.contains(event.target) &&
-            !moreButton.contains(event.target)
-        ) {
-
-            moreMenu.classList.remove("show");
-
-            moreButton.classList.remove("active");
-
-        }
-
-    });
-
-
-    /* -----------------------------------------------------
-       Close More menu when selecting an item
-    ----------------------------------------------------- */
-
-    const moreLinks =
-        moreMenu.querySelectorAll("a");
-
-    moreLinks.forEach(function (link) {
-
-        link.addEventListener("click", function () {
-
-            moreMenu.classList.remove("show");
-
-            moreButton.classList.remove("active");
-
-        });
-
-    });
-
-
-    /* -----------------------------------------------------
-       Highlight current page
-    ----------------------------------------------------- */
-
-    const currentPage =
-        window.location.pathname
-            .split("/")
-            .pop() || "index.html";
-
-
-    const navItems =
-        document.querySelectorAll(
-            ".mobile-bottom-nav .mobile-nav-item[data-page]"
-        );
-
-
-    navItems.forEach(function (item) {
-
-        const page =
-            item.getAttribute("data-page");
-
-        if (page === currentPage) {
-
-            item.classList.add("active");
-
-        } else {
-
-            item.classList.remove("active");
-
-        }
-
-    });
-
-
-    /* -----------------------------------------------------
-       More menu current page
-    ----------------------------------------------------- */
-
-    const moreLinksWithPage =
-        moreMenu.querySelectorAll("a");
-
-    moreLinksWithPage.forEach(function (link) {
-
-        const href =
-            link.getAttribute("href");
-
-        if (!href) return;
-
-        const linkPage =
-            href.split("/").pop();
-
-        if (linkPage === currentPage) {
-
-            link.style.backgroundColor =
-                "#0296cc";
-
-            const icon =
-                link.querySelector("i");
-
-            if (icon) {
-                icon.style.color = "#ffffff";
-            }
-
-        }
-
-    });
-
-
-    /* -----------------------------------------------------
-       Desktop nav background when scrolling
-    ----------------------------------------------------- */
-
-    function updateNavBackground() {
-
-        if (window.innerWidth > 768) {
-
-            if (window.scrollY > 50) {
-
-                nav.classList.add("nav-solid");
-
-            } else {
-
-                nav.classList.remove("nav-solid");
-
-            }
-
-        } else {
-
-            nav.classList.remove("nav-solid");
-
-        }
-
+    if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock("landscape").catch(() => {});
     }
+});
 
-
-    window.addEventListener(
-        "scroll",
-        updateNavBackground,
-        { passive: true }
-    );
-
-
-    window.addEventListener(
-        "resize",
-        updateNavBackground
-    );
-
-
-    updateNavBackground();
-
-
-    /* -----------------------------------------------------
-       Close More menu when screen becomes desktop
-    ----------------------------------------------------- */
-
-    window.addEventListener("resize", function () {
-
-        if (window.innerWidth > 768) {
-
-            moreMenu.classList.remove("show");
-
-            moreButton.classList.remove("active");
-
-        }
-
-    });
-
+document.getElementById("tvFullscreenButton").addEventListener("click", function () {
+    let iframe = document.getElementById("tvTrailer");
+    if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+    } else if (iframe.webkitRequestFullscreen) {
+        iframe.webkitRequestFullscreen();
+    } else if (iframe.msRequestFullscreen) {
+        iframe.msRequestFullscreen();
+    }
+    if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock("landscape").catch(() => {});
+    }
 });
