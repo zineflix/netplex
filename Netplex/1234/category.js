@@ -1,3 +1,61 @@
+window.addEventListener("scroll", function () {
+    let nav = document.querySelector("nav");
+    if (window.scrollY > 50) {
+        nav.classList.add("nav-solid");
+    } else {
+        nav.classList.remove("nav-solid");
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const dropdown = document.querySelector(".dropdown");
+    if (dropdown) {
+        dropdown.addEventListener("click", function () {
+            this.classList.toggle("active");
+        });
+    }
+
+    const mobileMoreBtn = document.getElementById("mobile-more-btn");
+    const mobileMoreMenu = document.getElementById("mobile-more-menu");
+    if (mobileMoreBtn && mobileMoreMenu) {
+        mobileMoreBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            mobileMoreMenu.classList.toggle("show");
+        });
+        document.addEventListener("click", function (e) {
+            if (!mobileMoreMenu.contains(e.target) && e.target !== mobileMoreBtn) {
+                mobileMoreMenu.classList.remove("show");
+            }
+        });
+    }
+});
+
+
+// For Dropdown More Button Function Start
+document.addEventListener("DOMContentLoaded", function () {
+    const dropdownButton = document.querySelector(".dropbtn");
+    const dropdownContent = document.querySelector(".dropdown-content");
+
+    dropdownButton.addEventListener("click", function (event) {
+        event.stopPropagation(); // Prevent event from bubbling up
+        dropdownContent.classList.toggle("active");
+    });
+
+    // Close dropdown if clicked outside
+    document.addEventListener("click", function (event) {
+        if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
+            dropdownContent.classList.remove("active");
+        }
+    });
+});
+
+// For Dropdown More Button Function End
+
+
+
+/* =====================================================
+   CATEGORY SECTION
+===================================================== */
 const apiKey = 'a1e72fd93ed59f56e6332813b9f8dcae';
 const baseUrl = 'https://api.themoviedb.org/3';
 const movieGrid = document.getElementById('movie-grid');
@@ -24,13 +82,13 @@ async function fetchGenres() {
         const tvGenresData = await tvGenresResponse.json();
         movieGenres = movieGenresData.genres;
         tvGenres = tvGenresData.genres;
-        populateGenreDropdown();
+        populateGenreDropdowned();
     } catch (error) {
         console.error('Error fetching genres:', error);
     }
 }
 
-function populateGenreDropdown() {
+function populateGenreDropdowned() {
     genreSelect.innerHTML = '<option value="all">All Genres</option>';
     let genresToShow = [];
 
@@ -50,7 +108,7 @@ function populateGenreDropdown() {
     });
 }
 
-function populateYearDropdown() {
+function populateYearDropdowned() {
     for (let year = currentYear; year >= 1900; year--) {
         const option = document.createElement('option');
         option.value = year;
@@ -138,7 +196,7 @@ function updateAndFetch() {
 // Content type changes — refresh genres and fetch
 contentTypeSelect.addEventListener('change', () => {
     currentContentType = contentTypeSelect.value;
-    populateGenreDropdown();
+    populateGenreDropdowned();
     currentGenre = 'all';
     genreSelect.value = 'all';
     updateAndFetch();
@@ -162,144 +220,6 @@ loadMoreBtn.addEventListener('click', () => {
 
 window.onload = () => {
     fetchGenres();
-    populateYearDropdown();
+    populateYearDropdowned();
     fetchMoviesAndTVShows(currentContentType, currentGenre, currentYearFilter, currentSort);
 };
-
-
-// For Dropdown More Button Function Start
-document.addEventListener("DOMContentLoaded", function () {
-    const dropdownButton = document.querySelector(".dropbtn");
-    const dropdownContent = document.querySelector(".dropdown-content");
-
-    dropdownButton.addEventListener("click", function (event) {
-        event.stopPropagation(); // Prevent event from bubbling up
-        dropdownContent.classList.toggle("active");
-    });
-
-    // Close dropdown if clicked outside
-    document.addEventListener("click", function (event) {
-        if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
-            dropdownContent.classList.remove("active");
-        }
-    });
-});
-
-// For Dropdown More Button Function End
-
-
-
-/* =====================================================
-   NETPLEX MOBILE BOTTOM NAVIGATION
-===================================================== */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const moreButton =
-        document.getElementById("mobile-more-btn");
-
-    const moreMenu =
-        document.getElementById("mobile-more-menu");
-
-
-    if (!moreButton || !moreMenu) {
-        return;
-    }
-
-
-    /* ================================================
-       OPEN / CLOSE MORE
-    ================================================ */
-
-    moreButton.addEventListener("click", function (event) {
-
-        event.preventDefault();
-
-        event.stopPropagation();
-
-        const isOpen =
-            moreMenu.classList.contains("show");
-
-
-        if (isOpen) {
-
-            moreMenu.classList.remove("show");
-
-            moreButton.classList.remove("active");
-
-        } else {
-
-            moreMenu.classList.add("show");
-
-            moreButton.classList.add("active");
-
-        }
-
-    });
-
-
-    /* ================================================
-       PREVENT POPUP CLICK FROM CLOSING IT
-    ================================================ */
-
-    moreMenu.addEventListener("click", function (event) {
-
-        event.stopPropagation();
-
-    });
-
-
-    /* ================================================
-       CLOSE WHEN CLICKING OUTSIDE
-    ================================================ */
-
-    document.addEventListener("click", function () {
-
-        moreMenu.classList.remove("show");
-
-        moreButton.classList.remove("active");
-
-    });
-
-
-    /* ================================================
-       CLOSE WHEN PRESSING ESC
-    ================================================ */
-
-    document.addEventListener("keydown", function (event) {
-
-        if (event.key === "Escape") {
-
-            moreMenu.classList.remove("show");
-
-            moreButton.classList.remove("active");
-
-        }
-
-    });
-
-});
-
-
-/* =====================================================
-   DESKTOP NAV SCROLL EFFECT
-===================================================== */
-
-window.addEventListener("scroll", function () {
-
-    const nav = document.querySelector("nav");
-
-    if (!nav) return;
-
-    if (window.scrollY > 50) {
-
-        nav.classList.add("nav-solid");
-
-    } else {
-
-        nav.classList.remove("nav-solid");
-
-    }
-
-});
-
