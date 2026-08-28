@@ -22,102 +22,26 @@ window.addEventListener("scroll", function () {
 // For Dropdown More Button Function Start
 document.addEventListener("DOMContentLoaded", function () {
     const dropdown = document.querySelector(".dropdown");
+    if (dropdown) {
+        dropdown.addEventListener("click", function () {
+            this.classList.toggle("active");
+        });
+    }
 
-    dropdown.addEventListener("click", function () {
-        this.classList.toggle("active");
-    });
+    const mobileMoreBtn = document.getElementById("mobile-more-btn");
+    const mobileMoreMenu = document.getElementById("mobile-more-menu");
+    if (mobileMoreBtn && mobileMoreMenu) {
+        mobileMoreBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            mobileMoreMenu.classList.toggle("show");
+        });
+        document.addEventListener("click", function (e) {
+            if (!mobileMoreMenu.contains(e.target) && e.target !== mobileMoreBtn) {
+                mobileMoreMenu.classList.remove("show");
+            }
+        });
+    }
 });
 // For Dropdown More Button Function End
 
-/* =========================================
-   MOBILE BOTTOM NAVIGATION
-========================================= */
 
-document.addEventListener("DOMContentLoaded", function () {
-
-    const moreButton =
-        document.getElementById("mobile-more-btn");
-
-    const moreMenu =
-        document.getElementById("mobile-more-menu");
-
-
-    /* =====================================
-       CHECK ELEMENTS
-    ===================================== */
-
-    if (!moreButton || !moreMenu) {
-        return;
-    }
-
-
-    /* =====================================
-       OPEN / CLOSE MORE
-    ===================================== */
-
-    moreButton.addEventListener(
-        "click",
-        function (event) {
-
-            event.preventDefault();
-
-            event.stopPropagation();
-
-            moreMenu.classList.toggle("show");
-
-            moreButton.classList.toggle("active");
-
-        }
-    );
-
-
-    /* =====================================
-       PREVENT POPUP FROM CLOSING
-    ===================================== */
-
-    moreMenu.addEventListener(
-        "click",
-        function (event) {
-
-            event.stopPropagation();
-
-        }
-    );
-
-
-    /* =====================================
-       CLOSE WHEN CLICKING OUTSIDE
-    ===================================== */
-
-    document.addEventListener(
-        "click",
-        function () {
-
-            moreMenu.classList.remove("show");
-
-            moreButton.classList.remove("active");
-
-        }
-    );
-
-
-    /* =====================================
-       CLOSE WITH ESC
-    ===================================== */
-
-    document.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (event.key === "Escape") {
-
-                moreMenu.classList.remove("show");
-
-                moreButton.classList.remove("active");
-
-            }
-
-        }
-    );
-
-});
