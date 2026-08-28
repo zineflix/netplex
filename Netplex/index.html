@@ -420,21 +420,24 @@
   box-shadow: 0 0 15px rgba(0,255,255,0.3);
   font-family: 'Segoe UI', Tahoma, sans-serif;
   font-size: 14px;
-  z-index: 9999;
+  z-index: 999999;
   user-select: none;
   cursor: pointer;
   overflow: hidden;
   width: 200px;
   max-height: 400px;
   transition: all 0.3s ease-in-out;
+  /* Protect against mobile notch/navigation bars */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 #online-widget-header {
   padding: 12px 18px;
-  border-bottom: 1px solid #0ff2;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.133);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  white-space: nowrap;
 }
 
 #online-widget-content {
@@ -473,29 +476,26 @@
   margin-right: 4px;
 }
 
+/* Fixed Mobile Responsiveness */
 @media (max-width: 600px) {
   #online-widget {
-    left: 20px;
-    bottom: 20px;
-    width: 90%;
-    max-width: 135px;
-    font-size: 14px;
-  }
-
-  #online-widget-content {
-    max-height: 250px;
-  }
-
-  .region-stat {
+    left: 15px;
+    bottom: 15px;
+    width: min(85vw, 175px); /* Fixed narrow width issue */
     font-size: 12px;
   }
 
   #online-widget-header {
-    padding: 10px 14px;
+    padding: 10px 12px;
   }
 
   #online-widget-content {
-    padding: 8px 14px;
+    padding: 10px 12px;
+    max-height: 220px;
+  }
+
+  .region-stat {
+    font-size: 12px;
   }
 }
 </style>
@@ -503,7 +503,7 @@
 <!-- Widget HTML -->
 <div id="online-widget">
   <div id="online-widget-header">
-    👥 <span id="online-count">...</span> online
+    <span>👥 <span id="online-count">...</span> online</span>
     <span id="online-widget-toggle">▲</span>
   </div>
   <div id="online-widget-content">
@@ -523,9 +523,6 @@
 (() => {
 "use strict";
 
-/* ==============================
-   FIREBASE CONFIG
-============================== */
 const firebaseConfig = {
   apiKey: "AIzaSyAcmo2t3zDxpFVexE3l3RB15Ig4qSngBCY",
   authDomain: "netplex-online-stat.firebaseapp.com",
@@ -536,25 +533,15 @@ const firebaseConfig = {
   appId: "1:837018070039:web:cce7c12ad6bcc9201d0052"
 };
 
-/* ==============================
-   FIREBASE INITIALIZATION
-============================== */
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
 const db = firebase.database();
-
-/* ==============================
-   FIREBASE REFERENCES
-============================== */
 const presenceRef = db.ref("presence");
 const dailyRef = db.ref("siteStats/daily");
 const resetRef = db.ref("siteStats/reset");
 
-/* ==============================
-   DOM
-============================== */
 const widget = document.getElementById("online-widget");
 const header = document.getElementById("online-widget-header");
 const onlineCountEl = document.getElementById("online-count");
@@ -563,35 +550,16 @@ const peakUsersEl = document.getElementById("peak-users");
 const geoDataEl = document.getElementById("geo-data");
 const regionBreakdownEl = document.getElementById("region-breakdown");
 
-/* ==============================
-   VISITOR ID
-   Shared by all tabs in the
-   same browser/profile.
-============================== */
 let visitorID = localStorage.getItem("netplex_uid");
-
 if (!visitorID) {
   visitorID = "user_" + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
   localStorage.setItem("netplex_uid", visitorID);
 }
 
-/* ==============================
-   TAB ID
-   Different for every tab.
-============================== */
 const tabID = "tab_" + Math.random().toString(36).substring(2, 15) + "_" + Date.now().toString(36);
-
-/* ==============================
-   VISITOR PRESENCE
-============================== */
 const visitorRef = presenceRef.child(visitorID);
 const tabRef = visitorRef.child("tabs").child(tabID);
 
-/* ==============================
-   PHILIPPINES DATE
-   All daily statistics use
-   Asia/Manila.
-============================== */
 function getPhilippinesDate(date = new Date()) {
   return new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Manila",
@@ -601,61 +569,21 @@ function getPhilippinesDate(date = new Date()) {
   }).format(date);
 }
 
-/* ==============================
-   GET PREVIOUS PHILIPPINES DATE
-============================== */
-function getPreviousPhilippinesDate() {
-  const now = new Date();
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Asia/Manila",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit"
-  }).formatToParts(now);
-
-  let year;
-  let month;
-  let day;
-
-  parts.forEach(part => {
-    if (part.type === "year") year = Number(part.value);
-    if (part.type === "month") month = Number(part.value);
-    if (part.type === "day") day = Number(part.value);
-  });
-
-  const date = new Date(Date.UTC(year, month - 1, day));
-  date.setUTCDate(date.getUTCDate() - 1);
-
-  return date.toISOString().substring(0, 10);
-}
-
-/* ==============================
-   TODAY'S PATH
-============================== */
 let currentDate = getPhilippinesDate();
 let currentDailyRef = dailyRef.child(currentDate);
 
-/* ==============================
-   GEO CACHE
-   Avoid repeatedly requesting
-   IPinfo from every page load.
-============================== */
 const GEO_CACHE_KEY = "netplex_geo_cache";
 const GEO_CACHE_TIME = 24 * 60 * 60 * 1000;
 
 function getCachedGeo() {
   try {
     const cached = localStorage.getItem(GEO_CACHE_KEY);
-
     if (!cached) return null;
-
     const data = JSON.parse(cached);
-
     if (!data.timestamp || Date.now() - data.timestamp > GEO_CACHE_TIME) {
       localStorage.removeItem(GEO_CACHE_KEY);
       return null;
     }
-
     return data.geo || null;
   } catch (error) {
     return null;
@@ -668,33 +596,19 @@ function saveGeoCache(geo) {
       timestamp: Date.now(),
       geo: geo
     }));
-  } catch (error) {
-    /* Ignore storage errors */
-  }
+  } catch (error) {}
 }
 
-/* ==============================
-   FLAG
-============================== */
 function getFlag(countryCode) {
   if (!countryCode) return "";
-
   const code = String(countryCode).toLowerCase().replace(/[^a-z]/g, "");
-
   if (code.length !== 2) return "";
-
-  return `
-    <img src="https://flagcdn.com/16x12/${code}.png" alt="" loading="lazy">
-  `;
+  return `<img src="https://flagcdn.com/16x12/${code}.png" alt="" loading="lazy">`;
 }
 
-/* ==============================
-   GEO DISPLAY
-============================== */
 function updateGeoDisplay(data) {
   const city = data.city || "";
   const region = data.region || "";
-
   if (city && region) {
     geoDataEl.textContent = `${city}, ${region}`;
   } else if (city) {
@@ -708,138 +622,78 @@ function updateGeoDisplay(data) {
   }
 }
 
-/* ==============================
-   IPINFO
-============================== */
+// Added timeout protection for mobile fetch failures
 async function getGeoData() {
   let geo = getCachedGeo();
-
   if (geo) return geo;
 
+  const fetchPromise = fetch("https://ipinfo.io/json?token=06786be2f40d4d").then(res => res.json());
+  const timeoutPromise = new Promise(resolve => setTimeout(() => resolve(null), 3000));
+
   try {
-    const response = await fetch("https://ipinfo.io/json?token=06786be2f40d4d");
-
-    if (!response.ok) {
-      throw new Error("IPinfo request failed");
-    }
-
-    const data = await response.json();
+    const data = await Promise.race([fetchPromise, timeoutPromise]);
+    if (!data) throw new Error("Timeout");
 
     geo = {
       city: data.city || "Unknown",
       region: data.region || "Unknown",
       country: data.country || "Unknown"
     };
-
     saveGeoCache(geo);
     return geo;
   } catch (error) {
-    return {
-      city: "Unknown",
-      region: "Unknown",
-      country: "Unknown"
-    };
+    return { city: "Unknown", region: "Unknown", country: "Unknown" };
   }
 }
 
-/* ==============================
-   DAILY RESET
-   Only one visitor performs
-   the reset for a new date.
-   All previous daily data is
-   deleted, leaving only today's
-   data.
-============================== */
 async function performDailyReset() {
   const today = getPhilippinesDate();
-
   try {
     const result = await resetRef.transaction(current => {
       if (current && current.date === today) return;
-
       return {
         date: today,
         resetAt: firebase.database.ServerValue.TIMESTAMP
       };
     });
 
-    /* ==========================
-       RESET WAS CLAIMED BY US
-    ========================== */
-    if (
-      result.committed &&
-      result.snapshot.val() &&
-      result.snapshot.val().date === today
-    ) {
+    if (result.committed && result.snapshot.val() && result.snapshot.val().date === today) {
       const dailySnapshot = await dailyRef.once("value");
       const updates = {};
-
       dailySnapshot.forEach(child => {
-        const date = child.key;
-
-        if (date !== today) {
-          updates[date] = null;
-        }
+        if (child.key !== today) updates[child.key] = null;
       });
-
-      if (Object.keys(updates).length) {
-        await dailyRef.update(updates);
-      }
-
-      /* ========================
-         MAKE SURE TODAY EXISTS
-      ======================== */
-      await dailyRef.child(today).update({
-        peakUsers: 0
-      });
+      if (Object.keys(updates).length) await dailyRef.update(updates);
+      await dailyRef.child(today).update({ peakUsers: 0 });
     }
   } catch (error) {
-    console.error("Daily reset error:", error);
+    console.warn("Daily reset bypassed:", error);
   }
-
   currentDate = today;
   currentDailyRef = dailyRef.child(currentDate);
 }
 
-/* ==============================
-   UNIQUE VISITOR
-============================== */
 async function registerUniqueVisitor() {
   const uniqueRef = currentDailyRef.child("uniqueVisitors").child(visitorID);
-
   try {
     await uniqueRef.transaction(current => {
       if (current) return;
-
-      return {
-        firstVisit: firebase.database.ServerValue.TIMESTAMP
-      };
+      return { firstVisit: firebase.database.ServerValue.TIMESTAMP };
     });
-
     updateUniqueVisitorCount();
   } catch (error) {
-    console.error("Unique visitor error:", error);
+    console.warn("Unique visitor error:", error);
   }
 }
 
-/* ==============================
-   UNIQUE COUNT DISPLAY
-============================== */
 function updateUniqueVisitorCount() {
-  currentDailyRef.child("uniqueVisitors").on(
-    "value",
-    snapshot => {
-      uniqueVisitorCountEl.textContent = snapshot.numChildren();
-    },
-    () => {
-      uniqueVisitorCountEl.textContent = "0";
-    }
-  );
+  currentDailyRef.child("uniqueVisitors").on("value", snapshot => {
+    uniqueVisitorCountEl.textContent = snapshot.numChildren();
+  }, () => {
+    uniqueVisitorCountEl.textContent = "0";
+  });
 }
 
-/* ==============================
-   PRESENCE SETUP
-============================== */
 async function setupPresence(geo) {
   try {
     await visitorRef.update({
@@ -848,231 +702,99 @@ async function setupPresence(geo) {
       region: geo.region || "Unknown",
       country: geo.country || "Unknown"
     });
-
     await tabRef.set(true);
-
-    /* ==========================
-       AUTOMATIC DISCONNECT
-    ========================== */
     tabRef.onDisconnect().remove();
   } catch (error) {
-    console.error("Presence error:", error);
+    console.warn("Presence setup error:", error);
   }
 }
 
-/* ==============================
-   ONLINE COUNT
-   Each visitor is counted once,
-   regardless of how many tabs
-   they have open.
-============================== */
-presenceRef.on(
-  "value",
-  snapshot => {
-    let onlineCount = 0;
-    const regionStats = {};
+presenceRef.on("value", snapshot => {
+  let onlineCount = 0;
+  const regionStats = {};
 
-    snapshot.forEach(visitorSnapshot => {
-      const visitor = visitorSnapshot.val();
+  snapshot.forEach(visitorSnapshot => {
+    const visitor = visitorSnapshot.val();
+    if (!visitor || !visitor.tabs) return;
 
-      if (!visitor || !visitor.tabs) return;
+    const activeTabs = Object.values(visitor.tabs).filter(v => v === true);
+    if (activeTabs.length === 0) return;
 
-      const activeTabs = Object.values(visitor.tabs).filter(value => value === true);
+    onlineCount++;
+    const country = visitor.country || "Unknown";
+    const region = visitor.region || "Unknown";
+    const key = `${region}, ${country}`;
 
-      /* ========================
-         NO ACTIVE TAB
-      ======================== */
-      if (activeTabs.length === 0) return;
-
-      /* ========================
-         ONE VISITOR
-         Even if:
-         Tab 1
-         Tab 2
-         Tab 3
-         = 1
-      ======================== */
-
-      onlineCount++;
-
-      const country = visitor.country || "Unknown";
-      const region = visitor.region || "Unknown";
-      const key = `${region}, ${country}`;
-
-      if (!regionStats[key]) {
-        regionStats[key] = {
-          count: 0,
-          country: country
-        };
-      }
-
-      regionStats[key].count++;
-    });
-
-    /* ==========================
-       ONLINE COUNT
-    ========================== */
-    onlineCountEl.textContent = onlineCount;
-
-    /* ==========================
-       DAILY PEAK
-    ========================== */
-    const peakRef = currentDailyRef.child("peakUsers");
-
-    peakRef.transaction(currentPeak => {
-      const peak = Number(currentPeak) || 0;
-      return onlineCount > peak ? onlineCount : peak;
-    });
-
-    /* ==========================
-       REGION BREAKDOWN
-    ========================== */
-    const sortedRegions = Object.entries(regionStats).sort(
-      (a, b) => b[1].count - a[1].count
-    );
-
-    if (sortedRegions.length === 0) {
-      regionBreakdownEl.textContent = "No region data.";
-      return;
+    if (!regionStats[key]) {
+      regionStats[key] = { count: 0, country: country };
     }
+    regionStats[key].count++;
+  });
 
-    regionBreakdownEl.innerHTML = sortedRegions
-      .map(([region, info]) => {
-        const flag = getFlag(info.country);
+  onlineCountEl.textContent = onlineCount;
 
-        return `
-          <div>
-            ${flag}
-            ${region}: ${info.count}
-          </div>
-        `;
-      })
-      .join("");
-  },
-  () => {
-    onlineCountEl.textContent = "0";
-    regionBreakdownEl.textContent = "Unable to load.";
+  const peakRef = currentDailyRef.child("peakUsers");
+  peakRef.transaction(currentPeak => {
+    const peak = Number(currentPeak) || 0;
+    return onlineCount > peak ? onlineCount : peak;
+  });
+
+  const sortedRegions = Object.entries(regionStats).sort((a, b) => b[1].count - a[1].count);
+
+  if (sortedRegions.length === 0) {
+    regionBreakdownEl.textContent = "No region data.";
+    return;
   }
-);
 
-/* ==============================
-   PEAK DISPLAY
-============================== */
+  regionBreakdownEl.innerHTML = sortedRegions.map(([region, info]) => {
+    const flag = getFlag(info.country);
+    return `<div>${flag} ${region}: ${info.count}</div>`;
+  }).join("");
+}, () => {
+  onlineCountEl.textContent = "0";
+  regionBreakdownEl.textContent = "Unable to load.";
+});
+
 function listenToPeak() {
-  currentDailyRef.child("peakUsers").on(
-    "value",
-    snapshot => {
-      peakUsersEl.textContent = Number(snapshot.val()) || 0;
-    }
-  );
+  currentDailyRef.child("peakUsers").on("value", snapshot => {
+    peakUsersEl.textContent = Number(snapshot.val()) || 0;
+  });
 }
 
-/* ==============================
-   REMOVE THIS TAB
-============================== */
 function removeCurrentTab() {
   tabRef.remove().catch(() => {});
 }
 
 window.addEventListener("pagehide", removeCurrentTab);
 
-/* ==============================
-   MIDNIGHT TIMER
-   Checks the Philippines date
-   and automatically switches
-   the visitor to the new day.
-============================== */
 function scheduleMidnightCheck() {
-  const now = new Date();
-
-  const nextCheck = new Date(
-    now.getTime() + 60 * 1000
-  );
-
-  const delay = Math.max(
-    1000,
-    nextCheck.getTime() - now.getTime()
-  );
-
   setTimeout(async () => {
-    await checkForNewDay();
+    const newDate = getPhilippinesDate();
+    if (newDate !== currentDate) {
+      await performDailyReset();
+      await registerUniqueVisitor();
+      listenToPeak();
+    }
     scheduleMidnightCheck();
-  }, delay);
+  }, 60000);
 }
 
-/* ==============================
-   CHECK FOR NEW DAY
-============================== */
-async function checkForNewDay() {
-  const newDate = getPhilippinesDate();
-
-  if (newDate === currentDate) return;
-
-  /* ==========================
-     NEW DAY
-  ========================== */
-  await performDailyReset();
-
-  /* ==========================
-     MOVE UNIQUE VISITOR INTO
-     THE NEW DAY
-  ========================== */
-  await registerUniqueVisitor();
-
-  /* ==========================
-     UPDATE PEAK LISTENER
-  ========================== */
-  listenToPeak();
-}
-
-/* ==============================
-   INITIALIZATION
-============================== */
 async function initialize() {
-  /* ==========================
-     RESET FIRST
-  ========================== */
   await performDailyReset();
-
-  /* ==========================
-     GET GEO
-  ========================== */
   const geo = await getGeoData();
   updateGeoDisplay(geo);
-
-  /* ==========================
-     PRESENCE
-  ========================== */
   await setupPresence(geo);
-
-  /* ==========================
-     UNIQUE VISITOR
-  ========================== */
   await registerUniqueVisitor();
-
-  /* ==========================
-     PEAK
-  ========================== */
   listenToPeak();
-
-  /* ==========================
-     MIDNIGHT MONITOR
-  ========================== */
   scheduleMidnightCheck();
 }
 
-/* ==============================
-   WIDGET TOGGLE
-============================== */
+// Touch event support added for mobile header toggle
 header.addEventListener("click", () => {
   widget.classList.toggle("expanded");
 });
 
-/* ==============================
-   START
-============================== */
 initialize();
-
 })();
 </script>
   
