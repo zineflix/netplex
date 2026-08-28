@@ -1,672 +1,34 @@
-@import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;400;500;700&display=swap');
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Helvetica Neue", Arial, Arial Narrow, sans-serif;
-}
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
-body {
-    background:
-        radial-gradient(
-            circle at 50% 0%,
-            rgba(2, 150, 204, 0.08),
-            transparent 100%
-        ),
-        #121212;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
 
-    color: #ffffff;
-}
+        :root {
+            --netflix-red: #0296cc;
+            --netflix-black: #141414;
+            --netflix-dark: #181818;
+            --netflix-card: #2f2f2f;
+            --accent-blue: #0296cc;
+            --text-light: #e5e5e5;
+        }
 
-/* FOR TAGALOG DUB MOVIE SECTION START */
-h1 {
-    text-align: center;
-    margin-top: 100px;
-    margin-bottom: 25px;
-    font-size: 50px;
-}
-h2 {
-    text-align: left;
-    color: #fff;
-    font-size: 24px;
-    margin-top: 20px;
-    margin-left: 20px;
-}
-h3 {
-    text-align: center;
-    font-size: 25px;
-}
-.gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    margin-bottom: 50px;
-}
-.movie-card {
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.3s;
-}
-.movie-card:hover img {
-    box-shadow: 0 8px 20px #0296cc; /* Stronger shadow */
-    transform: scale(1.05); /* Slight zoom effect */
-}
-.movie-card img {
-    width: 100%;
-    border-radius: 10px;
-    display: block;
-    box-shadow: 0 4px 10px #0296cc; /* Soft shadow */
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
+        body {
+            background-color: var(--netflix-black);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
 
-/* Play Button Effect */
-.play-button {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.8);
-    font-size: 30px;
-    color: white;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-    opacity: 0;
-}
-
-/* Play button hover effect */
-.movie-card:hover .play-button {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-    background: black; /* Red play button */
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); /* Glowing effect */
-}
-
-.movie-card:hover .play-button {
-    opacity: 1;
-}
-
-/* Modal Styles */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    margin-top: 50px;
-    z-index: 1001;
-}
-.modal.show {
-    opacity: 1;
-    visibility: visible;
-}
-.modal-content {
-    background: #222;
-    padding: 20px;
-    width: 95%;
-    max-width: 800px;
-    border-radius: 10px;
-    text-align: left;
-    position: relative;
-    max-height: 90vh; /* Prevents the modal from exceeding the screen height */
-    overflow-y: auto; /* Enables vertical scrolling */
-    margin-bottom: 50px;
-}
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 40px;
-    cursor: pointer;
-    color: white;
-}
-.poster-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-}
-.poster-container img {
-    max-width: 100%;
-    max-height: 300px;
-    object-fit: contain; /* Ensures the image doesn't stretch */
-    border-radius: 10px;
-}
-iframe {
-    width: 100%;
-    height: 300px;
-    border-radius: 10px;
-    margin-top: 10px;
-    border: 2px;
-    border-style: solid;
-    border-color: #0296cc;
-}
-
-/* Responsive Grid */
-@media (max-width: 600px) {
-    .gallery {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Adjust grid for smaller screens */
-        gap: 10px;
-    }
-    .iframe-wrapper {
-       margin-bottom: 150px;
-  }
-}
-
-/* Make modal fit better on small screens */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 95%;
-        padding: 0px;
-    }
-
-    .poster-container img {
-        max-height: 200px; /* Prevent oversized posters */
-    }
-    h1 {
-        font-size: 30px;
-    }
-    h3 {
-    font-size: 15px;
-    }
-    p {
-        font-size: 12px;
-        padding: 10px 20px 0; /* 10px top, 20px left/right, 0 bottom */
-    }
-    .iframe-wrapper {
-       margin-bottom: 150px;
-  }
-}
-
-/* Extra tweaks for very small screens */
-@media (max-width: 480px) {
-    .gallery {
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Even smaller grid */
-    }
-    .iframe-wrapper {
-       margin-bottom: 150px;
-  }
-}
-
-/* FOR TAGALOG DUB MOVIE SECTION END */
-
-
-/* Fullscreen Video Button Start */
-#fullscreenButton {
-    display: block;
-    margin: 10px auto;
-    padding: 8px 15px;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #0296cc;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-#fullscreenButton:hover {
-    background-color: #0275a6;
-}
-/* Fullscreen Video Button End */
-
-
-/* LEAVE A COMMENT START */
-    #welcomeMessage {
-      font-size: 24px;
-      text-align: center;
-      padding-top: 20px;
-      padding-bottom: 20px;
-      color: #0296cc;
-      background-color: #1e1e1e;
-      width: 60%;
-      margin-left: 20%;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-    }
-    #leaveCommentMessage {
-      font-size: 20px;
-      text-align: center;
-      padding-bottom: 15px;
-      color: white;
-      background-color: #1e1e1e;
-      width: 60%;
-      margin-left: 20%;
-    }
-    #commentForm {
-      padding-bottom: 20px;
-      text-align: center;
-      background-color: #1e1e1e;
-      width: 60%;
-      margin-left: 20%;
-      border-bottom-left-radius: 10px;
-      border-bottom-right-radius: 10px;
-    }
-    input, textarea {
-      width: 60%;
-      padding: 10px;
-      font-size: 16px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #0296cc;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: black;
-    }
-    #commentsContainer {
-      margin-top: 20px;
-      color: black;
-    }
-    .comment {
-      border: 1px solid #ddd;
-      padding: 10px;
-      margin: 10px auto; /* Centers the div horizontally */
-      background-color: #fff;
-      border-radius: 4px;
-      width: 60%;
-      display: block; /* Ensures it behaves as a block-level element */
-    }
-    #commentText {
-      height: 200px;
-    }
-    .commentHeader {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .profilePicture {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      margin-right: 10px;
-    }
-    .likeSection {
-      margin-top: 10px;
-      font-size: 14px;
-    }
-    .timestamp {
-      font-size: 12px;
-      color: #888;
-    }
-    .avatar {
-      width: 50px;
-      height: 50px;
-      margin: 5px;
-      cursor: pointer;
-      border-radius: 50%;
-      transition: transform 0.2s ease, border 0.2s ease;
-      border: 2px solid transparent;
-    }
-    .avatar:hover {
-      transform: scale(1.1);
-    }
-    .selected-avatar {
-      border: 3px solid #0296cc;
-      transform: scale(1.2);
-    }
-    #avatarPreview {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      margin-top: 10px;
-      display: none;
-    }
-
-/* Adjustments for mobile devices */
-@media (max-width: 768px) {
-  .comment {
-    width: 90%;
-  }
-  input, textarea {
-    width: 90%;
-  }
-  #commentForm {
-    width: 90%; 
-    margin-left: 5%;
-  }
-  #leaveCommentMessage {
-    width: 90%;
-    margin-left: 5%;
-  }
-  #welcomeMessage {
-    width: 90%;
-    margin-left: 5%;
-  }
-}    
-    
-/* LEAVE A COMMENT END */
-
-
-/* TAGALOG TV SHOWS/SERIES START */
-/* TV Shows section styles */
-#tvSection {
-  padding: 0;
-}
-
-#tvSection h2 {
-  color: #fff;
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-#tvGallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 20px;
-  padding: 20px;
-  margin-bottom: 50px;
-}
-
-#tvGallery .movie-card {
-  position: relative;
-  cursor: pointer;
-  transition: transform 0.3s;
-}
-
-#tvGallery .movie-card img {
-  width: 100%;
-  border-radius: 10px;
-  display: block;
-  box-shadow: 0 4px 10px #0296cc; /* Soft shadow */
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-#tvGallery .movie-card:hover img {
-  box-shadow: 0 8px 20px #0296cc; /* Stronger shadow */
-  transform: scale(1.05); /* Slight zoom effect */
-}
-
-/* Play Button Effect */
-#tvGallery .movie-card .play-button {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.8);
-    font-size: 30px;
-    color: white;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-    opacity: 0;
-}
-/* Play button hover effect */
-#tvGallery .movie-card:hover .play-button {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-    background: black; /* Red play button */
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.6); /* Glowing effect */
-}
-
-
-#tvGallery .movie-card:hover .play-button {
-  opacity: 1;
-}
-
-
-/* TV Modal matching style */
-#tvModal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    margin-top: 50px;
-    z-index: 1001;
-}
-
-#tvModal.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-#tvModal .modal-content {
-    background: #222;
-    padding: 20px;
-    width: 95%;
-    max-width: 600px;
-    border-radius: 10px;
-    text-align: left;
-    position: relative;
-    max-height: 90vh; /* Prevents the modal from exceeding the screen height */
-    overflow-y: auto; /* Enables vertical scrolling */
-    margin-bottom: 50px;
-}
-
-#tvModal .modal-content img {
-    max-width: 100%;
-    max-height: 300px;
-    object-fit: contain; /* Ensures the image doesn't stretch */
-    border-radius: 10px;
-}
-
-#tvModal .close {
-  color: #fff;
-  float: right;
-  font-size: 40px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-#tvModal h2 {
-  margin-top: 0;
-}
-
-#tvModal p {
-  line-height: 1.4;
-  color: #ccc;
-}
-
-#tvModal iframe {
-    width: 100%;
-    height: 300px;
-    border-radius: 10px;
-    margin-top: 10px;
-    border: 2px;
-    border-style: solid;
-    border-color: #0296cc;
-}
-
-#episodeDropdown {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  background-color: #1e1e1e;
-  color: #fff;
-  border: 1px solid #444;
-  font-size: 16px;
-  transition: border 0.3s ease;
-}
-
-#episodeDropdown:hover,
-#episodeDropdown:focus {
-  border-color: #ff3d00;
-  outline: none;
-}
-
-/* Smaller modal iframe on smaller devices */
-@media (max-width: 768px) {
-  #tvModal .modal-content {
-    width: 95%;
-    padding: 15px;  
-  }
-
-  #tvModal .modal-content img {
-    max-height: 200px; /* Prevent oversized posters */
-  }
-}
-
-
-/* Responsive adjustments for mobile */
-@media (max-width: 600px) {
-  #tvGallery {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  #tvGallery {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  }
-
-  }  
-}
-/* TAGALOG TV SHOWS/SERIES END */
-
-
-/* Footer Section Start*/
-.site-footer {
-  background-color: #1e1e1e;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  margin-bottom: 0px;
-  border-top: 1px solid #333;
-}
-
-.site-footer p {
-  margin: 8px 0;
-  font-size: 16px;
-}
-
-.footer-links {
-  margin-top: 10px;
-}
-
-.footer-links a {
-  color: #0296cc;
-  text-decoration: none;
-  margin: 0 10px;
-  font-weight: bold;
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
-}
-
-.disclaimer-note {
-  color: #bfbfbf;
-  font-family: Arial;
-}
-
-@media (max-width: 600px) {
-  .site-footer {
-    margin-bottom: 54px;
-    padding: 10px;
-  }
-  
-  .site-footer p {
-    font-size: 14px;
-  }
-
-  .footer-links {
-    flex-direction: row;
-    gap: 8px;
-    text-align: center;
-  }
-
-  .footer-links a {
-    margin: 0;
-  }
-}
-/* Footer Section End*/
-
-/* Popunder Overlay Section Start */
-.iframe-wrapper {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    height: 300px;
-}
-
-/* Video Overlay */
-.iframe-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    pointer-events: none;
-    z-index: 1;
-}
-/* Popunder Overlay Section End */
-
-/* Chatroom Section Start */
-#netplex-chatroom {
-  position: fixed;
-  bottom: 0px;
-  right: 0px;
-  overflow: hidden;
-  z-index: 9999;
-}
-/* Chatroom Section End */
-
-
-/* =========================================================
-   FPJ MOVIE COLLECTION
-   ========================================================= */
-
-#fpjGallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
-    padding: 20px;
-    margin-bottom: 50px;
-}
-
-/* Mobile: Always 3 columns */
-@media (max-width: 768px) {
-    #fpjGallery {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        padding: 10px;
-    }
-}
-
-/* Very small phones: Still 3 columns */
-@media (max-width: 480px) {
-    #fpjGallery {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
-        padding: 8px;
-    }
-}
+/* Prevent main page scrolling when modal is active */
+        body.modal-open {
+            overflow: hidden !important;
+            touch-action: none;
+        }
 
 /* =========================================================
    NETPLEX NAVIGATION - PLAIN <nav>
@@ -975,4 +337,570 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
 @media (min-width: 769px) {
     .mobile-bottom-nav,
     .mobile-more-menu { display: none !important; }
+}
+
+        /* ============================= */
+        /* HERO & HEADINGS */
+        /* ============================= */
+        .hero-banner {
+            padding: 140px 4% 30px;
+            text-align: center;
+            background: radial-gradient(
+            circle at 50% 0%,
+            rgba(2, 150, 204, 0.08), transparent 70%);
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #E5E5E5 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+
+        h3.note-banner {
+            font-size: 14px;
+            font-weight: 600;
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+
+        h2.section-heading {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 30px 4% 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2.section-heading::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 22px;
+            background-color: var(--netflix-red);
+            border-radius: 2px;
+        }
+
+        /* ============================= */
+        /* MOVIE GALLERY CARDS & CAROUSEL */
+        /* ============================= */
+        .gallery {
+            display: grid;
+            /* Desktop: Exactly 8 equal-width columns */
+            grid-template-columns: repeat(8, 1fr);
+            gap: 16px;
+            padding: 0 4%;
+            margin-bottom: 40px;
+        }
+
+        .movie-card {
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+            background-color: var(--netflix-dark);
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.16. 1, 0.3, 1), box-shadow 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .movie-card:hover {
+            transform: scale(1.06);
+            z-index: 10;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(229, 9, 20, 0.4);
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            aspect-ratio: 2 / 3;
+            display: block;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.6);
+            font-size: 20px;
+            color: white;
+            background: var(--netflix-red);
+            border-radius: 50%;
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+            box-shadow: 0 4px 20px rgba(229, 9, 20, 0.6);
+            padding-left: 3px;
+        }
+
+        .movie-card:hover .play-button {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        /* ============================= */
+        /* FULLSCREEN PREMIUM MODAL */
+        /* ============================= */
+.modal {
+    position: fixed;
+    /* Desktop: Push top down to make room for desktop navigation bar (~60px) */
+    top: 60px;
+    left: 0;
+    width: 100vw;
+    /* Calculate height so it doesn't extend off the screen */
+    height: calc(100vh - 60px);
+    background: rgba(0, 0, 0, 0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+    /* Set z-index below desktop nav (10000) & mobile nav (99999) */
+    z-index: 9000;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--netflix-dark);
+            width: 100vw;
+            height: 100vh;
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 0;
+            text-align: left;
+            position: relative;
+            overflow-y: auto;
+            padding: 40px 6%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: none;
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+        }
+
+        .close-btn, .close {
+            position: fixed;
+            top: 25px;
+            right: 35px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #fff;
+            background: red;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100001;
+            transition: background 0.2s ease, transform 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .close-btn:hover, .close:hover {
+            background: var(--netflix-red);
+            transform: scale(1.1);
+        }
+
+        .modal-hero-details {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            align-items: flex-start;
+        }
+
+        .poster-container {
+            flex-shrink: 0;
+        }
+
+        .poster-container img, #tvModal .modal-content img {
+            width: 180px;
+            max-height: 270px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-info {
+            flex-grow: 1;
+        }
+
+        .modal-info h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .modal-info p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #ccc;
+            margin-bottom: 12px;
+        }
+
+        .modal-info p strong {
+            color: #fff;
+        }
+
+        .iframe-wrapper {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            min-height: 380px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 10px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .iframe-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        #fullscreenButton, #tvFullscreenButton {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 700;
+            background-color: #0296cc;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        #fullscreenButton:hover, #tvFullscreenButton:hover {
+            background-color: #0296cc;
+        }
+
+        #episodeDropdown {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            background-color: var(--netflix-card);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 14px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        #episodeDropdown:focus, #episodeDropdown:hover {
+            border-color: var(--netflix-red);
+        }
+
+        /* Responsive Modal adjustments */
+        @media (max-width: 768px) {
+.modal {
+        /* Mobile: Start at the top of screen */
+        top: 0;
+        /* Subtract bottom navigation bar height (including safe-area spacing) */
+        height: calc(100vh - 65px - env(safe-area-inset-bottom));
+    }
+
+    .modal-content {
+        padding: 60px 5% 30px;
+    }
+    .modal-hero-details {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 15px;
+    }
+    .poster-container img, #tvModal .modal-content img {
+        width: 140px;
+        max-height: 210px;
+    }
+    .modal-info h2 { font-size: 1.5rem; }
+    .iframe-wrapper {
+        height: 40vh;
+        min-height: 240px;
+    }
+    .close-btn, .close {
+        top: 15px;
+        right: 15px;
+        width: 38px;
+        height: 38px;
+        font-size: 22px;
+    }
+    h1 { font-size: 1.8rem; }
+    h3.note-banner { font-size: 12px; }
+    .gallery {
+        /* Mobile: Exactly 3 equal-width columns */
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        padding: 0 2%;
+    }
+}
+
+        /* ============================= */
+        /* COMMENT & INTERACTION SECTION */
+        /* ============================= */
+        .comments-wrapper {
+            max-width: 800px;
+            margin: 60px auto 40px;
+            padding: 0 4%;
+        }
+
+        #welcomeMessage {
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            padding: 24px 20px 10px;
+            color: #fff;
+            background-color: var(--netflix-dark);
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: none;
+        }
+
+        #leaveCommentMessage {
+            font-size: 14px;
+            text-align: center;
+            padding-bottom: 20px;
+            color: #aaa;
+            background-color: var(--netflix-dark);
+            border-left: 1px solid rgba(255, 255, 255, 0.08);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        #commentForm {
+            padding: 0 30px 30px;
+            text-align: center;
+            background-color: var(--netflix-dark);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: none;
+        }
+
+        #commentForm input, #commentForm textarea {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 14px;
+            margin-bottom: 12px;
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            color: #fff;
+            outline: none;
+            transition: border 0.3s ease;
+        }
+
+        #commentForm input:focus, #commentForm textarea:focus {
+            border-color: var(--netflix-red);
+        }
+
+        #commentForm textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        #commentForm button {
+            padding: 12px 30px;
+            background-color: var(--netflix-red);
+            color: white;
+            font-weight: 700;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.25s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        #commentForm button:hover {
+            background-color: #b80710;
+        }
+
+        #commentsContainer {
+            margin-top: 25px;
+        }
+
+        .comment {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px;
+            margin-bottom: 12px;
+            background-color: var(--netflix-dark);
+            border-radius: 8px;
+            color: #fff;
+        }
+
+        .commentHeader {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .profilePicture {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            margin-right: 12px;
+            border: 2px solid var(--netflix-red);
+        }
+
+        .timestamp {
+            font-size: 11px;
+            color: #777;
+            margin-top: 2px;
+        }
+
+        .likeSection {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        /* ============================= */
+        /* FOOTER */
+        /* ============================= */
+.site-footer {
+  background-color: #1e1e1e;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 0px;
+  border-top: 1px solid #333;
+}
+
+.site-footer p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.footer-links {
+  margin-top: 10px;
+}
+
+.footer-links a {
+  color: #0296cc;
+  text-decoration: none;
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.disclaimer-note {
+  color: #bfbfbf;
+  font-family: Arial;
+}
+
+@media (max-width: 600px) {
+  .site-footer {
+    margin-bottom: 54px;
+    padding: 10px;
+  }
+  
+  .site-footer p {
+    font-size: 14px;
+  }
+
+  .footer-links {
+    flex-direction: row;
+    gap: 8px;
+    text-align: center;
+  }
+
+  .footer-links a {
+    margin: 0;
+  }
+}
+
+
+/* 1. Modal overlay sits in the middle layer */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 9000;
+}
+
+/* 2. Modal content stays above overlay, but leaves room at the bottom */
+.modal-content {
+  position: fixed;
+  z-index: 1001;
+  /* Reserve space at the bottom so it doesn't overlap the navbar */
+  bottom: 60px; /* Match your navbar height */
+}
+
+/* 3. Navigation bar stays on the top layer */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 9999; /* Highest layer to sit on top of modal */
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 9999; /* Keeps the navbar on top of other content */
+  display: flex;  /* Ensures item alignment */
+}
+
+/* Optional: Prevent page content from being hidden behind the fixed navbar */
+body {
+  padding-bottom: 60px; /* Adjust height based on your navbar's height */
 }
