@@ -45,3 +45,23 @@ document.addEventListener("DOMContentLoaded", function () {
 // For Dropdown More Button Function End
 
 
+
+// For Dropdown More Button Function Start
+document.addEventListener("DOMContentLoaded", function () {
+    const dropdownButton = document.querySelector(".dropbtn");
+    const dropdownContent = document.querySelector(".dropdown-content");
+
+    dropdownButton.addEventListener("click", function (event) {
+        event.stopPropagation(); // Prevent event from bubbling up
+        dropdownContent.classList.toggle("active");
+    });
+
+    // Close dropdown if clicked outside
+    document.addEventListener("click", function (event) {
+        if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
+            dropdownContent.classList.remove("active");
+        }
+    });
+});
+
+// For Dropdown More Button Function End
