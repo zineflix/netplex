@@ -1,3 +1,6 @@
+// ===================================
+//  STICKY HEADER
+// ===================================
 window.addEventListener("scroll", function () {
     let nav = document.querySelector("nav");
     if (window.scrollY > 50) {
@@ -7,6 +10,12 @@ window.addEventListener("scroll", function () {
     }
 });
 
+
+// ==================================================
+//  INTERACTIVE DROPDOWN MENU & MOBILE MENU TOGGLE
+// ==================================================
+
+// Dropdown Menu Toggle
 document.addEventListener("DOMContentLoaded", function () {
     const dropdown = document.querySelector(".dropdown");
     if (dropdown) {
@@ -15,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+// Mobile "More" Menu & Outside Click Dismissal    
     const mobileMoreBtn = document.getElementById("mobile-more-btn");
     const mobileMoreMenu = document.getElementById("mobile-more-menu");
     if (mobileMoreBtn && mobileMoreMenu) {
@@ -31,25 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// For Dropdown More Button Function Start
-document.addEventListener("DOMContentLoaded", function () {
-    const dropdownButton = document.querySelector(".dropbtn");
-    const dropdownContent = document.querySelector(".dropdown-content");
 
-    dropdownButton.addEventListener("click", function (event) {
-        event.stopPropagation(); // Prevent event from bubbling up
-        dropdownContent.classList.toggle("active");
-    });
 
-    // Close dropdown if clicked outside
-    document.addEventListener("click", function (event) {
-        if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
-            dropdownContent.classList.remove("active");
-        }
-    });
-});
-
-// For Dropdown More Button Function End
 
 
 
