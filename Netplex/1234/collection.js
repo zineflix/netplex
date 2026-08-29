@@ -29,7 +29,7 @@
           getRandomRecommendations();
       });
 
-      const apiKey = 'a1PbWWqgKDBDorh525uecKaGZD21FGSoCeR';
+      const apiKey = 'a1e72fd93ed59f56e6332813b9f8dcae';
       const apiUrl = 'https://api.themoviedb.org/3/';
 
       async function getRandomRecommendations() {
