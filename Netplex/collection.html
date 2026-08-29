@@ -22,283 +22,193 @@
     <meta property="og:title" content="Netplex - Watch Movies, TV Series, K-Dramas & Anime for Free!">
     <meta property="og:description" content="Explore a vast collection of movies, TV series, K-Dramas, and anime on Netplex. Stream your favorite videos anytime, anywhere.">
     <meta property="og:image" content="img/netplex-logo.png">
-    <meta property="og:url" content="https://netplex.site">
+    <meta property="og:url" content="https://netplex.bond">
     <meta property="og:type" content="website">
     <link rel="stylesheet" href="1234/collection.css">
     <link rel="preload" href="1234/collection.css" as="style">
     <link rel="preload" href="1234/collection.js" as="script">
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="canonical" href="https://netplex.site">
+    <link rel="canonical" href="https://netplex.bond">
     <script defer src="1234/collection.js"></script>
     <script src="security.js"></script>
-    
-<!-- ADNETWORK SECTION START -->
-    <!-- Google Adsense Start -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8187798540230740"
-     crossorigin="anonymous"></script>    
-    <!-- Google Adsense End -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8187798540230740" crossorigin="anonymous"></script>
 
-    <!-- PopAds Start -->
-<!--<script type="text/javascript" data-cfasync="false">
-/*<![CDATA[/* */
-(function(){var p=window,g="ee0433eea163c6b8781280f331deb2a2",u=[["siteId",116*777-25+5089916],["minBid",0],["popundersPerIP","0"],["delayBetween",0],["default",false],["defaultPerDay",0],["topmostLayer","auto"]],v=["d3d3LnByZW1pdW12ZXJ0aXNpbmcuY29tL3hML0R6UmphTS9oZmxhYy5taW4uanM=","ZDJqMDQyY2oxNDIxd2kuY2xvdWRmcm9udC5uZXQvemJvb3RzdHJhcFZhbGlkYXRvci5taW4uanM=","d3d3LndjY2lob2lnLmNvbS9MT2NJeUMvRlcvYWZsYWMubWluLmpz","d3d3LmNkZXdscWV5LmNvbS9iYm9vdHN0cmFwVmFsaWRhdG9yLm1pbi5qcw=="],o=-1,j,s,a=function(){clearTimeout(s);o++;if(v[o]&&!(1778945285000<(new Date).getTime()&&1<o)){j=p.document.createElement("script");j.type="text/javascript";j.async=!0;var z=p.document.getElementsByTagName("script")[0];j.src="https://"+atob(v[o]);j.crossOrigin="anonymous";j.onerror=a;j.onload=function(){clearTimeout(s);p[g.slice(0,16)+g.slice(0,16)]||a()};s=setTimeout(a,5E3);z.parentNode.insertBefore(j,z)}};if(!p[g]){try{Object.freeze(p[g]=u)}catch(e){}a()}})();
-/*]]>/* */
-</script>
-    <!-- PopAds End -->
-    
-    <!-- Galaksion Start -->
-<!--<script data-cfasync="false" async type="text/javascript" src="//my.undecylupsends.com/ryIMduIUUPT5DkQS/122481"></script>  
-    <!-- Galaksion Start -->
-    
-    <!-- Moneytag Start -->
-   
-    <!-- Moneytag End -->
 
-    <!-- Adsterra Start -->
-<!--<script src="Ads/AdsPopunder.js"></script>
-    <!-- Adsterra End -->
-<!-- ADNETWORK SECTION END -->
-    
 </head>
-    
+  
+  
 <body>
-
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQKKBS33"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WQKKBS33" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-
-
-<!-- Go Back Button Start -->
-        <button onclick="goHome()" class="go-back-btn">Go Home</button>
-
-  <h1>AI Recommendations Movies & TVShows</h1>
-  <button onclick="getRandomRecommendations()">Get AI Random Recommendations</button>
-
-  <div id="results"></div>
-
-
-<!-- JavaScript for Go Home functionality -->
-<script>
-  function goHome() {
-    window.location.href = "index.html"; // Redirect to index.html
-  }
-</script>
-<!-- Go Back Button End -->
-
-<!-- Adsterra DL 37 Ad Container Start -->
-
-<!-- Adsterra DL 37 Ad Container End -->
-
-<!-- ONLINE STAT WIDGET CODE START -->    
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
-<!-- Widget Styles -->
-<style>
-  #online-widget {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background: #111;
-    color: #0ff;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-    font-size: 14px;
-    z-index: 9999;
-    user-select: none;
-    cursor: pointer;
-    overflow: hidden;
-    width: 200px;
-    max-height: 400px;
-    transition: all 0.3s ease-in-out;
-  }
-
-  #online-widget-header {
-    padding: 12px 18px;
-    border-bottom: 1px solid #0ff2;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  #online-widget-content {
-    padding: 10px 18px;
-    display: none;
-    overflow-y: auto;
-    max-height: 300px;
-  }
-
-  #online-widget.expanded #online-widget-content {
-    display: block;
-  }
-
-  #online-widget-toggle {
-    font-weight: bold;
-    color: #fff;
-    margin-left: 10px;
-    transition: transform 0.3s ease;
-  }
-
-  #online-widget.expanded #online-widget-toggle {
-    transform: rotate(180deg);
-  }
-
-  .region-stat {
-    font-size: 13px;
-    margin-top: 4px;
-  }
-
-  /* Mobile Responsiveness */
-  @media (max-width: 600px) {
-    #online-widget {
-      left: 20px;
-      bottom: 20px;
-      width: 90%;
-      max-width: 180px;
-      font-size: 14px;
-    }
-
-    #online-widget-content {
-      max-height: 250px;
-    }
-
-    .region-stat {
-      font-size: 12px;
-    }
-
-    #online-widget-header {
-      padding: 10px 14px;
-    }
-
-    #online-widget-content {
-      padding: 8px 14px;
-    }
-  }
-</style>
-
-
-<!-- Widget HTML -->
-<div id="online-widget">
-  <div id="online-widget-header">
-    👥 <span id="online-count">...</span> online
-    <span id="online-widget-toggle">▲</span>
-  </div>
-  <div id="online-widget-content">
-    🔁 Visits: <span id="visit-count">...</span><br>
-    📊 Peak: <span id="peak-users">...</span><br>
-    🌍 You: <span id="geo-data">loading...</span><br><br>
-    <strong>🌐 Online by Region:</strong>
-    <div id="region-breakdown" class="region-stat">Loading...</div>
-  </div>
-</div>
-
-<!-- JS Logic -->
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyAcmo2t3zDxpFVexE3l3RB15Ig4qSngBCY",
-  authDomain: "netplex-online-stat.firebaseapp.com",
-  databaseURL: "https://netplex-online-stat-default-rtdb.firebaseio.com",
-  projectId: "netplex-online-stat",
-  storageBucket: "netplex-online-stat.firebasestorage.app",
-  messagingSenderId: "837018070039",
-  appId: "1:837018070039:web:cce7c12ad6bcc9201d0052"
-  };
-
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-  const presenceRef = db.ref("presence");
-  const visitsRef = db.ref("siteStats/visits");
-  const peakRef = db.ref("siteStats/peakUsers");
-  const sessionsRef = db.ref("siteStats/sessions");
-
-  const localID = localStorage.getItem("netplex_uid") || (() => {
-    const uid = 'user_' + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem("netplex_uid", uid);
-    return uid;
-  })();
-
-  const myRef = presenceRef.child(localID);
-
-  const sessionStart = Date.now();
-
-  // Fetch geolocation
-  fetch("https://ipinfo.io/json?token=06786be2f40d4d")
-    .then(res => res.json())
-    .then(data => {
-      const location = `${data.city || ''}, ${data.region || ''}`;
-      const country = data.country || "Unknown";
-      const region = data.region || "Unknown";
-      document.getElementById("geo-data").textContent = location;
-
-      // Mark presence with location
-      myRef.set({
-        online: true,
-        country: country,
-        region: region
-      });
-      myRef.onDisconnect().remove();
-    })
-    .catch(() => {
-      document.getElementById("geo-data").textContent = "Unknown";
-      myRef.set({ online: true });
-      myRef.onDisconnect().remove();
-    });
-
-  // Save session time on unload (in background, optional)
-  window.addEventListener("beforeunload", () => {
-    const timeSpent = Math.floor((Date.now() - sessionStart) / 1000);
-    sessionsRef.child(localID).push({ time: timeSpent, timestamp: Date.now() });
-  });
-
-  visitsRef.transaction(val => (val || 0) + 1);
-  visitsRef.on("value", snap => {
-    document.getElementById("visit-count").textContent = snap.val();
-  });
-
-  peakRef.on("value", snap => {
-    document.getElementById("peak-users").textContent = snap.val() || 0;
-  });
-
-  presenceRef.on("value", snap => {
-    const count = snap.numChildren();
-    document.getElementById("online-count").textContent = count;
-
-    peakRef.transaction(peak => (!peak || count > peak) ? count : peak);
-
-    // Group users by country/region
-    const regionStats = {};
-    snap.forEach(child => {
-      const data = child.val();
-      if (data.region && data.country) {
-        const key = `${data.region}, ${data.country}`;
-        regionStats[key] = (regionStats[key] || 0) + 1;
-      }
-    });
-
-    const regionHTML = Object.entries(regionStats)
-      .map(([region, count]) => {
-  const countryCode = region.split(', ').pop().toLowerCase(); // "us"
-  const flagImg = `<img src="https://flagcdn.com/16x12/${countryCode}.png" style="width:16px;height:12px;vertical-align:middle;margin-right:4px">`;
-  return `${flagImg} ${region}: ${count}`;
-})
-
-      .join("<br>");
-    document.getElementById("region-breakdown").innerHTML = regionHTML || "No region data.";
-  });
-
-  // Toggle expand
-  document.getElementById("online-widget-header").addEventListener("click", () => {
-    document.getElementById("online-widget").classList.toggle("expanded");
-  });
-</script>
-<!-- ONLINE STAT WIDGET CODE END -->  
     
+<!-- ============================= -->
+<!-- NAVIGATION BAR -->
+<!-- ============================= -->  
+<nav>
+    <!-- Desktop Logo -->
+    <img id="logo" src="https://netplex.pages.dev/img/netplex.png" alt="NETPLEX">
+
+    <!-- Desktop Menu -->
+    <ul id="menu" class="desktop-menu">
+        <li>
+            <a href="index.html">HOME <i class="fa-solid fa-house" style="color: #0296cc;"></i></a>
+        </li>
+        <li>
+            <a href="movies.html">MOVIES <i class="fa-solid fa-film" style="color: #0296cc;"></i></a>
+        </li>
+        <li>
+            <a href="tv-show.html">TV-SHOWS <i class="fa-solid fa-tv" style="color: #0296cc;"></i></a>
+        </li>
+        <li>
+            <a href="category.html">CATEGORY <i class="fa-solid fa-layer-group" style="color: #0296cc;"></i></a>
+        </li>
+        <li>
+            <a href="search.html">SEARCH <i class="fa-solid fa-magnifying-glass" style="color: #0296cc;"></i></a>
+        </li>
+        <li>
+            <a href="https://animezone.pages.dev/">ANIME <i class="fa-solid fa-dragon" style="color: #0296cc;"></i></a>
+        </li>
+        <li class="dropdown">
+            <button type="button" class="dropbtn">MORE <i class="fa-solid fa-square-caret-down" style="color: #0296cc;"></i></button>
+            <ul class="dropdown-content">
+                <li><a href="korean-section.html"><i class="fa-solid fa-circle-play" style="color: #0296cc;"></i>  K-Drama</a></li>
+                <li><a href="tagalog-dub-movies.html"><i class="fa-solid fa-film" style="color: #0296cc;"></i>  Tagalog Dub</a></li>
+                <li><a href="tv-live-streaming.html"><i class="fa-solid fa-tv" style="color: #0296cc;"></i>  Live TV</a></li>
+                <li><a href="download-app.html"><i class="fa-solid fa-download" style="color: #0296cc;"></i>  DOWNLOAD APP</a></li>
+                <li><a href="about-us.html"><i class="fa-solid fa-circle-info" style="color: #0296cc;"></i>  About Us</a></li>
+            </ul>
+        </li>
+    </ul>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="mobile-bottom-nav">
+        <a href="index.html" class="mobile-nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+
+        <a href="movies.html" class="mobile-nav-item">
+            <i class="fa-solid fa-film"></i>
+            <span>Movies</span>
+        </a>
+
+        <a href="tv-show.html" class="mobile-nav-item">
+            <i class="fa-solid fa-tv"></i>
+            <span>TV Shows</span>
+        </a>
+
+        <a href="search.html" class="mobile-nav-item">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search</span>
+        </a>
+
+        <button type="button" class="mobile-nav-item active" id="mobile-more-btn">
+            <i class="fa-solid fa-bars"></i>
+            <span>More</span>
+        </button>
+    </div>
+
+    <!-- Mobile More Menu -->
+    <div class="mobile-more-menu" id="mobile-more-menu">
+
+        <a href="korean-section.html">
+            <i class="fa-solid fa-circle-play"></i>
+            K-Drama
+        </a>
+
+        <a href="https://animezone.pages.dev/">
+            <i class="fa-solid fa-dragon"></i>
+            Anime
+        </a>
+
+        <a href="tagalog-dub-movies.html">
+            <i class="fa-solid fa-film"></i>
+            Tagalog Dub
+        </a>
+
+        <a href="category.html">
+            <i class="fa-solid fa-layer-group"></i>
+            Category
+        </a>
+
+        <a href="tv-live-streaming.html">
+            <i class="fa-solid fa-tv"></i>
+            Live TV
+        </a>
+
+        <a href="download-app.html">
+            <i class="fa-solid fa-download"></i>
+            Download App
+        </a>
+
+        <a href="about-us.html">
+            <i class="fa-solid fa-circle-info"></i>
+            About Us
+        </a>
+
+    </div>
+</nav>
+    
+
+<!-- HERO HEADER SECTION -->
+<section class="hero-banner">
+    <h1 class="hero-title">AI Powered Recommendations</h1>
+    <p class="hero-subtitle">Discover tailored movies & TV series calculated instantly powered by AI algorithms.</p>
+    <div class="action-controls">
+        <button class="btn-netflix-primary" onclick="getRandomRecommendations()">
+            <i class="fa-solid fa-shuffle"></i> Get Recommendations
+        </button>
+    </div>
+</section>
+
+<!-- RESULTS MAIN CONTAINER -->
+<main class="content-container">
+    <div id="results"></div>
+</main> 
+  
+
+<!-- ============================= -->
+<!-- GOOGLE ADSENSE CONTAINER -->
+<!-- ============================= -->    
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8187798540230740"
+     crossorigin="anonymous"></script>
+<!-- Ads 1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8187798540230740"
+     data-ad-slot="3215352169"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+    
+<!-- ============================= -->
+<!-- FOOTER -->
+<!-- ============================= -->
+    <footer class="site-footer">
+        <p>&copy; 2025 Netplex — All Rights Reserved.</p>
+        <p>Made with ❤️ for movie lovers worldwide.</p>
+        <div class="footer-links">
+            <a href="contact-us.html">Contact Us</a> |
+            <a href="about-us.html">About Us</a> |
+            <a href="disclaimer.html">Disclaimer</a>
+        </div>
+        <p class="disclaimer-note">
+            Disclaimer: Netplex does not host any media files on its servers. All content is provided by third-party sources.
+        </p>
+    </footer>  
+
+
+<!-- ============================= -->
+<!-- ADBLOCK DETECTOR -->
+<!-- ============================= -->
+<script src="/Adblock/adblock-detector.js"></script>
+
+
 </body>
 </html>
-
-
 
