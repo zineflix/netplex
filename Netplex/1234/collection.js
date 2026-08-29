@@ -47,35 +47,42 @@
           }
       }
 
-      function displayResults(results) {
-          const resultsContainer = document.getElementById('results');
-          resultsContainer.innerHTML = '';
+function displayResults(results) {
+    const resultsContainer = document.getElementById('results');
+    resultsContainer.innerHTML = '';
 
-          results.forEach(item => {
-              if (!item.poster_path) return;
+    results.forEach(item => {
+        if (!item.poster_path) return;
 
-              const itemDiv = document.createElement('div');
-              itemDiv.classList.add('item');
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('item');
 
-              const posterPath = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
-              const title = item.title || item.name;
-              const itemId = item.id;
-              const mediaType = item.title ? 'movie' : 'tv';
+        const posterPath = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
+        const title = item.title || item.name;
+        const itemId = item.id;
+        const mediaType = item.title ? 'movie' : 'tv';
 
-              const targetUrl = mediaType === 'movie' 
-                  ? `movie-details.html?movie_id=${itemId}` 
-                  : `tvshows-details.html?id=${itemId}`;
+        // Extract year from release_date (movies) or first_air_date (TV shows)
+        const dateStr = item.release_date || item.first_air_date || '';
+        const year = dateStr ? dateStr.split('-')[0] : 'N/A';
 
-              itemDiv.innerHTML = `
-                  <a href="${targetUrl}">
-                      <img src="${posterPath}" alt="${title}" loading="lazy">
-                      <div class="item-info">
-                          <span class="item-badge">${mediaType}</span>
-                          <div class="item-title">${title}</div>
-                      </div>
-                  </a>
-              `;
+        const targetUrl = mediaType === 'movie' 
+            ? `movie-details.html?movie_id=${itemId}` 
+            : `tvshows-details.html?id=${itemId}`;
 
-              resultsContainer.appendChild(itemDiv);
-          });
-      }
+        itemDiv.innerHTML = `
+            <a href="${targetUrl}">
+                <img src="${posterPath}" alt="${title}" loading="lazy">
+                <div class="item-info">
+                    <div class="item-meta">
+                        <span class="item-badge">${mediaType}</span>
+                        <span class="item-year">${year}</span>
+                    </div>
+                    <div class="item-title">${title}</div>
+                </div>
+            </a>
+        `;
+
+        resultsContainer.appendChild(itemDiv);
+    });
+}
