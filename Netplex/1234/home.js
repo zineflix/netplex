@@ -1,7 +1,7 @@
 // ===================================
 // 1. TMDB CONFIG
 // ===================================
-const apiKey = "a1e72fd93ed59f56e6332813b9f8dcae";
+const apiKey = "a1PbWWqgKDBDorh525uecKaGZD21FGSoCeR";
 const baseURL = "https://api.themoviedb.org/3";
 const imgURL = "https://image.tmdb.org/t/p/w500";
 
@@ -287,14 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
     
-    // Toggle menu visibility when menu button is clicked
-    const menuBtn = document.getElementById("menu-btn");
-    const menu = document.getElementById("menu");
-    if (menuBtn && menu) {
-        menuBtn.addEventListener("click", function() {
-            menu.classList.toggle("active");
-        });
-    }
+
 
     // Dropdown More Button Function Start
     const dropdown = document.querySelector(".dropdown");
@@ -332,26 +325,37 @@ function closeMessage() {
 // ===================================
 // 8. MOBILE NAVIGATION
 // ===================================
+    const mobileMoreBtn = document.getElementById("mobile-more-btn");
+    const mobileMoreMenu = document.getElementById("mobile-more-menu");
+    if (mobileMoreBtn && mobileMoreMenu) {
+        mobileMoreBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            mobileMoreMenu.classList.toggle("show");
+        });
+        document.addEventListener("click", function (e) {
+            if (!mobileMoreMenu.contains(e.target) && e.target !== mobileMoreBtn) {
+                mobileMoreMenu.classList.remove("show");
+            }
+        });
+    }
+
+
+// For Dropdown More Button Function Start
 document.addEventListener("DOMContentLoaded", function () {
-    const moreButton = document.getElementById("mobile-more-btn");
-    const moreMenu = document.getElementById("mobile-more-menu");
-    if (!moreButton || !moreMenu) return;
+    const dropdownButton = document.querySelector(".dropbtn");
+    const dropdownContent = document.querySelector(".dropdown-content");
 
-    /* Open / close More menu */
-    moreButton.addEventListener("click", function (event) {
-        event.stopPropagation();
-        moreMenu.classList.toggle("show");
-        moreButton.classList.toggle("active");
+    dropdownButton.addEventListener("click", function (event) {
+        event.stopPropagation(); // Prevent event from bubbling up
+        dropdownContent.classList.toggle("active");
     });
 
-    /* Prevent popup from closing when clicking inside */
-    moreMenu.addEventListener("click", function (event) {
-        event.stopPropagation();
-    });
-
-    /* Close popup when clicking elsewhere */
-    document.addEventListener("click", function () {
-        moreMenu.classList.remove("show");
-        moreButton.classList.remove("active");
+    // Close dropdown if clicked outside
+    document.addEventListener("click", function (event) {
+        if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
+            dropdownContent.classList.remove("active");
+        }
     });
 });
+
+// For Dropdown More Button Function End
