@@ -3,19 +3,18 @@
 // ===================================
 window.addEventListener("scroll", function () {
     let nav = document.querySelector("nav");
-    if (window.scrollY > 50) {
-        nav.classList.add("nav-solid");
-    } else {
-        nav.classList.remove("nav-solid");
+    if (nav) {
+        if (window.scrollY > 50) {
+            nav.classList.add("nav-solid");
+        } else {
+            nav.classList.remove("nav-solid");
+        }
     }
 });
-
 
 // ==================================================
 //  INTERACTIVE DROPDOWN MENU & MOBILE MENU TOGGLE
 // ==================================================
-
-// Dropdown Menu Toggle
 document.addEventListener("DOMContentLoaded", function () {
     const dropdown = document.querySelector(".dropdown");
     if (dropdown) {
@@ -24,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-// Mobile "More" Menu & Outside Click Dismissal    
     const mobileMoreBtn = document.getElementById("mobile-more-btn");
     const mobileMoreMenu = document.getElementById("mobile-more-menu");
     if (mobileMoreBtn && mobileMoreMenu) {
@@ -38,13 +36,22 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
+    const dropdownButton = document.querySelector(".dropbtn");
+    const dropdownContent = document.querySelector(".dropdown-content");
+    if (dropdownButton && dropdownContent) {
+        dropdownButton.addEventListener("click", function (event) {
+            event.stopPropagation();
+            dropdownContent.classList.toggle("active");
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
+                dropdownContent.classList.remove("active");
+            }
+        });
+    }
 });
-
-
-
-
-
-
 
 // ===================================
 // KDRAMA SECTION
@@ -57,7 +64,6 @@ const baseURL = "https://api.themoviedb.org/3";
 const imgURL = "https://image.tmdb.org/t/p/w500";
 const currentYear = new Date().getFullYear();
 
-// Global variable to store the banner item's data for the play button
 let currentBannerItem = null;
 let bannerItems = [];
 let bannerIndex = 0;
@@ -65,7 +71,6 @@ let bannerInterval = null;
 let movieGenreMap = {};
 let tvGenreMap = {};
 
-// DOM elements
 const bannerTitle = document.getElementById("banner-title");
 const bannerGenre = document.getElementById("banner-genre");
 const bannerDescription = document.getElementById("banner-description");
@@ -75,8 +80,6 @@ const bannerPlayButton = document.getElementById("banner-play-btn");
 // ===================================
 // 2. BANNER LOGIC
 // ===================================
-
-// Load movie and TV genres once
 async function loadBannerGenres() {
     try {
         const [movieGenresResponse, tvGenresResponse] = await Promise.all([
@@ -99,13 +102,11 @@ async function loadBannerGenres() {
     }
 }
 
-// Load multiple pages of Korean movies and TV shows
 async function loadBannerItems() {
     try {
         const movieRequests = [];
         const tvRequests = [];
 
-        // Load 5 pages of Korean movies
         for (let page = 1; page <= 5; page++) {
             movieRequests.push(
                 fetch(
@@ -119,7 +120,6 @@ async function loadBannerItems() {
             );
         }
 
-        // Load 5 pages of Korean TV shows
         for (let page = 1; page <= 5; page++) {
             tvRequests.push(
                 fetch(
@@ -138,7 +138,6 @@ async function loadBannerItems() {
             Promise.all(tvRequests)
         ]);
 
-        // Add media type to movies
         const movies = moviePages.flatMap(data =>
             (data.results || []).map(item => ({
                 ...item,
@@ -146,7 +145,6 @@ async function loadBannerItems() {
             }))
         );
 
-        // Add media type to TV shows
         const tvShows = tvPages.flatMap(data =>
             (data.results || []).map(item => ({
                 ...item,
@@ -154,38 +152,25 @@ async function loadBannerItems() {
             }))
         );
 
-        // Combine movies and TV shows
-        const combinedItems = [...movies, ...tvShows]
-            .filter(item => item.backdrop_path);
-
-        // Remove duplicates
+        const combinedItems = [...movies, ...tvShows].filter(item => item.backdrop_path);
         const seen = new Set();
 
         bannerItems = combinedItems.filter(item => {
             const key = `${item.media_type}-${item.id}`;
-
-            if (seen.has(key)) {
-                return false;
-            }
-
+            if (seen.has(key)) return false;
             seen.add(key);
             return true;
         });
 
-        // Shuffle the banners
         shuffleBannerItems();
-
-        console.log(`Loaded ${bannerItems.length} Korean banner items.`);
 
         if (bannerItems.length === 0) {
             console.error("No Korean movies or TV shows with backdrop images were found.");
             return;
         }
 
-        // Show first banner immediately
         showNextBanner();
 
-        // Start 5-second rotation
         if (bannerInterval) {
             clearInterval(bannerInterval);
         }
@@ -193,13 +178,11 @@ async function loadBannerItems() {
         bannerInterval = setInterval(() => {
             showNextBanner();
         }, 5000);
-
     } catch (error) {
         console.error("Failed to load banner items:", error);
     }
 }
 
-// Shuffle banner items
 function shuffleBannerItems() {
     for (let i = bannerItems.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -207,16 +190,12 @@ function shuffleBannerItems() {
     }
 }
 
-// Show the next banner
 function showNextBanner() {
-    if (!bannerItems.length) {
-        return;
-    }
+    if (!bannerItems.length || !banner) return;
 
     currentBannerItem = bannerItems[bannerIndex];
     bannerIndex++;
 
-    // When all banners have been shown, shuffle and start again
     if (bannerIndex >= bannerItems.length) {
         bannerIndex = 0;
         shuffleBannerItems();
@@ -224,58 +203,53 @@ function showNextBanner() {
 
     const item = currentBannerItem;
 
-    // Set background
-    banner.style.backgroundImage =
-        `url(https://image.tmdb.org/t/p/original${item.backdrop_path})`;
+    banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${item.backdrop_path})`;
 
-    // Set title
     const originalTitle = item.title || item.name || "Unknown";
     const maxLength = 35;
 
-    bannerTitle.textContent =
-        originalTitle.length > maxLength
-            ? originalTitle.substring(0, maxLength - 3) + "..."
-            : originalTitle;
+    if (bannerTitle) {
+        bannerTitle.textContent =
+            originalTitle.length > maxLength
+                ? originalTitle.substring(0, maxLength - 3) + "..."
+                : originalTitle;
+    }
 
-    // Set description
-    bannerDescription.textContent =
-        item.overview || "No description available.";
+    if (bannerDescription) {
+        bannerDescription.textContent = item.overview || "No description available.";
+    }
 
-    // Set genre
-    const genreMap =
-        item.media_type === "movie"
-            ? movieGenreMap
-            : tvGenreMap;
-
+    const genreMap = item.media_type === "movie" ? movieGenreMap : tvGenreMap;
     const genreNames = (item.genre_ids || [])
         .map(id => genreMap[id])
         .filter(Boolean)
         .join(", ");
 
-    bannerGenre.textContent =
-        `Genre: ${genreNames || "Unknown"}`;
+    if (bannerGenre) {
+        bannerGenre.textContent = `Genre: ${genreNames || "Unknown"}`;
+    }
 }
 
-// ===================================
-// BANNER PLAY BUTTON
-// ===================================
+// Banner Play Action (Remote and Click Accessible)
 if (bannerPlayButton) {
-    bannerPlayButton.addEventListener("click", () => {
-        if (!currentBannerItem) {
-            console.error("Banner item data not loaded yet.");
-            return;
-        }
-
+    bannerPlayButton.setAttribute("tabindex", "0");
+    const launchBannerMedia = () => {
+        if (!currentBannerItem) return;
         const item = currentBannerItem;
-
         window.location.href =
             item.media_type === "movie"
                 ? `movie-details.html?movie_id=${item.id}`
                 : `tvshows-details.html?id=${item.id}`;
+    };
+
+    bannerPlayButton.addEventListener("click", launchBannerMedia);
+    bannerPlayButton.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.keyCode === 13) {
+            launchBannerMedia();
+        }
     });
 }
 
-// Start banner system
 async function startBannerSystem() {
     await loadBannerGenres();
     await loadBannerItems();
@@ -288,61 +262,87 @@ startBannerSystem();
 // ===================================
 const mediaState = {};
 
+function createMediaCard(item, type) {
+    const mediaItem = document.createElement("div");
+    mediaItem.classList.add("media-item");
+
+    // Android TV Accessibility attributes
+    mediaItem.setAttribute("tabindex", "0");
+    mediaItem.setAttribute("role", "button");
+
+    const title = item.title || item.name;
+    const year = (item.release_date || item.first_air_date || "").slice(0, 4) || "—";
+    const rating = item.vote_average ? item.vote_average.toFixed(1) : "0.0";
+
+    mediaItem.innerHTML = `
+        <div class="poster-title" title="${title}">${title}</div>
+        <div class="poster-card">
+            <div class="rating">
+                <span class="star"><i class="fas fa-star"></i></span>
+                <span class="rating-number">${rating}</span>
+            </div>
+            <div class="year-container">
+                <span class="year">${year}</span>
+            </div>
+            <img src="${imgURL + item.poster_path}" alt="${title}" loading="lazy">
+            <div class="play-button">
+                <i class="fas fa-play"></i>
+            </div>
+        </div>
+    `;
+
+    const openDetails = () => {
+        window.location.href =
+            type === "movie"
+                ? `movie-details.html?movie_id=${item.id}`
+                : `tvshows-details.html?id=${item.id}`;
+    };
+
+    // Mouse click support
+    mediaItem.addEventListener("click", openDetails);
+
+    // TV Remote D-Pad Center/OK selection support
+    mediaItem.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.keyCode === 13) {
+            openDetails();
+        }
+    });
+
+    // Centers the active poster on the screen when navigated by remote control
+    mediaItem.addEventListener("focus", () => {
+        mediaItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    });
+
+    return mediaItem;
+}
+
 async function fetchMedia(url, containerId, type, page = 1) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    const response = await fetch(`${url}&page=${page}`);
-    const data = await response.json();
+    try {
+        const response = await fetch(`${url}&page=${page}`);
+        const data = await response.json();
 
-    if (!mediaState[containerId]) {
-        mediaState[containerId] = {
-            page: 1,
-            loading: false
-        };
-    }
+        if (!mediaState[containerId]) {
+            mediaState[containerId] = {
+                page: 1,
+                loading: false
+            };
+        }
 
-    const results = data.results.filter(item => item.poster_path);
+        const results = (data.results || []).filter(item => item.poster_path);
 
-    results.forEach(item => {
-        const mediaItem = document.createElement("div");
-        mediaItem.classList.add("media-item");
-
-        const title = item.title || item.name;
-        const year = (item.release_date || item.first_air_date || "").slice(0, 4) || "—";
-        const rating = item.vote_average.toFixed(1);
-
-        mediaItem.innerHTML = `
-            <div class="poster-title" title="${title}">${title}</div>
-            <div class="poster-card">
-                <div class="rating">
-                    <span class="star"><i class="fas fa-star"></i></span>
-                    <span class="rating-number">${rating}</span>
-                </div>
-                <div class="year-container">
-                    <span class="year">${year}</span>
-                </div>
-                <img src="${imgURL + item.poster_path}" alt="${title}">
-                <div class="play-button">
-                    <i class="fas fa-play"></i>
-                </div>
-            </div>
-        `;
-
-        mediaItem.addEventListener("click", () => {
-            window.location.href =
-                type === "movie"
-                    ? `movie-details.html?movie_id=${item.id}`
-                    : `tvshows-details.html?id=${item.id}`;
+        results.forEach(item => {
+            container.appendChild(createMediaCard(item, type));
         });
 
-        container.appendChild(mediaItem);
-    });
-
-    mediaState[containerId].loading = false;
+        mediaState[containerId].loading = false;
+    } catch (err) {
+        console.error(`Fetch media error for ${containerId}:`, err);
+    }
 }
 
-// Fetch both Movies & TV released in the current year
 async function fetchNewReleases(containerId, pages = 5) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -370,67 +370,33 @@ async function fetchNewReleases(containerId, pages = 5) {
         );
     }
 
-    const responses = await Promise.all(allFetches);
+    try {
+        const responses = await Promise.all(allFetches);
+        let allItems = [];
 
-    let allItems = [];
+        for (const response of responses) {
+            const data = await response.json();
+            const type = response.url.includes("/movie") ? "movie" : "tv";
+            const typedResults = (data.results || []).map(item => ({
+                ...item,
+                type: type
+            }));
+            allItems.push(...typedResults);
+        }
 
-    for (const response of responses) {
-        const data = await response.json();
-
-        const type =
-            response.url.includes("/movie")
-                ? "movie"
-                : "tv";
-
-        const typedResults = data.results.map(item => ({
-            ...item,
-            type: type
-        }));
-
-        allItems.push(...typedResults);
-    }
-
-    allItems
-        .filter(item => item.poster_path)
-        .forEach(item => {
-            const mediaItem = document.createElement("div");
-            mediaItem.classList.add("media-item");
-
-            const rating = item.vote_average.toFixed(1);
-            const yearText =
-                (item.release_date || item.first_air_date || "").slice(0, 4) || "—";
-            const title = item.title || item.name;
-
-            mediaItem.innerHTML = `
-                <div class="poster-title" title="${title}">${title}</div>
-                <div class="poster-card">
-                    <div class="rating">
-                        <span class="star"><i class="fas fa-star"></i></span>
-                        <span class="rating-number">${rating}</span>
-                    </div>
-                    <img src="${imgURL + item.poster_path}" alt="${title}">
-                    <div class="play-button">
-                        <i class="fas fa-play"></i>
-                    </div>
-                    ${yearText ? `<div class="year-container">${yearText}</div>` : ""}
-                </div>
-            `;
-
-            mediaItem.addEventListener("click", () => {
-                window.location.href =
-                    item.type === "movie"
-                        ? `movie-details.html?movie_id=${item.id}`
-                        : `tvshows-details.html?id=${item.id}`;
+        allItems
+            .filter(item => item.poster_path)
+            .forEach(item => {
+                container.appendChild(createMediaCard(item, item.type));
             });
-
-            container.appendChild(mediaItem);
-        });
+    } catch (err) {
+        console.error(`Error loading new releases for ${containerId}:`, err);
+    }
 }
 
 // ===================================
 // 4. SCROLLING AND LAZY LOADING
 // ===================================
-
 function getURLForContainer(containerId) {
     const urls = {
         "popular-movies":
@@ -439,30 +405,18 @@ function getURLForContainer(containerId) {
             `${baseURL}/discover/tv?api_key=${apiKey}&with_origin_country=KR&vote_average.gte=7.5&vote_count.gte=200&sort_by=popularity.desc`
     };
 
-    if (containerId === "new-releases") {
-        return null;
-    }
-
+    if (containerId === "new-releases") return null;
     return urls[containerId];
 }
 
 function getTypeForContainer(containerId) {
-    return containerId.includes("tv") ||
-           containerId.includes("animations")
-        ? "tv"
-        : "movie";
+    return containerId.includes("tv") || containerId.includes("animations") ? "tv" : "movie";
 }
 
 function scrollLeft(containerId) {
     const container = document.getElementById(containerId);
-
     if (container) {
-        container.scrollBy({
-            left: -300,
-            behavior: "smooth"
-        });
-    } else {
-        console.error("Container not found:", containerId);
+        container.scrollBy({ left: -300, behavior: "smooth" });
     }
 }
 
@@ -470,12 +424,8 @@ function scrollRight(containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    container.scrollBy({
-        left: 300,
-        behavior: "smooth"
-    });
+    container.scrollBy({ left: 300, behavior: "smooth" });
 
-    // Lazy load more when near end
     if (
         container.scrollLeft + container.clientWidth >= container.scrollWidth - 300 &&
         mediaState[containerId] &&
@@ -496,27 +446,90 @@ function scrollRight(containerId) {
 }
 
 // ===================================
-// 5. INITIALIZATION AND UI HANDLERS
+// 5. SMART TV D-PAD NAVIGATION SYSTEM
 // ===================================
+function navigateSpatial(direction) {
+    const focusables = Array.from(document.querySelectorAll('[tabindex="0"], a[href], button, input'))
+        .filter(el => {
+            const rect = el.getBoundingClientRect();
+            return rect.width > 0 && rect.height > 0 && window.getComputedStyle(el).visibility !== 'hidden';
+        });
 
-// Initial Data Load
-// Banner is initialized by startBannerSystem() above.
+    let current = document.activeElement;
+    if (!current || !focusables.includes(current)) {
+        if (focusables.length > 0) focusables[0].focus();
+        return;
+    }
+
+    const currentRect = current.getBoundingClientRect();
+    const currentCenter = {
+        x: currentRect.left + currentRect.width / 2,
+        y: currentRect.top + currentRect.height / 2
+    };
+
+    let bestCandidate = null;
+    let bestDistance = Infinity;
+
+    focusables.forEach(candidate => {
+        if (candidate === current) return;
+        const rect = candidate.getBoundingClientRect();
+        const center = {
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height / 2
+        };
+
+        let isValid = false;
+        if (direction === "ArrowRight" && center.x > currentCenter.x + 5) isValid = true;
+        if (direction === "ArrowLeft" && center.x < currentCenter.x - 5) isValid = true;
+        if (direction === "ArrowDown" && center.y > currentCenter.y + 5) isValid = true;
+        if (direction === "ArrowUp" && center.y < currentCenter.y - 5) isValid = true;
+
+        if (isValid) {
+            const dx = center.x - currentCenter.x;
+            const dy = center.y - currentCenter.y;
+            // Weigh axes to prioritize straight lines over diagonals
+            const distance = (direction === "ArrowLeft" || direction === "ArrowRight")
+                ? Math.abs(dx) + Math.abs(dy) * 2.5
+                : Math.abs(dy) + Math.abs(dx) * 2.5;
+
+            if (distance < bestDistance) {
+                bestDistance = distance;
+                bestCandidate = candidate;
+            }
+        }
+    });
+
+    if (bestCandidate) {
+        bestCandidate.focus();
+    }
+}
+
+window.addEventListener("keydown", (e) => {
+    // D-Pad and standard direction keys
+    const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Up", "Down", "Left", "Right"];
+    if (keys.includes(e.key) || [37, 38, 39, 40].includes(e.keyCode)) {
+        let dir = e.key;
+        if (e.keyCode === 37 || e.key === "Left") dir = "ArrowLeft";
+        if (e.keyCode === 38 || e.key === "Up") dir = "ArrowUp";
+        if (e.keyCode === 39 || e.key === "Right") dir = "ArrowRight";
+        if (e.keyCode === 40 || e.key === "Down") dir = "ArrowDown";
+
+        e.preventDefault();
+        navigateSpatial(dir);
+    } else if (e.key === "Escape" || e.key === "Back" || e.keyCode === 10009 || e.keyCode === 27) {
+        // Smart TV Back key dismiss listener
+        closeMessage();
+    }
+});
+
+// ===================================
+// 6. INITIALIZATION AND UI HANDLERS
+// ===================================
 fetchNewReleases("new-releases", 3);
-fetchMedia(
-    getURLForContainer("popular-movies"),
-    "popular-movies",
-    "movie",
-    3
-);
-fetchMedia(
-    getURLForContainer("korean-tv-shows"),
-    "korean-tv-shows",
-    "tv",
-    3
-);
+fetchMedia(getURLForContainer("popular-movies"), "popular-movies", "movie", 3);
+fetchMedia(getURLForContainer("korean-tv-shows"), "korean-tv-shows", "tv", 3);
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Attach event listeners to buttons
     document.querySelectorAll(".scroll-left").forEach(button => {
         button.addEventListener("click", function () {
             const targetId = this.nextElementSibling.id;
@@ -531,34 +544,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // Toggle menu visibility when menu button is clicked
     const menuBtn = document.getElementById("menu-btn");
     const menu = document.getElementById("menu");
-
     if (menuBtn && menu) {
         menuBtn.addEventListener("click", function() {
             menu.classList.toggle("active");
         });
     }
-
-    // Dropdown More Button Function
-    const dropdown = document.querySelector(".dropdown");
-
-    if (dropdown) {
-        dropdown.addEventListener("click", function () {
-            this.classList.toggle("active");
-        });
-    }
 });
-
 
 // ===================================
 // 7. FLOATING MESSAGE
 // ===================================
-
 function closeMessage() {
     const message = document.getElementById("floating-message");
-
     if (message) {
         message.style.display = "none";
     }
