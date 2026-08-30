@@ -486,7 +486,7 @@
     display: flex;
     overflow-x: auto;
     overflow-y: hidden;
-    gap: 15px; /* Added spacing between cards */
+    gap: 5px; /* Added spacing between cards */
     white-space: nowrap;
     scroll-behavior: smooth;
     padding: 20px 15px; /* Adds vertical breathing room for scaled titles and focused elements */
