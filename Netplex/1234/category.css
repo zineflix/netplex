@@ -89,6 +89,7 @@ button:focus {
 }
 
 /* TV Fullscreen Picker Modal */
+/* Change cursor to pointer over the dark backdrop */
 .tv-picker-modal {
     position: fixed;
     top: 0;
@@ -102,8 +103,10 @@ button:focus {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer; /* Indicates clicking outside will dismiss */
 }
 
+/* Reset cursor inside the actual dialog box */
 .tv-picker-content {
     background: #181818;
     border: 2px solid #333;
@@ -115,6 +118,7 @@ button:focus {
     flex-direction: column;
     padding: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+    cursor: default; /* Prevents pointer cursor inside dialog */
 }
 
 .tv-picker-content h3 {
@@ -413,6 +417,33 @@ nav .dropdown-content li a:focus-visible {
 
     .mobile-more-menu a i { width: 22px; color: #0296cc; }
     body { padding-bottom: calc(75px + env(safe-area-inset-bottom)); }
+
+    /* =========================================================
+       3 COLUMNS ON MOBILE VIEW
+    ========================================================= */
+    .grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 8px !important;
+        padding: 5px 0 !important;
+    }
+
+    .play-button {
+        width: 38px !important;
+        height: 38px !important;
+    }
+
+    .play-button i {
+        font-size: 14px !important;
+        margin-left: 2px !important;
+    }
+
+    .year-badge {
+        font-size: 10px !important;
+        padding: 2px 5px !important;
+        left: 5px !important;
+        bottom: 5px !important;
+    }  
+  
 }
 
 /* Container & Grid */
