@@ -129,8 +129,8 @@ function escapeHTML(value) {
         .replace(/'/g, "&#039;");
 }
 
-// ============================================================
-// CREATE MEDIA CARD
+// // ============================================================
+// CREATE MEDIA CARD (WITH ANDROID TV SUPPORT)
 // ============================================================
 function createMediaCard(item, type = "movie") {
     if (!item || !item.id || !item.poster_path) {
@@ -139,6 +139,10 @@ function createMediaCard(item, type = "movie") {
 
     const mediaItem = document.createElement("div");
     mediaItem.classList.add("media-item");
+    
+    // Enables Android TV remote focus
+    mediaItem.setAttribute("tabindex", "0");
+    mediaItem.setAttribute("role", "button");
 
     const title = item.title || item.name || "Unknown";
     const year = (
@@ -177,14 +181,27 @@ function createMediaCard(item, type = "movie") {
         </div>
     `;
 
-    mediaItem.addEventListener("click", () => {
+    const openDetails = () => {
         if (type === "movie") {
-            window.location.href =
-                `movie-details.html?movie_id=${item.id}`;
+            window.location.href = `movie-details.html?movie_id=${item.id}`;
         } else {
-            window.location.href =
-                `tvshows-details.html?id=${item.id}`;
+            window.location.href = `tvshows-details.html?id=${item.id}`;
         }
+    };
+
+    // Click support
+    mediaItem.addEventListener("click", openDetails);
+
+    // Remote OK / Enter button support
+    mediaItem.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.keyCode === 13) {
+            openDetails();
+        }
+    });
+
+    // Horizontal auto-scroll on focus for TV remotes
+    mediaItem.addEventListener("focus", () => {
+        mediaItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     });
 
     return mediaItem;
@@ -501,4 +518,86 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
+});
+
+
+
+
+
+// ============================================================
+// SMART TV D-PAD NAVIGATION SYSTEM
+// ============================================================
+function navigateSpatial(direction) {
+    const focusables = Array.from(document.querySelectorAll('[tabindex="0"], a[href], button, input'))
+        .filter(el => {
+            const rect = el.getBoundingClientRect();
+            return rect.width > 0 && rect.height > 0 && window.getComputedStyle(el).visibility !== 'hidden';
+        });
+
+    let current = document.activeElement;
+    if (!current || !focusables.includes(current)) {
+        if (focusables.length > 0) focusables[0].focus();
+        return;
+    }
+
+    const currentRect = current.getBoundingClientRect();
+    const currentCenter = {
+        x: currentRect.left + currentRect.width / 2,
+        y: currentRect.top + currentRect.height / 2
+    };
+
+    let bestCandidate = null;
+    let bestDistance = Infinity;
+
+    focusables.forEach(candidate => {
+        if (candidate === current) return;
+        const rect = candidate.getBoundingClientRect();
+        const center = {
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height / 2
+        };
+
+        let isValid = false;
+        if (direction === "ArrowRight" && center.x > currentCenter.x + 5) isValid = true;
+        if (direction === "ArrowLeft" && center.x < currentCenter.x - 5) isValid = true;
+        if (direction === "ArrowDown" && center.y > currentCenter.y + 5) isValid = true;
+        if (direction === "ArrowUp" && center.y < currentCenter.y - 5) isValid = true;
+
+        if (isValid) {
+            const dx = center.x - currentCenter.x;
+            const dy = center.y - currentCenter.y;
+            const distance = (direction === "ArrowLeft" || direction === "ArrowRight")
+                ? Math.abs(dx) + Math.abs(dy) * 2.5
+                : Math.abs(dy) + Math.abs(dx) * 2.5;
+
+            if (distance < bestDistance) {
+                bestDistance = distance;
+                bestCandidate = candidate;
+            }
+        }
+    });
+
+    if (bestCandidate) {
+        bestCandidate.focus();
+    }
+}
+
+window.addEventListener("keydown", (e) => {
+    const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Up", "Down", "Left", "Right"];
+    if (keys.includes(e.key) || [37, 38, 39, 40].includes(e.keyCode)) {
+        let dir = e.key;
+        if (e.keyCode === 37 || e.key === "Left") dir = "ArrowLeft";
+        if (e.keyCode === 38 || e.key === "Up") dir = "ArrowUp";
+        if (e.keyCode === 39 || e.key === "Right") dir = "ArrowRight";
+        if (e.keyCode === 40 || e.key === "Down") dir = "ArrowDown";
+
+        e.preventDefault();
+        navigateSpatial(dir);
+    } else if (e.key === "Escape" || e.key === "Back" || e.keyCode === 10009 || e.keyCode === 27) {
+        // Smart TV Back key listener
+        const floatingMessage = document.getElementById("floating-message");
+        if (floatingMessage && floatingMessage.style.display !== "none") {
+            closeMessage();
+        }
+    }
 });
