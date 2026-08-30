@@ -1,9 +1,11 @@
 window.addEventListener("scroll", function () {
     let nav = document.querySelector("nav");
-    if (window.scrollY > 50) {
-        nav.classList.add("nav-solid");
-    } else {
-        nav.classList.remove("nav-solid");
+    if (nav) {
+        if (window.scrollY > 50) {
+            nav.classList.add("nav-solid");
+        } else {
+            nav.classList.remove("nav-solid");
+        }
     }
 });
 
@@ -28,29 +30,36 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-});
 
-
-// For Dropdown More Button Function Start
-document.addEventListener("DOMContentLoaded", function () {
     const dropdownButton = document.querySelector(".dropbtn");
     const dropdownContent = document.querySelector(".dropdown-content");
+    if (dropdownButton && dropdownContent) {
+        dropdownButton.addEventListener("click", function (event) {
+            event.stopPropagation();
+            dropdownContent.classList.toggle("active");
+        });
 
-    dropdownButton.addEventListener("click", function (event) {
-        event.stopPropagation(); // Prevent event from bubbling up
-        dropdownContent.classList.toggle("active");
-    });
-
-    // Close dropdown if clicked outside
-    document.addEventListener("click", function (event) {
-        if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
-            dropdownContent.classList.remove("active");
-        }
-    });
+        document.addEventListener("click", function (event) {
+            if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
+                dropdownContent.classList.remove("active");
+            }
+        });
+    }
 });
 
-// For Dropdown More Button Function End
+// TV Remote Keycode Checker
+function isTvOk(e) {
+    return (
+        e.key === "Enter" ||
+        e.key === "Select" ||
+        e.key === "OK" ||
+        e.keyCode === 13 ||
+        e.keyCode === 23
+    );
+}
 
+// Keep track of the last focused card to restore focus on modal close
+let lastActiveCard = null;
 
 // MOVIE SECTION LOGIC
 const API_KEY = "a1e72fd93ed59f56e6332813b9f8dcae";
@@ -119,12 +128,23 @@ async function fetchMovies() {
             if (movie.poster_path) {
                 const movieCard = document.createElement("div");
                 movieCard.classList.add("movie-card");
+                movieCard.setAttribute("tabindex", "0");
+                movieCard.setAttribute("role", "button");
 
                 movieCard.innerHTML = `
                     <img src="${IMAGE_BASE_URL}${movie.poster_path}" alt="${movie.title}">
                     <div class="play-button"><i class="fa-solid fa-play"></i></div>
                 `;
-                movieCard.addEventListener("click", () => openModal(movie));
+                
+                movieCard.addEventListener("click", () => {
+                    lastActiveCard = movieCard;
+                    openModal(movie);
+                });
+                
+                movieCard.addEventListener("focus", () => {
+                    movieCard.scrollIntoView({ behavior: "smooth", block: "center" });
+                });
+
                 movieGallery.appendChild(movieCard);
 
                 if (movieId && movie.id == movieId) {
@@ -148,23 +168,29 @@ function openModal(movie) {
     movieTrailer.src = videoUrl;
     
     movieModal.classList.add("show");
-    document.body.classList.add("modal-open"); // Locks main page background
+    document.body.classList.add("modal-open");
     window.history.pushState({ type: "movie", id: movie.id }, "", `?movie=${movie.id}`);
+
+    // Auto-focus fullscreen button inside modal for immediate remote interaction
+    setTimeout(() => {
+        const btn = document.getElementById("fullscreenButton");
+        if (btn) btn.focus();
+    }, 100);
 }
 
 function closeModal() {
     movieModal.classList.remove("show");
-    document.body.classList.remove("modal-open"); // Unlocks main page background
+    document.body.classList.remove("modal-open");
     movieTrailer.src = "";
     window.history.pushState({}, "", window.location.pathname);
+
+    if (lastActiveCard) {
+        lastActiveCard.focus();
+    }
 }
 
 window.addEventListener("click", event => {
     if (event.target === movieModal) closeModal();
-});
-
-document.addEventListener("keydown", event => {
-    if (event.key === "Escape") closeModal();
 });
 
 fetchMovies();
@@ -189,7 +215,7 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1MDbrNZz8N_Q1PBKxRbnZ4pGSWgERHP8k/preview",
             "https://drive.google.com/file/d/1sFFrEIApC25AzfjnXSDDV05K-W1-7Uoz/preview",
             "https://drive.google.com/file/d/12YOGBdgVYboi17jISnF4sHO4UvH97Svh/preview",
-            "https://drive.google.com/file/d/1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR/preview",
+            "https://drive.google.com/file/d/1PbWWqgKDBDorh525uecKaGZD21FGSoCeR/preview",
             "https://drive.google.com/file/d/1aC6lA84DiI3uoqPLZK8GRuQfLDhORPF9/preview",
             "https://drive.google.com/file/d/1dAA0BrlHeS4aHqY0Yq1tkSJblMVyMgo5/preview",
             "https://drive.google.com/file/d/1WBh7QpvfHN2zGQ6VjV18_yickANOmMcW/preview",
@@ -210,7 +236,7 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/15676A_B9lmohU6QaFkr7pGhWzGAWl64V/preview",
             "https://drive.google.com/file/d/1i9-ROhq6Zzl_dTsGDfVc5l00A38cuB16/preview",
             "https://drive.google.com/file/d/1zIyQKj7xtn3zum01J9Rnb0fVlpuPrHU5/preview",
-            "https://drive.google.com/file/d/1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR/preview",
+            "https://drive.google.com/file/d/1PbWWqgKDBDorh525uecKaGZD21FGSoCeR/preview",
             "https://drive.google.com/file/d/11dU7wkT6pRY0YR3Nd_Hv2PKyI4B_XGYi/preview",
             "https://drive.google.com/file/d/1kmaj_RV5tmZEQpvs_UkULdcJXbqZNAcd/preview",
             "https://drive.google.com/file/d/1rLDuViEVQfNF9NGOe6v_E5HOPVZ7wvwY/preview",
@@ -245,7 +271,7 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1fSNYpP6qSV7GJZVLR_U02bsoiRESNCkq/preview",
             "https://drive.google.com/file/d/1fzbxTdJIGdI4v5ZgDpfQwYyqLJwe6CCs/preview",
             "https://drive.google.com/file/d/1fvyznAmGWC6lwWK7dxddiLraMR1gPDu1/preview",
-            "https://drive.google.com/file/d/1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR/preview",
+            "https://drive.google.com/file/d/1PbWWqgKDBDorh525uecKaGZD21FGSoCeR/preview",
             "https://drive.google.com/file/d/1g1iPf1-sOLY7KLZ4XnGQxhxL2jxXbPjs/preview",
             "https://drive.google.com/file/d/1g5QpVihX8vOFzvwjrJLxQJdkLUSwyEOF/preview",
         ],
@@ -285,10 +311,10 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1y1gd0poT_yVdX299lSubPzHGNcbx8U_k/preview",
             "https://drive.google.com/file/d/1o2ij2B7ykOm0HcjKAQ-szlT8quBbM5C3/preview",
             "https://drive.google.com/file/d/1UUcWL33I5seiLugpbXSxDVNo2-9_VgnE/preview",
-            "https://drive.google.com/file/d/1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR-djRz/preview",
+            "https://drive.google.com/file/d/1PbWWqgKDBDorh525uecKaGZD21FGSoCeR-djRz/preview",
             "https://drive.google.com/file/d/1DTLgO_bGTlWKjpWGDVuzaew-vbQp70y4/preview",
             "https://drive.google.com/file/d/1fLy8sx7t2asaFxjSv-QngLgnBRdmfiE8/preview",
-            "https://drive.google.com/file/d/1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR/preview",
+            "https://drive.google.com/file/d/1PbWWqgKDBDorh525uecKaGZD21FGSoCeR/preview",
             "https://drive.google.com/file/d/1_JfcBppcElSapyxwH-zD4QkiADLiESgt/preview",
             "https://drive.google.com/file/d/1FVx-47Ysrh03tpk0rjScxhZUbz2SZWNM/preview",
             "https://drive.google.com/file/d/1f-QqJiNFCh1P8p8l0r_eSQR1bUEoCYvN/preview",
@@ -472,12 +498,23 @@ async function fetchTvShows() {
             if (show.poster_path) {
                 const showCard = document.createElement("div");
                 showCard.classList.add("movie-card");
+                showCard.setAttribute("tabindex", "0");
+                showCard.setAttribute("role", "button");
 
                 showCard.innerHTML = `
                     <img src="${IMAGE_BASE_URL}${show.poster_path}" alt="${show.name}">
                     <div class="play-button"><i class="fa-solid fa-play"></i></div>
                 `;
-                showCard.addEventListener("click", () => openTvModal(show));
+                
+                showCard.addEventListener("click", () => {
+                    lastActiveCard = showCard;
+                    openTvModal(show);
+                });
+                
+                showCard.addEventListener("focus", () => {
+                    showCard.scrollIntoView({ behavior: "smooth", block: "center" });
+                });
+
                 tvGallery.appendChild(showCard);
 
                 if (tvId && show.id == tvId) {
@@ -519,23 +556,29 @@ function openTvModal(show) {
     }
 
     tvModal.classList.add("show");
-    document.body.classList.add("modal-open"); // Locks main page background
+    document.body.classList.add("modal-open");
     window.history.pushState({ type: "tv", id: show.id }, "", `?tv=${show.id}`);
+
+    // Auto-focus episode dropdown or fullscreen button inside modal
+    setTimeout(() => {
+        const focusTarget = document.getElementById("episodeDropdown") || document.getElementById("tvFullscreenButton");
+        if (focusTarget) focusTarget.focus();
+    }, 100);
 }
 
 function closeTvModal() {
     tvModal.classList.remove("show");
-    document.body.classList.remove("modal-open"); // Unlocks main page background
+    document.body.classList.remove("modal-open");
     tvTrailer.src = "";
     window.history.pushState({}, "", window.location.pathname);
+
+    if (lastActiveCard) {
+        lastActiveCard.focus();
+    }
 }
 
 window.addEventListener("click", event => {
     if (event.target === tvModal) closeTvModal();
-});
-
-document.addEventListener("keydown", event => {
-    if (event.key === "Escape") closeTvModal();
 });
 
 fetchTvShows();
@@ -567,12 +610,23 @@ async function fetchFpjMovies() {
             if (movie.poster_path) {
                 const movieCard = document.createElement("div");
                 movieCard.classList.add("movie-card");
+                movieCard.setAttribute("tabindex", "0");
+                movieCard.setAttribute("role", "button");
 
                 movieCard.innerHTML = `
                     <img src="${IMAGE_BASE_URL}${movie.poster_path}" alt="${movie.title}">
                     <div class="play-button"><i class="fa-solid fa-play"></i></div>
                 `;
-                movieCard.addEventListener("click", () => openModal(movie));
+                
+                movieCard.addEventListener("click", () => {
+                    lastActiveCard = movieCard;
+                    openModal(movie);
+                });
+
+                movieCard.addEventListener("focus", () => {
+                    movieCard.scrollIntoView({ behavior: "smooth", block: "center" });
+                });
+
                 fpjGallery.appendChild(movieCard);
             }
         });
@@ -610,3 +664,171 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
         screen.orientation.lock("landscape").catch(() => {});
     }
 });
+
+/* =========================================================
+   NETPLEX UNIFIED ANDROID TV SPATIAL NAVIGATION ENGINE
+========================================================= */
+(function () {
+    "use strict";
+
+    function isElementVisible(el) {
+        if (!el || el.offsetParent === null) return false;
+        const style = window.getComputedStyle(el);
+        if (
+            style.display === "none" ||
+            style.visibility === "hidden" ||
+            style.opacity === "0" ||
+            style.pointerEvents === "none"
+        ) {
+            return false;
+        }
+        const rect = el.getBoundingClientRect();
+        return rect.width > 0 && rect.height > 0;
+    }
+
+    function getFocusableElements() {
+        // If a modal is open, trap focus within it
+        const openModal = document.querySelector('.modal.show');
+        if (openModal) {
+            return Array.from(openModal.querySelectorAll('button:not([disabled]), select:not([disabled]), input:not([disabled]), [tabindex="0"]'))
+                .filter(isElementVisible);
+        }
+
+        const selector = 'a[href], button:not([disabled]), select:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex="0"]';
+        return Array.from(document.querySelectorAll(selector)).filter(isElementVisible);
+    }
+
+    function navigateSpatial(direction) {
+        const focusables = getFocusableElements();
+        let current = document.activeElement;
+
+        if (!current || current === document.body || !focusables.includes(current)) {
+            const firstTarget = focusables[0];
+            if (firstTarget) firstTarget.focus();
+            return;
+        }
+
+        const currentRect = current.getBoundingClientRect();
+        const currentCenter = {
+            x: currentRect.left + currentRect.width / 2,
+            y: currentRect.top + currentRect.height / 2
+        };
+
+        let bestCandidate = null;
+        let bestDistance = Infinity;
+
+        focusables.forEach(candidate => {
+            if (candidate === current) return;
+
+            const rect = candidate.getBoundingClientRect();
+            const center = {
+                x: rect.left + rect.width / 2,
+                y: rect.top + rect.height / 2
+            };
+
+            let isValid = false;
+
+            if (direction === "ArrowRight" && center.x > currentCenter.x + 5) isValid = true;
+            if (direction === "ArrowLeft" && center.x < currentCenter.x - 5) isValid = true;
+            if (direction === "ArrowDown" && center.y > currentCenter.y + 5) isValid = true;
+            if (direction === "ArrowUp" && center.y < currentCenter.y - 5) isValid = true;
+
+            if (isValid) {
+                const dx = center.x - currentCenter.x;
+                const dy = center.y - currentCenter.y;
+
+                let distance = 0;
+                if (direction === "ArrowLeft" || direction === "ArrowRight") {
+                    distance = Math.abs(dx) + (Math.abs(dy) * 2.5);
+                } else {
+                    // Lowered horizontal penalty so navigation moves smoothly down into comments and footer
+                    distance = Math.abs(dy) + (Math.abs(dx) * 0.8);
+                }
+
+                if (distance < bestDistance) {
+                    bestDistance = distance;
+                    bestCandidate = candidate;
+                }
+            }
+        });
+
+        if (bestCandidate) {
+            bestCandidate.focus();
+            bestCandidate.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }
+
+    window.addEventListener("keydown", function (e) {
+        const active = document.activeElement;
+        const isInput = active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA" || active.tagName === "SELECT");
+
+        // 1. Android TV OK / Select Button
+        if (isTvOk(e)) {
+            if (active && active !== document.body && !isInput) {
+                e.preventDefault();
+                active.click();
+            }
+            return;
+        }
+
+        // 2. D-Pad Directional Controls
+        const navKeys = [
+            "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight",
+            "Up", "Down", "Left", "Right",
+            37, 38, 39, 40
+        ];
+
+        if (navKeys.includes(e.key) || navKeys.includes(e.keyCode)) {
+            // Allow cursor navigation inside text fields
+            if (isInput && (active.tagName === "INPUT" || active.tagName === "TEXTAREA") && 
+                (e.key === "ArrowLeft" || e.key === "ArrowRight" || e.keyCode === 37 || e.keyCode === 39)) {
+                return;
+            }
+
+            // Allow selecting options inside dropdowns
+            if (active && active.tagName === "SELECT" && 
+                (e.key === "ArrowUp" || e.key === "ArrowDown" || e.keyCode === 38 || e.keyCode === 40)) {
+                return;
+            }
+
+            let dir = e.key;
+            if (e.keyCode === 37 || e.key === "Left") dir = "ArrowLeft";
+            if (e.keyCode === 38 || e.key === "Up") dir = "ArrowUp";
+            if (e.keyCode === 39 || e.key === "Right") dir = "ArrowRight";
+            if (e.keyCode === 40 || e.key === "Down") dir = "ArrowDown";
+
+            e.preventDefault();
+            navigateSpatial(dir);
+            return;
+        }
+
+        // 3. Android TV Back Key
+        const backKeys = ["Escape", "Back", "GoBack", 10009, 27, 461];
+        if (backKeys.includes(e.key) || backKeys.includes(e.keyCode)) {
+            // Dismiss active modals
+            if (movieModal.classList.contains("show")) {
+                e.preventDefault();
+                closeModal();
+                return;
+            }
+
+            if (tvModal.classList.contains("show")) {
+                e.preventDefault();
+                closeTvModal();
+                return;
+            }
+
+            // Close navigation dropdown
+            const activeDropdown = document.querySelector(".dropdown.active, .dropdown-content.active");
+            if (activeDropdown) {
+                e.preventDefault();
+                activeDropdown.classList.remove("active");
+                return;
+            }
+
+            if (window.history.length > 1) {
+                window.history.back();
+            }
+        }
+    });
+})();
