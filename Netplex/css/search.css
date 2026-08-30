@@ -1,38 +1,47 @@
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
 
-        :root {
-            --netflix-red: #0296cc;
-            --netflix-black: #141414;
-            --netflix-dark: #181818;
-            --netflix-card: #2f2f2f;
-            --accent-blue: #0296cc;
-            --text-light: #e5e5e5;
-        }
+:root {
+    --netflix-red: #0296cc;
+    --netflix-black: #141414;
+    --netflix-dark: #181818;
+    --netflix-card: #2f2f2f;
+    --accent-blue: #0296cc;
+    --text-light: #e5e5e5;
+}
 
-        body {
-            background:
-        radial-gradient(
-            circle at 50% 0%,
-            rgba(2, 150, 204, 0.08),
-            transparent 100%
-        ),
-        #121212;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
+body {
+    background: radial-gradient(circle at 50% 0%, rgba(2, 150, 204, 0.08), transparent 100%), #121212;
+    color: #ffffff;
+    overflow-x: hidden;
+}
 
+/* =========================================
+   UNIVERSAL ANDROID TV FOCUS STYLES
+========================================= */
+:focus {
+    outline: none !important;
+}
 
-/* =========================================================
-   NETPLEX NAVIGATION - PLAIN <nav>
-========================================================= */
+[tabindex="0"]:focus,
+a:focus,
+button:focus,
+input:focus,
+select:focus {
+    outline: 3px solid #0296cc !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 15px rgba(2, 150, 204, 0.9) !important;
+    z-index: 9999 !important;
+}
+
+/* Navigation */
 nav {
     width: 100%;
     position: fixed;
@@ -98,8 +107,10 @@ nav .dropbtn {
 nav .desktop-menu i { color: #0296cc; }
 
 nav .desktop-menu > li > a:hover,
+nav .desktop-menu > li > a:focus,
 nav .desktop-menu > li > a.active,
 nav .dropbtn:hover,
+nav .dropbtn:focus,
 nav .dropdown.active > .dropbtn {
     background-color: #0296cc;
     color: #fff;
@@ -126,6 +137,10 @@ nav .dropdown-content {
     box-shadow: 0 8px 25px rgba(0, 0, 0, .6);
     z-index: 10001;
     font-weight: bold;
+}
+
+nav .dropdown.active .dropdown-content {
+    display: block;
 }
 
 nav .dropdown-content li {
@@ -157,19 +172,16 @@ nav .dropdown-content li a i {
 }
 
 nav .dropdown-content li a:hover,
+nav .dropdown-content li a:focus,
 nav .dropdown-content li a:focus-visible {
     background: #0296cc;
     color: #fff;
     outline: none;
 }
 
-nav .dropdown-content li a:hover i,
-nav .dropdown-content li a:focus-visible i { color: #fff; }
-
 @media (min-width: 769px) {
     nav .dropdown:hover .dropdown-content,
-    nav .dropdown:focus-within .dropdown-content,
-    nav .dropdown.active .dropdown-content { display: block; }
+    nav .dropdown:focus-within .dropdown-content { display: block; }
 }
 
 .mobile-bottom-nav,
@@ -236,25 +248,17 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
         cursor: pointer;
         border-radius: 8px;
         -webkit-tap-highlight-color: transparent;
-        transition: color .2s ease, background-color .2s ease, transform .2s ease;
     }
 
     .mobile-nav-item i {
         display: block;
         font-size: 20px;
         color: #aaa;
-        line-height: 1;
-        transition: color .2s ease, transform .2s ease;
     }
 
     .mobile-nav-item span { display: block; white-space: nowrap; }
-
     .mobile-nav-item.active,
     .mobile-nav-item.active i { color: #0296cc; }
-
-    .mobile-nav-item.active { background: rgba(2, 150, 204, .12); }
-
-    .mobile-nav-item:active { transform: scale(.94); }
 
     .mobile-more-menu {
         position: fixed;
@@ -276,8 +280,6 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
         transform: translateY(10px);
         pointer-events: none;
         transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
     }
 
     .mobile-more-menu.show {
@@ -299,353 +301,251 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
         border-radius: 8px;
         text-decoration: none;
         font-size: 14px;
-        transition: background-color .2s ease, color .2s ease;
     }
 
-    .mobile-more-menu a i {
-        width: 22px;
-        flex-shrink: 0;
-        text-align: center;
-        color: #0296cc;
-        font-size: 16px;
-    }
-
-    .mobile-more-menu a:hover,
-    .mobile-more-menu a:focus-visible,
-    .mobile-more-menu a:active {
-        background: #0296cc;
-        color: #fff;
-        outline: none;
-    }
-
-    .mobile-more-menu a:hover i,
-    .mobile-more-menu a:focus-visible i,
-    .mobile-more-menu a:active i { color: #fff; }
-
+    .mobile-more-menu a i { width: 22px; color: #0296cc; }
     body { padding-bottom: calc(75px + env(safe-area-inset-bottom)); }
-
-    .site-footer {
-        padding-bottom: calc(85px + env(safe-area-inset-bottom));
-        margin-bottom: 0 !important;
-    }
-
-
-
 }
 
-@media (min-width: 769px) {
-    .mobile-bottom-nav,
-    .mobile-more-menu { display: none !important; }
-}
-
-        /* ============================= */
-        /* FOOTER */
-        /* ============================= */
-.site-footer {
-  background-color: #1e1e1e;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  margin-bottom: 0px;
-  border-top: 1px solid #333;
-}
-
-.site-footer p {
-  margin: 8px 0;
-  font-size: 16px;
-}
-
-.footer-links {
-  margin-top: 10px;
-}
-
-.footer-links a {
-  color: #0296cc;
-  text-decoration: none;
-  margin: 0 10px;
-  font-weight: bold;
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
-}
-
-.disclaimer-note {
-  color: #bfbfbf;
-  font-family: Arial;
-}
-
-@media (max-width: 600px) {
-  .site-footer {
-    margin-bottom: 54px;
-    padding: 10px;
-  }
-  
-  .site-footer p {
-    font-size: 14px;
-  }
-
-  .footer-links {
-    flex-direction: row;
-    gap: 8px;
-    text-align: center;
-  }
-
-  .footer-links a {
-    margin: 0;
-  }
-}
-
-
-/* Dropdown MORE Button Start*/
-.dropdowns {
-    position: relative;
-    display: inline-block;
-}
-
-.dropbtn {
-    background: none;
-    color: white;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    padding: 10px;
-    text-transform: uppercase;
-    font-size: 17px;
-    border-radius: 5px;
-    transition: background 0.3s;
-}
-.dropbtn:hover {
-    background-color: #0296cc;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #1e1e1e;
-    min-width: 200px;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    border-radius: 5px;
-    right: 0;
-}
-
-.dropdown-content li {
-    list-style: none;
-    padding: 5px;
-    text-align: right;
-}
-
-.dropdown-content li a {
-    color: white;
-    text-decoration: none;
-    display: block;
-    padding: 10px;
-    transition: background 0.3s;
-}
-
-.dropdown-content li a:hover {
-    background-color: #0296cc;
-}
-
-/* Show dropdown on hover (for larger screens) */
-@media (min-width: 769px) {
-    .dropdowns:hover .dropdown-content {
-        display: block;
-    }
-}
-
-/* Show dropdown on click (for mobile) */
-@media (max-width: 768px) {
-    .dropdown-content {
-        position: static;
-        display: none;
-    }
-    .dropdown-content li {
-        padding: 2px;
-    }
-    .dropdown.active .dropdown-content {
-        display: block;
-    }
-    
-}
-@media (max-width: 768px) {
-    .dropdown-content.active {
-        display: block;
-    }
-}
-/* Dropdown MORE Button End*/
-
-
-
-/* 3. Navigation bar stays on the top layer */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 9999; /* Highest layer to sit on top of modal */
-}
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 9999; /* Keeps the navbar on top of other content */
-  display: flex;  /* Ensures item alignment */
-}
-
-/* Optional: Prevent page content from being hidden behind the fixed navbar */
-body {
-  padding-bottom: 60px; /* Adjust height based on your navbar's height */
-}
-
-
-/* =========================================
-   SEARCH SECTION
-========================================= */
-  .container {
-    width: 80%;
+/* Container & Search Header */
+.container {
+    width: 90%;
+    max-width: 1200px;
     margin: 0 auto;
-    margin-top: 50px;
-  }
-  
-  header {
+    margin-top: 60px;
+}
+
+header {
     text-align: center;
-    padding: 20px;
-  }
-  
-  h1 {
-    font-family: "Arial Black"; 
-  }
-  
-  #search {
-    padding: 10px;
-    width: 50%;
+    padding: 20px 0;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+#search {
+    padding: 12px 18px;
+    width: 60%;
+    min-width: 280px;
     font-size: 16px;
-    margin-top: 10px;
     color: white;
-    background-color: #333;
-    border: 2px solid #0275a6;
+    background-color: #1e1e1e;
+    border: 2px solid #333;
     border-radius: 10px;
-  }
-  
-  #search::placeholder {
-    color: white;
-  }
-  
-  #recommendation-text p {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#search:focus {
+    border-color: #0296cc;
+}
+
+#search::placeholder {
+    color: #888;
+}
+
+#recommendation-text p {
     font-size: 18px;
-    color: white;
-  }
-  
-  .movie-grid {
+    font-weight: 700;
+    color: #fff;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Grid & Cards */
+.movie-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
     margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .movie-item {
+    margin-bottom: 30px;
+}
+
+.movie-item {
     position: relative;
-  }
-  
-  .movie-item img {
+    overflow: hidden;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease-in-out;
+    transform-origin: center center;
+    background: transparent;
+}
+
+.movie-item:hover,
+.movie-item:focus {
+    transform: scale(1.08) translateY(-4px) !important;
+    box-shadow: 0 12px 24px rgba(2, 150, 204, 0.6);
+    z-index: 10;
+}
+
+.movie-item img {
     width: 100%;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Container for the star and rating */
-  .rating-container {
+    height: auto;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    display: block;
+    border-radius: 10px;
+    transition: filter 0.3s ease;
+}
+
+.movie-item:hover img,
+.movie-item:focus img {
+    filter: brightness(1.08);
+}
+
+.rating-container {
     position: absolute;
-    top: 10px;
-    left: 5px;
+    top: 8px;
+    left: 8px;
     z-index: 2;
-  }
-  
-/* ===== Year badge (top-right) ===== */
-.year-container {
-  position: absolute;
-  bottom: 8px;
-  left: 6px;
-  z-index: 2;
-  background-color: #0275a6; /* Netflix-style red */
-  color: #fff;
-  font-size: 13px;
-  font-weight: bold;
-  padding: 2px 2px;
-  border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-  pointer-events: none;
 }
 
-
-.year{
-  background:rgba(238,238,238,.123);
-  backdrop-filter:blur(8px);
-  color:#fff;
-  font-size:13px;
-  padding:0 5px;
-  border-radius:5px;
-}
-
-
-  /* Rating styles */
-  .rating {
-    background-color: rgba(238, 238, 238, 0.123); /* Dark background */
-    color: white; /* Default color for text (rating number) */
-    font-size: 13px;
-    padding: 0px 5px;
+.rating {
+    background-color: rgba(0, 0, 0, 0.65);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 3px 6px;
     border-radius: 5px;
     display: flex;
     align-items: center;
-    backdrop-filter: blur(8px); /* Apply blur effect */
-  }
-  
-  /* Star icon styling */
-  .star {
-    color: yellow; /* Make the star yellow */
-    margin-right: 1px; /* Space between the star and rating number */
-    font-size: 18px; /* Size of the star */
-    position: relative;
-    top: -3px; /* Move the star a bit higher */
-  }
-  
-  .rating-number {
-    color: white; /* Make the number white */
-  }
-  
+    backdrop-filter: blur(6px);
+}
 
+.star {
+    color: #ffcc00;
+    margin-right: 4px;
+    font-size: 13px;
+}
 
-  /* Movie item styling */
-.movie-item {
-    position: relative;
-    overflow: hidden; /* Ensures that the poster stays within the bounds of the container */
-    border-radius: 8px;
-    box-shadow: 0 2px 5px #0296cc;
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effect */
-  }
-  
-  /* Hover effect for movie item */
-  .movie-item:hover {
-    transform: scale(1.05); /* Slightly scale the movie item */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Enhance the shadow on hover */
-  }
-  
-  /* Movie poster styling */
-  .movie-item img {
-    width: 100%;
-    height: auto; /* Make sure the aspect ratio of the image stays the same */
-    border-radius: 8px;
-    transition: opacity 0.3s ease; /* Transition for opacity change */
-  }
-  
-  /* Optional: add a fade effect when hovering over the poster */
-  .movie-item:hover img {
-    opacity: 0.9; /* Make the image slightly transparent when hovered */
-  }
+.rating-number {
+    color: white;
+}
+
+.year-container {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.year {
+    background: rgba(2, 150, 204, 0.95);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 6px;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+/* Pulsing Galaxy Play Button */
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, #551A8B, #000);
+    color: white;
+    font-size: 26px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    box-shadow: 0 0 15px violet;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.play-button i {
+    font-size: 22px;
+    margin-left: 3px;
+}
+
+@keyframes galaxyGlow {
+    0% { box-shadow: 0 0 15px violet; }
+    50% { box-shadow: 0 0 30px blue; }
+    100% { box-shadow: 0 0 15px violet; }
+}
+
+.movie-item:hover .play-button,
+.movie-item:focus .play-button {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.15);
+    animation: galaxyGlow 1.5s infinite alternate;
+}
+
+.load-more-button {
+    display: none;
+    margin: 30px auto;
+    padding: 12px 32px;
+    background: #0296cc;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.load-more-button:hover,
+.load-more-button:focus {
+    transform: scale(1.05);
+    background: #0275a6;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .movie-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 8px !important;
+    }
+
+    #search {
+        width: 100%;
+    }
+
+    .play-button {
+        width: 38px;
+        height: 38px;
+    }
+
+    .play-button i {
+        font-size: 14px;
+    }
+
+    .year {
+        font-size: 10px;
+        padding: 2px 4px;
+    }
+
+    .rating {
+        font-size: 10px;
+        padding: 2px 4px;
+    }
+}
+
+/* Footer */
+.site-footer {
+    background-color: #1e1e1e;
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: 40px;
+    border-top: 1px solid #333;
+}
+
+.site-footer p { margin: 8px 0; font-size: 15px; }
+.footer-links a { color: #0296cc; text-decoration: none; margin: 0 10px; font-weight: bold; }
+.footer-links a:focus { text-decoration: underline; }
+.disclaimer-note { color: #bfbfbf; font-size: 12px; }
