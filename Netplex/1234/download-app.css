@@ -18,16 +18,39 @@
 }
 
 body {
-            background:
+    background:
         radial-gradient(
             circle at 50% 0%,
             rgba(2, 150, 204, 0.08),
             transparent 100%
         ),
         #121212;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+/* TV FOCUS STYLES (D-Pad Navigation) */
+:focus {
+    outline: none;
+}
+
+a:focus-visible, 
+button:focus-visible, 
+.tab-btn:focus-visible,
+.btn-download:focus-visible {
+    outline: 3.5px solid #0296cc !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 16px rgba(2, 150, 204, 0.85) !important;
+    transform: scale(1.03) !important;
+    z-index: 1000 !important;
+    transition: transform 0.15s ease, outline 0.15s ease !important;
+}
+
+nav .desktop-menu > li > a:focus-visible,
+nav .dropbtn:focus-visible {
+    background-color: #0296cc !important;
+    color: #fff !important;
+}
 
 /* =========================================================
    NETPLEX NAVIGATION - PLAIN <nav>
@@ -247,12 +270,9 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
     }
 
     .mobile-nav-item span { display: block; white-space: nowrap; }
-
     .mobile-nav-item.active,
     .mobile-nav-item.active i { color: #0296cc; }
-
     .mobile-nav-item.active { background: rgba(2, 150, 204, .12); }
-
     .mobile-nav-item:active { transform: scale(.94); }
 
     .mobile-more-menu {
@@ -530,70 +550,70 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
 /* FOOTER */
 /* ============================= */
 .site-footer {
-  background-color: #1e1e1e;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  margin-bottom: 0px;
-  border-top: 1px solid #333;
+    background-color: #1e1e1e;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 0px;
+    border-top: 1px solid #333;
 }
 
 .site-footer p {
-  margin: 8px 0;
-  font-size: 16px;
+    margin: 8px 0;
+    font-size: 16px;
 }
 
 .footer-links {
-  margin-top: 10px;
+    margin-top: 10px;
 }
 
 .footer-links a {
-  color: #0296cc;
-  text-decoration: none;
-  margin: 0 10px;
-  font-weight: bold;
+    color: #0296cc;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
 }
 
 .footer-links a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .disclaimer-note {
-  color: #bfbfbf;
-  font-family: Arial;
+    color: #bfbfbf;
+    font-family: Arial;
 }
 
 @media (max-width: 600px) {
-  .site-footer {
-    margin-bottom: 54px;
-    padding: 10px;
-  }
-  
-  .site-footer p {
-    font-size: 14px;
-  }
+    .site-footer {
+        margin-bottom: 54px;
+        padding: 10px;
+    }
+    
+    .site-footer p {
+        font-size: 14px;
+    }
 
-  .footer-links {
-    flex-direction: row;
-    gap: 8px;
-    text-align: center;
-  }
+    .footer-links {
+        flex-direction: row;
+        gap: 8px;
+        text-align: center;
+    }
 
-  .footer-links a {
-    margin: 0;
-  }
+    .footer-links a {
+        margin: 0;
+    }
 }
 
 .bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 9999;
-  display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 9999;
+    display: flex;
 }
 
 body {
-  padding-bottom: 60px;
+    padding-bottom: 60px;
 }
