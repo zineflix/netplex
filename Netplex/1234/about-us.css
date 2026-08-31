@@ -1,29 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
+:root {
+    --netflix-red: #0296cc;
+    --netflix-black: #141414;
+    --netflix-dark: #181818;
+    --netflix-card: #2f2f2f;
+    --accent-blue: #0296cc;
+    --text-light: #e5e5e5;
+}
 
-        :root {
-            --netflix-red: #0296cc;
-            --netflix-black: #141414;
-            --netflix-dark: #181818;
-            --netflix-card: #2f2f2f;
-            --accent-blue: #0296cc;
-            --text-light: #e5e5e5;
-        }
+body {
+    background-color: var(--netflix-black);
+    color: #ffffff;
+    overflow-x: hidden;
+}
 
-        body {
-            background-color: var(--netflix-black);
-            color: #ffffff;
-            overflow-x: hidden;
-        }
+/* TV FOCUS STYLES (D-Pad Navigation for the whole page) */
+:focus {
+    outline: none;
+}
 
+#logo-link:focus-visible {
+    outline: 3px solid #0296cc !important;
+    outline-offset: 4px !important;
+    border-radius: 4px;
+}
+
+a:focus-visible, 
+button:focus-visible, 
+.input-box input:focus-visible,
+.input-box textarea:focus-visible,
+.contact-info-item:focus-visible,
+.about-section p:focus-visible,
+.footer-links a:focus-visible {
+    outline: 3.5px solid #0296cc !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 16px rgba(2, 150, 204, 0.85) !important;
+    transform: scale(1.02) !important;
+    z-index: 1000 !important;
+    transition: transform 0.15s ease, outline 0.15s ease !important;
+}
+
+/* About paragraph TV focus state */
+.about-section p:focus-visible {
+    background: linear-gradient(
+        90deg,
+        rgba(2, 150, 204, 0.22),
+        rgba(255, 255, 255, 0.06)
+    ) !important;
+    border-left-color: #0296cc !important;
+    color: #ffffff !important;
+}
+
+/* Contact info card TV focus state */
+.contact-info-item:focus-visible {
+    background: #222222 !important;
+    border-color: #0296cc !important;
+}
+
+.contact-info-item:focus-visible::before {
+    background: #0296cc !important;
+}
+
+nav .desktop-menu > li > a:focus-visible,
+nav .dropbtn:focus-visible {
+    background-color: #0296cc !important;
+    color: #fff !important;
+}
 
 /* =========================================================
    NETPLEX NAVIGATION - PLAIN <nav>
@@ -46,6 +97,11 @@ nav.nav-solid {
     background: rgba(0, 0, 0, .98);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+}
+
+#logo-link {
+    display: block;
+    line-height: 0;
 }
 
 nav #logo {
@@ -186,6 +242,7 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
         -webkit-backdrop-filter: none;
     }
 
+    #logo-link,
     nav #logo,
     nav .desktop-menu { display: none !important; }
 
@@ -323,9 +380,6 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
         padding-bottom: calc(85px + env(safe-area-inset-bottom));
         margin-bottom: 0 !important;
     }
-
-
-
 }
 
 @media (min-width: 769px) {
@@ -333,100 +387,84 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
     .mobile-more-menu { display: none !important; }
 }
 
-        /* ============================= */
-        /* FOOTER */
-        /* ============================= */
+/* ============================= */
+/* FOOTER */
+/* ============================= */
 .site-footer {
-  background-color: #1e1e1e;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  margin-bottom: 0px;
-  border-top: 1px solid #333;
+    background-color: #1e1e1e;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 0px;
+    border-top: 1px solid #333;
 }
 
 .site-footer p {
-  margin: 8px 0;
-  font-size: 16px;
+    margin: 8px 0;
+    font-size: 16px;
 }
 
 .footer-links {
-  margin-top: 10px;
+    margin-top: 10px;
 }
 
 .footer-links a {
-  color: #0296cc;
-  text-decoration: none;
-  margin: 0 10px;
-  font-weight: bold;
+    color: #0296cc;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+    display: inline-block;
+    padding: 2px 4px;
+    border-radius: 4px;
 }
 
 .footer-links a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .disclaimer-note {
-  color: #bfbfbf;
-  font-family: Arial;
+    color: #bfbfbf;
+    font-family: Arial;
 }
 
 @media (max-width: 600px) {
-  .site-footer {
-    margin-bottom: 54px;
-    padding: 10px;
-  }
-  
-  .site-footer p {
-    font-size: 14px;
-  }
+    .site-footer {
+        margin-bottom: 54px;
+        padding: 10px;
+    }
+    
+    .site-footer p {
+        font-size: 14px;
+    }
 
-  .footer-links {
-    flex-direction: row;
-    gap: 8px;
-    text-align: center;
-  }
+    .footer-links {
+        flex-direction: row;
+        gap: 8px;
+        text-align: center;
+    }
 
-  .footer-links a {
-    margin: 0;
-  }
-}
-
-
-
-
-
-
-/* 3. Navigation bar stays on the top layer */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 9999; /* Highest layer to sit on top of modal */
+    .footer-links a {
+        margin: 0;
+    }
 }
 
 .bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 9999; /* Keeps the navbar on top of other content */
-  display: flex;  /* Ensures item alignment */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 9999;
+    display: flex;
 }
 
-/* Optional: Prevent page content from being hidden behind the fixed navbar */
 body {
-  padding-bottom: 60px; /* Adjust height based on your navbar's height */
+    padding-bottom: 60px;
 }
-
-
 
 /* =========================================================
    NETPLEX - NETFLIX STYLE ABOUT + CONTACT
 ========================================================= */
-
 .about-section {
     position: relative;
     width: 100%;
@@ -441,11 +479,6 @@ body {
         );
     color: #fff;
 }
-
-
-/* =========================================================
-   ABOUT HEADER
-========================================================= */
 
 .about-section h1 {
     margin: 0 0 18px;
@@ -477,11 +510,6 @@ body {
     font-weight: 400;
     line-height: 1.8;
 }
-
-
-/* =========================================================
-   WHY NETPLEX
-========================================================= */
 
 .about-section h3 {
     margin: 0 0 30px;
@@ -518,6 +546,7 @@ body {
     text-align: left;
     font-size: 16px;
     line-height: 1.7;
+    cursor: default;
     transition:
         background 0.25s ease,
         border-color 0.25s ease,
@@ -533,11 +562,6 @@ body {
     border-left-color: #0296cc;
     transform: translateX(5px);
 }
-
-
-/* =========================================================
-   CONTACT SECTION
-========================================================= */
 
 .contact-section {
     width: 100%;
@@ -578,22 +602,12 @@ body {
     font-size: 17px;
 }
 
-
-/* =========================================================
-   CONTACT GRID
-========================================================= */
-
 .contact-section .row {
     display: grid;
     grid-template-columns: 0.85fr 1.15fr;
     gap: 45px;
     align-items: stretch;
 }
-
-
-/* =========================================================
-   CONTACT INFORMATION
-========================================================= */
 
 .contact-info {
     width: 100%;
@@ -610,11 +624,10 @@ body {
     margin: 0;
     padding: 20px;
     overflow: hidden;
-
     background: #181818;
     border: 1px solid #292929;
     border-radius: 6px;
-
+    cursor: pointer;
     transition:
         transform 0.25s ease,
         background 0.25s ease,
@@ -642,20 +655,13 @@ body {
     background: #0296cc;
 }
 
-
-/* =========================================================
-   CONTACT ICON
-========================================================= */
-
 .contact-info-icon {
     flex: 0 0 58px;
     width: 58px;
     height: 58px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     background: #222;
     border-radius: 50%;
 }
@@ -664,11 +670,6 @@ body {
     font-size: 27px;
     line-height: 1;
 }
-
-
-/* =========================================================
-   CONTACT TEXT
-========================================================= */
 
 .contact-info-content {
     margin-left: 18px;
@@ -701,26 +702,22 @@ body {
     color: #0296cc;
     font-size: 14px;
     text-decoration: none;
+    display: inline-block;
+    padding: 2px 4px;
+    border-radius: 4px;
 }
 
 .contact-info-content a:hover {
     color: #fff;
 }
 
-
-/* =========================================================
-   CONTACT FORM
-========================================================= */
-
 .contact-form {
     width: 100%;
     margin: 0;
     padding: 38px;
-
     background: #181818;
     border: 1px solid #292929;
     border-radius: 6px;
-
     box-shadow: 0 15px 45px rgba(0, 0, 0, 0.35);
 }
 
@@ -743,19 +740,14 @@ body {
 .contact-form .input-box textarea {
     width: 100%;
     padding: 14px 15px;
-
     margin: 0;
-
     background: #101010;
     border: 1px solid #333;
     border-radius: 4px;
-
     outline: none;
-
     color: #fff;
     font-family: inherit;
     font-size: 15px;
-
     transition:
         border-color 0.25s ease,
         background 0.25s ease;
@@ -777,26 +769,17 @@ body {
     resize: vertical;
 }
 
-
-/* =========================================================
-   SEND BUTTON
-========================================================= */
-
 .contact-form .input-box input[type="submit"] {
     width: 100%;
     padding: 14px 20px;
     margin-top: 5px;
-
     background: #0296cc;
     border: 2px solid #0296cc;
     border-radius: 4px;
-
     color: #fff;
     font-size: 16px;
     font-weight: 700;
-
     cursor: pointer;
-
     transition:
         background 0.25s ease,
         color 0.25s ease,
@@ -809,13 +792,7 @@ body {
     transform: translateY(-2px);
 }
 
-
-/* =========================================================
-   TABLET
-========================================================= */
-
 @media (max-width: 900px) {
-
     .contact-section .row {
         grid-template-columns: 1fr;
         gap: 30px;
@@ -853,13 +830,7 @@ body {
     }
 }
 
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
 @media (max-width: 768px) {
-
     .about-section {
         margin-top: 0px;
         padding: 100px 18px 60px;
@@ -885,7 +856,6 @@ body {
         line-height: 1.65;
     }
 
-
     .contact-section {
         padding: 60px 15px 85px;
     }
@@ -902,15 +872,11 @@ body {
         font-size: 15px;
     }
 
-
     .contact-section .row {
         display: flex;
         flex-direction: column;
         gap: 25px;
     }
-
-
-    /* MOBILE CONTACT CARDS */
 
     .contact-info {
         display: flex;
@@ -949,9 +915,6 @@ body {
         font-size: 13px;
     }
 
-
-    /* MOBILE FORM */
-
     .contact-form {
         padding: 25px 18px;
     }
@@ -977,13 +940,7 @@ body {
     }
 }
 
-
-/* =========================================================
-   SMALL PHONES
-========================================================= */
-
 @media (max-width: 400px) {
-
     .about-section {
         padding-left: 14px;
         padding-right: 14px;
