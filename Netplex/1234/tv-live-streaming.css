@@ -1,28 +1,50 @@
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
 
-        :root {
-            --netflix-red: #0296cc;
-            --netflix-black: #141414;
-            --netflix-dark: #181818;
-            --netflix-card: #2f2f2f;
-            --accent-blue: #0296cc;
-            --text-light: #e5e5e5;
-        }
+:root {
+    --netflix-red: #0296cc;
+    --netflix-black: #141414;
+    --netflix-dark: #181818;
+    --netflix-card: #2f2f2f;
+    --accent-blue: #0296cc;
+    --text-light: #e5e5e5;
+}
 
-        body {
-            background-color: var(--netflix-black);
-            color: #ffffff;
-            overflow-x: hidden;
-        }
+body {
+    background-color: var(--netflix-black);
+    color: #ffffff;
+    overflow-x: hidden;
+}
 
+/* TV FOCUS STYLES (D-Pad Navigation) */
+:focus {
+    outline: none;
+}
+
+a:focus-visible, 
+button:focus-visible, 
+.channel-btn:focus-visible,
+.tv-focused {
+    outline: 3.5px solid #0296cc !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 16px rgba(2, 150, 204, 0.85) !important;
+    transform: scale(1.03) !important;
+    z-index: 1000 !important;
+    transition: transform 0.15s ease, outline 0.15s ease !important;
+}
+
+nav .desktop-menu > li > a:focus-visible,
+nav .dropbtn:focus-visible {
+    background-color: #0296cc !important;
+    color: #fff !important;
+}
 
 /* =========================================================
    NETPLEX NAVIGATION - PLAIN <nav>
@@ -242,12 +264,9 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
     }
 
     .mobile-nav-item span { display: block; white-space: nowrap; }
-
     .mobile-nav-item.active,
     .mobile-nav-item.active i { color: #0296cc; }
-
     .mobile-nav-item.active { background: rgba(2, 150, 204, .12); }
-
     .mobile-nav-item:active { transform: scale(.94); }
 
     .mobile-more-menu {
@@ -322,9 +341,6 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
         padding-bottom: calc(85px + env(safe-area-inset-bottom));
         margin-bottom: 0 !important;
     }
-
-
-
 }
 
 @media (min-width: 769px) {
@@ -332,100 +348,67 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
     .mobile-more-menu { display: none !important; }
 }
 
-        /* ============================= */
-        /* FOOTER */
-        /* ============================= */
+/* ============================= */
+/* FOOTER */
+/* ============================= */
 .site-footer {
-  background-color: #1e1e1e;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  margin-bottom: 0px;
-  border-top: 1px solid #333;
+    background-color: #1e1e1e;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 0px;
+    border-top: 1px solid #333;
 }
 
 .site-footer p {
-  margin: 8px 0;
-  font-size: 16px;
+    margin: 8px 0;
+    font-size: 16px;
 }
 
 .footer-links {
-  margin-top: 10px;
+    margin-top: 10px;
 }
 
 .footer-links a {
-  color: #0296cc;
-  text-decoration: none;
-  margin: 0 10px;
-  font-weight: bold;
+    color: #0296cc;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
 }
 
 .footer-links a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .disclaimer-note {
-  color: #bfbfbf;
-  font-family: Arial;
+    color: #bfbfbf;
+    font-family: Arial;
 }
 
 @media (max-width: 600px) {
-  .site-footer {
-    margin-bottom: 54px;
-    padding: 10px;
-  }
-  
-  .site-footer p {
-    font-size: 14px;
-  }
+    .site-footer {
+        margin-bottom: 54px;
+        padding: 10px;
+    }
+    
+    .site-footer p {
+        font-size: 14px;
+    }
 
-  .footer-links {
-    flex-direction: row;
-    gap: 8px;
-    text-align: center;
-  }
+    .footer-links {
+        flex-direction: row;
+        gap: 8px;
+        text-align: center;
+    }
 
-  .footer-links a {
-    margin: 0;
-  }
+    .footer-links a {
+        margin: 0;
+    }
 }
-
-
-
-
-
-
-/* 3. Navigation bar stays on the top layer */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 9999; /* Highest layer to sit on top of modal */
-}
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 9999; /* Keeps the navbar on top of other content */
-  display: flex;  /* Ensures item alignment */
-}
-
-/* Optional: Prevent page content from being hidden behind the fixed navbar */
-body {
-  padding-bottom: 60px; /* Adjust height based on your navbar's height */
-}
-
-
 
 /* =========================================================
    TV LIVE PAGE TITLE
 ========================================================= */
-
 body > h1 {
     width: 100%;
     margin: 0;
@@ -447,11 +430,9 @@ body > h1::after {
     border-radius: 10px;
 }
 
-
 /* =========================================================
    FULLSCREEN BUTTON
 ========================================================= */
-
 #fullscreen-btn {
     display: block;
     margin: 20px auto 10px;
@@ -477,17 +458,9 @@ body > h1::after {
     box-shadow: 0 8px 20px rgba(2, 150, 204, 0.15);
 }
 
-#fullscreen-btn:focus-visible {
-    outline: 3px solid rgba(2, 150, 204, 0.45);
-    outline-offset: 3px;
-}
-
-
 /* =========================================================
    CHANNEL SCROLL NOTE
-   Existing HTML uses <h>, so this keeps it working.
 ========================================================= */
-
 body > h {
     display: block;
     width: fit-content;
@@ -502,11 +475,9 @@ body > h {
     text-align: center;
 }
 
-
 /* =========================================================
    MAIN TV LIVE CONTAINER
 ========================================================= */
-
 #tv-container {
     width: calc(100% - 40px);
     max-width: 1250px;
@@ -517,11 +488,9 @@ body > h {
     gap: 32px;
 }
 
-
 /* =========================================================
    VIDEO PLAYER
 ========================================================= */
-
 #video-container {
     order: 1;
     position: relative;
@@ -532,8 +501,6 @@ body > h {
     border-radius: 7px;
     box-shadow: 0 20px 55px rgba(0, 0, 0, 0.55);
 }
-
-/* NETPLEX BLUE ACCENT */
 
 #video-container::before {
     content: "";
@@ -557,11 +524,9 @@ body > h {
     object-fit: contain;
 }
 
-
 /* =========================================================
    CHANNEL SECTION
 ========================================================= */
-
 #channel-list {
     order: 2;
     width: 100%;
@@ -574,11 +539,9 @@ body > h {
     border-radius: 0;
 }
 
-
 /* =========================================================
    CHANNEL TITLE
 ========================================================= */
-
 #channel-header {
     position: static;
     margin: 0 0 18px;
@@ -608,22 +571,21 @@ body > h {
     border-radius: 5px;
 }
 
-
 /* =========================================================
    NETFLIX-STYLE CHANNEL GRID
 ========================================================= */
-
 #channel-buttons {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
     gap: 12px;
     width: 100%;
     max-height: 430px;
-    padding: 0 5px 5px 0;
+    padding: 20px 5px 5px 20px;
     overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
     scrollbar-color: #444 transparent;
+    scroll-behavior: smooth;
 }
 
 #channel-buttons::-webkit-scrollbar {
@@ -643,11 +605,9 @@ body > h {
     background: #0296cc;
 }
 
-
 /* =========================================================
    CHANNEL CARDS
 ========================================================= */
-
 .channel-btn {
     position: relative;
     width: 100%;
@@ -674,9 +634,6 @@ body > h {
         box-shadow 0.22s ease;
 }
 
-
-/* LIVE INDICATOR */
-
 .channel-btn::before {
     content: "";
     flex: 0 0 7px;
@@ -685,13 +642,8 @@ body > h {
     margin-right: 11px;
     background: #555;
     border-radius: 50%;
-    transition:
-        background 0.22s ease,
-        box-shadow 0.22s ease;
+    transition: background 0.22s ease, box-shadow 0.22s ease;
 }
-
-
-/* HOVER */
 
 .channel-btn:hover {
     background: #0296cc;
@@ -706,23 +658,12 @@ body > h {
     box-shadow: 0 0 10px rgba(2, 150, 204, 0.65);
 }
 
-
-/* ACTIVE CHANNEL */
-
 .channel-btn.active {
-    background:
-        linear-gradient(
-            90deg,
-            rgba(2, 150, 204, 0.22),
-            rgba(2, 150, 204, 0.06)
-        ) !important;
+    background: linear-gradient(90deg, rgba(2, 150, 204, 0.22), rgba(2, 150, 204, 0.06)) !important;
     border-color: #0296cc !important;
     color: #ffffff !important;
     font-weight: 700;
-    transform: none !important;
-    box-shadow:
-        inset 3px 0 0 #0296cc,
-        0 6px 20px rgba(2, 150, 204, 0.08);
+    box-shadow: inset 3px 0 0 #0296cc, 0 6px 20px rgba(2, 150, 204, 0.08);
 }
 
 .channel-btn.active::before {
@@ -730,22 +671,10 @@ body > h {
     box-shadow: 0 0 10px rgba(2, 150, 204, 0.65);
 }
 
-
-/* KEYBOARD / TV REMOTE FOCUS */
-
-.channel-btn:focus-visible {
-    outline: 3px solid #ffffff;
-    outline-offset: 3px;
-    z-index: 5;
-}
-
-
 /* =========================================================
-   TABLET
+   MEDIA QUERIES
 ========================================================= */
-
 @media (max-width: 900px) {
-
     body > h1 {
         padding-top: 110px;
         font-size: 38px;
@@ -765,16 +694,9 @@ body > h {
         min-height: 40px;
         font-size: 13px;
     }
-
 }
 
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
 @media (max-width: 768px) {
-
     body > h1 {
         padding: 30px 15px 10px;
         font-size: 29px;
@@ -804,8 +726,6 @@ body > h {
         gap: 27px;
     }
 
-    /* Full-width cinematic mobile player */
-
     #video-container {
         width: 100%;
         border-right: none;
@@ -818,8 +738,6 @@ body > h {
         width: 100%;
         aspect-ratio: 16 / 9;
     }
-
-    /* Channels */
 
     #channel-list {
         padding: 0 12px;
@@ -864,16 +782,9 @@ body > h {
         transform: none;
         box-shadow: none;
     }
-
 }
 
-
-/* =========================================================
-   SMALL PHONES
-========================================================= */
-
 @media (max-width: 400px) {
-
     body > h1 {
         padding-top: 25px;
         font-size: 26px;
@@ -892,5 +803,4 @@ body > h {
         padding: 9px;
         font-size: 11px;
     }
-
 }
