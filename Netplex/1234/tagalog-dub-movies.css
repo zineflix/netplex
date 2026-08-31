@@ -1,38 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
 
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
+:root {
+    --netflix-red: #0296cc;
+    --netflix-black: #141414;
+    --netflix-dark: #181818;
+    --netflix-card: #2f2f2f;
+    --accent-blue: #0296cc;
+    --text-light: #e5e5e5;
+}
 
-        :root {
-            --netflix-red: #0296cc;
-            --netflix-black: #141414;
-            --netflix-dark: #181818;
-            --netflix-card: #2f2f2f;
-            --accent-blue: #0296cc;
-            --text-light: #e5e5e5;
-        }
+body {
+    background-color: var(--netflix-black);
+    color: #ffffff;
+    overflow-x: hidden;
+}
 
-        body {
-            background-color: var(--netflix-black);
-            color: #ffffff;
-            overflow-x: hidden;
-        }
+:focus {
+    outline: none !important;
+}
 
-/* Prevent main page scrolling when modal is active */
-        body.modal-open {
-            overflow: hidden !important;
-            touch-action: none;
-        }
+[tabindex="0"]:focus,
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 3px solid #0296cc !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 15px rgba(2, 150, 204, 0.9) !important;
+    z-index: 9999 !important;
+}
 
-/* =========================================================
-   NETPLEX NAVIGATION - PLAIN <nav>
-========================================================= */
+body.modal-open {
+    overflow: hidden !important;
+    touch-action: none;
+}
+
 nav {
     width: 100%;
     position: fixed;
@@ -98,8 +109,10 @@ nav .dropbtn {
 nav .desktop-menu i { color: #0296cc; }
 
 nav .desktop-menu > li > a:hover,
+nav .desktop-menu > li > a:focus,
 nav .desktop-menu > li > a.active,
 nav .dropbtn:hover,
+nav .dropbtn:focus,
 nav .dropdown.active > .dropbtn {
     background-color: #0296cc;
     color: #fff;
@@ -126,6 +139,10 @@ nav .dropdown-content {
     box-shadow: 0 8px 25px rgba(0, 0, 0, .6);
     z-index: 10001;
     font-weight: bold;
+}
+
+nav .dropdown.active .dropdown-content {
+    display: block;
 }
 
 nav .dropdown-content li {
@@ -157,19 +174,16 @@ nav .dropdown-content li a i {
 }
 
 nav .dropdown-content li a:hover,
+nav .dropdown-content li a:focus,
 nav .dropdown-content li a:focus-visible {
     background: #0296cc;
     color: #fff;
     outline: none;
 }
 
-nav .dropdown-content li a:hover i,
-nav .dropdown-content li a:focus-visible i { color: #fff; }
-
 @media (min-width: 769px) {
     nav .dropdown:hover .dropdown-content,
-    nav .dropdown:focus-within .dropdown-content,
-    nav .dropdown.active .dropdown-content { display: block; }
+    nav .dropdown:focus-within .dropdown-content { display: block; }
 }
 
 .mobile-bottom-nav,
@@ -248,12 +262,9 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
     }
 
     .mobile-nav-item span { display: block; white-space: nowrap; }
-
     .mobile-nav-item.active,
     .mobile-nav-item.active i { color: #0296cc; }
-
     .mobile-nav-item.active { background: rgba(2, 150, 204, .12); }
-
     .mobile-nav-item:active { transform: scale(.94); }
 
     .mobile-more-menu {
@@ -318,20 +329,12 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
         outline: none;
     }
 
-    .mobile-more-menu a:hover i,
-    .mobile-more-menu a:focus-visible i,
-    .mobile-more-menu a:active i { color: #fff; }
-
     body { padding-bottom: calc(75px + env(safe-area-inset-bottom)); }
 
     .site-footer {
         padding-bottom: calc(85px + env(safe-area-inset-bottom));
         margin-bottom: 0 !important;
     }
-
-    #online-widget { bottom: calc(80px + env(safe-area-inset-bottom)) !important; }
-    #telegram-widget { bottom: calc(80px + env(safe-area-inset-bottom)) !important; }
-    #netplex-chatroom { bottom: calc(70px + env(safe-area-inset-bottom)); }
 }
 
 @media (min-width: 769px) {
@@ -339,125 +342,158 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
     .mobile-more-menu { display: none !important; }
 }
 
-        /* ============================= */
-        /* HERO & HEADINGS */
-        /* ============================= */
-        .hero-banner {
-            padding: 140px 4% 30px;
-            text-align: center;
-            background: radial-gradient(
-            circle at 50% 0%,
-            rgba(2, 150, 204, 0.08), transparent 70%);
-        }
+.hero-banner {
+    padding: 140px 4% 30px;
+    text-align: center;
+    background: radial-gradient(circle at 50% 0%, rgba(2, 150, 204, 0.08), transparent 70%);
+}
 
-        h1 {
-            font-size: 2.8rem;
-            font-weight: 900;
-            letter-spacing: -1px;
-            margin-bottom: 12px;
-            background: linear-gradient(180deg, #FFFFFF 0%, #E5E5E5 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-        }
+h1 {
+    font-size: 2.8rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+    background: linear-gradient(180deg, #FFFFFF 0%, #E5E5E5 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+}
 
-        h3.note-banner {
-            font-size: 14px;
-            font-weight: 600;
-            color: #aaa;
-            margin-bottom: 30px;
-        }
+h3.note-banner {
+    font-size: 14px;
+    font-weight: 600;
+    color: #aaa;
+    margin-bottom: 30px;
+}
 
-        h2.section-heading {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin: 30px 4% 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+h2.section-heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 30px 4% 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-        h2.section-heading::before {
-            content: '';
-            display: inline-block;
-            width: 4px;
-            height: 22px;
-            background-color: var(--netflix-red);
-            border-radius: 2px;
-        }
+h2.section-heading::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 22px;
+    background-color: var(--netflix-red);
+    border-radius: 2px;
+}
 
-        /* ============================= */
-        /* MOVIE GALLERY CARDS & CAROUSEL */
-        /* ============================= */
-        .gallery {
-            display: grid;
-            /* Desktop: Exactly 8 equal-width columns */
-            grid-template-columns: repeat(8, 1fr);
-            gap: 16px;
-            padding: 0 4%;
-            margin-bottom: 40px;
-        }
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 16px;
+    padding: 0 4%;
+    margin-bottom: 40px;
+}
 
-        .movie-card {
-            position: relative;
-            border-radius: 6px;
-            overflow: hidden;
-            background-color: var(--netflix-dark);
-            cursor: pointer;
-            transition: transform 0.3s cubic-bezier(0.16. 1, 0.3, 1), box-shadow 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-        }
+.movie-card {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    background-color: var(--netflix-dark);
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    transform-origin: center center;
+}
 
-        .movie-card:hover {
-            transform: scale(1.06);
-            z-index: 10;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(229, 9, 20, 0.4);
-        }
+.movie-card:hover,
+.movie-card:focus {
+    transform: scale(1.08) translateY(-4px) !important;
+    z-index: 10;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(2, 150, 204, 0.6);
+}
 
-        .movie-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            aspect-ratio: 2 / 3;
-            display: block;
-        }
+.movie-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: 2 / 3;
+    display: block;
+}
 
-        .play-button {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0.6);
-            font-size: 20px;
-            color: white;
-            background: var(--netflix-red);
-            border-radius: 50%;
-            width: 54px;
-            height: 54px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            opacity: 0;
-            box-shadow: 0 4px 20px rgba(229, 9, 20, 0.6);
-            padding-left: 3px;
-        }
+.play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.6);
+    font-size: 20px;
+    color: white;
+    background: var(--netflix-red);
+    border-radius: 50%;
+    width: 54px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0;
+    box-shadow: 0 4px 20px rgba(2, 150, 204, 0.6);
+    padding-left: 3px;
+    pointer-events: none;
+}
 
-        .movie-card:hover .play-button {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-        }
+.movie-card:hover .play-button,
+.movie-card:focus .play-button {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
 
-        /* ============================= */
-        /* FULLSCREEN PREMIUM MODAL */
-        /* ============================= */
+.year-badge {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    padding: 3px 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    background: rgba(2, 150, 204, 0.95);
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.category-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 3px 6px;
+    font-size: 10px;
+    font-weight: 800;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(4px);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.category-badge.movie {
+    border-color: #0296cc;
+    color: #00d4ff;
+}
+
+.category-badge.tv {
+    border-color: #e50914;
+    color: #ff5252;
+}
+
 .modal {
     position: fixed;
-    /* Desktop: Push top down to make room for desktop navigation bar (~60px) */
     top: 60px;
     left: 0;
     width: 100vw;
-    /* Calculate height so it doesn't extend off the screen */
     height: calc(100vh - 60px);
     background: rgba(0, 0, 0, 0.92);
     display: flex;
@@ -466,185 +502,262 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.35s ease, visibility 0.35s ease;
-    /* Set z-index below desktop nav (10000) & mobile nav (99999) */
     z-index: 9000;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
 }
 
-        .modal.show {
-            opacity: 1;
-            visibility: visible;
-        }
+.modal.show {
+    opacity: 1;
+    visibility: visible;
+}
 
-        .modal-content {
-            background: var(--netflix-dark);
-            width: 100vw;
-            height: 100vh;
-            max-width: 100%;
-            max-height: 100%;
-            border-radius: 0;
-            text-align: left;
-            position: relative;
-            overflow-y: auto;
-            padding: 40px 6%;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            box-shadow: none;
-        }
+.modal-content {
+    background: var(--netflix-dark);
+    width: 100vw;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 0;
+    text-align: left;
+    position: relative;
+    overflow-y: auto;
+    padding: 40px 6%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: none;
+}
 
-        .modal-content::-webkit-scrollbar {
-            width: 8px;
-        }
-        .modal-content::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.2);
-            border-radius: 4px;
-        }
+.modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+.modal-content::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 4px;
+}
 
-        .close-btn, .close {
-            position: fixed;
-            top: 25px;
-            right: 35px;
-            font-size: 28px;
-            cursor: pointer;
-            color: #fff;
-            background: red;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100001;
-            transition: background 0.2s ease, transform 0.2s ease;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
+.close-btn, .close {
+    position: fixed;
+    top: 25px;
+    right: 35px;
+    font-size: 32px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #fff;
+    background: #e50914;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100001;
+    transition: background 0.2s ease, transform 0.2s ease;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
 
-        .close-btn:hover, .close:hover {
-            background: var(--netflix-red);
-            transform: scale(1.1);
-        }
+.close-btn:hover, .close:hover {
+    background: #ff2a2a;
+    transform: scale(1.1);
+}
 
-        .modal-hero-details {
-            display: flex;
-            gap: 30px;
-            margin-top: 20px;
-            align-items: flex-start;
-        }
+.close-btn:focus, .close:focus {
+    background: #ff2a2a !important;
+    outline: 4px solid #00d4ff !important;
+    outline-offset: 4px !important;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 1) !important;
+    transform: scale(1.15) !important;
+}
 
-        .poster-container {
-            flex-shrink: 0;
-        }
+.modal-hero-details {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+    align-items: flex-start;
+}
 
-        .poster-container img, #tvModal .modal-content img {
-            width: 180px;
-            max-height: 270px;
-            object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
-        }
+.poster-container {
+    flex-shrink: 0;
+}
 
-        .modal-info {
-            flex-grow: 1;
-        }
+.poster-container img, #tvModal .modal-content img {
+    width: 180px;
+    max-height: 270px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8);
+}
 
-        .modal-info h2 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-            color: #fff;
-        }
+.modal-info {
+    flex-grow: 1;
+}
 
-        .modal-info p {
-            font-size: 14px;
-            line-height: 1.6;
-            color: #ccc;
-            margin-bottom: 12px;
-        }
+.modal-info h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: #fff;
+}
 
-        .modal-info p strong {
-            color: #fff;
-        }
+.modal-info p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #ccc;
+    margin-bottom: 12px;
+}
 
-        .iframe-wrapper {
-            position: relative;
-            width: 100%;
-            height: 60vh;
-            min-height: 380px;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #000;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-top: 10px;
-        }
+.modal-info p strong {
+    color: #fff;
+}
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
+.modal-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-top: 14px;
+}
 
-        .iframe-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: transparent;
-            pointer-events: none;
-            z-index: 1;
-        }
+#fullscreenButton, #tvFullscreenButton,
+.play-pause-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 700;
+    background-color: #0296cc;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
-        #fullscreenButton, #tvFullscreenButton {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin: 0;
-            padding: 12px 24px;
-            font-size: 14px;
-            font-weight: 700;
-            background-color: #0296cc;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+.play-pause-btn {
+    background-color: #272727;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
 
-        #fullscreenButton:hover, #tvFullscreenButton:hover {
-            background-color: #0296cc;
-        }
+#fullscreenButton:hover, #tvFullscreenButton:hover,
+#fullscreenButton:focus, #tvFullscreenButton:focus {
+    background-color: #0275a6;
+}
 
-        #episodeDropdown {
-            width: 100%;
-            max-width: 400px;
-            padding: 12px 16px;
-            margin-bottom: 10px;
-            border-radius: 6px;
-            background-color: var(--netflix-card);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 14px;
-            font-weight: 600;
-            outline: none;
-            cursor: pointer;
-            transition: border-color 0.3s ease;
-        }
+.play-pause-btn:hover,
+.play-pause-btn:focus {
+    background-color: #0296cc;
+    border-color: #0296cc;
+    color: #fff;
+}
 
-        #episodeDropdown:focus, #episodeDropdown:hover {
-            border-color: var(--netflix-red);
-        }
+.iframe-wrapper {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    min-height: 380px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 10px;
+}
 
-        /* Responsive Modal adjustments */
-        @media (max-width: 768px) {
-.modal {
-        /* Mobile: Start at the top of screen */
+/* =========================================
+   PAUSE OVERLAY STATUS STYLES
+========================================= */
+.pause-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.pause-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.pause-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 22px 36px;
+    background: rgba(20, 20, 20, 0.85);
+    border: 2px solid rgba(2, 150, 204, 0.8);
+    border-radius: 16px;
+    box-shadow: 0 0 35px rgba(2, 150, 204, 0.5), inset 0 0 15px rgba(2, 150, 204, 0.2);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.pause-overlay.active .pause-badge {
+    transform: scale(1);
+}
+
+.pause-badge i {
+    font-size: 42px;
+    color: #0296cc;
+    text-shadow: 0 0 15px rgba(2, 150, 204, 0.8);
+}
+
+.pause-badge span {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    pointer-events: none !important;
+}
+
+#episodeDropdown {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    background-color: var(--netflix-card);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+#episodeDropdown:focus, #episodeDropdown:hover {
+    border-color: var(--netflix-red);
+}
+
+@media (max-width: 768px) {
+    .modal {
         top: 0;
-        /* Subtract bottom navigation bar height (including safe-area spacing) */
         height: calc(100vh - 65px - env(safe-area-inset-bottom));
     }
 
@@ -656,6 +769,16 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
         align-items: center;
         text-align: center;
         gap: 15px;
+    }
+    .modal-actions {
+        align-items: center;
+        width: 100%;
+    }
+    #fullscreenButton, #tvFullscreenButton,
+    .play-pause-btn {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
     }
     .poster-container img, #tvModal .modal-content img {
         width: 140px;
@@ -669,238 +792,202 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
     .close-btn, .close {
         top: 15px;
         right: 15px;
-        width: 38px;
-        height: 38px;
-        font-size: 22px;
+        width: 40px;
+        height: 40px;
+        font-size: 24px;
     }
     h1 { font-size: 1.8rem; }
     h3.note-banner { font-size: 12px; }
     .gallery {
-        /* Mobile: Exactly 3 equal-width columns */
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        padding: 0 2%;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 8px !important;
+        padding: 0 2% !important;
+    }
+    .year-badge, .category-badge {
+        font-size: 9px;
+        padding: 2px 4px;
+    }
+    .pause-badge {
+        padding: 16px 26px;
+    }
+    .pause-badge i {
+        font-size: 32px;
+    }
+    .pause-badge span {
+        font-size: 13px;
     }
 }
 
-        /* ============================= */
-        /* COMMENT & INTERACTION SECTION */
-        /* ============================= */
-        .comments-wrapper {
-            max-width: 800px;
-            margin: 60px auto 40px;
-            padding: 0 4%;
-        }
+.comments-wrapper {
+    max-width: 800px;
+    margin: 60px auto 40px;
+    padding: 0 4%;
+}
 
-        #welcomeMessage {
-            font-size: 22px;
-            font-weight: 700;
-            text-align: center;
-            padding: 24px 20px 10px;
-            color: #fff;
-            background-color: var(--netflix-dark);
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-bottom: none;
-        }
+#welcomeMessage {
+    font-size: 22px;
+    font-weight: 700;
+    text-align: center;
+    padding: 24px 20px 10px;
+    color: #fff;
+    background-color: var(--netflix-dark);
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: none;
+}
 
-        #leaveCommentMessage {
-            font-size: 14px;
-            text-align: center;
-            padding-bottom: 20px;
-            color: #aaa;
-            background-color: var(--netflix-dark);
-            border-left: 1px solid rgba(255, 255, 255, 0.08);
-            border-right: 1px solid rgba(255, 255, 255, 0.08);
-        }
+#leaveCommentMessage {
+    font-size: 14px;
+    text-align: center;
+    padding-bottom: 20px;
+    color: #aaa;
+    background-color: var(--netflix-dark);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
 
-        #commentForm {
-            padding: 0 30px 30px;
-            text-align: center;
-            background-color: var(--netflix-dark);
-            border-bottom-left-radius: 12px;
-            border-bottom-right-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-top: none;
-        }
+#commentForm {
+    padding: 0 30px 30px;
+    text-align: center;
+    background-color: var(--netflix-dark);
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: none;
+}
 
-        #commentForm input, #commentForm textarea {
-            width: 100%;
-            padding: 12px 16px;
-            font-size: 14px;
-            margin-bottom: 12px;
-            background: #111;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 6px;
-            color: #fff;
-            outline: none;
-            transition: border 0.3s ease;
-        }
+#commentForm input, #commentForm textarea {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 14px;
+    margin-bottom: 12px;
+    background: #111;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    color: #fff;
+    outline: none;
+    transition: border 0.3s ease;
+}
 
-        #commentForm input:focus, #commentForm textarea:focus {
-            border-color: var(--netflix-red);
-        }
+#commentForm input:focus, #commentForm textarea:focus {
+    border-color: var(--netflix-red);
+}
 
-        #commentForm textarea {
-            height: 120px;
-            resize: vertical;
-        }
+#commentForm textarea {
+    height: 120px;
+    resize: vertical;
+}
 
-        #commentForm button {
-            padding: 12px 30px;
-            background-color: var(--netflix-red);
-            color: white;
-            font-weight: 700;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.25s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+#commentForm button {
+    padding: 12px 30px;
+    background-color: var(--netflix-red);
+    color: white;
+    font-weight: 700;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.25s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
-        #commentForm button:hover {
-            background-color: #b80710;
-        }
+#commentForm button:hover,
+#commentForm button:focus {
+    background-color: #b80710;
+}
 
-        #commentsContainer {
-            margin-top: 25px;
-        }
+#commentsContainer {
+    margin-top: 25px;
+}
 
-        .comment {
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 16px;
-            margin-bottom: 12px;
-            background-color: var(--netflix-dark);
-            border-radius: 8px;
-            color: #fff;
-        }
+.comment {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 16px;
+    margin-bottom: 12px;
+    background-color: var(--netflix-dark);
+    border-radius: 8px;
+    color: #fff;
+}
 
-        .commentHeader {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
+.commentHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
 
-        .profilePicture {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            margin-right: 12px;
-            border: 2px solid var(--netflix-red);
-        }
+.profilePicture {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    margin-right: 12px;
+    border: 2px solid var(--netflix-red);
+}
 
-        .timestamp {
-            font-size: 11px;
-            color: #777;
-            margin-top: 2px;
-        }
+.timestamp {
+    font-size: 11px;
+    color: #777;
+    margin-top: 2px;
+}
 
-        .likeSection {
-            margin-top: 10px;
-            font-size: 12px;
-            color: #aaa;
-        }
+.likeSection {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #aaa;
+}
 
-        /* ============================= */
-        /* FOOTER */
-        /* ============================= */
 .site-footer {
-  background-color: #1e1e1e;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  margin-bottom: 0px;
-  border-top: 1px solid #333;
+    background-color: #1e1e1e;
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+    margin-bottom: 0px;
+    border-top: 1px solid #333;
 }
 
 .site-footer p {
-  margin: 8px 0;
-  font-size: 16px;
+    margin: 8px 0;
+    font-size: 16px;
 }
 
 .footer-links {
-  margin-top: 10px;
+    margin-top: 10px;
 }
 
 .footer-links a {
-  color: #0296cc;
-  text-decoration: none;
-  margin: 0 10px;
-  font-weight: bold;
+    color: #0296cc;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
 }
 
-.footer-links a:hover {
-  text-decoration: underline;
+.footer-links a:hover,
+.footer-links a:focus {
+    text-decoration: underline;
 }
 
 .disclaimer-note {
-  color: #bfbfbf;
-  font-family: Arial;
+    color: #bfbfbf;
+    font-family: Arial;
 }
 
 @media (max-width: 600px) {
-  .site-footer {
-    margin-bottom: 54px;
-    padding: 10px;
-  }
-  
-  .site-footer p {
-    font-size: 14px;
-  }
+    .site-footer {
+        margin-bottom: 54px;
+        padding: 10px;
+    }
+    
+    .site-footer p {
+        font-size: 14px;
+    }
 
-  .footer-links {
-    flex-direction: row;
-    gap: 8px;
-    text-align: center;
-  }
+    .footer-links {
+        flex-direction: row;
+        gap: 8px;
+        text-align: center;
+    }
 
-  .footer-links a {
-    margin: 0;
-  }
-}
-
-
-/* 1. Modal overlay sits in the middle layer */
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.75);
-    z-index: 9000;
-}
-
-/* 2. Modal content stays above overlay, but leaves room at the bottom */
-.modal-content {
-  position: fixed;
-  z-index: 1001;
-  /* Reserve space at the bottom so it doesn't overlap the navbar */
-  bottom: 60px; /* Match your navbar height */
-}
-
-/* 3. Navigation bar stays on the top layer */
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 9999; /* Highest layer to sit on top of modal */
-}
-
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 9999; /* Keeps the navbar on top of other content */
-  display: flex;  /* Ensures item alignment */
-}
-
-/* Optional: Prevent page content from being hidden behind the fixed navbar */
-body {
-  padding-bottom: 60px; /* Adjust height based on your navbar's height */
+    .footer-links a {
+        margin: 0;
+    }
 }
