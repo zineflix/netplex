@@ -56,7 +56,6 @@ function toggleIframePlayback(iframe, btn, modalType) {
     let isPlaying = iframe.dataset.isPlaying !== "false"; 
 
     if (isPlaying) {
-        // PAUSE
         iframe.dataset.isPlaying = "false";
         updatePlayPauseBtnUI(btn, false);
         setPauseOverlayStatus(modalType, true);
@@ -73,7 +72,6 @@ function toggleIframePlayback(iframe, btn, modalType) {
             iframe.src = "about:blank";
         }
     } else {
-        // PLAY / RESUME
         iframe.dataset.isPlaying = "true";
         updatePlayPauseBtnUI(btn, true);
         setPauseOverlayStatus(modalType, false);
@@ -150,6 +148,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Retain focus safety across window blur
     window.addEventListener("blur", function () {
         const activeModal = document.querySelector('.modal.show');
         if (activeModal) {
@@ -786,6 +785,7 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
         const fullscreenBtn = openModal.querySelector('#fullscreenButton, #tvFullscreenButton');
         const dropdown = openModal.querySelector('#episodeDropdown');
 
+        // If focus is outside or inside an iframe due to a click/tap, pull it back to buttons
         if (!items.includes(active)) {
             if (playBtn) playBtn.focus();
             return;
@@ -914,6 +914,7 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
             if (e.keyCode === 39 || e.key === "Right") dir = "ArrowRight";
             if (e.keyCode === 40 || e.key === "Down") dir = "ArrowDown";
 
+            // When a modal is open, intercept and steer the D-Pad strictly between button controls
             if (openModal) {
                 e.preventDefault();
                 e.stopPropagation();
