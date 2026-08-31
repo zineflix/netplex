@@ -537,6 +537,7 @@ h2.section-heading::before {
     border-radius: 4px;
 }
 
+/* Close Buttons with TV outline support */
 .close-btn, .close {
     position: fixed;
     top: 25px;
@@ -669,9 +670,7 @@ h2.section-heading::before {
     margin-top: 10px;
 }
 
-/* =========================================
-   PAUSE OVERLAY STATUS STYLES
-========================================= */
+/* Pause Overlay Status */
 .pause-overlay {
     position: absolute;
     top: 0;
@@ -728,11 +727,12 @@ h2.section-heading::before {
     text-transform: uppercase;
 }
 
+/* Pointer events are enabled so clicks/ads work, but tabindex="-1" prevents D-pad focus */
 iframe {
     width: 100%;
     height: 100%;
     border: none;
-    pointer-events: none !important;
+    pointer-events: auto;
 }
 
 #episodeDropdown {
