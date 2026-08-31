@@ -27,7 +27,6 @@ body {
     outline: none !important;
 }
 
-/* High-contrast Android TV active focus indicator */
 [tabindex="0"]:focus,
 a:focus,
 button:focus,
@@ -43,6 +42,11 @@ textarea:focus {
 body.modal-open {
     overflow: hidden !important;
     touch-action: none;
+}
+
+body.auth-open .mobile-bottom-nav,
+body.auth-open .mobile-more-menu {
+    display: none !important;
 }
 
 nav {
@@ -541,7 +545,6 @@ h2.section-heading::before {
     border-radius: 6px;
 }
 
-/* Close Buttons with TV outline support */
 .close-btn, .close {
     position: fixed;
     top: 25px;
@@ -675,7 +678,6 @@ h2.section-heading::before {
     margin-bottom: 80px;
 }
 
-/* Invisible Guard that shields the iframe from native D-pad spatial jumps */
 .dpad-focus-guard {
     position: absolute;
     top: 0;
@@ -823,6 +825,9 @@ iframe {
     }
 }
 
+/* =========================================================
+   COMMENTS & USER PROFILE STYLES
+========================================================= */
 .comments-wrapper {
     max-width: 800px;
     margin: 60px auto 40px;
@@ -845,11 +850,64 @@ iframe {
 #leaveCommentMessage {
     font-size: 14px;
     text-align: center;
-    padding-bottom: 20px;
+    padding-bottom: 12px;
     color: #aaa;
     background-color: var(--netflix-dark);
     border-left: 1px solid rgba(255, 255, 255, 0.08);
     border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#userStatusWrapper {
+    background-color: var(--netflix-dark);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 8px 30px 16px;
+}
+
+#userLoggedInBar, #userLoggedOutBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: #111;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-profile-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-profile-badge .profilePicture {
+    width: 36px;
+    height: 36px;
+    margin: 0;
+}
+
+.auth-btn-primary {
+    background-color: var(--netflix-red);
+    color: #fff;
+    border: none;
+    padding: 7px 15px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.auth-btn-secondary {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
 }
 
 #commentForm {
@@ -862,7 +920,7 @@ iframe {
     border-top: none;
 }
 
-#commentForm input, #commentForm textarea {
+#commentForm textarea {
     width: 100%;
     padding: 12px 16px;
     font-size: 14px;
@@ -873,15 +931,12 @@ iframe {
     color: #fff;
     outline: none;
     transition: border 0.3s ease;
-}
-
-#commentForm input:focus, #commentForm textarea:focus {
-    border-color: var(--netflix-red);
-}
-
-#commentForm textarea {
     height: 120px;
     resize: vertical;
+}
+
+#commentForm textarea:focus {
+    border-color: var(--netflix-red);
 }
 
 #commentForm button {
@@ -899,7 +954,7 @@ iframe {
 
 #commentForm button:hover,
 #commentForm button:focus {
-    background-color: #b80710;
+    background-color: #0275a6;
 }
 
 #commentsContainer {
@@ -915,10 +970,21 @@ iframe {
     color: #fff;
 }
 
+.comment.admin-comment {
+    border: 1.5px solid #00d4ff;
+    background-color: rgba(2, 150, 204, 0.06);
+}
+
 .commentHeader {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+}
+
+.comment-author-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .profilePicture {
@@ -927,6 +993,26 @@ iframe {
     border-radius: 50%;
     margin-right: 12px;
     border: 2px solid var(--netflix-red);
+    object-fit: cover;
+}
+
+.profilePicture.admin-avatar {
+    border: 2px solid #00d4ff;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.7);
+}
+
+.admin-badge {
+    background: linear-gradient(135deg, #0296cc, #00d4ff);
+    color: #000;
+    font-size: 10px;
+    font-weight: 900;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .timestamp {
@@ -935,10 +1021,247 @@ iframe {
     margin-top: 2px;
 }
 
-.likeSection {
+.comment-actions-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-top: 10px;
+}
+
+.action-buttons-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.likeSection {
     font-size: 12px;
     color: #aaa;
+}
+
+.replies-container {
+    margin-top: 15px;
+    padding-left: 20px;
+    border-left: 2px solid var(--netflix-red);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.comment.reply-comment {
+    background-color: #1f1f1f;
+    margin-bottom: 0;
+}
+
+.reply-btn, .delete-btn {
+    background: transparent;
+    border: none;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 0;
+    text-transform: uppercase;
+}
+
+.reply-btn {
+    color: var(--netflix-red);
+}
+
+.reply-btn:hover {
+    text-decoration: underline;
+}
+
+.delete-btn {
+    color: #ff5252;
+}
+
+.delete-btn:hover {
+    text-decoration: underline;
+}
+
+.reply-box-wrapper {
+    margin-top: 12px;
+    padding: 12px;
+    background: #111;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.replying-as {
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 6px;
+}
+
+.reply-box-wrapper textarea {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 13px;
+    margin-bottom: 8px;
+    background: #222;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: #fff;
+    outline: none;
+}
+
+.reply-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.reply-submit-btn, .reply-cancel-btn {
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.reply-submit-btn {
+    background-color: var(--netflix-red);
+    color: #fff;
+}
+
+.reply-cancel-btn {
+    background-color: #444;
+    color: #fff;
+}
+
+/* =========================================================
+   AUTH MODAL STYLES (ELEVATED Z-INDEX FOR MOBILE)
+========================================================= */
+.auth-modal-root {
+    position: fixed;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    z-index: 1000002 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.auth-modal-content {
+    background: var(--netflix-dark);
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 420px;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+    z-index: 1000003 !important;
+}
+
+.auth-modal-root .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
+    font-size: 24px;
+    background: #e50914;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000004 !important;
+}
+
+.auth-modal-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.auth-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #333;
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 10px;
+    background: transparent;
+    border: none;
+    color: #888;
+    font-weight: 700;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+}
+
+.auth-tab.active {
+    color: var(--netflix-red);
+    border-bottom: 2px solid var(--netflix-red);
+}
+
+.auth-modal-content input[type="text"],
+.auth-modal-content input[type="email"],
+.auth-modal-content input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 6px;
+    color: #fff;
+    margin-bottom: 14px;
+    outline: none;
+}
+
+.auth-modal-content input[type="text"]:focus,
+.auth-modal-content input[type="email"]:focus,
+.auth-modal-content input[type="password"]:focus {
+    border-color: var(--netflix-red);
+}
+
+.show-password-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    cursor: pointer;
+}
+
+.show-password-container input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--netflix-red);
+    cursor: pointer;
+}
+
+.show-password-container label {
+    font-size: 13px;
+    color: #bbb;
+    cursor: pointer;
+    user-select: none;
+}
+
+.auth-submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--netflix-red);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.auth-error-msg {
+    color: #ff5252;
+    font-size: 13px;
+    margin-bottom: 12px;
+    text-align: center;
 }
 
 .site-footer {
