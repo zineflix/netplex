@@ -9,6 +9,92 @@ window.addEventListener("scroll", function () {
     }
 });
 
+/* =========================================================
+   UNIVERSAL EMBED PLAY / PAUSE & AUTOPLAY LOGIC
+========================================================= */
+function appendAutoplayParam(url) {
+    if (!url) return "";
+    try {
+        let cleanUrl = url.startsWith("//") ? "https:" + url : url;
+        let urlObj = new URL(cleanUrl);
+        if (!urlObj.searchParams.has("autoplay")) {
+            urlObj.searchParams.set("autoplay", "1");
+        }
+        return url.startsWith("//") ? urlObj.toString().replace(/^https?:/, "") : urlObj.toString();
+    } catch (e) {
+        if (url.indexOf("?") === -1) {
+            return url + "?autoplay=1";
+        }
+        return url + "&autoplay=1";
+    }
+}
+
+function updatePlayPauseBtnUI(btn, isPlaying) {
+    if (!btn) return;
+    if (isPlaying) {
+        btn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause';
+    } else {
+        btn.innerHTML = '<i class="fa-solid fa-play"></i> Play';
+    }
+}
+
+function setPauseOverlayStatus(modalType, isPaused) {
+    const overlayId = (modalType === "tv") ? "tvPauseOverlay" : "moviePauseOverlay";
+    const overlay = document.getElementById(overlayId);
+    if (overlay) {
+        if (isPaused) {
+            overlay.classList.add("active");
+        } else {
+            overlay.classList.remove("active");
+        }
+    }
+}
+
+function toggleIframePlayback(iframe, btn, modalType) {
+    if (!iframe) return;
+
+    let isPlaying = iframe.dataset.isPlaying !== "false"; 
+
+    if (isPlaying) {
+        // PAUSE
+        iframe.dataset.isPlaying = "false";
+        updatePlayPauseBtnUI(btn, false);
+        setPauseOverlayStatus(modalType, true);
+
+        try {
+            iframe.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+            iframe.contentWindow.postMessage('{"method":"pause"}', '*');
+            iframe.contentWindow.postMessage('pause', '*');
+            iframe.contentWindow.postMessage(JSON.stringify({ event: "pause" }), '*');
+        } catch (e) {}
+
+        if (iframe.src && iframe.src !== "about:blank") {
+            iframe.dataset.savedSrc = iframe.src;
+            iframe.src = "about:blank";
+        }
+    } else {
+        // PLAY / RESUME
+        iframe.dataset.isPlaying = "true";
+        updatePlayPauseBtnUI(btn, true);
+        setPauseOverlayStatus(modalType, false);
+
+        if (iframe.dataset.savedSrc) {
+            iframe.src = iframe.dataset.savedSrc;
+        }
+
+        try {
+            iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+            iframe.contentWindow.postMessage('{"method":"play"}', '*');
+            iframe.contentWindow.postMessage('play', '*');
+            iframe.contentWindow.postMessage(JSON.stringify({ event: "play" }), '*');
+        } catch (e) {}
+    }
+
+    if (btn) {
+        btn.focus();
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     const dropdown = document.querySelector(".dropdown");
     if (dropdown) {
@@ -45,9 +131,36 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+
+    const moviePlayBtn = document.getElementById("moviePlayBtn");
+    if (moviePlayBtn) {
+        moviePlayBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            const iframe = document.getElementById("movieTrailer");
+            toggleIframePlayback(iframe, moviePlayBtn, "movie");
+        });
+    }
+
+    const tvPlayBtn = document.getElementById("tvPlayBtn");
+    if (tvPlayBtn) {
+        tvPlayBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            const iframe = document.getElementById("tvTrailer");
+            toggleIframePlayback(iframe, tvPlayBtn, "tv");
+        });
+    }
+
+    window.addEventListener("blur", function () {
+        const activeModal = document.querySelector('.modal.show');
+        if (activeModal) {
+            setTimeout(() => {
+                const btn = activeModal.querySelector('.play-pause-btn') || activeModal.querySelector('button');
+                if (btn) btn.focus();
+            }, 50);
+        }
+    });
 });
 
-// TV Remote Keycode Checker
 function isTvOk(e) {
     return (
         e.key === "Enter" ||
@@ -58,7 +171,6 @@ function isTvOk(e) {
     );
 }
 
-// Keep track of the last focused card to restore focus on modal close
 let lastActiveCard = null;
 
 // MOVIE SECTION LOGIC
@@ -131,8 +243,12 @@ async function fetchMovies() {
                 movieCard.setAttribute("tabindex", "0");
                 movieCard.setAttribute("role", "button");
 
+                const year = (movie.release_date || "").slice(0, 4) || "—";
+
                 movieCard.innerHTML = `
                     <img src="${IMAGE_BASE_URL}${movie.poster_path}" alt="${movie.title}">
+                    <span class="category-badge movie">Movie</span>
+                    <span class="year-badge">${year}</span>
                     <div class="play-button"><i class="fa-solid fa-play"></i></div>
                 `;
                 
@@ -161,20 +277,27 @@ async function fetchMovies() {
 function openModal(movie) {
     moviePoster.src = `${IMAGE_BASE_URL}${movie.poster_path}`;
     moviePoster.alt = movie.title;
+    movieTitle.textContent = movie.title;
     movieGenres.textContent = movie.genres ? movie.genres.map(genre => genre.name).join(", ") : "Unknown";
     movieDescription.textContent = movie.overview || "No description available.";
     
-    const videoUrl = MOVIE_VIDEOS[movie.id] || "https://www.youtube.com/embed/defaultVideo";
+    let rawUrl = MOVIE_VIDEOS[movie.id] || "https://www.youtube.com/embed/defaultVideo";
+    let videoUrl = appendAutoplayParam(rawUrl);
+
     movieTrailer.src = videoUrl;
-    
+    movieTrailer.dataset.isPlaying = "true";
+    movieTrailer.dataset.savedSrc = videoUrl;
+
+    const moviePlayBtn = document.getElementById("moviePlayBtn");
+    updatePlayPauseBtnUI(moviePlayBtn, true);
+    setPauseOverlayStatus("movie", false);
+
     movieModal.classList.add("show");
     document.body.classList.add("modal-open");
     window.history.pushState({ type: "movie", id: movie.id }, "", `?movie=${movie.id}`);
 
-    // Auto-focus fullscreen button inside modal for immediate remote interaction
     setTimeout(() => {
-        const btn = document.getElementById("fullscreenButton");
-        if (btn) btn.focus();
+        if (moviePlayBtn) moviePlayBtn.focus();
     }, 100);
 }
 
@@ -182,6 +305,9 @@ function closeModal() {
     movieModal.classList.remove("show");
     document.body.classList.remove("modal-open");
     movieTrailer.src = "";
+    movieTrailer.dataset.isPlaying = "false";
+    movieTrailer.dataset.savedSrc = "";
+    setPauseOverlayStatus("movie", false);
     window.history.pushState({}, "", window.location.pathname);
 
     if (lastActiveCard) {
@@ -215,7 +341,7 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1MDbrNZz8N_Q1PBKxRbnZ4pGSWgERHP8k/preview",
             "https://drive.google.com/file/d/1sFFrEIApC25AzfjnXSDDV05K-W1-7Uoz/preview",
             "https://drive.google.com/file/d/12YOGBdgVYboi17jISnF4sHO4UvH97Svh/preview",
-            "https://drive.google.com/file/d/1PbWWqgKDBDorh525uecKaGZD21FGSoCeR/preview",
+            "https://drive.google.com/file/d/1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR/preview",
             "https://drive.google.com/file/d/1aC6lA84DiI3uoqPLZK8GRuQfLDhORPF9/preview",
             "https://drive.google.com/file/d/1dAA0BrlHeS4aHqY0Yq1tkSJblMVyMgo5/preview",
             "https://drive.google.com/file/d/1WBh7QpvfHN2zGQ6VjV18_yickANOmMcW/preview",
@@ -236,7 +362,7 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/15676A_B9lmohU6QaFkr7pGhWzGAWl64V/preview",
             "https://drive.google.com/file/d/1i9-ROhq6Zzl_dTsGDfVc5l00A38cuB16/preview",
             "https://drive.google.com/file/d/1zIyQKj7xtn3zum01J9Rnb0fVlpuPrHU5/preview",
-            "https://drive.google.com/file/d/1PbWWqgKDBDorh525uecKaGZD21FGSoCeR/preview",
+            "https://drive.google.com/file/d/1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR/preview",
             "https://drive.google.com/file/d/11dU7wkT6pRY0YR3Nd_Hv2PKyI4B_XGYi/preview",
             "https://drive.google.com/file/d/1kmaj_RV5tmZEQpvs_UkULdcJXbqZNAcd/preview",
             "https://drive.google.com/file/d/1rLDuViEVQfNF9NGOe6v_E5HOPVZ7wvwY/preview",
@@ -271,7 +397,7 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1fSNYpP6qSV7GJZVLR_U02bsoiRESNCkq/preview",
             "https://drive.google.com/file/d/1fzbxTdJIGdI4v5ZgDpfQwYyqLJwe6CCs/preview",
             "https://drive.google.com/file/d/1fvyznAmGWC6lwWK7dxddiLraMR1gPDu1/preview",
-            "https://drive.google.com/file/d/1PbWWqgKDBDorh525uecKaGZD21FGSoCeR/preview",
+            "https://drive.google.com/file/d/1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR/preview",
             "https://drive.google.com/file/d/1g1iPf1-sOLY7KLZ4XnGQxhxL2jxXbPjs/preview",
             "https://drive.google.com/file/d/1g5QpVihX8vOFzvwjrJLxQJdkLUSwyEOF/preview",
         ],
@@ -311,10 +437,10 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1y1gd0poT_yVdX299lSubPzHGNcbx8U_k/preview",
             "https://drive.google.com/file/d/1o2ij2B7ykOm0HcjKAQ-szlT8quBbM5C3/preview",
             "https://drive.google.com/file/d/1UUcWL33I5seiLugpbXSxDVNo2-9_VgnE/preview",
-            "https://drive.google.com/file/d/1PbWWqgKDBDorh525uecKaGZD21FGSoCeR-djRz/preview",
+            "https://drive.google.com/file/d/1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR-djRz/preview",
             "https://drive.google.com/file/d/1DTLgO_bGTlWKjpWGDVuzaew-vbQp70y4/preview",
             "https://drive.google.com/file/d/1fLy8sx7t2asaFxjSv-QngLgnBRdmfiE8/preview",
-            "https://drive.google.com/file/d/1PbWWqgKDBDorh525uecKaGZD21FGSoCeR/preview",
+            "https://drive.google.com/file/d/1PDx4Vtw4YF6XfduRwwS6nKZ6sPAC9nCeR/preview",
             "https://drive.google.com/file/d/1_JfcBppcElSapyxwH-zD4QkiADLiESgt/preview",
             "https://drive.google.com/file/d/1FVx-47Ysrh03tpk0rjScxhZUbz2SZWNM/preview",
             "https://drive.google.com/file/d/1f-QqJiNFCh1P8p8l0r_eSQR1bUEoCYvN/preview",
@@ -387,93 +513,6 @@ const TV_EPISODES = {
             "Season 1 Episode 9", "Season 1 Episode 10", "Season 1 Episode 11", "Season 1 Episode 12",
             "Season 1 Episode 13", "Season 1 Episode 14", "Season 1 Episode 15", "Season 1 Episode 16",
             "Season 1 Episode 17", "Season 1 Episode 18", "Season 1 Episode 19", "Season 1 Episode 20",
-            "Season 1 Episode 21", "Season 1 Episode 22", "Season 1 Episode 23", "Season 1 Episode 24",
-            "Season 1 Episode 25", "Season 1 Episode 26", "Season 1 Episode 27", "Season 1 Episode 28",
-            "Season 1 Episode 29", "Season 1 Episode 30"
-        ]
-    },
-    255779: {
-        links: [
-            "https://drive.google.com/file/d/1x0NS3sTlKPOMvcP6Q3cG8bLEKHs1ftwZ/preview",
-            "https://drive.google.com/file/d/1RFqv0aIBby4VQTJTm0na1T5Wca1_7Y0-/preview",
-            "https://drive.google.com/file/d/1mRmIRjcTwWygak6eBVVr7l3sgUTUGTU8/preview",
-            "https://drive.google.com/file/d/1-FHnc386YHty9p38FuRjj-hh_E8zQ41g/preview",
-            "https://drive.google.com/file/d/1FLIAUPIn0W8u4lRUlDrRoGLWoQHT-x-F/preview",
-            "https://drive.google.com/file/d/1y1-aAzIEhoxqxh-e2dE6MfVgo9gVrNHq/preview",
-            "https://drive.google.com/file/d/114aSwH2ASll2yrRKjYOB1WgyVbGGz6N2/preview",
-            "https://drive.google.com/file/d/1JSN0tFkx6Bl7gHD1bnDZBhykwnfQ6BLs/preview",
-            "https://drive.google.com/file/d/1RHCTXC6qBq-pKSTGKW4eVssQtoxHfn_t/preview",
-            "https://drive.google.com/file/d/1KYL-Wb36Tds4FNMwBo-9cRCExBLZX0sV/preview",
-        ],
-        titles: [
-            "Season 1 Episode 1", "Season 1 Episode 2", "Season 1 Episode 3", "Season 1 Episode 4",
-            "Season 1 Episode 5", "Season 1 Episode 6", "Season 1 Episode 7", "Season 1 Episode 8",
-            "Season 1 Episode 9", "Season 1 Episode 10"
-        ]
-    },
-    112836: {
-        links: [
-            "https://drive.google.com/file/d/11TOlTDkI9uYVKSe_9Y8NgbSk8LAqpjKQ/preview",
-            "https://drive.google.com/file/d/12bEqQWr3TUFBzHIpptuPGXfjav0fPegw/preview",
-            "https://drive.google.com/file/d/13CpN0ntYbkNvFXMLAyFpqFukO_3bUwot/preview",
-            "https://drive.google.com/file/d/15JKQxizL1nX1Ln19IS5mS3vq5Me-af_M/preview",
-            "https://drive.google.com/file/d/15M4LdTGUsLg9IZFJmcT7M1RZuSDzi0NL/preview",
-            "https://drive.google.com/file/d/16rw3CcGgtHgArkiQHFubrR_qTFjxHw9q/preview",
-        ],
-        titles: [
-            "Episode 1", "Episode 2", "Episode 3", "Episode 4", "Episode 5", "Episode 6"
-        ]
-    },
-    99966: {
-        links: [
-            "https://drive.google.com/file/d/1hnGgota30kTY-zkCDIHCtMJYw2N3zs7S/preview",
-            "https://drive.google.com/file/d/19pbUbtlY1G3iXRoo6HqFeB3pX9upBLzb/preview",
-            "https://drive.google.com/file/d/1kaX-ElIJsxSuyK2PppTzbvKTsobJ0XDw/preview",
-            "https://drive.google.com/file/d/1uOWoICat8RN1agGwsBzpV4VMpi0fKMnF/preview",
-            "https://drive.google.com/file/d/15gJCABlOhDs9NSU7AbUeTAxNCNZob_9e/preview",
-            "https://drive.google.com/file/d/1wSii8PV69wSOuoxwfrR12_T06lO8EX8G/preview",
-            "https://drive.google.com/file/d/1MDXwjrOitwKTj_82PonRwl5FWbLj9TyT/preview",
-            "https://drive.google.com/file/d/1ActvH4O60sZb5DGdVKxa5pLgdGkl-vqr/preview",
-            "https://drive.google.com/file/d/1Arw292ynbzrnYoS_m5FR3kMYtxWNMRTt/preview",
-            "https://drive.google.com/file/d/1u6ONazARwEfU1LjzFJ1nAjoYXQckMpLm/preview",
-            "https://drive.google.com/file/d/1ZcIP0EAGRkFr5TTSrLno8i9RDzIQm_RE/preview",
-            "https://drive.google.com/file/d/1lIbFNZGdvnHxxCvOJC365zFexkXke6dp/preview",
-        ],
-        titles: [
-            "Season 1 Episode 1", "Season 1 Episode 2", "Season 1 Episode 3", "Season 1 Episode 4",
-            "Season 1 Episode 5", "Season 1 Episode 6", "Season 1 Episode 7", "Season 1 Episode 8",
-            "Season 1 Episode 9", "Season 1 Episode 10", "Season 1 Episode 11", "Season 1 Episode 12"
-        ]
-    },
-    76557: {
-        links: [
-            "https://drive.google.com/file/d/1BmRcn5C7Xb23N3UzLwCaugLvbeB381PI/preview",
-            "https://drive.google.com/file/d/1Bt1X5OF3CQijgZyYTJkfhOK1W-PeAJMz/preview",
-            "https://drive.google.com/file/d/1BwyfZheWmhAec71bGeF5QrT6AlIeaAt3/preview",
-            "https://drive.google.com/file/d/1C0bY4Yr-8w67yzcKaTQ0Mj2pDpLOvWAT/preview",
-            "https://drive.google.com/file/d/1C7bDS7aFtqJU0sqJCMSSGFypZ9oRR0G1/preview",
-            "https://drive.google.com/file/d/1CBnPs8wzXzul5-PdCyQb16WwzQr8DROA/preview",
-            "https://drive.google.com/file/d/1CChC1PHz1Dx4LQO851d2xz2tJIvvIDwZ/preview",
-            "https://drive.google.com/file/d/1CEmbaKzeoN1rhLn3IuRY6MEI6VocltUk/preview",
-            "https://drive.google.com/file/d/1CFEyz-TLUgnWSiXrkPrVon9A1fFQxqPc/preview",
-            "https://drive.google.com/file/d/1CGPGMhXq5N538ejLrDHmlJFjQ7nmG716/preview",
-            "https://drive.google.com/file/d/1CGph1aWgXccM6I0WG5P2Hezb2vKoJUir/preview",
-            "https://drive.google.com/file/d/1CT9JgU9r80W6oL_v-gzp4HymboI423OC/preview",
-            "https://drive.google.com/file/d/1Cz_MLQBjg0b6EcqU5TjV13WT7z7RyRsI/preview",
-            "https://drive.google.com/file/d/1D2WapgePapF2pXQy6l3VIJPncNBkQwTe/preview",
-            "https://drive.google.com/file/d/1D9jqWkgvuMTORMGVWM5DQ_BeNQ4e6VMo/preview",
-            "https://drive.google.com/file/d/1DEmYOKnCh790ErZ42uWYtkxPE5cMWTi8/preview",
-            "https://drive.google.com/file/d/19ElZGbFYy5RrV5_ki2G9xFgMBTnqgBEy/preview",
-            "https://drive.google.com/file/d/19LeagJqcjqZFvt-UJWML8prRX0Ee5Y2z/preview",
-            "https://drive.google.com/file/d/12N5ZSd1SvM2QQNR9dBJYm9D918D2SE50/preview",
-            "https://drive.google.com/file/d/133lQo691jCWVU8K4UJwHHP45hnhK9D0K/preview",
-        ],
-        titles: [
-            "Season 1 Episode 1", "Season 1 Episode 2", "Season 1 Episode 3", "Season 1 Episode 4",
-            "Season 1 Episode 5", "Season 1 Episode 6", "Season 1 Episode 7", "Season 1 Episode 8",
-            "Season 1 Episode 9", "Season 1 Episode 10", "Season 1 Episode 11", "Season 1 Episode 12",
-            "Season 1 Episode 13", "Season 1 Episode 14", "Season 1 Episode 15", "Season 1 Episode 16",
-            "Season 1 Episode 17", "Season 1 Episode 18", "Season 1 Episode 19", "Season 1 Episode 20",
             "Season 2 Episode 1", "Season 2 Episode 2", "Season 2 Episode 3", "Season 2 Episode 4",
             "Season 2 Episode 5", "Season 2 Episode 6", "Season 2 Episode 7", "Season 2 Episode 8",
             "Season 2 Episode 9", "Season 2 Episode 10", "Season 2 Episode 11", "Season 2 Episode 12",
@@ -501,8 +540,12 @@ async function fetchTvShows() {
                 showCard.setAttribute("tabindex", "0");
                 showCard.setAttribute("role", "button");
 
+                const year = (show.first_air_date || "").slice(0, 4) || "—";
+
                 showCard.innerHTML = `
                     <img src="${IMAGE_BASE_URL}${show.poster_path}" alt="${show.name}">
+                    <span class="category-badge tv">TV</span>
+                    <span class="year-badge">${year}</span>
                     <div class="play-button"><i class="fa-solid fa-play"></i></div>
                 `;
                 
@@ -537,7 +580,9 @@ function openTvModal(show) {
     episodeDropdown.innerHTML = "";
 
     const episodesInfo = TV_EPISODES[show.id];
-    if (episodesInfo) {
+    let initialLink = "https://www.youtube.com/embed/defaultVideo";
+
+    if (episodesInfo && episodesInfo.links.length > 0) {
         episodesInfo.links.forEach((link, index) => {
             const option = document.createElement("option");
             const epTitle = episodesInfo.titles ? episodesInfo.titles[index] : `Episode ${index + 1}`;
@@ -546,23 +591,33 @@ function openTvModal(show) {
             episodeDropdown.appendChild(option);
         });
 
-        tvTrailer.src = episodesInfo.links[0];
+        initialLink = episodesInfo.links[0];
 
         episodeDropdown.onchange = (e) => {
-            tvTrailer.src = e.target.value;
+            let autoUrl = appendAutoplayParam(e.target.value);
+            tvTrailer.src = autoUrl;
+            tvTrailer.dataset.isPlaying = "true";
+            tvTrailer.dataset.savedSrc = autoUrl;
+            updatePlayPauseBtnUI(document.getElementById("tvPlayBtn"), true);
+            setPauseOverlayStatus("tv", false);
         };
-    } else {
-        tvTrailer.src = "https://www.youtube.com/embed/defaultVideo";
     }
+
+    let activeAutoUrl = appendAutoplayParam(initialLink);
+    tvTrailer.src = activeAutoUrl;
+    tvTrailer.dataset.isPlaying = "true";
+    tvTrailer.dataset.savedSrc = activeAutoUrl;
+
+    const tvPlayBtn = document.getElementById("tvPlayBtn");
+    updatePlayPauseBtnUI(tvPlayBtn, true);
+    setPauseOverlayStatus("tv", false);
 
     tvModal.classList.add("show");
     document.body.classList.add("modal-open");
     window.history.pushState({ type: "tv", id: show.id }, "", `?tv=${show.id}`);
 
-    // Auto-focus episode dropdown or fullscreen button inside modal
     setTimeout(() => {
-        const focusTarget = document.getElementById("episodeDropdown") || document.getElementById("tvFullscreenButton");
-        if (focusTarget) focusTarget.focus();
+        if (tvPlayBtn) tvPlayBtn.focus();
     }, 100);
 }
 
@@ -570,6 +625,9 @@ function closeTvModal() {
     tvModal.classList.remove("show");
     document.body.classList.remove("modal-open");
     tvTrailer.src = "";
+    tvTrailer.dataset.isPlaying = "false";
+    tvTrailer.dataset.savedSrc = "";
+    setPauseOverlayStatus("tv", false);
     window.history.pushState({}, "", window.location.pathname);
 
     if (lastActiveCard) {
@@ -613,16 +671,24 @@ async function fetchFpjMovies() {
                 movieCard.setAttribute("tabindex", "0");
                 movieCard.setAttribute("role", "button");
 
+                const year = (movie.release_date || "").slice(0, 4) || "—";
+
                 movieCard.innerHTML = `
                     <img src="${IMAGE_BASE_URL}${movie.poster_path}" alt="${movie.title}">
+                    <span class="category-badge movie">Movie</span>
+                    <span class="year-badge">${year}</span>
                     <div class="play-button"><i class="fa-solid fa-play"></i></div>
                 `;
                 
                 movieCard.addEventListener("click", () => {
                     lastActiveCard = movieCard;
+                    const fpjVideo = FPJ_VIDEOS[movie.id];
+                    if (fpjVideo) {
+                        MOVIE_VIDEOS[movie.id] = fpjVideo;
+                    }
                     openModal(movie);
                 });
-
+                
                 movieCard.addEventListener("focus", () => {
                     movieCard.scrollIntoView({ behavior: "smooth", block: "center" });
                 });
@@ -637,7 +703,8 @@ async function fetchFpjMovies() {
 fetchFpjMovies();
 
 // FULLSCREEN BUTTONS
-document.getElementById("fullscreenButton").addEventListener("click", function () {
+document.getElementById("fullscreenButton").addEventListener("click", function (e) {
+    e.preventDefault();
     let iframe = document.getElementById("movieTrailer");
     if (iframe.requestFullscreen) {
         iframe.requestFullscreen();
@@ -651,7 +718,8 @@ document.getElementById("fullscreenButton").addEventListener("click", function (
     }
 });
 
-document.getElementById("tvFullscreenButton").addEventListener("click", function () {
+document.getElementById("tvFullscreenButton").addEventListener("click", function (e) {
+    e.preventDefault();
     let iframe = document.getElementById("tvTrailer");
     if (iframe.requestFullscreen) {
         iframe.requestFullscreen();
@@ -666,7 +734,7 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
 });
 
 /* =========================================================
-   NETPLEX UNIFIED ANDROID TV SPATIAL NAVIGATION ENGINE
+   NETPLEX D-PAD CONTROLLER & STRICT BUTTON FOCUS LOCK
 ========================================================= */
 (function () {
     "use strict";
@@ -686,16 +754,77 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
         return rect.width > 0 && rect.height > 0;
     }
 
+    function getModalNavElements(openModal) {
+        const closeBtn = openModal.querySelector('.close-btn, .close');
+        const fullscreenBtn = openModal.querySelector('#fullscreenButton, #tvFullscreenButton');
+        const playBtn = openModal.querySelector('.play-pause-btn');
+        const dropdown = openModal.querySelector('#episodeDropdown');
+
+        const elements = [];
+        if (closeBtn && isElementVisible(closeBtn)) elements.push(closeBtn);
+        if (dropdown && isElementVisible(dropdown)) elements.push(dropdown);
+        if (fullscreenBtn && isElementVisible(fullscreenBtn)) elements.push(fullscreenBtn);
+        if (playBtn && isElementVisible(playBtn)) elements.push(playBtn);
+
+        return elements;
+    }
+
     function getFocusableElements() {
-        // If a modal is open, trap focus within it
-        const openModal = document.querySelector('.modal.show');
-        if (openModal) {
-            return Array.from(openModal.querySelectorAll('button:not([disabled]), select:not([disabled]), input:not([disabled]), [tabindex="0"]'))
-                .filter(isElementVisible);
+        const selector = 'a[href], button:not([disabled]), select:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex="0"]';
+        return Array.from(document.querySelectorAll(selector))
+            .filter(el => el.tagName !== "IFRAME")
+            .filter(isElementVisible);
+    }
+
+    function handleModalDpad(openModal, dir) {
+        const items = getModalNavElements(openModal);
+        if (!items.length) return;
+
+        let active = document.activeElement;
+        const closeBtn = openModal.querySelector('.close-btn, .close');
+        const playBtn = openModal.querySelector('.play-pause-btn');
+        const fullscreenBtn = openModal.querySelector('#fullscreenButton, #tvFullscreenButton');
+        const dropdown = openModal.querySelector('#episodeDropdown');
+
+        if (!items.includes(active)) {
+            if (playBtn) playBtn.focus();
+            return;
         }
 
-        const selector = 'a[href], button:not([disabled]), select:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex="0"]';
-        return Array.from(document.querySelectorAll(selector)).filter(isElementVisible);
+        // Direct Up / Down Navigation
+        if (dir === "ArrowUp") {
+            if (active === playBtn && fullscreenBtn) {
+                fullscreenBtn.focus();
+            } else if (active === fullscreenBtn && dropdown) {
+                dropdown.focus();
+            } else if (closeBtn) {
+                closeBtn.focus();
+            }
+            return;
+        }
+
+        if (dir === "ArrowDown") {
+            if (active === closeBtn) {
+                if (dropdown) dropdown.focus();
+                else if (fullscreenBtn) fullscreenBtn.focus();
+                else if (playBtn) playBtn.focus();
+            } else if (active === dropdown && fullscreenBtn) {
+                fullscreenBtn.focus();
+            } else if (active === fullscreenBtn && playBtn) {
+                playBtn.focus();
+            }
+            return;
+        }
+
+        // Left / Right Cycle
+        if (dir === "ArrowRight" || dir === "ArrowLeft") {
+            let index = items.indexOf(active);
+            let nextIndex = (dir === "ArrowRight") 
+                ? (index + 1) % items.length 
+                : (index - 1 + items.length) % items.length;
+            items[nextIndex].focus();
+            return;
+        }
     }
 
     function navigateSpatial(direction) {
@@ -741,7 +870,6 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
                 if (direction === "ArrowLeft" || direction === "ArrowRight") {
                     distance = Math.abs(dx) + (Math.abs(dy) * 2.5);
                 } else {
-                    // Lowered horizontal penalty so navigation moves smoothly down into comments and footer
                     distance = Math.abs(dy) + (Math.abs(dx) * 0.8);
                 }
 
@@ -760,7 +888,8 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
 
     window.addEventListener("keydown", function (e) {
         const active = document.activeElement;
-        const isInput = active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA" || active.tagName === "SELECT");
+        const openModal = document.querySelector('.modal.show');
+        const isInput = active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA");
 
         // 1. Android TV OK / Select Button
         if (isTvOk(e)) {
@@ -779,23 +908,26 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
         ];
 
         if (navKeys.includes(e.key) || navKeys.includes(e.keyCode)) {
-            // Allow cursor navigation inside text fields
-            if (isInput && (active.tagName === "INPUT" || active.tagName === "TEXTAREA") && 
-                (e.key === "ArrowLeft" || e.key === "ArrowRight" || e.keyCode === 37 || e.keyCode === 39)) {
-                return;
-            }
-
-            // Allow selecting options inside dropdowns
-            if (active && active.tagName === "SELECT" && 
-                (e.key === "ArrowUp" || e.key === "ArrowDown" || e.keyCode === 38 || e.keyCode === 40)) {
-                return;
-            }
-
             let dir = e.key;
             if (e.keyCode === 37 || e.key === "Left") dir = "ArrowLeft";
             if (e.keyCode === 38 || e.key === "Up") dir = "ArrowUp";
             if (e.keyCode === 39 || e.key === "Right") dir = "ArrowRight";
             if (e.keyCode === 40 || e.key === "Down") dir = "ArrowDown";
+
+            if (openModal) {
+                e.preventDefault();
+                e.stopPropagation();
+                handleModalDpad(openModal, dir);
+                return;
+            }
+
+            if (isInput && (dir === "ArrowLeft" || dir === "ArrowRight")) {
+                return;
+            }
+
+            if (active && active.tagName === "SELECT" && (dir === "ArrowUp" || dir === "ArrowDown")) {
+                return;
+            }
 
             e.preventDefault();
             navigateSpatial(dir);
@@ -805,7 +937,6 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
         // 3. Android TV Back Key
         const backKeys = ["Escape", "Back", "GoBack", 10009, 27, 461];
         if (backKeys.includes(e.key) || backKeys.includes(e.keyCode)) {
-            // Dismiss active modals
             if (movieModal.classList.contains("show")) {
                 e.preventDefault();
                 closeModal();
@@ -818,7 +949,6 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
                 return;
             }
 
-            // Close navigation dropdown
             const activeDropdown = document.querySelector(".dropdown.active, .dropdown-content.active");
             if (activeDropdown) {
                 e.preventDefault();
