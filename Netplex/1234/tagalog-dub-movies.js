@@ -642,7 +642,6 @@ function closeTvModal() {
 
 window.addEventListener("click", event => {
     if (event.target === tvModal) closeTvModal();
-    if (event.target === document.getElementById("authModal")) closeAuthModal();
 });
 
 fetchTvShows();
