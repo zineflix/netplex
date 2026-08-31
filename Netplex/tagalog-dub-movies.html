@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <!-- Google Tag Manager -->
@@ -109,7 +108,7 @@
 
 <!-- Movie Modal -->
 <div class="modal" id="movieModal">
-    <div class="modal-content">
+    <div class="modal-content" id="movieModalContent">
         <button type="button" class="close-btn" id="movieCloseBtn" onclick="closeModal()" tabindex="0" aria-label="Close Movie Modal">&times;</button>
         <div class="modal-hero-details">
             <div class="poster-container">
@@ -127,14 +126,14 @@
             </div>
         </div>
         <div class="iframe-wrapper">
-            <!-- Pause Overlay Status -->
             <div class="pause-overlay" id="moviePauseOverlay">
                 <div class="pause-badge">
                     <i class="fa-solid fa-pause"></i>
                     <span>PAUSED</span>
                 </div>
             </div>
-            <!-- tabindex="-1" prevents the D-Pad from landing on the iframe -->
+            <!-- Focus Guard to intercept hardware remote leakage -->
+            <div class="dpad-focus-guard" tabindex="-1"></div>
             <iframe id="movieTrailer" src="" allow="autoplay; encrypted-media; fullscreen" allowfullscreen tabindex="-1"></iframe>
         </div>
     </div>
@@ -150,7 +149,7 @@
 
 <!-- TV Modal -->
 <div id="tvModal" class="modal">
-    <div class="modal-content">
+    <div class="modal-content" id="tvModalContent">
         <button type="button" class="close" id="tvCloseBtn" onclick="closeTvModal()" tabindex="0" aria-label="Close TV Modal">&times;</button>
         <div class="modal-hero-details">
             <div class="poster-container">
@@ -169,14 +168,14 @@
             </div>
         </div>
         <div class="iframe-wrapper">
-            <!-- Pause Overlay Status -->
             <div class="pause-overlay" id="tvPauseOverlay">
                 <div class="pause-badge">
                     <i class="fa-solid fa-pause"></i>
                     <span>PAUSED</span>
                 </div>
             </div>
-            <!-- tabindex="-1" prevents the D-Pad from landing on the iframe -->
+            <!-- Focus Guard to intercept hardware remote leakage -->
+            <div class="dpad-focus-guard" tabindex="-1"></div>
             <iframe id="tvTrailer" src="" allow="autoplay; encrypted-media; fullscreen" allowfullscreen tabindex="-1"></iframe>
         </div>
     </div>
