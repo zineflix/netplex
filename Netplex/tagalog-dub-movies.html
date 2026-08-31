@@ -132,7 +132,6 @@
                     <span>PAUSED</span>
                 </div>
             </div>
-            <!-- Focus Guard to intercept hardware remote leakage -->
             <div class="dpad-focus-guard" tabindex="-1"></div>
             <iframe id="movieTrailer" src="" allow="autoplay; encrypted-media; fullscreen" allowfullscreen tabindex="-1"></iframe>
         </div>
@@ -174,28 +173,80 @@
                     <span>PAUSED</span>
                 </div>
             </div>
-            <!-- Focus Guard to intercept hardware remote leakage -->
             <div class="dpad-focus-guard" tabindex="-1"></div>
             <iframe id="tvTrailer" src="" allow="autoplay; encrypted-media; fullscreen" allowfullscreen tabindex="-1"></iframe>
         </div>
     </div>
 </div>
 
+<!-- ============================= -->
+<!-- COMMENTS SECTION -->
+<!-- ============================= -->
 <div class="comments-wrapper">
   <div id="welcomeMessage">Welcome to <b>NETPLEX</b></div>
   <div id="leaveCommentMessage">Please leave a comment / Request a Movie</div>
+
+  <div id="userStatusWrapper">
+    <div id="userLoggedInBar" style="display: none;">
+      <div class="user-profile-badge">
+        <img id="currentUserAvatar" src="" class="profilePicture" alt="Profile">
+        <span>Logged in as <strong id="currentUserName">User</strong></span>
+      </div>
+      <button class="auth-btn-secondary" onclick="signOutUser()" tabindex="0">Log Out</button>
+    </div>
+    <div id="userLoggedOutBar">
+      <span>Join the discussion!</span>
+      <button class="auth-btn-primary" onclick="openAuthModal()" tabindex="0">Sign In / Register</button>
+    </div>
+  </div>
+
   <div id="commentForm">
-    <input type="text" id="username" placeholder="Enter Username" tabindex="0"><br>
     <textarea id="commentText" placeholder="Write a comment..." tabindex="0"></textarea><br>
     <button onclick="submitComment()" tabindex="0">Post Comment</button>
   </div>
   <div id="commentsContainer"></div>
 </div>
 
-<!-- Firebase Comments Script -->
+<!-- Auth Modal (Sign In / Register) -->
+<div id="authModal" class="modal auth-modal-root">
+    <div class="auth-modal-content">
+        <button type="button" class="close-btn" onclick="closeAuthModal()" tabindex="0" aria-label="Close Auth Modal">&times;</button>
+        <h2 id="authTitle">Sign In</h2>
+        <div class="auth-tabs">
+            <button id="tabSignIn" class="auth-tab active" onclick="switchAuthTab('signin')" tabindex="0">Sign In</button>
+            <button id="tabSignUp" class="auth-tab" onclick="switchAuthTab('signup')" tabindex="0">Register</button>
+        </div>
+        <form id="authForm" onsubmit="handleAuthSubmit(event)">
+            <input type="text" id="authUsername" placeholder="Unique Username / Display Name" style="display:none;" tabindex="0">
+            <input type="email" id="authEmail" placeholder="Email Address" required tabindex="0">
+            <input type="password" id="authPassword" placeholder="Password (min. 6 characters)" required tabindex="0">
+            <input type="password" id="authConfirmPassword" placeholder="Confirm Password" style="display:none;" tabindex="0">
+            
+            <div class="show-password-container">
+                <input type="checkbox" id="togglePasswordVisibility" onchange="toggleShowPassword(this)" tabindex="0">
+                <label for="togglePasswordVisibility">Show Passwords</label>
+            </div>
+
+            <p id="authError" class="auth-error-msg"></p>
+            <button type="submit" id="authSubmitBtn" class="auth-submit-btn" tabindex="0">Sign In</button>
+        </form>
+    </div>
+</div>
+
+<!-- Firebase Comments, Replies, Auth & Admin Script -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+    import { 
+      getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp, doc, deleteDoc 
+    } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js";
+    import { 
+      getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
+      signOut, onAuthStateChanged, updateProfile 
+    } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
+
+    const ADMIN_EMAIL = "zineflix0@gmail.com";
+    const ADMIN_NAME = "Netplex Team";
+    const ADMIN_AVATAR = "https://netplex.pages.dev/img/netplex.png";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB3hd4278XIZ86TAgR9UetC1Qa5M8KswlQ",
@@ -208,19 +259,174 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth(app);
 
-    function getRandomSproutAvatar() {
-      const randomSeed = Math.random().toString(36).substring(7);
-      return `https://api.dicebear.com/10.x/sprouts/svg?seed=${randomSeed}`;
+    let currentUser = null;
+    let authMode = "signin";
+
+    function generateAvatar(seed) {
+      return `https://api.dicebear.com/10.x/sprouts/svg?seed=${encodeURIComponent(seed || Math.random())}`;
     }
 
-    async function submitComment() {
-      const username = document.getElementById('username').value.trim();
-      const commentText = document.getElementById('commentText').value.trim();
+    function isUserAdmin(user) {
+      return user && user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+    }
 
-      if (!username) {
-        alert("Please enter your name.");
+    onAuthStateChanged(auth, async (user) => {
+      currentUser = user;
+      const loggedInBar = document.getElementById('userLoggedInBar');
+      const loggedOutBar = document.getElementById('userLoggedOutBar');
+
+      if (user) {
+        const isAdmin = isUserAdmin(user);
+
+        if (isAdmin && (user.displayName !== ADMIN_NAME || user.photoURL !== ADMIN_AVATAR)) {
+          try {
+            await updateProfile(user, {
+              displayName: ADMIN_NAME,
+              photoURL: ADMIN_AVATAR
+            });
+          } catch(e) {}
+        }
+
+        loggedInBar.style.display = "flex";
+        loggedOutBar.style.display = "none";
+        
+        const displayName = isAdmin ? ADMIN_NAME : (user.displayName || user.email.split('@')[0]);
+        const avatarUrl = isAdmin ? ADMIN_AVATAR : (user.photoURL || generateAvatar(user.uid));
+
+        document.getElementById('currentUserName').innerHTML = `${displayName} ${isAdmin ? '<span class="admin-badge"><i class="fa-solid fa-circle-check"></i> ADMIN</span>' : ''}`;
+        document.getElementById('currentUserAvatar').src = avatarUrl;
+      } else {
+        loggedInBar.style.display = "none";
+        loggedOutBar.style.display = "flex";
+      }
+      getComments();
+    });
+
+    window.switchAuthTab = function(mode) {
+      authMode = mode;
+      const usernameInput = document.getElementById("authUsername");
+      const confirmPassInput = document.getElementById("authConfirmPassword");
+      const title = document.getElementById("authTitle");
+      const submitBtn = document.getElementById("authSubmitBtn");
+      const tabSignIn = document.getElementById("tabSignIn");
+      const tabSignUp = document.getElementById("tabSignUp");
+      document.getElementById("authError").textContent = "";
+
+      if (mode === "signup") {
+        usernameInput.style.display = "block";
+        usernameInput.required = true;
+        confirmPassInput.style.display = "block";
+        confirmPassInput.required = true;
+        title.textContent = "Create Account";
+        submitBtn.textContent = "Register";
+        tabSignUp.classList.add("active");
+        tabSignIn.classList.remove("active");
+      } else {
+        usernameInput.style.display = "none";
+        usernameInput.required = false;
+        confirmPassInput.style.display = "none";
+        confirmPassInput.required = false;
+        confirmPassInput.value = "";
+        title.textContent = "Sign In";
+        submitBtn.textContent = "Sign In";
+        tabSignIn.classList.add("active");
+        tabSignUp.classList.remove("active");
+      }
+    };
+
+    window.toggleShowPassword = function(checkbox) {
+      const passInput = document.getElementById("authPassword");
+      const confirmPassInput = document.getElementById("authConfirmPassword");
+      const type = checkbox.checked ? "text" : "password";
+      
+      passInput.type = type;
+      confirmPassInput.type = type;
+    };
+
+    window.handleAuthSubmit = async function(e) {
+      e.preventDefault();
+      const email = document.getElementById("authEmail").value.trim();
+      const password = document.getElementById("authPassword").value.trim();
+      const confirmPassword = document.getElementById("authConfirmPassword").value.trim();
+      const username = document.getElementById("authUsername").value.trim();
+      const errorElem = document.getElementById("authError");
+      errorElem.textContent = "";
+
+      const isAdminAttempt = email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+
+      try {
+        if (authMode === "signup") {
+          const chosenName = isAdminAttempt ? ADMIN_NAME : username;
+          if (!chosenName) {
+            errorElem.textContent = "Please pick a unique username.";
+            return;
+          }
+
+          if (password !== confirmPassword) {
+            errorElem.textContent = "Passwords do not match. Please verify.";
+            return;
+          }
+
+          if (password.length < 6) {
+            errorElem.textContent = "Password must be at least 6 characters.";
+            return;
+          }
+
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const avatarUrl = isAdminAttempt ? ADMIN_AVATAR : generateAvatar(chosenName);
+          await updateProfile(userCredential.user, {
+            displayName: chosenName,
+            photoURL: avatarUrl
+          });
+        } else {
+          await signInWithEmailAndPassword(auth, email, password);
+        }
+        closeAuthModal();
+      } catch (error) {
+        errorElem.textContent = error.message.replace("Firebase: ", "");
+      }
+    };
+
+    window.signOutUser = async function() {
+      try {
+        await signOut(auth);
+      } catch (err) {
+        console.error("Sign out error:", err);
+      }
+    };
+
+    window.openAuthModal = function() {
+      document.getElementById("authModal").classList.add("show");
+      document.body.classList.add("modal-open");
+      document.body.classList.add("auth-open");
+    };
+
+    window.closeAuthModal = function() {
+      document.getElementById("authModal").classList.remove("show");
+      document.body.classList.remove("modal-open");
+      document.body.classList.remove("auth-open");
+      document.getElementById("authError").textContent = "";
+      document.getElementById("authPassword").value = "";
+      document.getElementById("authConfirmPassword").value = "";
+      document.getElementById("togglePasswordVisibility").checked = false;
+      document.getElementById("authPassword").type = "password";
+      document.getElementById("authConfirmPassword").type = "password";
+    };
+
+    async function submitComment(parentId = null) {
+      if (!currentUser) {
+        openAuthModal();
         return;
+      }
+
+      let commentText;
+      if (!parentId) {
+        commentText = document.getElementById('commentText').value.trim();
+      } else {
+        const inputContainer = document.getElementById(`reply-box-${parentId}`);
+        commentText = inputContainer.querySelector('.reply-textarea').value.trim();
       }
 
       if (!commentText) {
@@ -228,22 +434,116 @@
         return;
       }
 
-      const profilePicture = getRandomSproutAvatar();
+      const isAdmin = isUserAdmin(currentUser);
+      const username = isAdmin ? ADMIN_NAME : (currentUser.displayName || currentUser.email.split('@')[0]);
+      const avatar = isAdmin ? ADMIN_AVATAR : (currentUser.photoURL || generateAvatar(currentUser.uid));
 
       try {
         await addDoc(collection(db, "comments"), {
           text: commentText,
           user: username,
+          userId: currentUser.uid,
+          userEmail: currentUser.email.toLowerCase(),
+          isAdmin: isAdmin,
           timestamp: serverTimestamp(),
           likeCount: 0,
-          profilePicture: profilePicture
+          profilePicture: avatar,
+          parentId: parentId || null
         });
 
-        document.getElementById('commentText').value = '';
+        if (!parentId) {
+          document.getElementById('commentText').value = '';
+        }
+
         getComments();
       } catch (error) {
         console.error("Error adding comment:", error);
       }
+    }
+
+    function toggleReplyForm(parentId) {
+      if (!currentUser) {
+        openAuthModal();
+        return;
+      }
+
+      const container = document.getElementById(`reply-form-slot-${parentId}`);
+      if (!container) return;
+
+      if (container.innerHTML !== "") {
+        container.innerHTML = "";
+        return;
+      }
+
+      const isAdmin = isUserAdmin(currentUser);
+      const authorName = isAdmin ? ADMIN_NAME : (currentUser.displayName || currentUser.email.split('@')[0]);
+
+      container.innerHTML = `
+        <div class="reply-box-wrapper" id="reply-box-${parentId}">
+          <p class="replying-as">Replying as: <strong>${authorName}</strong> ${isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}</p>
+          <textarea class="reply-textarea" rows="2" placeholder="Write a reply..." tabindex="0"></textarea>
+          <div class="reply-actions">
+            <button class="reply-submit-btn" onclick="submitComment('${parentId}')" tabindex="0">Post Reply</button>
+            <button class="reply-cancel-btn" onclick="toggleReplyForm('${parentId}')" tabindex="0">Cancel</button>
+          </div>
+        </div>
+      `;
+    }
+
+    window.deleteComment = async function(docId) {
+      if (!confirm("Are you sure you want to delete this comment?")) return;
+      try {
+        await deleteDoc(doc(db, "comments", docId));
+        getComments();
+      } catch (e) {
+        console.error("Error deleting comment:", e);
+        alert("Failed to delete comment.");
+      }
+    };
+
+    function createCommentNode(data, isReply = false) {
+      const commentDiv = document.createElement("div");
+      commentDiv.className = isReply ? "comment reply-comment" : "comment";
+      if (data.isAdmin) commentDiv.classList.add("admin-comment");
+      commentDiv.id = `comment-${data.id}`;
+
+      const fallbackAvatar = generateAvatar(data.user);
+      const dateString = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleString() : "Just now";
+      const isAdminViewer = isUserAdmin(currentUser);
+
+      const adminTag = data.isAdmin 
+        ? `<span class="admin-badge"><i class="fa-solid fa-shield-halved"></i> Netplex Team</span>` 
+        : '';
+
+      const deleteBtn = isAdminViewer 
+        ? `<button class="delete-btn" onclick="deleteComment('${data.id}')" tabindex="0"><i class="fa-solid fa-trash"></i> Delete</button>` 
+        : '';
+
+      commentDiv.innerHTML = `
+        <div class="commentHeader">
+          <img src="${data.profilePicture || fallbackAvatar}" class="profilePicture ${data.isAdmin ? 'admin-avatar' : ''}" alt="Avatar">
+          <div>
+            <div class="comment-author-line">
+              <strong>${data.user}</strong>
+              ${adminTag}
+            </div>
+            <div class="timestamp">${dateString}</div>
+          </div>
+        </div>
+        <p>${data.text}</p>
+        <div class="comment-actions-bar">
+          <div class="likeSection">
+            <span>Likes: ${data.likeCount || 0}</span>
+          </div>
+          <div class="action-buttons-group">
+            ${!isReply ? `<button class="reply-btn" onclick="toggleReplyForm('${data.id}')" tabindex="0"><i class="fa-solid fa-reply"></i> Reply</button>` : ''}
+            ${deleteBtn}
+          </div>
+        </div>
+        <div id="reply-form-slot-${data.id}"></div>
+      `;
+
+      return commentDiv;
     }
 
     async function getComments() {
@@ -251,32 +551,40 @@
       commentsContainer.innerHTML = "<p style='text-align:center;'>Loading comments...</p>";
 
       try {
-        const q = query(collection(db, "comments"), orderBy("timestamp", "desc"));
+        const q = query(collection(db, "comments"), orderBy("timestamp", "asc"));
         const querySnapshot = await getDocs(q);
 
-        commentsContainer.innerHTML = "";
+        const roots = [];
+        const repliesByParent = {};
+
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const commentElement = document.createElement("div");
-          commentElement.classList.add("comment");
+          const item = { id: doc.id, ...data };
+          if (!item.parentId) {
+            roots.push(item);
+          } else {
+            if (!repliesByParent[item.parentId]) {
+              repliesByParent[item.parentId] = [];
+            }
+            repliesByParent[item.parentId].push(item);
+          }
+        });
 
-          const fallbackAvatar = getRandomSproutAvatar();
+        roots.reverse();
+        commentsContainer.innerHTML = "";
 
-          commentElement.innerHTML = `
-            <div class="commentHeader">
-              <img src="${data.profilePicture || fallbackAvatar}" class="profilePicture" alt="Avatar">
-              <div>
-                <strong>${data.user}</strong>
-                <div class="timestamp">${data.timestamp ? new Date(data.timestamp.toDate()).toLocaleString() : "Just now"}</div>
-              </div>
-            </div>
-            <p>${data.text}</p>
-            <div class="likeSection">
-              <span>Likes: ${data.likeCount || 0}</span>
-            </div>
-          `;
+        roots.forEach((root) => {
+          const rootElement = createCommentNode(root, false);
+          const repliesWrapper = document.createElement("div");
+          repliesWrapper.className = "replies-container";
 
-          commentsContainer.appendChild(commentElement);
+          const childReplies = repliesByParent[root.id] || [];
+          childReplies.forEach((reply) => {
+            repliesWrapper.appendChild(createCommentNode(reply, true));
+          });
+
+          rootElement.appendChild(repliesWrapper);
+          commentsContainer.appendChild(rootElement);
         });
 
       } catch (error) {
@@ -290,6 +598,7 @@
     };
 
     window.submitComment = submitComment;
+    window.toggleReplyForm = toggleReplyForm;
 </script>
 
 <footer class="site-footer">
