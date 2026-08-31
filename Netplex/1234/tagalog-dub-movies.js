@@ -148,27 +148,20 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Retain focus safety across window blur
+    // Window Blur Guard: If focus jumps into an iframe, pull it back immediately
     window.addEventListener("blur", function () {
         const activeModal = document.querySelector('.modal.show');
         if (activeModal) {
             setTimeout(() => {
-                const btn = activeModal.querySelector('.play-pause-btn') || activeModal.querySelector('button');
-                if (btn) btn.focus();
-            }, 50);
+                const targetBtn = activeModal.querySelector('.play-pause-btn') || activeModal.querySelector('#fullscreenButton');
+                if (targetBtn) {
+                    window.focus();
+                    targetBtn.focus();
+                }
+            }, 10);
         }
     });
 });
-
-function isTvOk(e) {
-    return (
-        e.key === "Enter" ||
-        e.key === "Select" ||
-        e.key === "OK" ||
-        e.keyCode === 13 ||
-        e.keyCode === 23
-    );
-}
 
 let lastActiveCard = null;
 
@@ -293,11 +286,17 @@ function openModal(movie) {
 
     movieModal.classList.add("show");
     document.body.classList.add("modal-open");
+    
+    const modalContent = document.getElementById("movieModalContent");
+    if (modalContent) modalContent.scrollTop = 0;
+
     window.history.pushState({ type: "movie", id: movie.id }, "", `?movie=${movie.id}`);
 
     setTimeout(() => {
-        if (moviePlayBtn) moviePlayBtn.focus();
-    }, 100);
+        if (moviePlayBtn) {
+            moviePlayBtn.focus();
+        }
+    }, 150);
 }
 
 function closeModal() {
@@ -613,11 +612,17 @@ function openTvModal(show) {
 
     tvModal.classList.add("show");
     document.body.classList.add("modal-open");
+    
+    const modalContent = document.getElementById("tvModalContent");
+    if (modalContent) modalContent.scrollTop = 0;
+
     window.history.pushState({ type: "tv", id: show.id }, "", `?tv=${show.id}`);
 
     setTimeout(() => {
-        if (tvPlayBtn) tvPlayBtn.focus();
-    }, 100);
+        if (tvPlayBtn) {
+            tvPlayBtn.focus();
+        }
+    }, 150);
 }
 
 function closeTvModal() {
@@ -733,7 +738,7 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
 });
 
 /* =========================================================
-   NETPLEX D-PAD CONTROLLER & STRICT BUTTON FOCUS LOCK
+   NETPLEX NATIVE ANDROID TV ENGINE (CAPTURE PHASE)
 ========================================================= */
 (function () {
     "use strict";
@@ -755,9 +760,9 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
 
     function getModalNavElements(openModal) {
         const closeBtn = openModal.querySelector('.close-btn, .close');
+        const dropdown = openModal.querySelector('#episodeDropdown');
         const fullscreenBtn = openModal.querySelector('#fullscreenButton, #tvFullscreenButton');
         const playBtn = openModal.querySelector('.play-pause-btn');
-        const dropdown = openModal.querySelector('#episodeDropdown');
 
         const elements = [];
         if (closeBtn && isElementVisible(closeBtn)) elements.push(closeBtn);
@@ -771,58 +776,107 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
     function getFocusableElements() {
         const selector = 'a[href], button:not([disabled]), select:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex="0"]';
         return Array.from(document.querySelectorAll(selector))
-            .filter(el => el.tagName !== "IFRAME")
+            .filter(el => el.tagName !== "IFRAME" && !el.classList.contains("dpad-focus-guard"))
             .filter(isElementVisible);
+    }
+
+    function focusAndScroll(el, container) {
+        if (!el) return;
+        el.focus();
+        if (container) {
+            const rect = el.getBoundingClientRect();
+            const cRect = container.getBoundingClientRect();
+            if (rect.top < cRect.top || rect.bottom > cRect.bottom) {
+                el.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+        }
     }
 
     function handleModalDpad(openModal, dir) {
         const items = getModalNavElements(openModal);
         if (!items.length) return;
 
+        const container = openModal.querySelector('.modal-content');
         let active = document.activeElement;
         const closeBtn = openModal.querySelector('.close-btn, .close');
         const playBtn = openModal.querySelector('.play-pause-btn');
         const fullscreenBtn = openModal.querySelector('#fullscreenButton, #tvFullscreenButton');
         const dropdown = openModal.querySelector('#episodeDropdown');
 
-        // If focus is outside or inside an iframe due to a click/tap, pull it back to buttons
-        if (!items.includes(active)) {
-            if (playBtn) playBtn.focus();
-            return;
-        }
-
-        // Direct Up / Down Navigation
+        // UPWARD NAVIGATION & SMOOTH VERTICAL SCROLL
         if (dir === "ArrowUp") {
-            if (active === playBtn && fullscreenBtn) {
-                fullscreenBtn.focus();
-            } else if (active === fullscreenBtn && dropdown) {
-                dropdown.focus();
-            } else if (closeBtn) {
-                closeBtn.focus();
+            if (active === playBtn) {
+                if (container && container.scrollTop > 80) {
+                    container.scrollBy({ top: -250, behavior: "smooth" });
+                } else if (fullscreenBtn) {
+                    focusAndScroll(fullscreenBtn, container);
+                }
+            } else if (active === fullscreenBtn) {
+                if (dropdown) {
+                    focusAndScroll(dropdown, container);
+                } else if (closeBtn) {
+                    focusAndScroll(closeBtn, container);
+                }
+            } else if (active === dropdown) {
+                if (closeBtn) {
+                    focusAndScroll(closeBtn, container);
+                }
+            } else if (active === closeBtn) {
+                if (container) {
+                    container.scrollTo({ top: 0, behavior: "smooth" });
+                }
+            } else {
+                if (playBtn) {
+                    focusAndScroll(playBtn, container);
+                }
             }
             return;
         }
 
+        // DOWNWARD NAVIGATION & SMOOTH VERTICAL SCROLL
         if (dir === "ArrowDown") {
             if (active === closeBtn) {
-                if (dropdown) dropdown.focus();
-                else if (fullscreenBtn) fullscreenBtn.focus();
-                else if (playBtn) playBtn.focus();
-            } else if (active === dropdown && fullscreenBtn) {
-                fullscreenBtn.focus();
-            } else if (active === fullscreenBtn && playBtn) {
-                playBtn.focus();
+                if (dropdown) {
+                    focusAndScroll(dropdown, container);
+                } else if (fullscreenBtn) {
+                    focusAndScroll(fullscreenBtn, container);
+                } else if (playBtn) {
+                    focusAndScroll(playBtn, container);
+                }
+            } else if (active === dropdown) {
+                if (fullscreenBtn) {
+                    focusAndScroll(fullscreenBtn, container);
+                } else if (playBtn) {
+                    focusAndScroll(playBtn, container);
+                }
+            } else if (active === fullscreenBtn) {
+                if (playBtn) {
+                    focusAndScroll(playBtn, container);
+                }
+            } else if (active === playBtn) {
+                // If on play button, down arrow scrolls container down to show the video trailer
+                if (container) {
+                    container.scrollBy({ top: 250, behavior: "smooth" });
+                }
+            } else {
+                if (playBtn) {
+                    focusAndScroll(playBtn, container);
+                }
             }
             return;
         }
 
-        // Left / Right Cycle
+        // HORIZONTAL CYCLING (Left / Right)
         if (dir === "ArrowRight" || dir === "ArrowLeft") {
             let index = items.indexOf(active);
-            let nextIndex = (dir === "ArrowRight") 
-                ? (index + 1) % items.length 
+            if (index === -1) {
+                if (playBtn) focusAndScroll(playBtn, container);
+                return;
+            }
+            let nextIndex = (dir === "ArrowRight")
+                ? (index + 1) % items.length
                 : (index - 1 + items.length) % items.length;
-            items[nextIndex].focus();
+            focusAndScroll(items[nextIndex], container);
             return;
         }
     }
@@ -866,12 +920,9 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
                 const dx = center.x - currentCenter.x;
                 const dy = center.y - currentCenter.y;
 
-                let distance = 0;
-                if (direction === "ArrowLeft" || direction === "ArrowRight") {
-                    distance = Math.abs(dx) + (Math.abs(dy) * 2.5);
-                } else {
-                    distance = Math.abs(dy) + (Math.abs(dx) * 0.8);
-                }
+                let distance = (direction === "ArrowLeft" || direction === "ArrowRight")
+                    ? Math.abs(dx) + (Math.abs(dy) * 2.5)
+                    : Math.abs(dy) + (Math.abs(dx) * 0.8);
 
                 if (distance < bestDistance) {
                     bestDistance = distance;
@@ -886,35 +937,37 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
         }
     }
 
+    // CAPTURE PHASE LISTENER
     window.addEventListener("keydown", function (e) {
+        const code = e.keyCode || e.which;
+        const key = e.key;
+
+        const isOkKey = (
+            key === "Enter" || key === "Select" || key === "OK" ||
+            code === 13 || code === 23
+        );
+
         const active = document.activeElement;
         const openModal = document.querySelector('.modal.show');
         const isInput = active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA");
 
-        // 1. Android TV OK / Select Button
-        if (isTvOk(e)) {
+        if (isOkKey) {
             if (active && active !== document.body && !isInput) {
                 e.preventDefault();
+                e.stopPropagation();
                 active.click();
             }
             return;
         }
 
-        // 2. D-Pad Directional Controls
-        const navKeys = [
-            "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight",
-            "Up", "Down", "Left", "Right",
-            37, 38, 39, 40
-        ];
+        let dir = null;
+        if (key === "ArrowUp" || key === "Up" || code === 38 || code === 19) dir = "ArrowUp";
+        if (key === "ArrowDown" || key === "Down" || code === 40 || code === 20) dir = "ArrowDown";
+        if (key === "ArrowLeft" || key === "Left" || code === 37 || code === 21) dir = "ArrowLeft";
+        if (key === "ArrowRight" || key === "Right" || code === 39 || code === 22) dir = "ArrowRight";
 
-        if (navKeys.includes(e.key) || navKeys.includes(e.keyCode)) {
-            let dir = e.key;
-            if (e.keyCode === 37 || e.key === "Left") dir = "ArrowLeft";
-            if (e.keyCode === 38 || e.key === "Up") dir = "ArrowUp";
-            if (e.keyCode === 39 || e.key === "Right") dir = "ArrowRight";
-            if (e.keyCode === 40 || e.key === "Down") dir = "ArrowDown";
-
-            // When a modal is open, intercept and steer the D-Pad strictly between button controls
+        if (dir) {
+            // Intercept modal navigation and prevent default browser spatial jumping into iframe
             if (openModal) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -931,21 +984,27 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
             }
 
             e.preventDefault();
+            e.stopPropagation();
             navigateSpatial(dir);
             return;
         }
 
-        // 3. Android TV Back Key
-        const backKeys = ["Escape", "Back", "GoBack", 10009, 27, 461];
-        if (backKeys.includes(e.key) || backKeys.includes(e.keyCode)) {
-            if (movieModal.classList.contains("show")) {
+        const isBack = (
+            key === "Escape" || key === "Back" || key === "GoBack" ||
+            code === 27 || code === 4 || code === 461 || code === 10009
+        );
+
+        if (isBack) {
+            if (movieModal && movieModal.classList.contains("show")) {
                 e.preventDefault();
+                e.stopPropagation();
                 closeModal();
                 return;
             }
 
-            if (tvModal.classList.contains("show")) {
+            if (tvModal && tvModal.classList.contains("show")) {
                 e.preventDefault();
+                e.stopPropagation();
                 closeTvModal();
                 return;
             }
@@ -953,6 +1012,7 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
             const activeDropdown = document.querySelector(".dropdown.active, .dropdown-content.active");
             if (activeDropdown) {
                 e.preventDefault();
+                e.stopPropagation();
                 activeDropdown.classList.remove("active");
                 return;
             }
@@ -961,5 +1021,5 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
                 window.history.back();
             }
         }
-    });
+    }, true);
 })();
