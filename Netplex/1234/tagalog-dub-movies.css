@@ -517,7 +517,6 @@ h2.section-heading::before {
     visibility: visible;
 }
 
-/* Modal Content with Explicit Smooth Scrolling */
 .modal-content {
     background: var(--netflix-dark);
     width: 100vw;
