@@ -148,10 +148,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Window Blur Guard: If focus jumps into an iframe, pull it back immediately
     window.addEventListener("blur", function () {
         const activeModal = document.querySelector('.modal.show');
-        if (activeModal) {
+        if (activeModal && !activeModal.classList.contains("auth-modal-content") && !activeModal.classList.contains("auth-modal-root")) {
             setTimeout(() => {
                 const targetBtn = activeModal.querySelector('.play-pause-btn') || activeModal.querySelector('#fullscreenButton');
                 if (targetBtn) {
@@ -315,6 +314,7 @@ function closeModal() {
 
 window.addEventListener("click", event => {
     if (event.target === movieModal) closeModal();
+    if (event.target === document.getElementById("authModal")) closeAuthModal();
 });
 
 fetchMovies();
@@ -481,6 +481,7 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1-CEcNwFVrnBMfRNWpawQJuBvAVA3LSqC/preview",
             "https://drive.google.com/file/d/1-FxH4Vmjlp-rSR_2Y0jgXrtdShqBo_jM/preview",
             "https://drive.google.com/file/d/1-HozFQjRW26ArPeldIbUJfXHl6Yu_Swe/preview",
+            "https://drive.google.com/file/d/1-H92eL74dwnuiRXX5DiAmhMrFr6FHR1E/preview",
             "https://drive.google.com/file/d/1-JXTPFV2lrBBxs9WlPcP_RXj2z1gBkgh/preview",
             "https://drive.google.com/file/d/1-As0mGo6COFVgp2hHq94gdOLgN3q2EDX/preview",
             "https://drive.google.com/file/d/1-AyLArhlhrWcwxD05EVrDUbmmjfADi5u/preview",
@@ -499,7 +500,7 @@ const TV_EPISODES = {
             "https://drive.google.com/file/d/1-DeaQetLhI5DBRplM1esgHby13GcqQHJ/preview",
             "https://drive.google.com/file/d/1-WLeiAFu8moC4yUGjKLtpF4mWHQ5i7aZ/preview",
             "https://drive.google.com/file/d/1-9sJB8q4do2Tzu9x5osORqEiRPTD5pU8/preview",
-            "https://drive.google.com/file/d/1-H92eL74dwnuiRXX5DiAmhMrFr6FHR1E/preview",
+            "https://drive.google.com/file/d/1-HozFQjRW26ArPeldIbUJfXHl6Yu_Swe/preview",
             "https://drive.google.com/file/d/1-IsbCqatIo8BP2EhfdeoIVBsq4UUEspH/preview",
             "https://drive.google.com/file/d/1-T6tVfDPAvaL8DXCzEpnJM2kjZKdFZS-/preview",
             "https://drive.google.com/file/d/1-FCILrQER3CyXSZo61kHIPlQNJH_c7dR/preview",
@@ -641,6 +642,7 @@ function closeTvModal() {
 
 window.addEventListener("click", event => {
     if (event.target === tvModal) closeTvModal();
+    if (event.target === document.getElementById("authModal")) closeAuthModal();
 });
 
 fetchTvShows();
@@ -803,7 +805,6 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
         const fullscreenBtn = openModal.querySelector('#fullscreenButton, #tvFullscreenButton');
         const dropdown = openModal.querySelector('#episodeDropdown');
 
-        // UPWARD NAVIGATION & SMOOTH VERTICAL SCROLL
         if (dir === "ArrowUp") {
             if (active === playBtn) {
                 if (container && container.scrollTop > 80) {
@@ -833,7 +834,6 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
             return;
         }
 
-        // DOWNWARD NAVIGATION & SMOOTH VERTICAL SCROLL
         if (dir === "ArrowDown") {
             if (active === closeBtn) {
                 if (dropdown) {
@@ -854,7 +854,6 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
                     focusAndScroll(playBtn, container);
                 }
             } else if (active === playBtn) {
-                // If on play button, down arrow scrolls container down to show the video trailer
                 if (container) {
                     container.scrollBy({ top: 250, behavior: "smooth" });
                 }
@@ -866,7 +865,6 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
             return;
         }
 
-        // HORIZONTAL CYCLING (Left / Right)
         if (dir === "ArrowRight" || dir === "ArrowLeft") {
             let index = items.indexOf(active);
             if (index === -1) {
@@ -937,7 +935,6 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
         }
     }
 
-    // CAPTURE PHASE LISTENER
     window.addEventListener("keydown", function (e) {
         const code = e.keyCode || e.which;
         const key = e.key;
@@ -948,7 +945,7 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
         );
 
         const active = document.activeElement;
-        const openModal = document.querySelector('.modal.show');
+        const openModal = document.querySelector('.modal.show:not(#authModal)');
         const isInput = active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA");
 
         if (isOkKey) {
@@ -967,7 +964,6 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
         if (key === "ArrowRight" || key === "Right" || code === 39 || code === 22) dir = "ArrowRight";
 
         if (dir) {
-            // Intercept modal navigation and prevent default browser spatial jumping into iframe
             if (openModal) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -995,6 +991,14 @@ document.getElementById("tvFullscreenButton").addEventListener("click", function
         );
 
         if (isBack) {
+            const authModal = document.getElementById("authModal");
+            if (authModal && authModal.classList.contains("show")) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeAuthModal();
+                return;
+            }
+
             if (movieModal && movieModal.classList.contains("show")) {
                 e.preventDefault();
                 e.stopPropagation();
