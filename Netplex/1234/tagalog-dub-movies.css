@@ -27,16 +27,17 @@ body {
     outline: none !important;
 }
 
+/* High-contrast Android TV active focus indicator */
 [tabindex="0"]:focus,
 a:focus,
 button:focus,
 input:focus,
 select:focus,
 textarea:focus {
-    outline: 3px solid #0296cc !important;
+    outline: 4px solid #00d4ff !important;
     outline-offset: 3px !important;
-    box-shadow: 0 0 15px rgba(2, 150, 204, 0.9) !important;
-    z-index: 9999 !important;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.9) !important;
+    z-index: 99999 !important;
 }
 
 body.modal-open {
@@ -512,6 +513,7 @@ h2.section-heading::before {
     visibility: visible;
 }
 
+/* Modal Content with Explicit Smooth Scrolling */
 .modal-content {
     background: var(--netflix-dark);
     width: 100vw;
@@ -521,7 +523,9 @@ h2.section-heading::before {
     border-radius: 0;
     text-align: left;
     position: relative;
-    overflow-y: auto;
+    overflow-y: scroll !important;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
     padding: 40px 6%;
     display: flex;
     flex-direction: column;
@@ -530,11 +534,11 @@ h2.section-heading::before {
 }
 
 .modal-content::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
 }
 .modal-content::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.2);
-    border-radius: 4px;
+    background: #0296cc;
+    border-radius: 6px;
 }
 
 /* Close Buttons with TV outline support */
@@ -568,7 +572,7 @@ h2.section-heading::before {
     background: #ff2a2a !important;
     outline: 4px solid #00d4ff !important;
     outline-offset: 4px !important;
-    box-shadow: 0 0 20px rgba(0, 212, 255, 1) !important;
+    box-shadow: 0 0 25px rgba(0, 212, 255, 1) !important;
     transform: scale(1.15) !important;
 }
 
@@ -668,9 +672,20 @@ h2.section-heading::before {
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
     border: 1px solid rgba(255, 255, 255, 0.1);
     margin-top: 10px;
+    margin-bottom: 80px;
 }
 
-/* Pause Overlay Status */
+/* Invisible Guard that shields the iframe from native D-pad spatial jumps */
+.dpad-focus-guard {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
 .pause-overlay {
     position: absolute;
     top: 0;
@@ -727,7 +742,6 @@ h2.section-heading::before {
     text-transform: uppercase;
 }
 
-/* Pointer events are enabled so clicks/ads work, but tabindex="-1" prevents D-pad focus */
 iframe {
     width: 100%;
     height: 100%;
@@ -806,15 +820,6 @@ iframe {
     .year-badge, .category-badge {
         font-size: 9px;
         padding: 2px 4px;
-    }
-    .pause-badge {
-        padding: 16px 26px;
-    }
-    .pause-badge i {
-        font-size: 32px;
-    }
-    .pause-badge span {
-        font-size: 13px;
     }
 }
 
