@@ -337,7 +337,7 @@ function loadChannelList() {
         btn.onclick = () => playStream(channel);
         listContainer.appendChild(btn);
 
-        // Auto-play first channel and set initial active focus state
+        // Auto-play first channel and set active state without triggering autoscroll
         if (index === 0) {
             btn.classList.add('active');
             playStream(channel);
@@ -491,7 +491,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             if (isInDirection) {
-                // Directional weight metric: prioritize direct linear alignment
                 const distance = primaryDist * 1.0 + secondaryDist * 2.2;
                 if (distance < shortestDistance) {
                     shortestDistance = distance;
@@ -507,7 +506,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const key = e.key;
         const code = e.keyCode;
 
-        // Android TV & D-Pad Key codes
         const isUp = key === 'ArrowUp' || code === 38 || code === 19;
         const isDown = key === 'ArrowDown' || code === 40 || code === 20;
         const isLeft = key === 'ArrowLeft' || code === 37 || code === 21;
@@ -516,7 +514,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const isBack = key === 'Escape' || key === 'Back' || code === 27 || code === 461 || code === 10009;
         const isMediaPlayPause = code === 179 || code === 250 || code === 19;
 
-        // Remote Play/Pause toggle
         if (isMediaPlayPause && videoElement) {
             e.preventDefault();
             if (videoElement.paused) videoElement.play();
@@ -524,7 +521,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // Back Key handles fullscreen exit
         if (isBack) {
             if (document.fullscreenElement) {
                 e.preventDefault();
@@ -536,16 +532,17 @@ document.addEventListener("DOMContentLoaded", function () {
         let activeEl = document.activeElement;
         const focusable = getFocusableElements();
 
-        if (!activeEl || !focusable.includes(activeEl)) {
-            // Default first focus for TV remote
-            const defaultTarget = document.querySelector('.channel-btn.active') ||
-                                  document.querySelector('.channel-btn') ||
-                                  document.getElementById('fullscreen-btn');
-            if (defaultTarget) {
-                defaultTarget.focus();
+        // If no active element is focused yet, start focus at top element when remote key is pressed
+        if (!activeEl || !focusable.includes(activeEl) || activeEl === document.body) {
+            if (isUp || isDown || isLeft || isRight || isSelect) {
                 e.preventDefault();
+                const startElement = document.querySelector('nav .desktop-menu a') || 
+                                     document.getElementById('fullscreen-btn');
+                if (startElement) {
+                    startElement.focus({ preventScroll: true });
+                }
+                return;
             }
-            return;
         }
 
         let direction = null;
@@ -560,7 +557,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 e.preventDefault();
                 nextEl.focus();
 
-                // Auto-center scrolled channel cards
+                // Only scroll inside the channel-buttons grid when moving between channel cards
                 if (nextEl.classList.contains('channel-btn')) {
                     nextEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
                 }
@@ -574,14 +571,19 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Auto-focus first channel on initial load
+    // Ensure the viewport always loads and stays pinned at the very top
+    window.addEventListener('DOMContentLoaded', () => {
+        window.scrollTo(0, 0);
+    });
+
     window.addEventListener('load', () => {
         setTimeout(() => {
-            const defaultFocus = document.querySelector('.channel-btn.active') ||
-                                 document.querySelector('.channel-btn');
-            if (defaultFocus) {
-                defaultFocus.focus();
+            const topTarget = document.querySelector('nav .desktop-menu a') ||
+                              document.getElementById('fullscreen-btn');
+            if (topTarget) {
+                topTarget.focus({ preventScroll: true });
             }
-        }, 300);
+            window.scrollTo(0, 0);
+        }, 50);
     });
 })();
