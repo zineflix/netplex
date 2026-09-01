@@ -22,142 +22,6 @@ const qsa = (sel, root = document) => [...root.querySelectorAll(sel)];
 const safeOn = (el, ev, fn) => el && el.addEventListener(ev, fn);
 
 // ==============================
-// LIST/ROW FETCHING (HOME)
-// ==============================
-const CATEGORY_ENDPOINTS = {
-  popular: `/movie/popular`,
-  movies: `/discover/movie?sort_by=popularity.desc&vote_count.gte=500&vote_average=10`,
-  trending: `/trending/movie/week`,
-  top_rated: `/movie/top_rated`,
-  action: `/discover/movie?with_genres=28`,
-  comedy: `/discover/movie?with_genres=35`,
-  horror: `/discover/movie?with_genres=27`,
-  romance: `/discover/movie?with_genres=10749`,
-  animation: `/discover/movie?with_genres=16`,
-};
-
-async function fetchMovies(category, rowId) {
-  const endpoint = CATEGORY_ENDPOINTS[category];
-  if (!endpoint) return console.warn(`Unknown category: ${category}`);
-  const container = byId(rowId);
-  if (!container) return; // Not on this page
-
-  try {
-    const data = await getJSON(`${baseUrl}${endpoint}${endpoint.includes('?') ? '&' : '?'}api_key=${apiKey}&language=en-US&page=1`);
-    container.innerHTML = '';
-
-    (data.results || []).forEach((movie) => {
-      const card = document.createElement('div');
-      card.className = 'movie-card';
-      card.style.position = 'relative';
-      card.innerHTML = `
-        <img class="row__poster" src="${imgUrl(movie.poster_path)}" alt="${movie.title}">
-        <div class="movie-rating"><i class="fas fa-star"></i> ${Number(movie.vote_average || 0).toFixed(1)}</div>
-        <div class="play-button"><i class="fas fa-play"></i></div>
-      `;
-      card.addEventListener('click', () => {
-        window.location.href = `movie-details.html?movie_id=${movie.id}`;
-      });
-      container.appendChild(card);
-    });
-  } catch (err) {
-    console.error(`Error fetching ${category}:`, err);
-  }
-}
-
-// ==============================
-// BANNER (HOME)
-// ==============================
-async function fetchBanner() {
-  const banner = qs('.banner');
-  if (!banner) return; // Not on this page
-  try {
-    const { results = [] } = await getJSON(`${baseUrl}/movie/popular?api_key=${apiKey}&language=en-US&page=1`);
-    if (!results.length) return;
-
-    const movie = results[Math.floor(Math.random() * results.length)];
-    banner.style.backgroundImage = `url(${imgUrl(movie.backdrop_path, 'original')})`;
-    const titleEl = qs('.banner__title');
-    const descEl = qs('.banner__description');
-    if (titleEl) titleEl.textContent = movie.title || 'Untitled';
-    if (descEl) {
-      const text = movie.overview || '';
-      descEl.textContent = text.length > 150 ? text.slice(0, 150) + '...' : text;
-    }
-
-    // Play button inside banner, if present
-    const bannerPlay = banner.querySelector('.play-button') || byId('banner-play-btn');
-    safeOn(bannerPlay, 'click', () => {
-      window.location.href = `movie-details.html?movie_id=${movie.id}`;
-    });
-  } catch (err) {
-    console.error('Error fetching banner:', err);
-  }
-}
-
-// ==============================
-// HORIZONTAL ARROW NAV (HOME)
-// ==============================
-function initArrowNavigation() {
-  qsa('.row__posters').forEach((row) => {
-    const prev = row.parentElement?.querySelector('.arrow-button.prev');
-    const next = row.parentElement?.querySelector('.arrow-button.next');
-    if (!prev || !next) return;
-
-    let x = 0;
-    const step = 220;
-    safeOn(prev, 'click', () => {
-      x = Math.max(0, x - step);
-      row.scrollTo({ left: x, behavior: 'smooth' });
-    });
-    safeOn(next, 'click', () => {
-      const max = row.scrollWidth - row.clientWidth;
-      x = Math.min(max, x + step);
-      row.scrollTo({ left: x, behavior: 'smooth' });
-    });
-  });
-}
-
-// ==============================
-// SEARCH BAR UI (GLOBAL)
-// ==============================
-function toggleSearchBar() {
-  qs('.search-bar')?.classList.toggle('show');
-}
-
-function openSearchPage() {
-  window.location.href = 'search.html';
-}
-
-// ==============================
-// FAVORITES / LIST PAGE (GLOBAL)
-// ==============================
-function renderSavedList() {
-  const container = byId('movie-list-container');
-  if (!container) return; // Not on this page
-  const movieList = JSON.parse(localStorage.getItem('movieList') || '[]');
-
-  if (!movieList.length) {
-    container.innerHTML = '<p>Your movie list is empty!</p>';
-    return;
-  }
-
-  container.innerHTML = '';
-  movieList.forEach((movie) => {
-    const card = document.createElement('div');
-    card.className = 'movie-card';
-    card.innerHTML = `
-      <img class="row__poster" src="${imgUrl(movie.poster_path)}" alt="${movie.title}">
-      <p>${movie.title}</p>
-    `;
-    card.addEventListener('click', () => {
-      window.location.href = `movie-details.html?movie_id=${movie.id}`;
-    });
-    container.appendChild(card);
-  });
-}
-
-// ==============================
 // STREAMING SERVERS (DETAILS)
 // ==============================
 const MOVIE_ENDPOINTS = [
@@ -192,13 +56,23 @@ const urlParams = new URLSearchParams(window.location.search);
 const movieId = urlParams.get('movie_id');
 let currentServerIndex = 0;
 
+// Helper to reliably close trailer
+function closeTrailerModal() {
+  const trailerPopup = byId('trailer-popup');
+  const trailerIframe = byId('movie-iframe-trailer');
+  const trailerBtn = byId('watch-trailer-btn');
+
+  if (trailerPopup) trailerPopup.style.display = 'none';
+  if (trailerIframe) trailerIframe.src = '';
+  if (trailerBtn) trailerBtn.focus();
+}
+
 // ==============================
 // DETAILS PAGE
 // ==============================
 async function fetchMovieDetails() {
-  if (!movieId) return; // Not on details page
+  if (!movieId) return;
   try {
-    // Details
     const movie = await getJSON(`${baseUrl}/movie/${movieId}?api_key=${apiKey}&language=en-US`);
 
     const poster = byId('movie-poster');
@@ -232,7 +106,7 @@ async function fetchMovieDetails() {
       });
     }
 
-    // Trailer (YouTube)
+    // Trailer
     const videos = await getJSON(`${baseUrl}/movie/${movieId}/videos?api_key=${apiKey}&language=en-US`);
     const trailer = (videos.results || []).find((v) => v.type === 'Trailer' && v.site === 'YouTube');
     const trailerIframe = byId('movie-iframe-trailer');
@@ -240,81 +114,35 @@ async function fetchMovieDetails() {
     const closeTrailerBtn = byId('close-trailer');
     const trailerBtn = byId('watch-trailer-btn');
 
-    if (trailer && trailerBtn && trailerPopup && trailerIframe) {
+    if (trailer && trailerBtn && trailerPopup && trailerIframe && closeTrailerBtn) {
       safeOn(trailerBtn, 'click', () => {
         trailerPopup.style.display = 'flex';
-        trailerIframe.src = `https://www.youtube.com/embed/${trailer.key}?autoplay=1`;
+        trailerIframe.src = `https://www.youtube.com/embed/${trailer.key}?autoplay=1&mute=0&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`;
+        
+        // Ensure browser gives close button immediate focus
+        setTimeout(() => {
+          closeTrailerBtn.focus();
+        }, 100);
       });
-      safeOn(closeTrailerBtn, 'click', () => {
-        trailerPopup.style.display = 'none';
-        trailerIframe.src = ''; // stop video
+
+      // Direct click
+      safeOn(closeTrailerBtn, 'click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        closeTrailerModal();
+      });
+
+      // Direct OK / Enter on Close Button
+      safeOn(closeTrailerBtn, 'keydown', (e) => {
+        if (e.key === 'Enter' || e.keyCode === 13 || e.key === 'Select') {
+          e.preventDefault();
+          e.stopPropagation();
+          closeTrailerModal();
+        }
       });
     }
 
-// ==============================
-// DOWNLOAD OPTIONS
-// ==============================
-const downloadBtn = byId('download-btn');
-const downloadPopup = byId('download-popup');
-const closeDownloadBtn = byId('close-download-popup');
-
-const primaryDownloadBtn = byId('primary-download-btn');
-const alternativeDownloadBtn = byId('alternative-download-btn');
-
-if (
-    downloadBtn &&
-    downloadPopup &&
-    closeDownloadBtn &&
-    primaryDownloadBtn &&
-    alternativeDownloadBtn
-) {
-    // Open download options
-    safeOn(downloadBtn, 'click', () => {
-        if (!movieId) return;
-
-        downloadPopup.style.display = 'flex';
-    });
-
-    // Primary Download
-    safeOn(primaryDownloadBtn, 'click', () => {
-        if (!movieId) return;
-
-        window.open(
-            `https://web.nxsha.app/dl/movie/${movieId}`,
-            '_blank',
-            'noopener,noreferrer'
-        );
-
-        downloadPopup.style.display = 'none';
-    });
-
-    // Alternative Download
-    safeOn(alternativeDownloadBtn, 'click', () => {
-        if (!movieId) return;
-
-        window.open(
-            `https://vidvault.ru/movie/${movieId}`,
-            '_blank',
-            'noopener,noreferrer'
-        );
-
-        downloadPopup.style.display = 'none';
-    });
-
-    // Close popup
-    safeOn(closeDownloadBtn, 'click', () => {
-        downloadPopup.style.display = 'none';
-    });
-
-    // Close when clicking outside modal
-    safeOn(downloadPopup, 'click', (e) => {
-        if (e.target === downloadPopup) {
-            downloadPopup.style.display = 'none';
-        }
-    });
-}
-    
-    // Rating (5 stars)
+    // Rating
     const starWrap = byId('movie-rating');
     if (starWrap) {
       starWrap.innerHTML = '';
@@ -344,352 +172,474 @@ if (
       });
     }
 
-    // Iframe + Auto-load Server 1
+    // Iframe Auto-load
     const iframeContainer = byId('iframe-container');
     const movieIframe = byId('movie-iframe');
-    const watchNowBtn = byId('watch-now-btn');
 
     if (iframeContainer && movieIframe) {
       iframeContainer.style.display = 'flex';
       movieIframe.src = `${MOVIE_ENDPOINTS[0].url}${movieId}?autoplay=true`;
-      if (watchNowBtn) watchNowBtn.style.display = 'none';
     }
 
-    // Servers dropdown
-    const changeServerBtn = byId('change-server-btn');
-    const serverDropdown = byId('server-dropdown');
-    const serverList = byId('server-list');
-
-    if (serverList) {
-      serverList.innerHTML = '';
-      MOVIE_ENDPOINTS.forEach((endpoint, idx) => {
-        const li = document.createElement('li');
-        li.textContent = endpoint.name;
-        li.addEventListener('click', () => changeServer(idx));
-        serverList.appendChild(li);
-      });
-    }
-
-    // Toggle server dropdown menu on button click
-    safeOn(changeServerBtn, 'click', (e) => {
-      e.stopPropagation();
-      if (!serverDropdown) return;
-      
-      const isCurrentlyDisplayed = serverDropdown.style.display === 'block' || serverDropdown.classList.contains('show');
-      
-      if (isCurrentlyDisplayed) {
-        serverDropdown.style.display = 'none';
-        serverDropdown.classList.remove('show');
-      } else {
-        serverDropdown.style.display = 'block';
-        serverDropdown.classList.add('show');
-      }
-      
-      const icon = changeServerBtn.querySelector('.dropdown-icon');
-      if (icon) icon.classList.toggle('open', !isCurrentlyDisplayed);
-    });
-
-    function changeServer(index) {
-      if (index < 0 || index >= MOVIE_ENDPOINTS.length) {
-        console.error("Invalid server index.");
-        return;
-      }
-
-      currentServerIndex = index;
-      const movieIframe = byId('movie-iframe');
-      const serverDropdown = byId('server-dropdown');
-      const changeServerBtn = byId('change-server-btn');
-      let dropdownIcon = changeServerBtn ? changeServerBtn.querySelector('.dropdown-icon') : null;
-      const sandboxBtn = byId('sandbox-toggle');
-      const selectedServer = MOVIE_ENDPOINTS[currentServerIndex];
-
-      // Enable sandbox
-      if (movieIframe) {
-        movieIframe.setAttribute('sandbox', 'allow-scripts allow-presentation allow-same-origin');
-      }
-      if (sandboxBtn) {
-        sandboxBtn.classList.remove('off');
-        sandboxBtn.classList.add('on');
-        sandboxBtn.textContent = "Sandbox: ON";
-      }
-
-      // Build URL based on server format
-      let url;
-      if (selectedServer.url.includes('?id=')) {
-        url = `${selectedServer.url}${movieId}`;
-      } else if (selectedServer.url.includes('moviesapi.to/movie/')) {
-        url = `${selectedServer.url}${movieId}`;
-      } else {
-        url = `${selectedServer.url}${movieId}?autoplay=true`;
-      }
-
-      if (movieIframe) movieIframe.src = url;
-
-      // Update button text while preserving the icon
-      if (changeServerBtn) {
-        changeServerBtn.textContent = selectedServer.name + ' ';
-        if (!dropdownIcon) {
-          dropdownIcon = document.createElement('i');
-          dropdownIcon.className = 'fas fa-chevron-down dropdown-icon';
-        }
-        dropdownIcon.classList.remove('open');
-        changeServerBtn.appendChild(dropdownIcon);
-      }
-
-      // Close dropdown
-      if (serverDropdown) {
-        serverDropdown.style.display = 'none';
-        serverDropdown.classList.remove('show');
-      }
-
-      console.log(`Changed to server: ${selectedServer.name}, URL: ${url}`);
-    }
-
-    // Close iframe
-    const closeIframeBtn = byId('close-iframe-btn');
-    safeOn(closeIframeBtn, 'click', () => {
-      if (!iframeContainer || !movieIframe || !watchNowBtn) return;
-      iframeContainer.style.display = 'none';
-      movieIframe.src = '';
-      watchNowBtn.style.display = 'block';
-      window.location.reload();
-    });
+    // Build Server List
+    buildServerList();
 
   } catch (err) {
     console.error('Error fetching movie details:', err);
   }  
 }
 
-// ==============================
-// GLOBAL OUTSIDE CLICK HANDLER
-// ==============================
-document.addEventListener('click', (e) => {
-  // Search bar outside click logic
-  const bar = qs('.search-bar');
-  const icons = qs('.icons-container');
-  if (bar && !bar.contains(e.target) && !icons?.contains(e.target)) {
-    bar.classList.remove('show');
-  }
-
-  // Server Dropdown outside click logic
-  const changeServerBtn = byId('change-server-btn');
+function buildServerList() {
   const serverDropdown = byId('server-dropdown');
-  const serverControl = qs('.server-control');
+  const serverList = byId('server-list');
+  const changeServerBtn = byId('change-server-btn');
 
-  if (serverDropdown && (serverDropdown.style.display === 'block' || serverDropdown.classList.contains('show'))) {
-    // If the click is outside both the button and the dropdown list
-    if (
-      (!changeServerBtn || !changeServerBtn.contains(e.target)) &&
-      (!serverControl || !serverControl.contains(e.target)) &&
-      !serverDropdown.contains(e.target)
-    ) {
-      serverDropdown.style.display = 'none';
-      serverDropdown.classList.remove('show');
-      const icon = changeServerBtn?.querySelector('.dropdown-icon');
-      if (icon) icon.classList.remove('open');
+  if (serverList) {
+    serverList.innerHTML = '';
+    MOVIE_ENDPOINTS.forEach((endpoint, idx) => {
+      const li = document.createElement('li');
+      li.textContent = endpoint.name;
+      li.setAttribute('tabindex', '0');
+      
+      const chooseThisServer = (e) => {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        changeServer(idx);
+      };
+
+      li.addEventListener('click', chooseThisServer);
+      li.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.keyCode === 13 || e.key === 'Select') {
+          chooseThisServer(e);
+        }
+      });
+
+      serverList.appendChild(li);
+    });
+  }
+
+  safeOn(changeServerBtn, 'click', (e) => {
+    e.stopPropagation();
+    if (!serverDropdown) return;
+    
+    const isCurrentlyDisplayed = serverDropdown.classList.contains('show') || serverDropdown.style.display === 'block';
+    
+    if (isCurrentlyDisplayed) {
+      closeServerDropdown();
+    } else {
+      openServerDropdown();
     }
+  });
+}
+
+function openServerDropdown() {
+  const serverDropdown = byId('server-dropdown');
+  const changeServerBtn = byId('change-server-btn');
+  if (!serverDropdown) return;
+
+  serverDropdown.style.display = 'block';
+  serverDropdown.classList.add('show');
+  const icon = changeServerBtn?.querySelector('.dropdown-icon');
+  if (icon) icon.classList.add('open');
+
+  const firstServerItem = serverDropdown.querySelector('li');
+  if (firstServerItem) firstServerItem.focus();
+}
+
+function closeServerDropdown() {
+  const serverDropdown = byId('server-dropdown');
+  const changeServerBtn = byId('change-server-btn');
+  if (!serverDropdown) return;
+
+  serverDropdown.style.display = 'none';
+  serverDropdown.classList.remove('show');
+  const icon = changeServerBtn?.querySelector('.dropdown-icon');
+  if (icon) icon.classList.remove('open');
+}
+
+function changeServer(index) {
+  if (index < 0 || index >= MOVIE_ENDPOINTS.length) return;
+
+  currentServerIndex = index;
+  const movieIframe = byId('movie-iframe');
+  const changeServerBtn = byId('change-server-btn');
+  const sandboxBtn = byId('sandbox-toggle');
+  const selectedServer = MOVIE_ENDPOINTS[currentServerIndex];
+
+  if (movieIframe) {
+    movieIframe.setAttribute('sandbox', 'allow-scripts allow-presentation allow-same-origin');
   }
-});
-
-// ==============================
-// GLOBAL UI / MISC
-// ==============================
-safeOn(document, 'DOMContentLoaded', () => {
-  // Home rows (only render where containers exist)
-  const rowMap = [
-    ['popular', 'popularMovies'],
-    ['movies', 'popularMovie'],
-    ['trending', 'trendingNow'],
-    ['top_rated', 'topRated'],
-    ['action', 'actionMovies'],
-    ['comedy', 'comedyMovies'],
-    ['horror', 'horrorMovies'],
-    ['romance', 'romanceMovies'],
-    ['animation', 'animation'],
-  ];
-  rowMap.forEach(([cat, id]) => fetchMovies(cat, id));
-
-  // Banner (home)
-  fetchBanner();
-
-  // Saved list page
-  renderSavedList();
-
-  // Horizontal scrollers
-  initArrowNavigation();
-
-  // Header behavior
-  safeOn(window, 'scroll', () => {
-    const nav = qs('nav');
-    if (nav) nav.classList.toggle('nav-solid', window.scrollY > 50);
-  });
-
-  // Menu toggle
-  safeOn(byId('menu-btn'), 'click', () => {
-    byId('menu')?.classList.toggle('active');
-  });
-
-  // Close button (back to home)
-  safeOn(byId('close-button'), 'click', () => (window.location.href = 'movies.html'));
-
-  // Loading screen hide
-  safeOn(window, 'load', () => {
-    setTimeout(() => {
-      const loader = byId('loading-screen');
-      if (loader) loader.style.display = 'none';
-    }, 1000);
-  });
-
-  // Comments fetch hook (kept, but guarded)
-  if (typeof getComments === 'function') {
-    safeOn(window, 'load', getComments);
+  if (sandboxBtn) {
+    sandboxBtn.classList.remove('off');
+    sandboxBtn.classList.add('on');
+    sandboxBtn.textContent = "Sandbox: ON";
   }
 
-  // Details page
-  fetchMovieDetails();
-});
+  let url;
+  if (selectedServer.url.includes('?id=') || selectedServer.url.includes('moviesapi.to/movie/')) {
+    url = `${selectedServer.url}${movieId}`;
+  } else {
+    url = `${selectedServer.url}${movieId}?autoplay=true`;
+  }
 
-// ==============================
-// Floating message close
-// ==============================
-function closeMessage() {
-  const el = byId('floating-message');
-  if (el) el.style.display = 'none';
+  if (movieIframe) movieIframe.src = url;
+
+  if (changeServerBtn) {
+    changeServerBtn.innerHTML = `${selectedServer.name} <span class="dropdown-icon">&#9660;</span>`;
+  }
+
+  closeServerDropdown();
+  if (changeServerBtn) {
+    changeServerBtn.focus();
+  }
 }
 
 // ==============================
-// Fullscreen for iframe (TV + Desktop + Mobile)
+// DOWNLOAD OPTIONS
+// ==============================
+const downloadBtn = byId('download-btn');
+const downloadPopup = byId('download-popup');
+const closeDownloadBtn = byId('close-download-popup');
+const primaryDownloadBtn = byId('primary-download-btn');
+const alternativeDownloadBtn = byId('alternative-download-btn');
+
+if (downloadBtn && downloadPopup && closeDownloadBtn && primaryDownloadBtn && alternativeDownloadBtn) {
+    safeOn(downloadBtn, 'click', () => {
+        if (!movieId) return;
+        downloadPopup.style.display = 'flex';
+        primaryDownloadBtn.focus();
+    });
+
+    safeOn(primaryDownloadBtn, 'click', () => {
+        if (!movieId) return;
+        window.open(`https://web.nxsha.app/dl/movie/${movieId}`, '_blank', 'noopener,noreferrer');
+        downloadPopup.style.display = 'none';
+        downloadBtn.focus();
+    });
+
+    safeOn(alternativeDownloadBtn, 'click', () => {
+        if (!movieId) return;
+        window.open(`https://vidvault.ru/movie/${movieId}`, '_blank', 'noopener,noreferrer');
+        downloadPopup.style.display = 'none';
+        downloadBtn.focus();
+    });
+
+    safeOn(closeDownloadBtn, 'click', () => {
+        downloadPopup.style.display = 'none';
+        downloadBtn.focus();
+    });
+
+    safeOn(downloadPopup, 'click', (e) => {
+        if (e.target === downloadPopup) {
+            downloadPopup.style.display = 'none';
+            downloadBtn.focus();
+        }
+    });
+}
+
+// ==============================
+// FULLSCREEN
 // ==============================
 function toggleFullscreen() {
   const iframe = document.getElementById('movie-iframe');
   const iframeContainer = document.getElementById('iframe-container');
+  if (!iframeContainer || !iframe) return;
 
-  if (!iframeContainer || !iframe) {
-    console.error('Iframe or container not found.');
-    return;
-  }
-
-  // Detect fullscreen support
   const doc = document;
-  const isFullscreen =
-    doc.fullscreenElement ||
-    doc.webkitFullscreenElement ||
-    doc.mozFullScreenElement ||
-    doc.msFullscreenElement;
-
-  // Detect if running on a Smart TV / TV browser
-  const userAgent = navigator.userAgent.toLowerCase();
-  const isTV =
-    /smart-tv|smarttv|appletv|googletv|hbbtv|netcast|viera|roku|dtv|firetv|aftb|afta|bravia|tizen|web0s|tv bro|tvbrowser|tv safari/.test(
-      userAgent
-    );
+  const isFullscreen = doc.fullscreenElement || doc.webkitFullscreenElement || doc.mozFullScreenElement || doc.msFullscreenElement;
+  const isTV = /smart-tv|smarttv|appletv|googletv|hbbtv|netcast|viera|roku|dtv|firetv|aftb|afta|bravia|tizen|web0s|tv bro|tvbrowser|tv safari/.test(navigator.userAgent.toLowerCase());
 
   if (isFullscreen) {
-    // Exit fullscreen mode
-    if (doc.exitFullscreen) {
-      doc.exitFullscreen();
-    } else if (doc.webkitExitFullscreen) {
-      doc.webkitExitFullscreen();
-    } else if (doc.mozCancelFullScreen) {
-      doc.mozCancelFullScreen();
-    } else if (doc.msExitFullscreen) {
-      doc.msExitFullscreen();
-    }
+    if (doc.exitFullscreen) doc.exitFullscreen();
+    else if (doc.webkitExitFullscreen) doc.webkitExitFullscreen();
+    else if (doc.mozCancelFullScreen) doc.mozCancelFullScreen();
+    else if (doc.msExitFullscreen) doc.msExitFullscreen();
 
-    // Exit CSS pseudo-fullscreen
     iframeContainer.classList.remove('pseudo-fullscreen');
-
-    // Unlock orientation (for mobile)
-    if (!isTV && screen.orientation?.unlock) {
-      screen.orientation.unlock().catch(() => {});
-    }
-
+    if (!isTV && screen.orientation?.unlock) screen.orientation.unlock().catch(() => {});
   } else {
-    // Try Fullscreen API first
-    const requestFs =
-      iframe.requestFullscreen ||
-      iframe.webkitRequestFullscreen ||
-      iframe.mozRequestFullScreen ||
-      iframe.msRequestFullscreen;
+    const requestFs = iframe.requestFullscreen || iframe.webkitRequestFullscreen || iframe.mozRequestFullScreen || iframe.msRequestFullscreen;
+    const containerRequestFs = iframeContainer.requestFullscreen || iframeContainer.webkitRequestFullscreen || iframeContainer.mozRequestFullScreen || iframeContainer.msRequestFullscreen;
 
-    const containerRequestFs =
-      iframeContainer.requestFullscreen ||
-      iframeContainer.webkitRequestFullscreen ||
-      iframeContainer.mozRequestFullScreen ||
-      iframeContainer.msRequestFullscreen;
-
-    // If browser supports fullscreen
     if (requestFs) {
       requestFs.call(iframe).catch(() => {
-        // fallback if iframe blocks fullscreen
         if (containerRequestFs) containerRequestFs.call(iframeContainer);
       });
     } else if (containerRequestFs) {
       containerRequestFs.call(iframeContainer);
     } else {
-      // No fullscreen API — fallback for some TVs
       iframeContainer.classList.add('pseudo-fullscreen');
     }
 
-    // Lock to landscape on mobile devices
     if (!isTV && screen.orientation?.lock) {
-      screen.orientation.lock('landscape').catch((e) => {
-        console.log('Orientation lock failed:', e);
-      });
+      screen.orientation.lock('landscape').catch(() => {});
     }
   }
 }
 
 // ==============================
-// Sandbox Toggle
+// SANDBOX TOGGLE
 // ==============================
 const sandboxWarning = byId('sandbox-warning');
 const proceedBtn = byId('proceed-btn');
 const abortBtn = byId('abort-btn');
 
-// Function to safely turn OFF sandbox
 function disableSandbox() {
   const sandboxBtn = byId('sandbox-toggle');
   const iframe = byId('movie-iframe');
-
   if (!iframe) return;
 
   iframe.removeAttribute('sandbox');
   sandboxBtn.classList.remove('on');
   sandboxBtn.classList.add('off');
   sandboxBtn.textContent = "Sandbox: OFF";
-  console.log("Sandbox disabled");
-
-  // Reload the iframe to apply the change
   iframe.src = iframe.src;
   if (sandboxWarning) sandboxWarning.style.display = 'none';
+  sandboxBtn.focus();
 }
 
-// Event listener for the main toggle button
 safeOn(byId('sandbox-toggle'), 'click', () => {
   const sandboxBtn = byId('sandbox-toggle');
   const iframe = byId('movie-iframe');
-
   if (!iframe) return;
 
   if (sandboxBtn.classList.contains('on')) {
-    // Show the warning pop-up
-    if (sandboxWarning) sandboxWarning.style.display = 'flex';
+    if (sandboxWarning) {
+      sandboxWarning.style.display = 'flex';
+      proceedBtn?.focus();
+    }
   } else {
-    // Turn ON sandbox directly
     iframe.setAttribute('sandbox', 'allow-scripts allow-presentation allow-same-origin');
     sandboxBtn.classList.remove('off');
     sandboxBtn.classList.add('on');
     sandboxBtn.textContent = "Sandbox: ON";
-    console.log("Sandbox enabled");
-    // Reload the iframe to apply the change
     iframe.src = iframe.src;
   }
 });
 
-// Event listeners for the pop-up buttons
 safeOn(proceedBtn, 'click', disableSandbox);
-
 safeOn(abortBtn, 'click', () => {
   if (sandboxWarning) sandboxWarning.style.display = 'none';
+  byId('sandbox-toggle')?.focus();
+});
+
+// ==============================
+// GLOBAL OUTSIDE CLICK HANDLER
+// ==============================
+document.addEventListener('click', (e) => {
+  const changeServerBtn = byId('change-server-btn');
+  const serverDropdown = byId('server-dropdown');
+  const serverControl = qs('.server-control');
+
+  if (serverDropdown && (serverDropdown.style.display === 'block' || serverDropdown.classList.contains('show'))) {
+    if (
+      (!changeServerBtn || !changeServerBtn.contains(e.target)) &&
+      (!serverControl || !serverControl.contains(e.target)) &&
+      !serverDropdown.contains(e.target)
+    ) {
+      closeServerDropdown();
+    }
+  }
+});
+
+// ==============================
+// ANDROID TV D-PAD SPATIAL NAVIGATION
+// ==============================
+(function initAndroidTVNavigation() {
+  const TV_KEYS = {
+    UP: [38, 'ArrowUp', 'Up'],
+    DOWN: [40, 'ArrowDown', 'Down'],
+    LEFT: [37, 'ArrowLeft', 'Left'],
+    RIGHT: [39, 'ArrowRight', 'Right'],
+    ENTER: [13, 'Enter', 'Select', 'Ok'],
+    BACK: [27, 8, 10009, 'Escape', 'Backspace', 'Back', 'GoBack']
+  };
+
+  const BASE_FOCUSABLE_SELECTOR = `
+    button:not([disabled]),
+    [tabindex="0"]:not([disabled]),
+    .server-dropdown li,
+    .close-button,
+    .download-source-btn,
+    .close-download-popup,
+    .close-trailer
+  `;
+
+  function getFocusableElements() {
+    const trailerPopup = byId('trailer-popup');
+    if (trailerPopup && trailerPopup.style.display === 'flex') {
+      return Array.from(trailerPopup.querySelectorAll(BASE_FOCUSABLE_SELECTOR)).filter(isElementVisible);
+    }
+
+    const downloadPopup = byId('download-popup');
+    if (downloadPopup && downloadPopup.style.display === 'flex') {
+      return Array.from(downloadPopup.querySelectorAll(BASE_FOCUSABLE_SELECTOR)).filter(isElementVisible);
+    }
+
+    const sandboxWarning = byId('sandbox-warning');
+    if (sandboxWarning && sandboxWarning.style.display === 'flex') {
+      return Array.from(sandboxWarning.querySelectorAll(BASE_FOCUSABLE_SELECTOR)).filter(isElementVisible);
+    }
+
+    const serverDropdown = byId('server-dropdown');
+    if (serverDropdown && (serverDropdown.style.display === 'block' || serverDropdown.classList.contains('show'))) {
+      return Array.from(serverDropdown.querySelectorAll('li')).filter(isElementVisible);
+    }
+
+    return Array.from(document.querySelectorAll(BASE_FOCUSABLE_SELECTOR)).filter((el) => {
+      if (el.closest('#trailer-popup') || el.closest('#download-popup') || el.closest('#sandbox-warning') || el.closest('#server-dropdown')) {
+        return false;
+      }
+      return isElementVisible(el);
+    });
+  }
+
+  function isElementVisible(el) {
+    return el.offsetWidth > 0 && el.offsetHeight > 0 && window.getComputedStyle(el).visibility !== 'hidden';
+  }
+
+  function findNextElement(current, direction) {
+    const focusables = getFocusableElements().filter(el => el !== current);
+    if (focusables.length === 0) return null;
+
+    const curRect = current.getBoundingClientRect();
+    const curCenter = { x: curRect.left + curRect.width / 2, y: curRect.top + curRect.height / 2 };
+
+    let bestElement = null;
+    let minDistance = Infinity;
+
+    focusables.forEach(candidate => {
+      const candRect = candidate.getBoundingClientRect();
+      const candCenter = { x: candRect.left + candRect.width / 2, y: candRect.top + candRect.height / 2 };
+
+      const dx = candCenter.x - curCenter.x;
+      const dy = candCenter.y - curCenter.y;
+
+      let isValidDirection = false;
+      if (direction === 'RIGHT' && dx > 10) isValidDirection = true;
+      if (direction === 'LEFT' && dx < -10) isValidDirection = true;
+      if (direction === 'DOWN' && dy > 10) isValidDirection = true;
+      if (direction === 'UP' && dy < -10) isValidDirection = true;
+
+      if (isValidDirection) {
+        const primary = direction === 'UP' || direction === 'DOWN' ? Math.abs(dy) : Math.abs(dx);
+        const secondary = direction === 'UP' || direction === 'DOWN' ? Math.abs(dx) : Math.abs(dy);
+        const distance = primary * 1.0 + secondary * 2.5;
+
+        if (distance < minDistance) {
+          minDistance = distance;
+          bestElement = candidate;
+        }
+      }
+    });
+
+    return bestElement || focusables[0];
+  }
+
+  window.addEventListener('keydown', (e) => {
+    const key = e.key || e.keyCode;
+    let direction = null;
+
+    if (TV_KEYS.UP.includes(key)) direction = 'UP';
+    else if (TV_KEYS.DOWN.includes(key)) direction = 'DOWN';
+    else if (TV_KEYS.LEFT.includes(key)) direction = 'LEFT';
+    else if (TV_KEYS.RIGHT.includes(key)) direction = 'RIGHT';
+
+    // 1. Back button handling
+    if (TV_KEYS.BACK.includes(key)) {
+      const trailerPopup = byId('trailer-popup');
+      const downloadPopup = byId('download-popup');
+      const sandboxWarning = byId('sandbox-warning');
+      const serverDropdown = byId('server-dropdown');
+
+      if (trailerPopup && trailerPopup.style.display === 'flex') {
+        closeTrailerModal();
+        e.preventDefault();
+        return;
+      }
+      if (downloadPopup && downloadPopup.style.display === 'flex') {
+        byId('close-download-popup')?.click();
+        e.preventDefault();
+        return;
+      }
+      if (sandboxWarning && sandboxWarning.style.display === 'flex') {
+        byId('abort-btn')?.click();
+        e.preventDefault();
+        return;
+      }
+      if (serverDropdown && (serverDropdown.style.display === 'block' || serverDropdown.classList.contains('show'))) {
+        closeServerDropdown();
+        byId('change-server-btn')?.focus();
+        e.preventDefault();
+        return;
+      }
+
+      window.location.href = 'movies.html';
+      e.preventDefault();
+      return;
+    }
+
+    // 2. D-Pad Direction Navigation
+    if (direction) {
+      const trailerPopup = byId('trailer-popup');
+      if (trailerPopup && trailerPopup.style.display === 'flex') {
+        byId('close-trailer')?.focus();
+        e.preventDefault();
+        return;
+      }
+
+      const activeEl = document.activeElement;
+      const validElements = getFocusableElements();
+      const isFocusedValid = activeEl && activeEl !== document.body && validElements.includes(activeEl);
+
+      if (!isFocusedValid) {
+        if (validElements.length > 0) {
+          validElements[0].focus();
+        }
+        e.preventDefault();
+        return;
+      }
+
+      const nextEl = findNextElement(activeEl, direction);
+      if (nextEl) {
+        nextEl.focus();
+        nextEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+        e.preventDefault();
+      }
+    }
+
+    // 3. OK / Enter trigger
+    if (TV_KEYS.ENTER.includes(key)) {
+      const trailerPopup = byId('trailer-popup');
+      if (trailerPopup && trailerPopup.style.display === 'flex') {
+        closeTrailerModal();
+        e.preventDefault();
+        return;
+      }
+
+      const active = document.activeElement;
+      if (active && active !== document.body && !active.matches('.server-dropdown li')) {
+        active.click();
+      }
+    }
+  });
+})();
+
+// ==============================
+// INITIALIZATION
+// ==============================
+safeOn(document, 'DOMContentLoaded', () => {
+  safeOn(byId('close-button'), 'click', () => (window.location.href = 'movies.html'));
+  
+  safeOn(window, 'load', () => {
+    setTimeout(() => {
+      const loader = byId('loading-screen');
+      if (loader) loader.style.display = 'none';
+      byId('change-server-btn')?.focus();
+    }, 1000);
+  });
+
+  fetchMovieDetails();
 });
