@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
 let lastActiveCard = null;
 
 // MOVIE SECTION LOGIC
-const API_KEY = "a1PbWWqgKDBDorh525uecKaGZD21FGSoCeR";
+const API_KEY = "a1e72fd93ed59f56e6332813b9f8dcae";
 const MOVIE_IDS = [
     18377, 597, 57627, 455714, 9470, 396535, 20453, 1001311, 11770, 41387, 16269, 57663, 
     53658, 570511, 200085, 433945, 184219, 11178, 15859, 158445, 851644, 9056, 10753, 
