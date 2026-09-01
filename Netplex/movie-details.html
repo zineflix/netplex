@@ -39,22 +39,6 @@
 /*]]>/* */
 </script> 
     <!-- PopAds End -->
-    
-    <!-- Galaksion Start -->
-<!--<script data-cfasync="false" async type="text/javascript" src="//cg.hagborndates.com/r494cvQC0cwK0O/122481"></script>
-    <!-- Galaksion Start -->
-    
-    <!-- Moneytag Start -->
-
-    <!-- Moneytag End -->
-
-    <!-- AdMaven Start -->
-    
-    <!-- AdMaven End -->
-
-    <!-- Adsterra Start -->
-<!--<script src="Ads/AdsPopunder.js"></script>
-    <!-- Adsterra End -->
 <!-- ADNETWORK SECTION END -->
     
 </head>   
@@ -81,19 +65,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      <!-- Loading Screen -->
      <div id="loading-screen" class="loading-screen">
         <div class="spinner"></div>
-        <p class="loading-text">Loading...</p> <!-- Add this text -->
+        <p class="loading-text">Loading...</p>
     </div>
 
-    <div class="blurred-background"></div> <!-- Background Container -->
+    <div class="blurred-background"></div>
     
-    <div class="container">
+    <div class="container" id="main-content-container">
         <div class="movie-details">
             
             <div id="iframe-container">
                 <!-- Controls ABOVE the video -->
                 <div class="video-controls-container">
                     <div class="server-control">
-                        <button id="change-server-btn">
+                        <button id="change-server-btn" tabindex="0">
                             Change Server <span class="dropdown-icon">&#9660;</span>
                         </button>
                         <!-- Dropdown anchored to the button -->
@@ -102,9 +86,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         </div>
                     </div>
 
-                    <button id="sandbox-toggle" class="sandbox-btn on">Sandbox: ON</button>
-                    <button onclick="toggleFullscreen()">Fullscreen</button>
-                    <button id="download-btn" class="download-btn">Download</button>
+                    <button id="sandbox-toggle" class="sandbox-btn on" tabindex="0">Sandbox: ON</button>
+                    <button onclick="toggleFullscreen()" tabindex="0">Fullscreen</button>
+                    <button id="download-btn" class="download-btn" tabindex="0">Download</button>
                 </div>
 
                 <!-- Video -->
@@ -120,7 +104,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     
                     <div class="poster-container">
                         <img id="movie-poster" alt="Movie Poster" class="movie-poster" src="images/placeholder.png">
-                        <button id="watch-trailer-btn">Watch Trailer</button>
+                        <button id="watch-trailer-btn" tabindex="0">Watch Trailer</button>
                     </div>        
                     
                     <div class="movie-info-section">
@@ -147,12 +131,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     
     <div id="trailer-popup" class="trailer-popup">
         <div class="trailer-content">
-            <span id="close-trailer" class="close-trailer">&times;</span>
-            <iframe id="movie-iframe-trailer" width="854" height="480" frameborder="0" allowfullscreen></iframe>
+            <button id="close-trailer" class="close-trailer" tabindex="0" aria-label="Close Trailer">&times;</button>
+            <iframe id="movie-iframe-trailer" width="854" height="480" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
     </div>        
     
-    <button class="close-button" id="close-button">
+    <button class="close-button" id="close-button" tabindex="0">
         <span class="close-text">CLOSE</span>&times;
     </button>
            
@@ -160,36 +144,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="warning-content">
     <p>Turning Sandbox OFF will enabled ADS from the server.</p>
     <div class="warning-buttons">
-      <button id="proceed-btn">Proceed</button>
-      <button id="abort-btn">Abort</button>
+      <button id="proceed-btn" tabindex="0">Proceed</button>
+      <button id="abort-btn" tabindex="0">Abort</button>
     </div>
   </div>
 </div>
 
-        
-<!-- Floating Message Start-->
-<!-- <div id="floating-message">
-    <i class="fa-solid fa-triangle-exclamation"></i>
-    <h2>Notice!</h2><br>
-    <h>
-        AD will open. Press Back to continue watching!<br><br>
-        If the video doesn't work,<br> 
-        switch to another SERVER!<br><br> 
-        Please also support our other sites<br>
-    </h>
-    <button onclick="window.location.href='https://nextplay.pages.dev'">NEXTPLAY</button>
-    <br>
-    <button class="close-btn" onclick="closeMessage()">CLOSE</button>
-</div>
-<!-- Floating Message End-->
-
-</div> 
-
-
-<!-- Adsterra DL 3 Ad Container Start -->
-
-<!-- Adsterra DL 3 Ad Container End -->
-  
 <!-- ============================= -->
 <!-- ADBLOCK DETECTOR -->
 <!-- ============================= -->
@@ -200,17 +160,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- ============================= -->
 <div id="download-popup" class="download-popup" style="display: none;">
     <div class="download-modal-content">
-        <span id="close-download-popup" class="close-download-popup">&times;</span>
+        <button id="close-download-popup" class="close-download-popup" tabindex="0" aria-label="Close Download Modal">&times;</button>
 
         <h2>Download Movie</h2>
         <p>Select a download source:</p>
 
         <div class="download-buttons">
-            <button id="primary-download-btn" class="download-source-btn primary">
+            <button id="primary-download-btn" class="download-source-btn primary" tabindex="0">
                 Primary Download
             </button>
 
-            <button id="alternative-download-btn" class="download-source-btn alternative">
+            <button id="alternative-download-btn" class="download-source-btn alternative" tabindex="0">
                 Alternative Download
             </button>
         </div>
