@@ -64,7 +64,9 @@ function closeTrailerModal() {
 
   if (trailerPopup) trailerPopup.style.display = 'none';
   if (trailerIframe) trailerIframe.src = '';
-  if (trailerBtn) trailerBtn.focus();
+  if (trailerBtn) {
+    trailerBtn.focus();
+  }
 }
 
 // ==============================
@@ -106,7 +108,7 @@ async function fetchMovieDetails() {
       });
     }
 
-    // Trailer
+    // Trailer (Guaranteed Autoplay on TV)
     const videos = await getJSON(`${baseUrl}/movie/${movieId}/videos?api_key=${apiKey}&language=en-US`);
     const trailer = (videos.results || []).find((v) => v.type === 'Trailer' && v.site === 'YouTube');
     const trailerIframe = byId('movie-iframe-trailer');
@@ -117,22 +119,20 @@ async function fetchMovieDetails() {
     if (trailer && trailerBtn && trailerPopup && trailerIframe && closeTrailerBtn) {
       safeOn(trailerBtn, 'click', () => {
         trailerPopup.style.display = 'flex';
-        trailerIframe.src = `https://www.youtube.com/embed/${trailer.key}?autoplay=1&mute=0&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`;
+        // Note: Android TV webviews require mute=1 and playsinline=1 to bypass silent auto-block policy
+        trailerIframe.src = `https://www.youtube.com/embed/${trailer.key}?autoplay=1&mute=1&playsinline=1&controls=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`;
         
-        // Ensure browser gives close button immediate focus
         setTimeout(() => {
           closeTrailerBtn.focus();
         }, 100);
       });
 
-      // Direct click
       safeOn(closeTrailerBtn, 'click', (e) => {
         e.preventDefault();
         e.stopPropagation();
         closeTrailerModal();
       });
 
-      // Direct OK / Enter on Close Button
       safeOn(closeTrailerBtn, 'keydown', (e) => {
         if (e.key === 'Enter' || e.keyCode === 13 || e.key === 'Select') {
           e.preventDefault();
