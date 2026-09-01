@@ -666,7 +666,7 @@ h2.section-heading::before {
     width: 100%;
     height: auto;
     aspect-ratio: 16 / 9;
-    min-height: 380px;
+    min-height: 540px;
     border-radius: 12px;
     overflow: hidden;
     background: #000;
@@ -803,7 +803,7 @@ iframe {
     .modal-info h2 { font-size: 1.5rem; }
     .iframe-wrapper {
         height: 55vh;             /* Increased from 40vh */
-        min-height: 320px;        /* Increased from 240px */
+        min-height: 350px;        /* Increased from 240px */
         aspect-ratio: auto;
     }
     .close-btn, .close {
