@@ -148,18 +148,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    window.addEventListener("blur", function () {
-        const activeModal = document.querySelector('.modal.show');
-        if (activeModal && !activeModal.classList.contains("auth-modal-content") && !activeModal.classList.contains("auth-modal-root")) {
-            setTimeout(() => {
-                const targetBtn = activeModal.querySelector('.play-pause-btn') || activeModal.querySelector('#fullscreenButton');
-                if (targetBtn) {
-                    window.focus();
-                    targetBtn.focus();
-                }
-            }, 10);
-        }
-    });
 });
 
 let lastActiveCard = null;
