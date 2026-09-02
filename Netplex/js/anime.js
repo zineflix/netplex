@@ -172,7 +172,7 @@
 
         const openDetails = () => {
             if (item.media_type === "tv") {
-                window.location.href = `tv-details.html?id=${item.id}`;
+                window.location.href = `tvshows-details.html?id=${item.id}`;
             } else {
                 window.location.href = `movie-details.html?movie_id=${item.id}`;
             }
