@@ -537,24 +537,83 @@
         display: block;
     }
 
+    /* Responsive Mobile Grid (Flexible 3 Columns) */
     @media (max-width: 768px) {
         .movies-grid {
-            grid-template-columns: repeat(3, 1fr);
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 8px;
-            padding: 10px;
+            padding: 6px;
+            width: 100%;
+            box-sizing: border-box;
         }
-        
-        .poster-card img, 
-        .poster-title { 
-            width: 100%; 
-            max-width: none;
+
+        .media-item {
+            width: 100%;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .poster-card {
+            width: 100%;
+            min-width: 0;
+            aspect-ratio: 2 / 3;
+            height: auto;
+            position: relative;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .poster-card img {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 6px;
         }
 
         .poster-title {
-            font-size: 11px;
+            width: 100% !important;
+            max-width: 100%;
+            min-width: 0;
+            font-size: 10px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            padding: 0 2px;
+            margin-bottom: 4px;
+        }
+
+        .rating {
+            font-size: 10px;
+            padding: 2px 5px;
+        }
+
+        .rating .star {
+            font-size: 0.75rem;
+            margin-right: 2px;
+        }
+
+        .media-badge {
+            font-size: 8px;
+            padding: 2px 4px;
+            top: 4px;
+            right: 4px;
+        }
+
+        .year-container {
+            font-size: 9px;
+            padding: 1px 4px;
+            bottom: 4px;
+            left: 4px;
+        }
+
+        .play-button {
+            width: 38px;
+            height: 38px;
+            font-size: 16px;
         }
     }
 
