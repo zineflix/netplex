@@ -495,30 +495,30 @@ h1 {
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 15px;
+    gap: 10px;
     justify-items: center;
     padding: 10px 0;
 }
 
 .card {
     position: relative;
-    background-color: transparent;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
-    width: 100%;
-    cursor: pointer;
-    /* Smooth lift and glow transitions */
-    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease-in-out;
-    transform-origin: center center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    background-color: var(--netflix-dark);
+    border: 2.5px solid transparent; /* Keeps sizing stable */
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
-/* Hover & Remote-Focus Lift Effect */
+/* Glowing Cyan/Blue border with neon drop shadow */
 .card:hover,
-.card:focus {
-    transform: scale(1.08) translateY(-5px);
-    box-shadow: 0 12px 24px rgba(2, 150, 204, 0.6);
+.card:focus-within {
+    transform: scale(1.08);
     z-index: 10;
+    border-color: #00d2ff;
+    box-shadow: 0 0 20px rgba(0, 210, 255, 0.65), 
+                0 0 35px rgba(2, 150, 204, 0.35),
+                0 10px 25px rgba(0, 0, 0, 0.8);
 }
 
 /* Subtle image scale on hover */
@@ -528,7 +528,7 @@ h1 {
     aspect-ratio: 2/3;
     object-fit: cover;
     display: block;
-    border-radius: 10px;
+    border-radius: 8px;
     transition: transform 0.3s ease-in-out, filter 0.3s ease;
 }
 
@@ -550,7 +550,7 @@ h1 {
     aspect-ratio: 2/3;
     object-fit: cover;
     display: block;
-    border-radius: 10px;
+    border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     transition: transform 0.2s ease;
 }
