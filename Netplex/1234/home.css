@@ -480,17 +480,32 @@
 
         /* SECTION & POSTER ROW */
         .section { margin: 0px; }
-        .section h2 { color: white; margin-bottom: -10px; margin: 20px; }
+        .section h2 { color: white; margin-top: 20px; margin-left: 10px;
+        }
+        
+        h2.section-heading {
+    		display: flex;
+    		align-items: center;
+    		gap: 10px;
+		}
 
-.media-row {
-    display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
-    gap: 0px; /* Added spacing between cards */
-    white-space: nowrap;
-    scroll-behavior: smooth;
-    padding: 15px 5px; /* Adds vertical breathing room for scaled titles and focused elements */
-}
+		h2.section-heading::before {
+    		content: '';
+    		width: 4px;
+    		height: 22px;
+    		background-color: var(--netflix-red);
+    		border-radius: 2px;
+		}
+
+		.media-row {
+    		display: flex;
+    		overflow-x: auto;
+    		overflow-y: hidden;
+    		gap: 0px; /* Added spacing between cards */
+    		white-space: nowrap;
+    		scroll-behavior: smooth;
+    		padding: 15px 10px; /* Adds vertical breathing room for scaled titles and focused elements */
+		}
 
         .media-row::-webkit-scrollbar {
             height: 8px;
@@ -518,7 +533,7 @@
     /* Move scale transition to media-item, ensuring title + image scale as a single unit */
     transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease-in-out;
     transform-origin: center center;
-    margin: 0 6px; /* Give room between neighboring cards so they don't collide when scaling */
+    margin: 10px 6px; /* Give room between neighboring cards so they don't collide when scaling */
 }
         .poster-card {
             position: relative;
@@ -546,7 +561,7 @@
           }
            
          .media-row {
-           padding: 15px 4px;
+           padding: 15px 8px;
            }
           
         }
@@ -725,3 +740,5 @@
 
         .play-button-banner:hover,
         .play-button-banner:focus { background-color: #f40612; }
+        
+        
