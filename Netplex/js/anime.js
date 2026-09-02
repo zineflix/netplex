@@ -193,23 +193,36 @@
     async function loadMoviesByPage(page = 1) {
         if (!moviesContainer) return;
 
+        const isMobile = window.innerWidth <= 768;
+        const targetCount = isMobile ? 42 : 40;
+
         const today = new Date().toISOString().split("T")[0];
         const config = regionConfigs[currentRegion];
 
         try {
-            const [movieRes, tvRes] = await Promise.all([
+            const requests = [
                 fetch(config.movieUrl(page, today)),
                 fetch(config.tvUrl(page, today))
-            ]);
+            ];
 
-            const movieData = await movieRes.json();
-            const tvData = await tvRes.json();
+            if (isMobile) {
+                requests.push(fetch(config.movieUrl(page + 1, today)));
+            }
 
-            const movies = (movieData.results || []).map(item => ({ ...item, media_type: 'movie' }));
+            const responses = await Promise.all(requests);
+            const movieData = await responses[0].json();
+            const tvData = await responses[1].json();
+
+            let movies = (movieData.results || []).map(item => ({ ...item, media_type: 'movie' }));
             const tvShows = (tvData.results || []).map(item => ({ ...item, media_type: 'tv' }));
 
-            // CN sorts by recent dates, JP sorts by popularity
-            const combined = [...movies, ...tvShows]
+            if (isMobile && responses[2]) {
+                const extraMovieData = await responses[2].json();
+                const extraMovies = (extraMovieData.results || []).map(item => ({ ...item, media_type: 'movie' }));
+                movies = movies.concat(extraMovies);
+            }
+
+            let combined = [...movies, ...tvShows]
                 .filter(item => item.poster_path)
                 .sort((a, b) => {
                     if (currentRegion === "CN") {
@@ -219,6 +232,8 @@
                     }
                     return (b.popularity || 0) - (a.popularity || 0);
                 });
+
+            combined = combined.slice(0, targetCount);
 
             currentPage = page;
             totalPages = Math.min(Math.max(movieData.total_pages || 1, tvData.total_pages || 1), 500);
@@ -234,6 +249,20 @@
             console.error("Error loading media:", error);
         }
     }
+
+    let resizeTimer;
+    let wasMobile = window.innerWidth <= 768;
+
+    window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            const isNowMobile = window.innerWidth <= 768;
+            if (isNowMobile !== wasMobile) {
+                wasMobile = isNowMobile;
+                loadMoviesByPage(currentPage);
+            }
+        }, 250);
+    });
 
     // ===================================
     // 4. TAB CONTROLS
@@ -368,7 +397,7 @@
                 dropdownContent.classList.toggle("active");
             });
 
-            document.addEventListener("click", function (event) {
+            document.addEventListener("click", function () {
                 if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
                     dropdownContent.classList.remove("active");
                 }
