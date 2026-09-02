@@ -6,7 +6,7 @@
     const imgURL = "https://image.tmdb.org/t/p/w500";
     const currentYear = new Date().getFullYear();
 
-    let currentRegion = "CN"; // Default: 'CN'
+    let currentRegion = "JP"; // Default: 'JP'
     let currentPage = 1;
     let totalPages = 1;
     let currentBannerItem = null;
