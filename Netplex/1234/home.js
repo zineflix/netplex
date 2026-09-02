@@ -170,7 +170,6 @@
             "popular-tv-shows": `${baseURL}/discover/tv?api_key=${apiKey}&vote_count.gte=5000&sort_by=popularity.desc`,
             "korean-tv-shows": `${baseURL}/discover/tv?api_key=${apiKey}&with_origin_country=KR&vote_count.gte=300&sort_by=popularity.desc`,
             "japanese-animations": `${baseURL}/discover/tv?api_key=${apiKey}&with_origin_country=JP&with_genres=16&vote_count.gte=500&sort_by=popularity.desc`,
-            "philippine-movies": `${baseURL}/discover/movie?api_key=${apiKey}&with_companies=149142&sort_by=popularity.desc`,
         };
         return urls[containerId] || null;
     }
@@ -291,7 +290,6 @@
     fetchMedia(getURLForContainer("popular-tv-shows"), "popular-tv-shows", "tv", 3);
     fetchMedia(getURLForContainer("korean-tv-shows"), "korean-tv-shows", "tv", 3);
     fetchMedia(getURLForContainer("japanese-animations"), "japanese-animations", "tv", 3);
-    fetchMedia(getURLForContainer("philippine-movies"), "philippine-movies", "movie", 3);
 
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".scroll-left").forEach(button => {
