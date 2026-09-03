@@ -21,6 +21,15 @@ const qs = (sel, root = document) => root.querySelector(sel);
 const qsa = (sel, root = document) => [...root.querySelectorAll(sel)];
 const safeOn = (el, ev, fn) => el && el.addEventListener(ev, fn);
 
+// Navigate to previous page or fall back to default
+function goBackOrHome() {
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    window.location.href = 'movies.html';
+  }
+}
+
 // ==============================
 // STREAMING SERVERS (DETAILS)
 // ==============================
@@ -119,7 +128,6 @@ async function fetchMovieDetails() {
     if (trailer && trailerBtn && trailerPopup && trailerIframe && closeTrailerBtn) {
       safeOn(trailerBtn, 'click', () => {
         trailerPopup.style.display = 'flex';
-        // Note: Android TV webviews require mute=1 and playsinline=1 to bypass silent auto-block policy
         trailerIframe.src = `https://www.youtube.com/embed/${trailer.key}?autoplay=1&mute=1&playsinline=1&controls=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`;
         
         setTimeout(() => {
@@ -306,37 +314,37 @@ const primaryDownloadBtn = byId('primary-download-btn');
 const alternativeDownloadBtn = byId('alternative-download-btn');
 
 if (downloadBtn && downloadPopup && closeDownloadBtn && primaryDownloadBtn && alternativeDownloadBtn) {
-    safeOn(downloadBtn, 'click', () => {
-        if (!movieId) return;
-        downloadPopup.style.display = 'flex';
-        primaryDownloadBtn.focus();
-    });
+  safeOn(downloadBtn, 'click', () => {
+    if (!movieId) return;
+    downloadPopup.style.display = 'flex';
+    primaryDownloadBtn.focus();
+  });
 
-    safeOn(primaryDownloadBtn, 'click', () => {
-        if (!movieId) return;
-        window.open(`https://web.nxsha.app/dl/movie/${movieId}`, '_blank', 'noopener,noreferrer');
-        downloadPopup.style.display = 'none';
-        downloadBtn.focus();
-    });
+  safeOn(primaryDownloadBtn, 'click', () => {
+    if (!movieId) return;
+    window.open(`https://web.nxsha.app/dl/movie/${movieId}`, '_blank', 'noopener,noreferrer');
+    downloadPopup.style.display = 'none';
+    downloadBtn.focus();
+  });
 
-    safeOn(alternativeDownloadBtn, 'click', () => {
-        if (!movieId) return;
-        window.open(`https://vidvault.ru/movie/${movieId}`, '_blank', 'noopener,noreferrer');
-        downloadPopup.style.display = 'none';
-        downloadBtn.focus();
-    });
+  safeOn(alternativeDownloadBtn, 'click', () => {
+    if (!movieId) return;
+    window.open(`https://vidvault.ru/movie/${movieId}`, '_blank', 'noopener,noreferrer');
+    downloadPopup.style.display = 'none';
+    downloadBtn.focus();
+  });
 
-    safeOn(closeDownloadBtn, 'click', () => {
-        downloadPopup.style.display = 'none';
-        downloadBtn.focus();
-    });
+  safeOn(closeDownloadBtn, 'click', () => {
+    downloadPopup.style.display = 'none';
+    downloadBtn.focus();
+  });
 
-    safeOn(downloadPopup, 'click', (e) => {
-        if (e.target === downloadPopup) {
-            downloadPopup.style.display = 'none';
-            downloadBtn.focus();
-        }
-    });
+  safeOn(downloadPopup, 'click', (e) => {
+    if (e.target === downloadPopup) {
+      downloadPopup.style.display = 'none';
+      downloadBtn.focus();
+    }
+  });
 }
 
 // ==============================
@@ -576,7 +584,7 @@ document.addEventListener('click', (e) => {
         return;
       }
 
-      window.location.href = 'movies.html';
+      goBackOrHome();
       e.preventDefault();
       return;
     }
@@ -631,7 +639,7 @@ document.addEventListener('click', (e) => {
 // INITIALIZATION
 // ==============================
 safeOn(document, 'DOMContentLoaded', () => {
-  safeOn(byId('close-button'), 'click', () => (window.location.href = 'movies.html'));
+  safeOn(byId('close-button'), 'click', goBackOrHome);
   
   safeOn(window, 'load', () => {
     setTimeout(() => {
