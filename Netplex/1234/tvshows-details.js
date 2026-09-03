@@ -18,6 +18,15 @@ const qs = (sel, root = document) => root.querySelector(sel);
 const qsa = (sel, root = document) => [...root.querySelectorAll(sel)];
 const safeOn = (el, ev, fn) => el && el.addEventListener(ev, fn);
 
+// Navigate to previous page or fall back to default
+function goBackOrHome() {
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    window.location.href = 'tv-show.html';
+  }
+}
+
 // ==============================
 // STREAMING SERVERS (DETAILS)
 // ==============================
@@ -568,7 +577,7 @@ function disableSandbox() {
 
   iframe.removeAttribute('sandbox');
   if (sandboxBtn) {
-    sandboxBtn.classList.remove('on');
+    sandboxBtn.classList.remove('off');
     sandboxBtn.classList.add('off');
     sandboxBtn.textContent = 'Sandbox: OFF';
   }
@@ -749,7 +758,7 @@ safeOn(abortBtn, 'click', () => {
         return;
       }
 
-      window.location.href = 'tv-show.html';
+      goBackOrHome();
       e.preventDefault();
       return;
     }
@@ -804,7 +813,7 @@ safeOn(abortBtn, 'click', () => {
 // INITIALIZATION
 // ==============================
 safeOn(document, 'DOMContentLoaded', () => {
-  safeOn(byId('close-button'), 'click', () => (window.location.href = 'tv-show.html'));
+  safeOn(byId('close-button'), 'click', goBackOrHome);
   
   safeOn(window, 'load', () => {
     setTimeout(() => {
