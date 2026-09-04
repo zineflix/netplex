@@ -542,11 +542,11 @@
             overflow: hidden;
         }
 
-.media-item:hover,
-.media-item:focus {
-    transform: scale(1.08);
-    z-index: 100; /* Bring hovered card above adjacent cards */
-}
+        .media-item:hover,
+        .media-item:focus {
+            transform: scale(1.08);
+            z-index: 100; /* Bring hovered card above adjacent cards */
+        }
         .poster-card img {
             width: 205px;
             border-radius: 8px;
@@ -554,16 +554,62 @@
         }
 
         @media (max-width: 768px) {
-         .poster-card img { width: 195px; }
-          
-         .media-item {
-           margin: 0 0px;
-          }
-           
-         .media-row {
-           padding: 15px 8px;
-           }
-          
+            .media-row {
+                gap: 6px;
+                padding: 10px 8px;
+            }
+
+            .media-item {
+                margin: 0;
+                /* ~30% viewport width accounts for 3 items + row padding & gaps */
+                width: calc((100vw - 32px) / 3); 
+                flex-shrink: 0;
+            }
+
+            .poster-card {
+                width: 100%;
+            }
+
+            .poster-card img {
+                width: 100%;
+                height: auto;
+            }
+
+            .media-item .poster-title {
+        font-size: 12px !important;
+        line-height: 1.1 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        margin-bottom: 4px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+            /* Scale down overlay elements to match smaller cards */
+            .rating {
+                padding: 2px 4px !important;
+                font-size: 12px !important;
+            }
+
+            .star {
+                font-size: 0.70rem !important;
+                margin-right: 2px;
+            }
+
+            .year-container {
+                font-size: 10px !important;
+                padding: 1px 4px;
+                bottom: 4px;
+                left: 4px;
+            }
+
+            .play-button {
+                width: 50px !important;
+                height: 50px !important;
+                font-size: 25px !important;
+            }
         }
 
         /* FLOATING MESSAGE */
