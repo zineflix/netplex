@@ -23,7 +23,7 @@
     const nextBtn = document.getElementById("next-page-btn");
     const pageNumbersEl = document.getElementById("page-numbers");
 
-    // Endpoint setups for Chinese and Japanese anime
+    // Endpoint setups for Japanese, Chinese, and Korean anime
     const regionConfigs = {
         CN: {
             title: "Chinese Anime (Latest to Oldest)",
@@ -36,6 +36,12 @@
             movieUrl: (page) => `${baseURL}/discover/movie?api_key=${apiKey}&with_origin_country=JP&with_genres=16&sort_by=popularity.desc&page=${page}`,
             tvUrl: (page) => `${baseURL}/discover/tv?api_key=${apiKey}&with_origin_country=JP&with_genres=16&sort_by=popularity.desc&page=${page}`,
             bannerUrl: `${baseURL}/discover/movie?api_key=${apiKey}&with_origin_country=JP&with_genres=16&vote_count.gte=500&sort_by=popularity.desc&page=1`
+        },
+        KR: {
+            title: "Korean Anime (Popular to Newest)",
+            movieUrl: (page) => `${baseURL}/discover/movie?api_key=${apiKey}&with_origin_country=KR&with_original_language=ko&with_genres=16&sort_by=popularity.desc&page=${page}`,
+            tvUrl: (page) => `${baseURL}/discover/tv?api_key=${apiKey}&with_origin_country=KR&with_original_language=ko&with_genres=16&sort_by=popularity.desc&page=${page}`,
+            bannerUrl: `${baseURL}/discover/movie?api_key=${apiKey}&with_origin_country=KR&with_original_language=ko&with_genres=16&vote_count.gte=5&sort_by=popularity.desc&page=1`
         }
     };
 
