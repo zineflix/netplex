@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch: # This allows you to click a button to run it manually anytime!
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -36,12 +36,19 @@ jobs:
       - name: Create Production Build
         run: |
           mkdir -p dist
-          # Copy HTML, CSS, and JS from your nested Netplex folder
-          cp Netplex/*.html dist/ 2>/dev/null || cp Netplex/Netplex/*.html dist/ 2>/dev/null || cp *.html dist/ 2>/dev/null || true
-          cp -r Netplex/css dist/ 2>/dev/null || cp -r Netplex/Netplex/css dist/ 2>/dev/null || cp -r css dist/ 2>/dev/null || true
-          cp -r Netplex/js dist/ 2>/dev/null || cp -r Netplex/Netplex/js dist/ 2>/dev/null || cp -r js dist/ 2>/dev/null || true
 
-          # Obfuscate all JS files
+          # 1. Copy all HTML files from inside Netplex/ into dist
+          cp Netplex/*.html dist/ 2>/dev/null || true
+
+          # 2. Copy css and js folders from inside Netplex/ into dist
+          cp -r Netplex/css dist/ 2>/dev/null || true
+          cp -r Netplex/js dist/ 2>/dev/null || true
+
+          # If you have images, assets, or fonts, uncomment and copy them:
+          # cp -r Netplex/images dist/ 2>/dev/null || true
+          # cp -r Netplex/assets dist/ 2>/dev/null || true
+
+          # 3. Obfuscate all JS files inside dist/js/
           javascript-obfuscator dist/js --output dist/js \
             --compact true \
             --control-flow-flattening true \
