@@ -31,7 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Dropdown More Button Handlers
     const dropdownButton = document.querySelector(".dropbtn");
     const dropdownContent = document.querySelector(".dropdown-content");
 
@@ -68,7 +67,7 @@ async function fetchBanner() {
     if (!banner) return;
     try {
         const response = await fetch(
-            `${baseURL}/trending/all/week?api_key=${apiKey}&language=en-US`
+            `${baseURL}/trending/tv/week?api_key=${apiKey}&language=en-US`
         );
         const data = await response.json();
         const validItems = (data.results || []).filter(item => item.backdrop_path);
@@ -78,7 +77,7 @@ async function fetchBanner() {
         currentBannerItem = randomItem;
 
         banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${randomItem.backdrop_path})`;
-        if (bannerTitle) bannerTitle.textContent = randomItem.title || randomItem.name;
+        if (bannerTitle) bannerTitle.textContent = randomItem.name || randomItem.title;
         if (bannerDescription) bannerDescription.textContent = randomItem.overview || "No description available.";
 
         const genresResponse = await fetch(`${baseURL}/genre/tv/list?api_key=${apiKey}&language=en-US`);
@@ -92,9 +91,8 @@ async function fetchBanner() {
     }
 }
 
-// Banner Play Action (Works with TV Remote OK/Enter)
+// Banner Play Action (Handles Click & Smart TV Remote OK/Enter)
 if (bannerPlayButton) {
-    bannerPlayButton.setAttribute("tabindex", "0");
     const launchBannerMedia = () => {
         if (!currentBannerItem) return;
         const isMovie = currentBannerItem.media_type === "movie";
@@ -105,7 +103,9 @@ if (bannerPlayButton) {
 
     bannerPlayButton.addEventListener("click", launchBannerMedia);
     bannerPlayButton.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.keyCode === 13) launchBannerMedia();
+        if (e.key === "Enter" || e.keyCode === 13) {
+            launchBannerMedia();
+        }
     });
 }
 
@@ -125,7 +125,6 @@ async function fetchMedia(url, containerId, type, pages = 3) {
                 const mediaItem = document.createElement("div");
                 mediaItem.classList.add("media-item");
 
-                // Enables Android TV remote focus
                 mediaItem.setAttribute("tabindex", "0");
                 mediaItem.setAttribute("role", "button");
 
@@ -156,17 +155,14 @@ async function fetchMedia(url, containerId, type, pages = 3) {
                         : `tvshows-details.html?id=${item.id}`;
                 };
 
-                // Mouse Click Support
                 mediaItem.addEventListener("click", openDetails);
 
-                // Remote OK / Enter button support
                 mediaItem.addEventListener("keydown", (e) => {
                     if (e.key === "Enter" || e.keyCode === 13) {
                         openDetails();
                     }
                 });
 
-                // Auto-scroll focused card into screen center
                 mediaItem.addEventListener("focus", () => {
                     mediaItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                 });
@@ -278,7 +274,6 @@ function navigateSpatial(direction) {
         if (isValid) {
             const dx = center.x - currentCenter.x;
             const dy = center.y - currentCenter.y;
-            // Favor items aligned along the movement axis
             const distance = (direction === "ArrowLeft" || direction === "ArrowRight")
                 ? Math.abs(dx) + Math.abs(dy) * 2.5
                 : Math.abs(dy) + Math.abs(dx) * 2.5;
@@ -306,10 +301,5 @@ window.addEventListener("keydown", (e) => {
 
         e.preventDefault();
         navigateSpatial(dir);
-    } else if (e.key === "Escape" || e.key === "Back" || e.keyCode === 10009 || e.keyCode === 27) {
-        const floatingMessage = document.getElementById("floating-message");
-        if (floatingMessage && floatingMessage.style.display !== "none") {
-            floatingMessage.style.display = "none";
-        }
     }
 });
