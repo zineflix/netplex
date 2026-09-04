@@ -576,7 +576,7 @@
             }
 
             .media-item .poster-title {
-        font-size: 9.5px !important;
+        font-size: 12px !important;
         line-height: 1.1 !important;
         width: 100% !important;
         max-width: 100% !important;
@@ -589,7 +589,7 @@
 
             /* Scale down overlay elements to match smaller cards */
             .rating {
-                padding: 2px 4px;
+                padding: 2px 4px !important;
                 font-size: 12px !important;
             }
 
@@ -599,7 +599,7 @@
             }
 
             .year-container {
-                font-size: 9.8px !important;
+                font-size: 10px !important;
                 padding: 1px 4px;
                 bottom: 4px;
                 left: 4px;
