@@ -1,16 +1,26 @@
 #!/bin/bash
 set -e
 
-echo "Starting optimized build process..."
-
-# 1. Prepare clean dist directories
 mkdir -p dist/css dist/js
 
-# 2. Copy static media/assets if present
+# 1. Copy static assets if present
 cp -r Netplex/assets dist/ 2>/dev/null || cp -r assets dist/ 2>/dev/null || true
 cp -r Netplex/images dist/ 2>/dev/null || cp -r images dist/ 2>/dev/null || true
 
-# 3. Minify HTML files (removes comments, spaces, and line breaks)
+# 2. Check if Dev/Fast mode is enabled in Cloudflare
+if [ "$FAST_BUILD" = "true" ]; then
+  echo "⚡ FAST_BUILD enabled: Skipping minification & obfuscation for quick dev deploy."
+  cp Netplex/*.html dist/ 2>/dev/null || cp *.html dist/ 2>/dev/null || true
+  cp -r Netplex/css/* dist/css/ 2>/dev/null || cp -r css/* dist/css/ 2>/dev/null || true
+  cp -r Netplex/js/* dist/js/ 2>/dev/null || cp -r js/* dist/js/ 2>/dev/null || true
+  echo "Done in seconds!"
+  exit 0
+fi
+
+# --- FULL PRODUCTION PIPELINE ---
+echo "🔒 Production mode: Minifying and obfuscating..."
+
+# Minify HTML
 echo "Minifying HTML..."
 npx --yes html-minifier-terser \
   --input-dir Netplex \
@@ -19,11 +29,9 @@ npx --yes html-minifier-terser \
   --collapse-whitespace \
   --remove-comments \
   --remove-redundant-attributes \
-  --remove-script-type-attributes \
-  --remove-style-link-type-attributes \
   --use-short-doctype 2>/dev/null || cp Netplex/*.html dist/ 2>/dev/null || true
 
-# 4. Minify all CSS files
+# Minify CSS
 echo "Minifying CSS..."
 cp -r Netplex/css/* dist/css/ 2>/dev/null || cp -r css/* dist/css/ 2>/dev/null || true
 for file in dist/css/*.css; do
@@ -31,7 +39,7 @@ for file in dist/css/*.css; do
   npx --yes clean-css-cli -o "$file" "$file"
 done
 
-# 5. Obfuscate and compress all JavaScript files
+# Obfuscate JS
 echo "Obfuscating JavaScript..."
 npx --yes javascript-obfuscator Netplex/js --output dist/js \
   --compact true \
@@ -42,4 +50,4 @@ npx --yes javascript-obfuscator Netplex/js --output dist/js \
   --debug-protection true \
   --disable-console-output true
 
-echo "Build complete! All HTML, CSS, and JS are minified and protected in dist/."
+echo "Build complete!"
