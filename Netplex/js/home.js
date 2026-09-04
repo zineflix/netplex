@@ -1,7 +1,7 @@
 // ===================================
-    // 1. TMDB CONFIG
+    // 1. TMDB CONFIG (SECURE PROXY)
     // ===================================
-    // Replace with your actual Cloudflare Worker URL (e.g. "https://tmdb-proxy.your-subdomain.workers.dev")
+    // Replace with your actual deployed Cloudflare Worker URL
     const baseURL = "https://tmdb-api-key.streamhdmovie1.workers.dev";
     const imgURL = "https://image.tmdb.org/t/p/w500";
     const currentYear = new Date().getFullYear();
@@ -322,6 +322,22 @@
                 moreButton.classList.remove("active");
             });
         }
+
+        const dropdownButton = document.querySelector(".dropbtn");
+        const dropdownContent = document.querySelector(".dropdown-content");
+
+        if (dropdownButton && dropdownContent) {
+            dropdownButton.addEventListener("click", function (event) {
+                event.stopPropagation();
+                dropdownContent.classList.toggle("active");
+            });
+
+            document.addEventListener("click", function (event) {
+                if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
+                    dropdownContent.classList.remove("active");
+                }
+            });
+        }
     });
 
     window.addEventListener("scroll", function () {
@@ -336,20 +352,3 @@
     function closeMessage() {
         document.getElementById("floating-message").style.display = "none";
     }
-
-    // Dropdown More Button Function
-    document.addEventListener("DOMContentLoaded", function () {
-        const dropdownButton = document.querySelector(".dropbtn");
-        const dropdownContent = document.querySelector(".dropdown-content");
-
-        dropdownButton.addEventListener("click", function (event) {
-            event.stopPropagation();
-            dropdownContent.classList.toggle("active");
-        });
-
-        document.addEventListener("click", function (event) {
-            if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
-                dropdownContent.classList.remove("active");
-            }
-        });
-    });
