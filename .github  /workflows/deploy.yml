@@ -1,0 +1,64 @@
+name: Obfuscate and Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # This allows you to click a button to run it manually anytime!
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Obfuscator Tool
+        run: npm install -g javascript-obfuscator
+
+      - name: Create Production Build
+        run: |
+          mkdir -p dist
+          # Copy HTML, CSS, and JS from your nested Netplex folder
+          cp Netplex/*.html dist/ 2>/dev/null || cp Netplex/Netplex/*.html dist/ 2>/dev/null || cp *.html dist/ 2>/dev/null || true
+          cp -r Netplex/css dist/ 2>/dev/null || cp -r Netplex/Netplex/css dist/ 2>/dev/null || cp -r css dist/ 2>/dev/null || true
+          cp -r Netplex/js dist/ 2>/dev/null || cp -r Netplex/Netplex/js dist/ 2>/dev/null || cp -r js dist/ 2>/dev/null || true
+
+          # Obfuscate all JS files
+          javascript-obfuscator dist/js --output dist/js \
+            --compact true \
+            --control-flow-flattening true \
+            --dead-code-injection true \
+            --string-array true \
+            --string-array-encoding 'base64' \
+            --debug-protection true \
+            --disable-console-output true
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Production Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
