@@ -542,11 +542,11 @@
             overflow: hidden;
         }
 
-.media-item:hover,
-.media-item:focus {
-    transform: scale(1.08);
-    z-index: 100; /* Bring hovered card above adjacent cards */
-}
+        .media-item:hover,
+        .media-item:focus {
+            transform: scale(1.08);
+            z-index: 100; /* Bring hovered card above adjacent cards */
+        }
         .poster-card img {
             width: 205px;
             border-radius: 8px;
@@ -575,11 +575,17 @@
                 height: auto;
             }
 
-            .poster-title {
-                width: 100%;
-                font-size: 11px;
-                margin-bottom: 4px;
-            }
+            .media-item .poster-title {
+        font-size: 9.5px !important;
+        line-height: 1.1 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        margin-bottom: 4px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
 
             /* Scale down overlay elements to match smaller cards */
             .rating {
