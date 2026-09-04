@@ -110,6 +110,26 @@ async function fetchBanner() {
 
             bannerGenre.textContent = `Genre: ${genres || "Unknown"}`;
         }
+
+        // Wire Play Button to redirect based on media type
+        const playBtn = document.getElementById("banner-play-btn");
+        if (playBtn) {
+            const openBannerMedia = () => {
+                const isTv = randomItem.media_type === "tv" || !randomItem.title;
+                if (isTv) {
+                    window.location.href = `tvshows-details.html?id=${randomItem.id}`;
+                } else {
+                    window.location.href = `movie-details.html?movie_id=${randomItem.id}`;
+                }
+            };
+
+            playBtn.onclick = openBannerMedia;
+            playBtn.onkeydown = (e) => {
+                if (e.key === "Enter" || e.keyCode === 13) {
+                    openBannerMedia();
+                }
+            };
+        }
     } catch (error) {
         console.error("Failed to load banner:", error);
     }
@@ -129,7 +149,7 @@ function escapeHTML(value) {
         .replace(/'/g, "&#039;");
 }
 
-// // ============================================================
+// ============================================================
 // CREATE MEDIA CARD (WITH ANDROID TV SUPPORT)
 // ============================================================
 function createMediaCard(item, type = "movie") {
@@ -139,8 +159,6 @@ function createMediaCard(item, type = "movie") {
 
     const mediaItem = document.createElement("div");
     mediaItem.classList.add("media-item");
-    
-    // Enables Android TV remote focus
     mediaItem.setAttribute("tabindex", "0");
     mediaItem.setAttribute("role", "button");
 
@@ -189,17 +207,14 @@ function createMediaCard(item, type = "movie") {
         }
     };
 
-    // Click support
     mediaItem.addEventListener("click", openDetails);
 
-    // Remote OK / Enter button support
     mediaItem.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.keyCode === 13) {
             openDetails();
         }
     });
 
-    // Horizontal auto-scroll on focus for TV remotes
     mediaItem.addEventListener("focus", () => {
         mediaItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     });
@@ -233,7 +248,6 @@ async function fetchMedia(endpoint, containerId, type = "movie", params = {}) {
 
         data.results.forEach(item => {
             const card = createMediaCard(item, type);
-
             if (card) {
                 container.appendChild(card);
             }
@@ -246,13 +260,8 @@ async function fetchMedia(endpoint, containerId, type = "movie", params = {}) {
                 </p>
             `;
         }
-
-        console.log(
-            `${containerId}: ${data.results.length} results`
-        );
     } catch (error) {
         console.error(`Failed to load ${containerId}:`, error);
-
         container.innerHTML = `
             <p style="color:#aaa;padding:20px;">
                 Unable to load movies.
@@ -265,104 +274,38 @@ async function fetchMedia(endpoint, containerId, type = "movie", params = {}) {
 // LOAD MOVIE SECTIONS
 // ============================================================
 function loadMovieSections() {
-    // Upcoming
-    fetchMedia(
-        "/movie/upcoming",
-        "upcoming-movies",
-        "movie"
-    );
-
-    // Popular
-    fetchMedia(
-        "/discover/movie",
-        "popular-movies",
-        "movie",
-        {
-            sort_by: "popularity.desc",
-            vote_count_gte: 500,
-            vote_average_gte: 7
-        }
-    );
-
-    // Trending
-    fetchMedia(
-        "/trending/movie/week",
-        "trending-now",
-        "movie"
-    );
-
-    // Top Rated
-    fetchMedia(
-        "/movie/top_rated",
-        "top-rated",
-        "movie"
-    );
-
-    // Action
-    fetchMedia(
-        "/discover/movie",
-        "action-movies",
-        "movie",
-        {
-            sort_by: "popularity.desc",
-            with_genres: "28"
-        }
-    );
-
-    // Comedy
-    fetchMedia(
-        "/discover/movie",
-        "comedy-movies",
-        "movie",
-        {
-            sort_by: "popularity.desc",
-            with_genres: "35"
-        }
-    );
-
-    // Horror
-    fetchMedia(
-        "/discover/movie",
-        "horror-movies",
-        "movie",
-        {
-            sort_by: "popularity.desc",
-            with_genres: "27"
-        }
-    );
-
-    // Romance
-    fetchMedia(
-        "/discover/movie",
-        "romance-movies",
-        "movie",
-        {
-            sort_by: "popularity.desc",
-            with_genres: "10749"
-        }
-    );
-
-    // Animation
-    fetchMedia(
-        "/discover/movie",
-        "animation-movies",
-        "movie",
-        {
-            sort_by: "popularity.desc",
-            with_genres: "16"
-        }
-    );
-  
-    // Vivamax
-    fetchMedia(
-        "/discover/movie",
-        "philippine-movies",
-        "movie",
-        {
-            sort_by: "popularity.desc",
-            with_companies: "149142"
-        }
-    );  
+    fetchMedia("/movie/upcoming", "upcoming-movies", "movie");
+    fetchMedia("/discover/movie", "popular-movies", "movie", {
+        sort_by: "popularity.desc",
+        vote_count_gte: 500,
+        vote_average_gte: 7
+    });
+    fetchMedia("/trending/movie/week", "trending-now", "movie");
+    fetchMedia("/movie/top_rated", "top-rated", "movie");
+    fetchMedia("/discover/movie", "action-movies", "movie", {
+        sort_by: "popularity.desc",
+        with_genres: "28"
+    });
+    fetchMedia("/discover/movie", "comedy-movies", "movie", {
+        sort_by: "popularity.desc",
+        with_genres: "35"
+    });
+    fetchMedia("/discover/movie", "horror-movies", "movie", {
+        sort_by: "popularity.desc",
+        with_genres: "27"
+    });
+    fetchMedia("/discover/movie", "romance-movies", "movie", {
+        sort_by: "popularity.desc",
+        with_genres: "10749"
+    });
+    fetchMedia("/discover/movie", "animation-movies", "movie", {
+        sort_by: "popularity.desc",
+        with_genres: "16"
+    });
+    fetchMedia("/discover/movie", "philippine-movies", "movie", {
+        sort_by: "popularity.desc",
+        with_companies: "149142"
+    });  
 }
 
 // ============================================================
@@ -370,24 +313,14 @@ function loadMovieSections() {
 // ============================================================
 function scrollLeft(containerId) {
     const container = document.getElementById(containerId);
-
     if (!container) return;
-
-    container.scrollBy({
-        left: -600,
-        behavior: "smooth"
-    });
+    container.scrollBy({ left: -600, behavior: "smooth" });
 }
 
 function scrollRight(containerId) {
     const container = document.getElementById(containerId);
-
     if (!container) return;
-
-    container.scrollBy({
-        left: 600,
-        behavior: "smooth"
-    });
+    container.scrollBy({ left: 600, behavior: "smooth" });
 }
 
 window.scrollLeft = scrollLeft;
@@ -400,20 +333,14 @@ function initializeScrollButtons() {
     document.querySelectorAll(".scroll-left").forEach(button => {
         button.addEventListener("click", () => {
             const container = button.nextElementSibling;
-
-            if (container) {
-                scrollLeft(container.id);
-            }
+            if (container) scrollLeft(container.id);
         });
     });
 
     document.querySelectorAll(".scroll-right").forEach(button => {
         button.addEventListener("click", () => {
             const container = button.previousElementSibling;
-
-            if (container) {
-                scrollRight(container.id);
-            }
+            if (container) scrollRight(container.id);
         });
     });
 }
@@ -426,7 +353,6 @@ function initializeNavigation() {
 
     window.addEventListener("scroll", () => {
         if (!nav) return;
-
         if (window.scrollY > 50) {
             nav.classList.add("nav-solid");
         } else {
@@ -444,10 +370,8 @@ function initializeNavigation() {
     }
 
     const dropdown = document.querySelector(".dropdown");
-
     if (dropdown) {
         const dropButton = dropdown.querySelector(".dropbtn");
-
         if (dropButton) {
             dropButton.addEventListener("click", event => {
                 event.stopPropagation();
@@ -458,7 +382,6 @@ function initializeNavigation() {
 
     document.addEventListener("click", event => {
         const dropdown = document.querySelector(".dropdown");
-
         if (dropdown && !dropdown.contains(event.target)) {
             dropdown.classList.remove("active");
         }
@@ -475,7 +398,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     initializeScrollButtons();
 
     await loadMovieGenres();
-
     fetchBanner();
     loadMovieSections();
 });
@@ -484,45 +406,26 @@ document.addEventListener("DOMContentLoaded", async () => {
 //  MOBILE NAVIGATION
 // ===================================
 document.addEventListener("DOMContentLoaded", function () {
-
     const moreButton = document.getElementById("mobile-more-btn");
     const moreMenu = document.getElementById("mobile-more-menu");
 
     if (!moreButton || !moreMenu) return;
 
-
-    /* Open / close More menu */
     moreButton.addEventListener("click", function (event) {
-
         event.stopPropagation();
-
         moreMenu.classList.toggle("show");
-
         moreButton.classList.toggle("active");
-
     });
 
-
-    /* Prevent popup from closing when clicking inside */
     moreMenu.addEventListener("click", function (event) {
         event.stopPropagation();
     });
 
-
-    /* Close popup when clicking elsewhere */
     document.addEventListener("click", function () {
-
         moreMenu.classList.remove("show");
-
         moreButton.classList.remove("active");
-
     });
-
 });
-
-
-
-
 
 // ============================================================
 // SMART TV D-PAD NAVIGATION SYSTEM
@@ -593,11 +496,5 @@ window.addEventListener("keydown", (e) => {
 
         e.preventDefault();
         navigateSpatial(dir);
-    } else if (e.key === "Escape" || e.key === "Back" || e.keyCode === 10009 || e.keyCode === 27) {
-        // Smart TV Back key listener
-        const floatingMessage = document.getElementById("floating-message");
-        if (floatingMessage && floatingMessage.style.display !== "none") {
-            closeMessage();
-        }
     }
 });
