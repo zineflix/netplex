@@ -1,8 +1,8 @@
-// ===================================
-    // 1. TMDB CONFIG (SECURE PROXY)
     // ===================================
-    // Replace with your actual deployed Cloudflare Worker URL
-    const baseURL = "https://tmdb-api-key.streamhdmovie1.workers.dev";
+    // 1. TMDB CONFIG
+    // ===================================
+    const apiKey = "a1e72fd93ed59f56e6332813b9f8dcae";
+    const baseURL = "https://api.themoviedb.org/3";
     const imgURL = "https://image.tmdb.org/t/p/w500";
     const currentYear = new Date().getFullYear();
 
@@ -20,8 +20,8 @@
     async function fetchBanner() {
         try {
             const [movieRes, tvRes] = await Promise.all([
-                fetch(`${baseURL}/discover/movie?primary_release_year=${currentYear}&sort_by=popularity.desc&page=1`),
-                fetch(`${baseURL}/discover/tv?first_air_date_year=${currentYear}&sort_by=popularity.desc&page=1`)
+                fetch(`${baseURL}/discover/movie?api_key=${apiKey}&primary_release_year=${currentYear}&sort_by=popularity.desc&page=1`),
+                fetch(`${baseURL}/discover/tv?api_key=${apiKey}&first_air_date_year=${currentYear}&sort_by=popularity.desc&page=1`)
             ]);
             
             const movieData = await movieRes.json();
@@ -43,7 +43,7 @@
             bannerDescription.textContent = randomItem.overview || "No description available.";
             
             const mediaType = randomItem.media_type;
-            const genresResponse = await fetch(`${baseURL}/genre/${mediaType}/list?language=en-US`);
+            const genresResponse = await fetch(`${baseURL}/genre/${mediaType}/list?api_key=${apiKey}&language=en-US`);
             const genresData = await genresResponse.json();
             const genreMap = Object.fromEntries(genresData.genres.map(g => [g.id, g.name]));
             const genreNames = (randomItem.genre_ids || []).map(id => genreMap[id]).join(", ");
@@ -141,8 +141,8 @@
         const allFetches = [];
         for (let page = 1; page <= pages; page++) {
             allFetches.push(
-                fetch(`${baseURL}/discover/movie?primary_release_year=${currentYear}&sort_by=popularity.desc&page=${page}`),
-                fetch(`${baseURL}/discover/tv?first_air_date_year=${currentYear}&sort_by=popularity.desc&page=${page}`)
+                fetch(`${baseURL}/discover/movie?api_key=${apiKey}&primary_release_year=${currentYear}&sort_by=popularity.desc&page=${page}`),
+                fetch(`${baseURL}/discover/tv?api_key=${apiKey}&first_air_date_year=${currentYear}&sort_by=popularity.desc&page=${page}`)
             );
         }
 
@@ -166,10 +166,10 @@
     // ===================================
     function getURLForContainer(containerId) {
         const urls = {
-            "popular-movies": `${baseURL}/discover/movie?vote_count.gte=500&sort_by=popularity.desc`,
-            "popular-tv-shows": `${baseURL}/discover/tv?vote_count.gte=5000&sort_by=popularity.desc`,
-            "korean-tv-shows": `${baseURL}/discover/tv?with_origin_country=KR&vote_count.gte=300&sort_by=popularity.desc`,
-            "japanese-animations": `${baseURL}/discover/tv?with_origin_country=JP&with_genres=16&vote_count.gte=500&sort_by=popularity.desc`,
+            "popular-movies": `${baseURL}/discover/movie?api_key=${apiKey}&vote_count.gte=500&sort_by=popularity.desc`,
+            "popular-tv-shows": `${baseURL}/discover/tv?api_key=${apiKey}&vote_count.gte=5000&sort_by=popularity.desc`,
+            "korean-tv-shows": `${baseURL}/discover/tv?api_key=${apiKey}&with_origin_country=KR&vote_count.gte=300&sort_by=popularity.desc`,
+            "japanese-animations": `${baseURL}/discover/tv?api_key=${apiKey}&with_origin_country=JP&with_genres=16&vote_count.gte=500&sort_by=popularity.desc`,
         };
         return urls[containerId] || null;
     }
@@ -243,6 +243,7 @@
             if (isValid) {
                 const dx = center.x - currentCenter.x;
                 const dy = center.y - currentCenter.y;
+                // Weight distance depending on vector component to favor straight alignment over diagonal
                 const distance = (direction === "ArrowLeft" || direction === "ArrowRight")
                     ? Math.abs(dx) + Math.abs(dy) * 2.5
                     : Math.abs(dy) + Math.abs(dx) * 2.5;
@@ -260,6 +261,7 @@
     }
 
     window.addEventListener("keydown", (e) => {
+        // TV Keycodes & Standard Keys
         const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Up", "Down", "Left", "Right"];
         if (keys.includes(e.key) || [37, 38, 39, 40].includes(e.keyCode)) {
             let dir = e.key;
@@ -271,6 +273,7 @@
             e.preventDefault();
             navigateSpatial(dir);
         } else if (e.key === "Escape" || e.key === "Back" || e.keyCode === 10009 || e.keyCode === 27) {
+            // Smart TV Back key listener
             const floatingMessage = document.getElementById("floating-message");
             if (floatingMessage && floatingMessage.style.display !== "none") {
                 closeMessage();
@@ -322,22 +325,6 @@
                 moreButton.classList.remove("active");
             });
         }
-
-        const dropdownButton = document.querySelector(".dropbtn");
-        const dropdownContent = document.querySelector(".dropdown-content");
-
-        if (dropdownButton && dropdownContent) {
-            dropdownButton.addEventListener("click", function (event) {
-                event.stopPropagation();
-                dropdownContent.classList.toggle("active");
-            });
-
-            document.addEventListener("click", function (event) {
-                if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
-                    dropdownContent.classList.remove("active");
-                }
-            });
-        }
     });
 
     window.addEventListener("scroll", function () {
@@ -352,3 +339,24 @@
     function closeMessage() {
         document.getElementById("floating-message").style.display = "none";
     }
+
+
+// For Dropdown More Button Function Start
+document.addEventListener("DOMContentLoaded", function () {
+    const dropdownButton = document.querySelector(".dropbtn");
+    const dropdownContent = document.querySelector(".dropdown-content");
+
+    dropdownButton.addEventListener("click", function (event) {
+        event.stopPropagation(); // Prevent event from bubbling up
+        dropdownContent.classList.toggle("active");
+    });
+
+    // Close dropdown if clicked outside
+    document.addEventListener("click", function (event) {
+        if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
+            dropdownContent.classList.remove("active");
+        }
+    });
+});
+
+// For Dropdown More Button Function End
