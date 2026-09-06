@@ -40,6 +40,7 @@ button:focus-visible,
 .input-box textarea:focus-visible,
 .contact-info-item:focus-visible,
 .about-section p:focus-visible,
+.disclaimer-box:focus-visible,
 .footer-links a:focus-visible {
     outline: 3.5px solid #0296cc !important;
     outline-offset: 3px !important;
@@ -387,81 +388,6 @@ nav .dropdown-content li a:focus-visible i { color: #fff; }
     .mobile-more-menu { display: none !important; }
 }
 
-/* ============================= */
-/* FOOTER */
-/* ============================= */
-.site-footer {
-    background-color: #1e1e1e;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    margin-bottom: 0px;
-    border-top: 1px solid #333;
-}
-
-.site-footer p {
-    margin: 8px 0;
-    font-size: 16px;
-}
-
-.footer-links {
-    margin-top: 10px;
-}
-
-.footer-links a {
-    color: #0296cc;
-    text-decoration: none;
-    margin: 0 10px;
-    font-weight: bold;
-    display: inline-block;
-    padding: 2px 4px;
-    border-radius: 4px;
-}
-
-.footer-links a:hover {
-    text-decoration: underline;
-}
-
-.disclaimer-note {
-    color: #bfbfbf;
-    font-family: Arial;
-}
-
-@media (max-width: 600px) {
-    .site-footer {
-        margin-bottom: 54px;
-        padding: 10px;
-    }
-    
-    .site-footer p {
-        font-size: 14px;
-    }
-
-    .footer-links {
-        flex-direction: row;
-        gap: 8px;
-        text-align: center;
-    }
-
-    .footer-links a {
-        margin: 0;
-    }
-}
-
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    z-index: 9999;
-    display: flex;
-}
-
-body {
-    padding-bottom: 60px;
-}
-
 /* =========================================================
    NETPLEX - NETFLIX STYLE ABOUT + CONTACT
 ========================================================= */
@@ -470,7 +396,7 @@ body {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 145px 30px 90px;
+    padding: 145px 30px 40px;
     background:
         radial-gradient(
             circle at 50% 0%,
@@ -561,6 +487,67 @@ body {
     );
     border-left-color: #0296cc;
     transform: translateX(5px);
+}
+
+/* =========================================================
+   DISCLAIMER SECTION
+========================================================= */
+.disclaimer-section {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px 60px;
+}
+
+.disclaimer-box {
+    background: #181818;
+    border: 1px solid #292929;
+    border-left: 4px solid #0296cc;
+    border-radius: 6px;
+    padding: 24px 28px;
+    cursor: default;
+    transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.disclaimer-box:hover {
+    background: #1f1f1f;
+    border-color: #383838;
+    border-left-color: #0296cc;
+    transform: translateX(5px);
+}
+
+.disclaimer-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.disclaimer-header i {
+    font-size: 20px;
+    color: #0296cc;
+}
+
+.disclaimer-header h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.disclaimer-box p {
+    color: #a0a0a0;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+
+.disclaimer-box p:last-child {
+    margin-bottom: 0;
+}
+
+.disclaimer-box strong {
+    color: #fff;
 }
 
 .contact-section {
@@ -792,6 +779,60 @@ body {
     transform: translateY(-2px);
 }
 
+/* ============================= */
+/* FOOTER */
+/* ============================= */
+.site-footer {
+    background-color: #1e1e1e;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 0px;
+    border-top: 1px solid #333;
+}
+
+.site-footer p {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+.footer-links {
+    margin-top: 10px;
+}
+
+.footer-links a {
+    color: #0296cc;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+    display: inline-block;
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+.disclaimer-note {
+    color: #bfbfbf;
+    font-family: Arial;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 9999;
+    display: flex;
+}
+
+body {
+    padding-bottom: 60px;
+}
+
 @media (max-width: 900px) {
     .contact-section .row {
         grid-template-columns: 1fr;
@@ -833,7 +874,7 @@ body {
 @media (max-width: 768px) {
     .about-section {
         margin-top: 0px;
-        padding: 100px 18px 60px;
+        padding: 100px 18px 40px;
     }
 
     .about-section h1 {
@@ -854,6 +895,22 @@ body {
         padding: 16px;
         font-size: 14px;
         line-height: 1.65;
+    }
+
+    .disclaimer-section {
+        padding: 0 18px 40px;
+    }
+
+    .disclaimer-box {
+        padding: 18px 20px;
+    }
+
+    .disclaimer-header h3 {
+        font-size: 18px;
+    }
+
+    .disclaimer-box p {
+        font-size: 13px;
     }
 
     .contact-section {
@@ -937,6 +994,27 @@ body {
     .contact-form .input-box input[type="submit"] {
         padding: 13px;
         font-size: 15px;
+    }
+}
+
+@media (max-width: 600px) {
+    .site-footer {
+        margin-bottom: 54px;
+        padding: 10px;
+    }
+    
+    .site-footer p {
+        font-size: 14px;
+    }
+
+    .footer-links {
+        flex-direction: row;
+        gap: 8px;
+        text-align: center;
+    }
+
+    .footer-links a {
+        margin: 0;
     }
 }
 
