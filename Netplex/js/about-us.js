@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
             'textarea:not([disabled])',
             '[tabindex]:not([tabindex="-1"])',
             '.about-section p',
+            '.disclaimer-box',
             '.contact-info-item',
             '.footer-links a'
         ].join(', ');
@@ -143,7 +144,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const isSelect = key === 'Enter' || code === 13 || code === 23 || code === 66;
         const isBack = key === 'Escape' || key === 'Back' || code === 27 || code === 461 || code === 10009;
 
-        // Dismiss open dropdown/mobile menu on Back key
         if (isBack) {
             const dropdownContent = document.querySelector('.dropdown-content.active');
             const mobileMenu = document.querySelector('.mobile-more-menu.show');
@@ -162,7 +162,6 @@ document.addEventListener("DOMContentLoaded", function () {
         let activeEl = document.activeElement;
         const focusable = getFocusableElements();
 
-        // Default initial focus on the first interactive remote button press
         if (!activeEl || !focusable.includes(activeEl) || activeEl === document.body) {
             if (isUp || isDown || isLeft || isRight || isSelect) {
                 e.preventDefault();
@@ -175,7 +174,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        // Allow textarea editing navigation without trapping
         if (activeEl.tagName.toLowerCase() === 'textarea') {
             if ((isLeft || isRight) && !e.altKey && !e.ctrlKey) {
                 return;
@@ -196,7 +194,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 nextEl.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
             }
         } else if (isSelect) {
-            // If selecting a contact info card with an inner link, click the link
             if (activeEl.classList.contains('contact-info-item')) {
                 const innerLink = activeEl.querySelector('a');
                 if (innerLink) {
@@ -207,7 +204,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Ensure the viewport always loads pinned at the very top
     window.addEventListener('DOMContentLoaded', () => {
         window.scrollTo(0, 0);
     });
