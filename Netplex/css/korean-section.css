@@ -771,43 +771,7 @@ h2.section-heading::before {
     pointer-events: none;
 }
 
-/* TELEGRAM WIDGET */
-#telegram-widget {
-    position: fixed;
-    bottom: 75px;
-    right: 20px;
-    background: #0296cc;
-    color: #fff;
-    padding: 8px 10px;
-    border-radius: 6px;
-    font-weight: bold;
-    z-index: 1100;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    transition: background 0.3s;
-}
-
-#telegram-widget a {
-    color: #fff;
-    text-decoration: none;
-    display: flex;
-    font-size: 16px;
-    align-items: center;
-    gap: 8px;
-}
-
-#telegram-widget:hover,
-#telegram-widget:focus-within { background: #006fa1; }
-
-@media (max-width: 600px) {
-    #telegram-widget { bottom: 75px; right: 20px; padding: 8px 10px; font-size: 14px; }
-    @media (max-width: 400px) {
-        #telegram-widget a span { display: none; }
-        #telegram-widget { padding: 8px; }
-    }
-}
-
-
-/* Prevent AdSense Container Overflow  */
+/* Prevent AdSense Container Overflow */
 .ad-container {
     width: 100%;
     max-width: 100vw;
