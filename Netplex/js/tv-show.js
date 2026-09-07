@@ -55,7 +55,10 @@ const apiKey = "a1e72fd93ed59f56e6332813b9f8dcae";
 const baseURL = "https://api.themoviedb.org/3";
 const imgURL = "https://image.tmdb.org/t/p/w500";
 
-let currentBannerItem = null;
+let bannerItems = [];
+let currentBannerIndex = 0;
+let bannerInterval = null;
+let tvGenreMap = {};
 
 const bannerTitle = document.getElementById("banner-title");
 const bannerGenre = document.getElementById("banner-genre");
@@ -63,50 +66,103 @@ const bannerDescription = document.getElementById("banner-description");
 const banner = document.querySelector(".banner");
 const bannerPlayButton = document.getElementById("banner-play-btn");
 
+function escapeHTML(value) {
+    if (value === undefined || value === null) return "";
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+async function loadTvGenres() {
+    try {
+        const genresResponse = await fetch(`${baseURL}/genre/tv/list?api_key=${apiKey}&language=en-US`);
+        const genresData = await genresResponse.json();
+        if (genresData.genres) {
+            tvGenreMap = Object.fromEntries(genresData.genres.map(g => [g.id, g.name]));
+        }
+    } catch (e) {
+        console.error("Failed to load TV genres:", e);
+    }
+}
+
+function displayBannerItem(item) {
+    if (!item || !banner) return;
+
+    banner.style.backgroundImage = `
+        linear-gradient(to top, rgba(18, 18, 18, 1) 0%, rgba(18, 18, 18, 0.2) 60%, transparent 100%),
+        url(https://image.tmdb.org/t/p/original${item.backdrop_path})
+    `;
+
+    if (bannerTitle) {
+        bannerTitle.textContent = item.name || item.title || "Unknown";
+    }
+
+    if (bannerDescription) {
+        bannerDescription.textContent = item.overview || "No description available.";
+    }
+
+    if (bannerGenre) {
+        const genres = (item.genre_ids || [])
+            .map(id => tvGenreMap[id])
+            .filter(Boolean)
+            .join(" • ");
+
+        bannerGenre.innerHTML = genres 
+            ? `Genre: <span class="genre-highlight">${escapeHTML(genres)}</span>` 
+            : `Genre: <span class="genre-highlight">Unknown</span>`;
+    }
+
+    if (bannerPlayButton) {
+        const launchBannerMedia = () => {
+            const isMovie = item.media_type === "movie";
+            window.location.href = isMovie
+                ? `movie-details.html?movie_id=${item.id}`
+                : `tvshows-details.html?id=${item.id}`;
+        };
+
+        bannerPlayButton.onclick = launchBannerMedia;
+        bannerPlayButton.onkeydown = (e) => {
+            if (e.key === "Enter" || e.keyCode === 13) {
+                launchBannerMedia();
+            }
+        };
+    }
+}
+
+function nextBanner() {
+    if (!bannerItems.length) return;
+    currentBannerIndex = (currentBannerIndex + 1) % bannerItems.length;
+    displayBannerItem(bannerItems[currentBannerIndex]);
+}
+
 async function fetchBanner() {
     if (!banner) return;
     try {
+        await loadTvGenres();
         const response = await fetch(
             `${baseURL}/trending/tv/week?api_key=${apiKey}&language=en-US`
         );
         const data = await response.json();
-        const validItems = (data.results || []).filter(item => item.backdrop_path);
-        if (!validItems.length) return;
+        bannerItems = (data.results || []).filter(item => item.backdrop_path);
+        if (!bannerItems.length) return;
 
-        const randomItem = validItems[Math.floor(Math.random() * validItems.length)];
-        currentBannerItem = randomItem;
+        currentBannerIndex = 0;
+        displayBannerItem(bannerItems[currentBannerIndex]);
 
-        banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${randomItem.backdrop_path})`;
-        if (bannerTitle) bannerTitle.textContent = randomItem.name || randomItem.title;
-        if (bannerDescription) bannerDescription.textContent = randomItem.overview || "No description available.";
+        if (bannerInterval) clearInterval(bannerInterval);
+        bannerInterval = setInterval(nextBanner, 5000);
 
-        const genresResponse = await fetch(`${baseURL}/genre/tv/list?api_key=${apiKey}&language=en-US`);
-        const genresData = await genresResponse.json();
-        const genreMap = Object.fromEntries(genresData.genres.map(g => [g.id, g.name]));
-        const genreNames = (randomItem.genre_ids || []).map(id => genreMap[id]).join(", ");
-
-        if (bannerGenre) bannerGenre.textContent = `Genre: ${genreNames || "Unknown"}`;
+        banner.addEventListener("mouseenter", () => clearInterval(bannerInterval));
+        banner.addEventListener("mouseleave", () => {
+            clearInterval(bannerInterval);
+            bannerInterval = setInterval(nextBanner, 5000);
+        });
     } catch (e) {
         console.error("Banner fetch error", e);
     }
-}
-
-// Banner Play Action (Handles Click & Smart TV Remote OK/Enter)
-if (bannerPlayButton) {
-    const launchBannerMedia = () => {
-        if (!currentBannerItem) return;
-        const isMovie = currentBannerItem.media_type === "movie";
-        window.location.href = isMovie
-            ? `movie-details.html?movie_id=${currentBannerItem.id}`
-            : `tvshows-details.html?id=${currentBannerItem.id}`;
-    };
-
-    bannerPlayButton.addEventListener("click", launchBannerMedia);
-    bannerPlayButton.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.keyCode === 13) {
-            launchBannerMedia();
-        }
-    });
 }
 
 // ===================================
@@ -133,7 +189,7 @@ async function fetchMedia(url, containerId, type, pages = 3) {
                 const rating = item.vote_average ? item.vote_average.toFixed(1) : "N/A";
 
                 mediaItem.innerHTML = `
-                    <div class="poster-title" title="${title}">${title}</div>
+                    <div class="poster-title" title="${escapeHTML(title)}">${escapeHTML(title)}</div>
                     <div class="poster-card">
                         <div class="rating">
                             <span class="star"><i class="fas fa-star"></i></span>
@@ -142,7 +198,7 @@ async function fetchMedia(url, containerId, type, pages = 3) {
                         <div class="year-container">
                             <span class="year">${year}</span>
                         </div>
-                        <img src="${imgURL + item.poster_path}" alt="${title}" loading="lazy">
+                        <img src="${imgURL + item.poster_path}" alt="${escapeHTML(title)}" loading="lazy">
                         <div class="play-button">
                             <i class="fas fa-play"></i>
                         </div>
