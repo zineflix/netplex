@@ -153,12 +153,12 @@ async function fetchBanner() {
         displayBannerItem(bannerItems[currentBannerIndex]);
 
         if (bannerInterval) clearInterval(bannerInterval);
-        bannerInterval = setInterval(nextBanner, 5000);
+        bannerInterval = setInterval(nextBanner, 10000);
 
         banner.addEventListener("mouseenter", () => clearInterval(bannerInterval));
         banner.addEventListener("mouseleave", () => {
             clearInterval(bannerInterval);
-            bannerInterval = setInterval(nextBanner, 5000);
+            bannerInterval = setInterval(nextBanner, 10000);
         });
     } catch (e) {
         console.error("Banner fetch error", e);
