@@ -340,59 +340,57 @@
             .mobile-more-menu { display: none !important; }
         }
 
-        /* Footer */
-        .site-footer {
-            background-color: #1e1e1e;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-bottom: 0px;
-            border-top: 1px solid #333;
-        }
+/* FOOTER START */
+.site-footer {
+    background-color: #1e1e1e;
+    color: #bfbfbf;
+    text-align: center;
+    padding: 12px 16px;
+    border-top: 1px solid #333;
+    font-size: 13px;
+    line-height: 1.4;
+}
 
-        .site-footer p {
-            margin: 8px 0;
-            font-size: 16px;
-        }
+.site-footer p {
+    margin: 4px 0 0;
+}
 
-        .footer-links {
-            margin-top: 10px;
-        }
+.footer-links {
+    margin-bottom: 4px;
+}
 
-        .footer-links a {
-            color: #0296cc;
-            text-decoration: none;
-            margin: 0 10px;
-            font-weight: bold;
-        }
+.footer-links a {
+    color: #0296cc;
+    text-decoration: none;
+    margin: 0 6px;
+    font-weight: 600;
+}
 
-        .footer-links a:hover,
-        .footer-links a:focus {
-            text-decoration: underline;
-        }
+.footer-links a:hover,
+.footer-links a:focus {
+    text-decoration: underline;
+}
 
-        .disclaimer-note {
-            color: #bfbfbf;
-            font-family: Arial;
-        }
+.footer-meta {
+    color: #fff;
+    font-size: 13px;
+}
 
-        @media (max-width: 600px) {
-            .site-footer {
-                margin-bottom: 54px;
-                padding: 10px;
-            }
-            .site-footer p {
-                font-size: 14px;
-            }
-            .footer-links {
-                flex-direction: row;
-                gap: 8px;
-                text-align: center;
-            }
-            .footer-links a {
-                margin: 0;
-            }
-        }
+.disclaimer-note {
+    font-size: 11px;
+    opacity: 0.75;
+}
+
+@media (max-width: 600px) {
+    .site-footer {
+        padding: 10px 12px;
+        margin-bottom: 40px !important;; /* adjust this value as needed */
+    }
+    .footer-links a {
+        margin: 0 3px;
+    }
+}
+/* FOOTER END */
 
         /* Hero Header Section */
         .hero-banner {
