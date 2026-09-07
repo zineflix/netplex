@@ -797,3 +797,21 @@ h2.section-heading::before {
         #telegram-widget { padding: 8px; }
     }
 }
+
+
+/* Prevent AdSense Container Overflow  */
+.ad-container {
+    width: 100%;
+    max-width: 100vw;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+ins.adsbygoogle {
+    max-width: 100% !important;
+}
+
+ins.adsbygoogle iframe {
+    max-width: 100% !important;
+}
