@@ -23,6 +23,13 @@ body {
     overflow-x: hidden;
 }
 
+html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    position: relative;
+}
+
 /* TV FOCUS STYLES (D-Pad Navigation for the whole page) */
 :focus {
     outline: none;
@@ -1061,4 +1068,22 @@ body {
     .contact-form {
         padding: 22px 15px;
     }
+}
+
+
+/* Prevent AdSense Container Overflow */
+.ad-container {
+    width: 100%;
+    max-width: 100vw;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+ins.adsbygoogle {
+    max-width: 100% !important;
+}
+
+ins.adsbygoogle iframe {
+    max-width: 100% !important;
 }
