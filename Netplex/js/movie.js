@@ -301,11 +301,7 @@ function loadMovieSections() {
     fetchMedia("/discover/movie", "animation-movies", "movie", {
         sort_by: "popularity.desc",
         with_genres: "16"
-    });
-    fetchMedia("/discover/movie", "philippine-movies", "movie", {
-        sort_by: "popularity.desc",
-        with_companies: "149142"
-    });  
+    }); 
 }
 
 // ============================================================
