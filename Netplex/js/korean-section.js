@@ -64,7 +64,6 @@ const baseURL = "https://api.themoviedb.org/3";
 const imgURL = "https://image.tmdb.org/t/p/w500";
 const currentYear = new Date().getFullYear();
 
-let currentBannerItem = null;
 let bannerItems = [];
 let bannerIndex = 0;
 let bannerInterval = null;
@@ -77,8 +76,18 @@ const bannerDescription = document.getElementById("banner-description");
 const banner = document.querySelector(".banner");
 const bannerPlayButton = document.getElementById("banner-play-btn");
 
+function escapeHTML(value) {
+    if (value === undefined || value === null) return "";
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 // ===================================
-// 2. BANNER LOGIC
+// 2. BANNER LOGIC (5s Carousel, Genre Highlight, Bottom Dissolve)
 // ===================================
 async function loadBannerGenres() {
     try {
@@ -100,6 +109,63 @@ async function loadBannerGenres() {
     } catch (error) {
         console.error("Failed to load banner genres:", error);
     }
+}
+
+function displayBannerItem(item) {
+    if (!item || !banner) return;
+
+    banner.style.backgroundImage = `
+        linear-gradient(to top, rgba(18, 18, 18, 1) 0%, rgba(18, 18, 18, 0.2) 60%, transparent 100%),
+        url(https://image.tmdb.org/t/p/original${item.backdrop_path})
+    `;
+
+    const originalTitle = item.title || item.name || "Unknown";
+    const maxLength = 35;
+
+    if (bannerTitle) {
+        bannerTitle.textContent =
+            originalTitle.length > maxLength
+                ? originalTitle.substring(0, maxLength - 3) + "..."
+                : originalTitle;
+    }
+
+    if (bannerDescription) {
+        bannerDescription.textContent = item.overview || "No description available.";
+    }
+
+    const genreDict = item.media_type === "tv" ? tvGenreMap : movieGenreMap;
+    const genres = (item.genre_ids || [])
+        .map(id => genreDict[id])
+        .filter(Boolean)
+        .join(" • ");
+
+    if (bannerGenre) {
+        bannerGenre.innerHTML = genres 
+            ? `Genre: <span class="genre-highlight">${escapeHTML(genres)}</span>` 
+            : `Genre: <span class="genre-highlight">Unknown</span>`;
+    }
+
+    if (bannerPlayButton) {
+        const launchBannerMedia = () => {
+            window.location.href =
+                item.media_type === "movie"
+                    ? `movie-details.html?movie_id=${item.id}`
+                    : `tvshows-details.html?id=${item.id}`;
+        };
+
+        bannerPlayButton.onclick = launchBannerMedia;
+        bannerPlayButton.onkeydown = (e) => {
+            if (e.key === "Enter" || e.keyCode === 13) {
+                launchBannerMedia();
+            }
+        };
+    }
+}
+
+function nextBanner() {
+    if (!bannerItems.length) return;
+    bannerIndex = (bannerIndex + 1) % bannerItems.length;
+    displayBannerItem(bannerItems[bannerIndex]);
 }
 
 async function loadBannerItems() {
@@ -169,15 +235,20 @@ async function loadBannerItems() {
             return;
         }
 
-        showNextBanner();
+        bannerIndex = 0;
+        displayBannerItem(bannerItems[bannerIndex]);
 
         if (bannerInterval) {
             clearInterval(bannerInterval);
         }
 
-        bannerInterval = setInterval(() => {
-            showNextBanner();
-        }, 5000);
+        bannerInterval = setInterval(nextBanner, 5000);
+
+        banner.addEventListener("mouseenter", () => clearInterval(bannerInterval));
+        banner.addEventListener("mouseleave", () => {
+            clearInterval(bannerInterval);
+            bannerInterval = setInterval(nextBanner, 5000);
+        });
     } catch (error) {
         console.error("Failed to load banner items:", error);
     }
@@ -188,66 +259,6 @@ function shuffleBannerItems() {
         const j = Math.floor(Math.random() * (i + 1));
         [bannerItems[i], bannerItems[j]] = [bannerItems[j], bannerItems[i]];
     }
-}
-
-function showNextBanner() {
-    if (!bannerItems.length || !banner) return;
-
-    currentBannerItem = bannerItems[bannerIndex];
-    bannerIndex++;
-
-    if (bannerIndex >= bannerItems.length) {
-        bannerIndex = 0;
-        shuffleBannerItems();
-    }
-
-    const item = currentBannerItem;
-
-    banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${item.backdrop_path})`;
-
-    const originalTitle = item.title || item.name || "Unknown";
-    const maxLength = 35;
-
-    if (bannerTitle) {
-        bannerTitle.textContent =
-            originalTitle.length > maxLength
-                ? originalTitle.substring(0, maxLength - 3) + "..."
-                : originalTitle;
-    }
-
-    if (bannerDescription) {
-        bannerDescription.textContent = item.overview || "No description available.";
-    }
-
-    const genreMap = item.media_type === "movie" ? movieGenreMap : tvGenreMap;
-    const genreNames = (item.genre_ids || [])
-        .map(id => genreMap[id])
-        .filter(Boolean)
-        .join(", ");
-
-    if (bannerGenre) {
-        bannerGenre.textContent = `Genre: ${genreNames || "Unknown"}`;
-    }
-}
-
-// Banner Play Action (Remote and Click Accessible)
-if (bannerPlayButton) {
-    bannerPlayButton.setAttribute("tabindex", "0");
-    const launchBannerMedia = () => {
-        if (!currentBannerItem) return;
-        const item = currentBannerItem;
-        window.location.href =
-            item.media_type === "movie"
-                ? `movie-details.html?movie_id=${item.id}`
-                : `tvshows-details.html?id=${item.id}`;
-    };
-
-    bannerPlayButton.addEventListener("click", launchBannerMedia);
-    bannerPlayButton.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.keyCode === 13) {
-            launchBannerMedia();
-        }
-    });
 }
 
 async function startBannerSystem() {
@@ -266,7 +277,6 @@ function createMediaCard(item, type) {
     const mediaItem = document.createElement("div");
     mediaItem.classList.add("media-item");
 
-    // Android TV Accessibility attributes
     mediaItem.setAttribute("tabindex", "0");
     mediaItem.setAttribute("role", "button");
 
@@ -275,7 +285,7 @@ function createMediaCard(item, type) {
     const rating = item.vote_average ? item.vote_average.toFixed(1) : "0.0";
 
     mediaItem.innerHTML = `
-        <div class="poster-title" title="${title}">${title}</div>
+        <div class="poster-title" title="${escapeHTML(title)}">${escapeHTML(title)}</div>
         <div class="poster-card">
             <div class="rating">
                 <span class="star"><i class="fas fa-star"></i></span>
@@ -284,7 +294,7 @@ function createMediaCard(item, type) {
             <div class="year-container">
                 <span class="year">${year}</span>
             </div>
-            <img src="${imgURL + item.poster_path}" alt="${title}" loading="lazy">
+            <img src="${imgURL + item.poster_path}" alt="${escapeHTML(title)}" loading="lazy">
             <div class="play-button">
                 <i class="fas fa-play"></i>
             </div>
@@ -298,17 +308,14 @@ function createMediaCard(item, type) {
                 : `tvshows-details.html?id=${item.id}`;
     };
 
-    // Mouse click support
     mediaItem.addEventListener("click", openDetails);
 
-    // TV Remote D-Pad Center/OK selection support
     mediaItem.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.keyCode === 13) {
             openDetails();
         }
     });
 
-    // Centers the active poster on the screen when navigated by remote control
     mediaItem.addEventListener("focus", () => {
         mediaItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     });
@@ -487,7 +494,6 @@ function navigateSpatial(direction) {
         if (isValid) {
             const dx = center.x - currentCenter.x;
             const dy = center.y - currentCenter.y;
-            // Weigh axes to prioritize straight lines over diagonals
             const distance = (direction === "ArrowLeft" || direction === "ArrowRight")
                 ? Math.abs(dx) + Math.abs(dy) * 2.5
                 : Math.abs(dy) + Math.abs(dx) * 2.5;
@@ -505,7 +511,6 @@ function navigateSpatial(direction) {
 }
 
 window.addEventListener("keydown", (e) => {
-    // D-Pad and standard direction keys
     const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Up", "Down", "Left", "Right"];
     if (keys.includes(e.key) || [37, 38, 39, 40].includes(e.keyCode)) {
         let dir = e.key;
@@ -517,7 +522,6 @@ window.addEventListener("keydown", (e) => {
         e.preventDefault();
         navigateSpatial(dir);
     } else if (e.key === "Escape" || e.key === "Back" || e.keyCode === 10009 || e.keyCode === 27) {
-        // Smart TV Back key dismiss listener
         closeMessage();
     }
 });
