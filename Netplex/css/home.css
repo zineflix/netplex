@@ -23,6 +23,13 @@ body {
     overflow-x: hidden;
 }
 
+html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    position: relative;
+}
+
 :focus {
     outline: none;
 }
@@ -636,7 +643,8 @@ h2.section-heading::before {
 
     .media-item {
         margin: 0;
-        width: calc((100vw - 32px) / 3); 
+        width: calc((100% - 16px) / 3);
+        min-width: calc((100% - 16px) / 3);
         flex-shrink: 0;
     }
 
