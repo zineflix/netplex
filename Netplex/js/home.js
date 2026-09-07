@@ -6,7 +6,11 @@
     const imgURL = "https://image.tmdb.org/t/p/w500";
     const currentYear = new Date().getFullYear();
 
-    let currentBannerItem = null;
+    let bannerItems = [];
+    let currentBannerIndex = 0;
+    let bannerInterval = null;
+    let movieGenreMap = {};
+    let tvGenreMap = {};
 
     const bannerTitle = document.getElementById("banner-title");
     const bannerGenre = document.getElementById("banner-genre");
@@ -14,11 +18,94 @@
     const banner = document.querySelector(".banner");
     const bannerPlayButton = document.getElementById("banner-play-btn");
 
+    function escapeHTML(value) {
+        if (value === undefined || value === null) return "";
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
     // ===================================
-    // 2. BANNER LOGIC
+    // 2. BANNER LOGIC (5s Carousel, Genre Highlight, Bottom Dissolve)
     // ===================================
-    async function fetchBanner() {
+    async function loadGenres() {
         try {
+            const [movieRes, tvRes] = await Promise.all([
+                fetch(`${baseURL}/genre/movie/list?api_key=${apiKey}&language=en-US`),
+                fetch(`${baseURL}/genre/tv/list?api_key=${apiKey}&language=en-US`)
+            ]);
+            const movieData = await movieRes.json();
+            const tvData = await tvRes.json();
+            if (movieData.genres) {
+                movieGenreMap = Object.fromEntries(movieData.genres.map(g => [g.id, g.name]));
+            }
+            if (tvData.genres) {
+                tvGenreMap = Object.fromEntries(tvData.genres.map(g => [g.id, g.name]));
+            }
+        } catch (e) {
+            console.error("Genre load error:", e);
+        }
+    }
+
+    function displayBannerItem(item) {
+        if (!item || !banner) return;
+
+        banner.style.backgroundImage = `
+            linear-gradient(to top, rgba(18, 18, 18, 1) 0%, rgba(18, 18, 18, 0.2) 60%, transparent 100%),
+            url(https://image.tmdb.org/t/p/original${item.backdrop_path})
+        `;
+
+        const title = item.title || item.name || "Unknown";
+        if (bannerTitle) {
+            bannerTitle.textContent = title.length > 35 ? title.substring(0, 32) + '...' : title;
+        }
+
+        if (bannerDescription) {
+            bannerDescription.textContent = item.overview || "No description available.";
+        }
+
+        if (bannerGenre) {
+            const genreDict = item.media_type === "tv" ? tvGenreMap : movieGenreMap;
+            const genres = (item.genre_ids || [])
+                .map(id => genreDict[id])
+                .filter(Boolean)
+                .join(" • ");
+
+            bannerGenre.innerHTML = genres 
+                ? `Genre: <span class="genre-highlight">${escapeHTML(genres)}</span>` 
+                : `Genre: <span class="genre-highlight">Unknown</span>`;
+        }
+
+        if (bannerPlayButton) {
+            const launchBannerMedia = () => {
+                const isTv = item.media_type === "tv";
+                window.location.href = isTv
+                    ? `tvshows-details.html?id=${item.id}`
+                    : `movie-details.html?movie_id=${item.id}`;
+            };
+
+            bannerPlayButton.onclick = launchBannerMedia;
+            bannerPlayButton.onkeydown = (e) => {
+                if (e.key === "Enter" || e.keyCode === 13) {
+                    launchBannerMedia();
+                }
+            };
+        }
+    }
+
+    function nextBanner() {
+        if (!bannerItems.length) return;
+        currentBannerIndex = (currentBannerIndex + 1) % bannerItems.length;
+        displayBannerItem(bannerItems[currentBannerIndex]);
+    }
+
+    async function fetchBanner() {
+        if (!banner) return;
+        try {
+            await loadGenres();
             const [movieRes, tvRes] = await Promise.all([
                 fetch(`${baseURL}/discover/movie?api_key=${apiKey}&primary_release_year=${currentYear}&sort_by=popularity.desc&page=1`),
                 fetch(`${baseURL}/discover/tv?api_key=${apiKey}&first_air_date_year=${currentYear}&sort_by=popularity.desc&page=1`)
@@ -30,38 +117,23 @@
             const movies = (movieData.results || []).map(item => ({...item, media_type: 'movie'}));
             const tvShows = (tvData.results || []).map(item => ({...item, media_type: 'tv'}));
 
-            const allNewReleases = [...movies, ...tvShows].filter(item => item.backdrop_path);
-            if (allNewReleases.length === 0) return;
+            bannerItems = [...movies, ...tvShows].filter(item => item.backdrop_path);
+            if (!bannerItems.length) return;
 
-            const randomItem = allNewReleases[Math.floor(Math.random() * allNewReleases.length)];
-            currentBannerItem = randomItem;
+            currentBannerIndex = 0;
+            displayBannerItem(bannerItems[currentBannerIndex]);
 
-            banner.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${randomItem.backdrop_path})`;
-            
-            const originalTitle = randomItem.title || randomItem.name;
-            bannerTitle.textContent = originalTitle.length > 35 ? originalTitle.substring(0, 32) + '...' : originalTitle; 
-            bannerDescription.textContent = randomItem.overview || "No description available.";
-            
-            const mediaType = randomItem.media_type;
-            const genresResponse = await fetch(`${baseURL}/genre/${mediaType}/list?api_key=${apiKey}&language=en-US`);
-            const genresData = await genresResponse.json();
-            const genreMap = Object.fromEntries(genresData.genres.map(g => [g.id, g.name]));
-            const genreNames = (randomItem.genre_ids || []).map(id => genreMap[id]).join(", ");
-            
-            bannerGenre.textContent = `Genre: ${genreNames || "Unknown"}`;
+            if (bannerInterval) clearInterval(bannerInterval);
+            bannerInterval = setInterval(nextBanner, 8000);
+
+            banner.addEventListener("mouseenter", () => clearInterval(bannerInterval));
+            banner.addEventListener("mouseleave", () => {
+                clearInterval(bannerInterval);
+                bannerInterval = setInterval(nextBanner, 8000);
+            });
         } catch(e) {
             console.error("Banner fetch error", e);
         }
-    }
-
-    if (bannerPlayButton) {
-        bannerPlayButton.addEventListener("click", () => {
-            if (!currentBannerItem) return;
-            const item = currentBannerItem;
-            window.location.href = item.media_type === "movie"
-                ? `movie-details.html?movie_id=${item.id}`
-                : `tvshows-details.html?id=${item.id}`;
-        });
     }
 
     // ===================================
@@ -75,12 +147,12 @@
         mediaItem.setAttribute("tabindex", "0");
         mediaItem.setAttribute("role", "button");
 
-        const title = item.title || item.name;
+        const title = item.title || item.name || "Unknown";
         const year = (item.release_date || item.first_air_date || '').slice(0, 4) || '—';
         const rating = item.vote_average ? item.vote_average.toFixed(1) : '0.0';
         
         mediaItem.innerHTML = `
-            <div class="poster-title" title="${title}">${title}</div>
+            <div class="poster-title" title="${escapeHTML(title)}">${escapeHTML(title)}</div>
             <div class="poster-card">
                 <div class="rating">
                     <span class="star"><i class="fas fa-star"></i></span> <span class="rating-number">${rating}</span>
@@ -88,7 +160,7 @@
                 <div class="year-container">
                     <span class="year">${year}</span>
                 </div>
-                <img src="${imgURL + item.poster_path}" alt="${title}">
+                <img src="${imgURL + item.poster_path}" alt="${escapeHTML(title)}" loading="lazy">
                 <div class="play-button">
                     <i class="fas fa-play"></i>
                 </div>
@@ -106,7 +178,6 @@
             if (e.key === "Enter" || e.keyCode === 13) openDetails();
         });
 
-        // Horizontal auto-scroll on focus for TV remotes
         mediaItem.addEventListener("focus", () => {
             mediaItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
         });
@@ -243,7 +314,6 @@
             if (isValid) {
                 const dx = center.x - currentCenter.x;
                 const dy = center.y - currentCenter.y;
-                // Weight distance depending on vector component to favor straight alignment over diagonal
                 const distance = (direction === "ArrowLeft" || direction === "ArrowRight")
                     ? Math.abs(dx) + Math.abs(dy) * 2.5
                     : Math.abs(dy) + Math.abs(dx) * 2.5;
@@ -261,7 +331,6 @@
     }
 
     window.addEventListener("keydown", (e) => {
-        // TV Keycodes & Standard Keys
         const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Up", "Down", "Left", "Right"];
         if (keys.includes(e.key) || [37, 38, 39, 40].includes(e.keyCode)) {
             let dir = e.key;
@@ -272,12 +341,6 @@
 
             e.preventDefault();
             navigateSpatial(dir);
-        } else if (e.key === "Escape" || e.key === "Back" || e.keyCode === 10009 || e.keyCode === 27) {
-            // Smart TV Back key listener
-            const floatingMessage = document.getElementById("floating-message");
-            if (floatingMessage && floatingMessage.style.display !== "none") {
-                closeMessage();
-            }
         }
     });
 
@@ -336,27 +399,20 @@
         }
     });
 
-    function closeMessage() {
-        document.getElementById("floating-message").style.display = "none";
-    }
+    document.addEventListener("DOMContentLoaded", function () {
+        const dropdownButton = document.querySelector(".dropbtn");
+        const dropdownContent = document.querySelector(".dropdown-content");
 
+        if (dropdownButton && dropdownContent) {
+            dropdownButton.addEventListener("click", function (event) {
+                event.stopPropagation();
+                dropdownContent.classList.toggle("active");
+            });
 
-// For Dropdown More Button Function Start
-document.addEventListener("DOMContentLoaded", function () {
-    const dropdownButton = document.querySelector(".dropbtn");
-    const dropdownContent = document.querySelector(".dropdown-content");
-
-    dropdownButton.addEventListener("click", function (event) {
-        event.stopPropagation(); // Prevent event from bubbling up
-        dropdownContent.classList.toggle("active");
-    });
-
-    // Close dropdown if clicked outside
-    document.addEventListener("click", function (event) {
-        if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
-            dropdownContent.classList.remove("active");
+            document.addEventListener("click", function (event) {
+                if (!dropdownButton.contains(event.target) && !dropdownContent.contains(event.target)) {
+                    dropdownContent.classList.remove("active");
+                }
+            });
         }
     });
-});
-
-// For Dropdown More Button Function End
