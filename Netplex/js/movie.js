@@ -70,8 +70,66 @@ async function loadMovieGenres() {
 }
 
 // ============================================================
-// BANNER
+// BANNER CAROUSEL (ROTATES EVERY 5 SECONDS)
 // ============================================================
+let bannerItems = [];
+let currentBannerIndex = 0;
+let bannerInterval = null;
+
+function displayBannerItem(item) {
+    if (!item || !banner) return;
+
+    banner.style.backgroundImage = `
+        linear-gradient(to top, rgba(18, 18, 18, 1) 0%, rgba(18, 18, 18, 0.2) 60%, transparent 100%),
+        url(https://image.tmdb.org/t/p/original${item.backdrop_path})
+    `;
+
+    if (bannerTitle) {
+        bannerTitle.textContent = item.title || item.name || "Unknown";
+    }
+
+    if (bannerDescription) {
+        bannerDescription.textContent =
+            item.overview || "No description available.";
+    }
+
+    if (bannerGenre) {
+        const genres = (item.genre_ids || [])
+            .map(id => movieGenreMap[id])
+            .filter(Boolean)
+            .join(" • ");
+
+        bannerGenre.innerHTML = genres 
+            ? `Genre: <span class="genre-highlight">${escapeHTML(genres)}</span>` 
+            : `Genre: <span class="genre-highlight">Unknown</span>`;
+    }
+
+    const playBtn = document.getElementById("banner-play-btn");
+    if (playBtn) {
+        const openBannerMedia = () => {
+            const isTv = item.media_type === "tv" || !item.title;
+            if (isTv) {
+                window.location.href = `tvshows-details.html?id=${item.id}`;
+            } else {
+                window.location.href = `movie-details.html?movie_id=${item.id}`;
+            }
+        };
+
+        playBtn.onclick = openBannerMedia;
+        playBtn.onkeydown = (e) => {
+            if (e.key === "Enter" || e.keyCode === 13) {
+                openBannerMedia();
+            }
+        };
+    }
+}
+
+function nextBanner() {
+    if (!bannerItems.length) return;
+    currentBannerIndex = (currentBannerIndex + 1) % bannerItems.length;
+    displayBannerItem(bannerItems[currentBannerIndex]);
+}
+
 async function fetchBanner() {
     if (!banner) return;
 
@@ -80,56 +138,22 @@ async function fetchBanner() {
             language: "en-US"
         });
 
-        const bannerItems = (data.results || []).filter(
-            item => item.backdrop_path
-        );
+        bannerItems = (data.results || []).filter(item => item.backdrop_path);
 
         if (!bannerItems.length) return;
 
-        const randomItem =
-            bannerItems[Math.floor(Math.random() * bannerItems.length)];
+        currentBannerIndex = 0;
+        displayBannerItem(bannerItems[currentBannerIndex]);
 
-        banner.style.backgroundImage =
-            `url(https://image.tmdb.org/t/p/original${randomItem.backdrop_path})`;
+        if (bannerInterval) clearInterval(bannerInterval);
+        bannerInterval = setInterval(nextBanner, 5000);
 
-        if (bannerTitle) {
-            bannerTitle.textContent =
-                randomItem.title || randomItem.name || "Unknown";
-        }
+        banner.addEventListener("mouseenter", () => clearInterval(bannerInterval));
+        banner.addEventListener("mouseleave", () => {
+            clearInterval(bannerInterval);
+            bannerInterval = setInterval(nextBanner, 5000);
+        });
 
-        if (bannerDescription) {
-            bannerDescription.textContent =
-                randomItem.overview || "No description available.";
-        }
-
-        if (bannerGenre) {
-            const genres = (randomItem.genre_ids || [])
-                .map(id => movieGenreMap[id])
-                .filter(Boolean)
-                .join(", ");
-
-            bannerGenre.textContent = `Genre: ${genres || "Unknown"}`;
-        }
-
-        // Wire Play Button to redirect based on media type
-        const playBtn = document.getElementById("banner-play-btn");
-        if (playBtn) {
-            const openBannerMedia = () => {
-                const isTv = randomItem.media_type === "tv" || !randomItem.title;
-                if (isTv) {
-                    window.location.href = `tvshows-details.html?id=${randomItem.id}`;
-                } else {
-                    window.location.href = `movie-details.html?movie_id=${randomItem.id}`;
-                }
-            };
-
-            playBtn.onclick = openBannerMedia;
-            playBtn.onkeydown = (e) => {
-                if (e.key === "Enter" || e.keyCode === 13) {
-                    openBannerMedia();
-                }
-            };
-        }
     } catch (error) {
         console.error("Failed to load banner:", error);
     }
