@@ -18,12 +18,28 @@ const qs = (sel, root = document) => root.querySelector(sel);
 const qsa = (sel, root = document) => [...root.querySelectorAll(sel)];
 const safeOn = (el, ev, fn) => el && el.addEventListener(ev, fn);
 
-// Navigate to previous page or fall back to default
+// Navigate to previous page without getting trapped in iframe history
 function goBackOrHome() {
-  if (window.history.length > 1) {
+  if (document.referrer && !document.referrer.includes(window.location.pathname)) {
+    window.location.href = document.referrer;
+  } else if (window.history.length > 1) {
     window.history.back();
   } else {
     window.location.href = 'tv-show.html';
+  }
+}
+
+// Safely update an iframe's source without pushing entries to browser history
+function setIframeSource(iframe, url) {
+  if (!iframe) return;
+  try {
+    if (iframe.contentWindow) {
+      iframe.contentWindow.location.replace(url);
+    } else {
+      iframe.src = url;
+    }
+  } catch (e) {
+    iframe.src = url;
   }
 }
 
@@ -101,7 +117,7 @@ function closeTrailerModal() {
   const trailerBtn = byId('watch-trailer-btn');
 
   if (trailerPopup) trailerPopup.style.display = 'none';
-  if (trailerIframe) trailerIframe.src = '';
+  if (trailerIframe) setIframeSource(trailerIframe, 'about:blank');
   if (trailerBtn) trailerBtn.focus();
 }
 
@@ -177,7 +193,8 @@ async function fetchTVDetails() {
     if (trailer && trailerBtn && trailerPopup && trailerIframe && closeTrailerBtn) {
       safeOn(trailerBtn, 'click', () => {
         trailerPopup.style.display = 'flex';
-        trailerIframe.src = `https://www.youtube.com/embed/${trailer.key}?autoplay=1&mute=1&playsinline=1&controls=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`;
+        const trailerUrl = `https://www.youtube.com/embed/${trailer.key}?autoplay=1&mute=1&playsinline=1&controls=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`;
+        setIframeSource(trailerIframe, trailerUrl);
         setTimeout(() => {
           closeTrailerBtn.focus();
         }, 100);
@@ -258,7 +275,7 @@ async function fetchTVDetails() {
     safeOn(closeIframeBtn, 'click', () => {
       if (!iframeContainer || !tvIframe || !watchNowBtn) return;
       iframeContainer.style.display = 'none';
-      tvIframe.src = '';
+      setIframeSource(tvIframe, 'about:blank');
       watchNowBtn.style.display = 'block';
       window.location.reload();
     });
@@ -483,7 +500,9 @@ function changeTVServer(index, id) {
   }
 
   const url = buildTVServerURL(currentTVServerIndex, id, currentSeason, currentEpisode);
-  if (tvIframe) tvIframe.src = url;
+  if (tvIframe) {
+    setIframeSource(tvIframe, url);
+  }
 
   if (changeServerBtn) {
     changeServerBtn.innerHTML = `${selectedServer.name} <span class="dropdown-icon">&#9660;</span>`;
@@ -510,7 +529,9 @@ function changeTVEpisode(id, season, episode) {
   }
 
   const url = buildTVServerURL(currentTVServerIndex, id, season, episode);
-  if (tvIframe) tvIframe.src = url;
+  if (tvIframe) {
+    setIframeSource(tvIframe, url);
+  }
 }
 
 // Global outside click handler
@@ -575,19 +596,16 @@ function disableSandbox() {
   const iframe = byId('tv-iframe');
   if (!iframe) return;
 
+  const currentUrl = iframe.src;
   iframe.removeAttribute('sandbox');
   if (sandboxBtn) {
-    sandboxBtn.classList.remove('off');
+    sandboxBtn.classList.remove('on');
     sandboxBtn.classList.add('off');
     sandboxBtn.textContent = 'Sandbox: OFF';
   }
 
-  if (iframe.src && iframe.src.trim() !== '') {
-    const currentSrc = iframe.src;
-    iframe.src = '';
-    setTimeout(() => {
-      iframe.src = currentSrc;
-    }, 50);
+  if (currentUrl && currentUrl.trim() !== '') {
+    setIframeSource(iframe, currentUrl);
   }
 
   if (sandboxWarning) sandboxWarning.style.display = 'none';
@@ -605,17 +623,14 @@ safeOn(byId('sandbox-toggle'), 'click', () => {
       proceedBtn?.focus();
     }
   } else {
+    const currentUrl = iframe.src;
     iframe.setAttribute('sandbox', 'allow-scripts allow-presentation allow-same-origin');
     sandboxBtn.classList.remove('off');
     sandboxBtn.classList.add('on');
     sandboxBtn.textContent = 'Sandbox: ON';
 
-    if (iframe.src && iframe.src.trim() !== '') {
-      const currentSrc = iframe.src;
-      iframe.src = '';
-      setTimeout(() => {
-        iframe.src = currentSrc;
-      }, 50);
+    if (currentUrl && currentUrl.trim() !== '') {
+      setIframeSource(iframe, currentUrl);
     }
   }
 });
