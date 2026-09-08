@@ -21,12 +21,28 @@ const qs = (sel, root = document) => root.querySelector(sel);
 const qsa = (sel, root = document) => [...root.querySelectorAll(sel)];
 const safeOn = (el, ev, fn) => el && el.addEventListener(ev, fn);
 
-// Navigate to previous page or fall back to default
+// Safely navigate back without getting trapped in iframe history
 function goBackOrHome() {
-  if (window.history.length > 1) {
+  if (document.referrer && !document.referrer.includes(window.location.pathname)) {
+    window.location.href = document.referrer;
+  } else if (window.history.length > 1) {
     window.history.back();
   } else {
     window.location.href = 'movies.html';
+  }
+}
+
+// Safely update an iframe's source without pushing entries to browser history
+function setIframeSource(iframe, url) {
+  if (!iframe) return;
+  try {
+    if (iframe.contentWindow) {
+      iframe.contentWindow.location.replace(url);
+    } else {
+      iframe.src = url;
+    }
+  } catch (e) {
+    iframe.src = url;
   }
 }
 
@@ -72,7 +88,7 @@ function closeTrailerModal() {
   const trailerBtn = byId('watch-trailer-btn');
 
   if (trailerPopup) trailerPopup.style.display = 'none';
-  if (trailerIframe) trailerIframe.src = '';
+  if (trailerIframe) setIframeSource(trailerIframe, 'about:blank');
   if (trailerBtn) {
     trailerBtn.focus();
   }
@@ -128,7 +144,8 @@ async function fetchMovieDetails() {
     if (trailer && trailerBtn && trailerPopup && trailerIframe && closeTrailerBtn) {
       safeOn(trailerBtn, 'click', () => {
         trailerPopup.style.display = 'flex';
-        trailerIframe.src = `https://www.youtube.com/embed/${trailer.key}?autoplay=1&mute=1&playsinline=1&controls=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`;
+        const trailerUrl = `https://www.youtube.com/embed/${trailer.key}?autoplay=1&mute=1&playsinline=1&controls=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}`;
+        setIframeSource(trailerIframe, trailerUrl);
         
         setTimeout(() => {
           closeTrailerBtn.focus();
@@ -186,7 +203,7 @@ async function fetchMovieDetails() {
 
     if (iframeContainer && movieIframe) {
       iframeContainer.style.display = 'flex';
-      movieIframe.src = `${MOVIE_ENDPOINTS[0].url}${movieId}?autoplay=true`;
+      setIframeSource(movieIframe, `${MOVIE_ENDPOINTS[0].url}${movieId}?autoplay=true`);
     }
 
     // Build Server List
@@ -292,7 +309,10 @@ function changeServer(index) {
     url = `${selectedServer.url}${movieId}?autoplay=true`;
   }
 
-  if (movieIframe) movieIframe.src = url;
+  // Use replace to prevent storing server switches in history
+  if (movieIframe) {
+    setIframeSource(movieIframe, url);
+  }
 
   if (changeServerBtn) {
     changeServerBtn.innerHTML = `${selectedServer.name} <span class="dropdown-icon">&#9660;</span>`;
@@ -399,11 +419,14 @@ function disableSandbox() {
   const iframe = byId('movie-iframe');
   if (!iframe) return;
 
+  const currentUrl = iframe.src;
   iframe.removeAttribute('sandbox');
   sandboxBtn.classList.remove('on');
   sandboxBtn.classList.add('off');
   sandboxBtn.textContent = "Sandbox: OFF";
-  iframe.src = iframe.src;
+
+  setIframeSource(iframe, currentUrl);
+
   if (sandboxWarning) sandboxWarning.style.display = 'none';
   sandboxBtn.focus();
 }
@@ -419,11 +442,13 @@ safeOn(byId('sandbox-toggle'), 'click', () => {
       proceedBtn?.focus();
     }
   } else {
+    const currentUrl = iframe.src;
     iframe.setAttribute('sandbox', 'allow-scripts allow-presentation allow-same-origin');
     sandboxBtn.classList.remove('off');
     sandboxBtn.classList.add('on');
     sandboxBtn.textContent = "Sandbox: ON";
-    iframe.src = iframe.src;
+
+    setIframeSource(iframe, currentUrl);
   }
 });
 
