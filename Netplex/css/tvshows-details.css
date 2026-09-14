@@ -789,7 +789,7 @@ body {
     Mobile Responsiveness
 ===================== */
 @media (max-width: 768px) {
-    .container { padding: 16px; }
+    .container { padding: 8px; }
     .details-page { flex-direction: column; gap: 20px; padding-bottom: 80px; }
     #iframe-container, .details-sidebar { flex: 100%; width: 100%; }
     #iframe-container { 
