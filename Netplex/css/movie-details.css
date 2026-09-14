@@ -67,7 +67,8 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--card-border);
+    /* Updated border: dirty white */
+    border: 1px solid #e2e8f0; 
     box-shadow: 
         0 12px 30px rgba(0, 0, 0, 0.7),
         0 30px 70px rgba(0, 0, 0, 0.9),
@@ -718,7 +719,7 @@ body {
     #iframe-container { 
         order: 2; 
         border-radius: var(--radius-sm);
-        border: 1px solid var(--card-border);
+        border: 1px solid #e2e8f0; /* Update here as well */
     }
     .movie-sidebar { order: 1; }
     .poster-info-row { gap: 14px; padding: 16px; }
