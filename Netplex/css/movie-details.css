@@ -708,7 +708,7 @@ body {
     Mobile Responsiveness
 ===================== */
 @media (max-width: 900px) {
-    .container { padding: 16px; }
+    .container { padding: 8px; }
     .movie-details { flex-direction: column; gap: 20px; padding-bottom: 80px; }
     #iframe-container, .movie-sidebar { flex: 100%; width: 100%; }
     #iframe-container { 
