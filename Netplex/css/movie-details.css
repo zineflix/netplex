@@ -63,7 +63,7 @@ body {
     flex: 62%;
     background: #020305;
     border-radius: var(--radius-md);
-    overflow: hidden;
+    overflow: visible;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -87,6 +87,8 @@ body {
     aspect-ratio: 16 / 9;
     border: none;
     display: block;
+    border-bottom-left-radius: var(--radius-md);
+    border-bottom-right-radius: var(--radius-md);
 }
 
 /* ============================
@@ -101,6 +103,8 @@ body {
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--card-border);
+    border-top-left-radius: var(--radius-md);
+    border-top-right-radius: var(--radius-md);
     position: relative; 
     z-index: 10;
     flex-wrap: wrap;
@@ -723,27 +727,40 @@ body {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
+        overflow: visible;
     }
-    .video-controls-container .server-control { width: 100%; }
+    .video-controls-container .server-control { 
+        width: 100%; 
+        position: relative;
+    }
     .video-controls-container button {
         font-size: 11px;
         width: 100%;
         padding: 7px 6px;
     }
     .server-dropdown {
+        position: absolute;
+        top: calc(100% + 6px);
         left: 0;
-        width: 92vw;
-        max-width: 360px;
-        padding: 8px;
+        width: calc(100vw - 32px);
+        max-width: 320px;
+        box-sizing: border-box;
+        padding: 10px;
+        max-height: 260px;
+        overflow-y: auto;
     }
     .server-dropdown ul {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 5px;
-        min-width: unset;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+        gap: 6px;
+        min-width: 0;
+        width: 100%;
     }
     .server-dropdown li {
-        padding: 6px 4px;
+        padding: 8px 4px;
         font-size: 11px;
+        white-space: normal;
+        word-break: break-word;
     }
     .download-modal-content { width: 92%; padding: 20px; }
     .download-source-btn { font-size: 13px; padding: 10px 12px; }
