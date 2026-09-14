@@ -63,8 +63,7 @@ body {
     flex: 62%;
     background: #020305;
     border-radius: var(--radius-md);
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: visible;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -88,6 +87,8 @@ body {
     aspect-ratio: 16 / 9;
     border: none;
     display: block;
+    border-bottom-left-radius: var(--radius-md);
+    border-bottom-right-radius: var(--radius-md);
 }
 
 /* =====================
@@ -104,6 +105,8 @@ body {
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid var(--card-border);
+    border-top-left-radius: var(--radius-md);
+    border-top-right-radius: var(--radius-md);
     position: relative;
     z-index: 10;
     isolation: isolate;
@@ -453,16 +456,27 @@ body {
     overflow-y: auto;
     padding-right: 6px;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    scrollbar-color: var(--accent) rgba(255, 255, 255, 0.05);
 }
 
 #episode-list::-webkit-scrollbar {
-    width: 4px;
+    width: 6px;
+    display: block;
+}
+
+#episode-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    margin: 4px 0;
 }
 
 #episode-list::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--accent);
     border-radius: 4px;
+}
+
+#episode-list::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-hover);
 }
 
 #watch-trailer-btn {
@@ -792,7 +806,11 @@ body {
 }
 
 @media (max-width: 600px) {
-    #iframe-container { overflow: visible !important; position: relative; }
+    #iframe-container { 
+        overflow: visible !important; 
+        position: relative; 
+    }
+    
     #iframe-container iframe {
         width: 100%;
         min-height: 250px;
@@ -809,6 +827,7 @@ body {
         padding: 8px;
         position: relative;
         z-index: 20;
+        overflow: visible;
     }
 
     .season-episode-controls { display: contents; }
@@ -842,38 +861,70 @@ body {
         position: absolute;
         top: calc(100% + 6px);
         left: 0;
-        width: 92vw;
-        max-width: 360px;
+        width: calc(100vw - 32px);
+        max-width: 320px;
         max-height: 260px;
         overflow-y: auto;
         z-index: 1000;
-        padding: 8px;
+        padding: 10px;
+        box-sizing: border-box;
+
+        /* Visible scrollbar for Firefox */
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent) rgba(255, 255, 255, 0.05);
+        -webkit-overflow-scrolling: touch;
     }
 
+    /* Keep episode dropdown aligned inside screen bounds */
     #episode-dropdown {
         left: auto !important;
         right: 0 !important;
     }
 
+    /* WebKit scrollbar styling for both mobile dropdowns */
+    .server-dropdown::-webkit-scrollbar,
+    #episode-dropdown::-webkit-scrollbar {
+        width: 6px;
+        display: block;
+    }
+
+    .server-dropdown::-webkit-scrollbar-track,
+    #episode-dropdown::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+        margin: 4px 0;
+    }
+
+    .server-dropdown::-webkit-scrollbar-thumb,
+    #episode-dropdown::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 4px;
+    }
+
+    .server-dropdown::-webkit-scrollbar-thumb:hover,
+    #episode-dropdown::-webkit-scrollbar-thumb:hover {
+        background: var(--accent-hover);
+    }
+
     .server-dropdown ul,
     #episode-list {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 5px;
+        grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+        gap: 6px;
         padding: 0;
         margin: 0;
-        min-width: unset;
+        min-width: 0;
+        width: 100%;
         list-style: none;
     }
 
     .server-dropdown li,
     #episode-list li {
         text-align: center;
-        padding: 6px 4px;
+        padding: 8px 4px;
         font-size: 11px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        white-space: normal;
+        word-break: break-word;
     }
 
     .video-controls-container button { 
