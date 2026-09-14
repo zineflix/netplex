@@ -26,13 +26,11 @@
 ===================== */
 body {
     margin: 0;
-    padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background: var(--bg-dark);
     color: var(--text-main);
     overflow-x: hidden;
     min-height: 100vh;
-    width: 100%;
 }
 
 .blurred-background {
@@ -787,70 +785,47 @@ body {
     padding: 0 !important;
 }
 
-/* ====================================================
-   Mobile & Tablet Responsiveness (100% True Edge-to-Edge)
-==================================================== */
-@media (max-width: 900px) {
-    /* Clear outer page padding completely so items can reach screen borders */
+/* =====================
+    Mobile Responsiveness
+===================== */
+@media (max-width: 768px) {
     .container { 
-        padding: 0 !important; 
-        max-width: 100vw !important;
-        overflow-x: hidden;
+        padding: 0 0 40px; 
     }
 
     .details-page { 
         flex-direction: column; 
-        gap: 16px; 
+        gap: 20px; 
         padding-bottom: 60px; 
-        margin: 0;
-        width: 100%;
     }
 
-    /* Target player container to be strictly edge-to-edge */
+    #iframe-container, 
+    .details-sidebar { 
+        flex: 100%; 
+        width: 100%; 
+    }
+
     #iframe-container { 
-        flex: none;
         order: 1; 
-        width: 100vw !important; 
-        max-width: 100vw !important;
-        margin: 0 !important;
-        border-radius: 0 !important;
-        border-left: none !important;
-        border-right: none !important;
-        border-top: none !important;
-        box-shadow: none !important;
-        overflow: visible !important;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        box-shadow: none;
     }
 
     #iframe-container iframe {
-        width: 100vw !important;
-        max-width: 100vw !important;
-        min-height: 220px;
-        height: auto;
-        aspect-ratio: 16 / 9;
-        border-radius: 0 !important;
-        display: block;
-        margin: 0 !important;
-        padding: 0 !important;
+        border-radius: 0;
     }
 
     .video-controls-container {
-        width: 100vw !important;
-        max-width: 100vw !important;
-        border-radius: 0 !important;
-        border-left: none !important;
-        border-right: none !important;
-        margin: 0 !important;
-        padding: 10px 14px;
-        box-sizing: border-box;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
     }
 
-    /* Keep side padding ONLY on text, description, poster, and cast */
     .details-sidebar { 
         order: 2; 
-        flex: none;
-        width: 100% !important;
-        padding: 0 16px !important; 
-        box-sizing: border-box;
+        padding: 0 16px; 
     }
 
     .poster-info-row { gap: 14px; padding: 16px; }
@@ -860,14 +835,31 @@ body {
 }
 
 @media (max-width: 600px) {
+    #iframe-container { 
+        overflow: visible !important; 
+        position: relative; 
+        width: 100%;
+    }
+    
+    #iframe-container iframe {
+        width: 100%;
+        min-height: 220px;
+        height: auto;
+        aspect-ratio: 16 / 9;
+        display: block;
+        border-radius: 0;
+    }
+
     .video-controls-container {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 6px;
-        width: 100vw !important;
-        padding: 8px 10px;
+        width: 100%;
+        padding: 8px 12px;
         position: relative;
         z-index: 20;
+        overflow: visible;
+        border-radius: 0;
     }
 
     .season-episode-controls { display: contents; }
@@ -887,11 +879,11 @@ body {
         min-width: 0;
         max-width: none;
         text-align: center;
-        padding: 8px 6px;
+        padding: 8px 10px;
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 4px;
+        gap: 6px;
     }
 
     .sandbox-btn { width: 100%; min-width: 0; }
@@ -901,12 +893,12 @@ body {
         position: absolute;
         top: calc(100% + 6px);
         left: 0;
-        width: calc(100vw - 20px);
-        max-width: 320px;
+        width: calc(100vw - 24px);
+        max-width: 340px;
         max-height: 260px;
         overflow-y: auto;
         z-index: 1000;
-        padding: 8px;
+        padding: 10px;
         box-sizing: border-box;
 
         scrollbar-width: thin;
