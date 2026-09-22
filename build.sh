@@ -1,4 +1,3 @@
-```bash
 #!/bin/bash
 set -e
 
@@ -551,4 +550,4 @@ echo ""
 echo ""
 echo "🎉 Deployment folder: dist"
 echo ""
-```
+
